@@ -1,0 +1,190 @@
+(() => {
+  'use strict';
+
+  SlideRendererRegistry.register('cuadro-reflexion', function(s, root /*, ctx */){
+    root.classList.add('tpl--cuadro-reflexion');
+
+    const wrap = document.createElement('div');
+    wrap.className = 'reflexion-wrap center-box';
+
+    // Pregunta
+    const qText = String(s.pregunta || '').trim();
+    const h2 = document.createElement('h2');
+    h2.className = 'reflexion-question';
+    h2.textContent = qText || 'Cuadro de reflexión';
+    wrap.appendChild(h2);
+
+    // Área de escritura
+    const box = document.createElement('div');
+    box.className = 'reflexion-box';
+
+    const ta = document.createElement('textarea');
+    if (s.ruled !== false) ta.classList.add('is-ruled');
+    ta.className = 'reflexion-input';
+    ta.placeholder = s.placeholder || 'Escribe aquí tu idea principal…';
+    ta.setAttribute('aria-label', 'Tu respuesta');
+    ta.spellcheck = true;
+    ta.autocapitalize = 'sentences';
+    ta.autocomplete = 'off';
+    if (typeof s.maxChars === 'number' && s.maxChars > 0) ta.maxLength = s.maxChars;
+    if (s.value) ta.value = String(s.value);
+    box.appendChild(ta);
+
+    const prog = document.createElement('div');
+    prog.className = 'reflexion-progress';
+    const progBar = document.createElement('div');
+    progBar.className = 'reflexion-progress__bar';
+    prog.appendChild(progBar);
+    box.appendChild(prog);
+    wrap.appendChild(box);
+
+    // Meta
+    const meta = document.createElement('div');
+    meta.className = 'reflexion-meta';
+    const count = document.createElement('span');
+    count.className = 'reflexion-count';
+    const minChars = Number(s.minChars || 0);
+    const maxChars = Number(s.maxChars || 0);
+
+    function refreshCount(){
+      const len = ta.value.length;
+      count.textContent = maxChars > 0 ? `${len}/${maxChars}` : `${len} caracteres`;
+      const target = (minChars > 0) ? minChars : (maxChars > 0 ? maxChars : 500);
+      const p = Math.max(0, Math.min(1, len / target));
+      if (progBar){
+        progBar.style.width = Math.round(p * 100) + '%';
+        progBar.classList.toggle('is-ok', (minChars > 0 && len >= minChars));
+      }
+    }
+    refreshCount();
+
+    const minNote = document.createElement('span');
+    minNote.className = 'reflexion-min';
+    if (minChars > 0) minNote.textContent = `Mínimo ${minChars} caracteres.`;
+
+    meta.appendChild(count);
+    meta.appendChild(minNote);
+    wrap.appendChild(meta);
+
+    // Acciones
+    const actions = document.createElement('div');
+    actions.className = 'reflexion-actions';
+
+    const status = document.createElement('div');
+    status.className = 'reflexion-status';
+    actions.appendChild(status);
+
+    const btnSkip = document.createElement('button');
+    btnSkip.type = 'button';
+    btnSkip.className = 'btn btn--ghost';
+    btnSkip.textContent = s.skipText || 'Omitir';
+    if (s.allowSkip === false) btnSkip.style.display = 'none';
+
+    const btnEval = document.createElement('button');
+    btnEval.type = 'button';
+    btnEval.className = 'btn btn--primary';
+    btnEval.textContent = s.evalText || 'Evaluar';
+
+    const btnsRight = document.createElement('div');
+    btnsRight.className = 'reflexion-actions__right';
+    btnsRight.appendChild(btnSkip);
+    btnsRight.appendChild(btnEval);
+    actions.appendChild(btnsRight);
+
+    wrap.appendChild(actions);
+    root.appendChild(wrap);
+
+    // Eventos UI
+    ta.addEventListener('input', refreshCount);
+
+    function setBusy(v){
+      btnEval.disabled = v;
+      btnSkip.disabled = v;
+      actions.classList.toggle('is-busy', v);
+      status.textContent = v ? 'Evaluando…' : '';
+      status.classList.toggle('is-error', false);
+    }
+
+    function wire(onAdvance){
+      btnEval.addEventListener('click', async (ev) => {
+        ev.stopPropagation();
+        const answer = ta.value.trim();
+
+        if (minChars > 0 && answer.length < minChars){
+          status.textContent = `Añade al menos ${minChars - answer.length} caracteres para completar tu reflexión.`;
+          status.classList.add('is-error');
+          return;
+        }
+
+        status.classList.remove('is-error');
+        setBusy(true);
+
+        const payload = { question: qText, answer, meta: { slideId: s.id ?? null } };
+
+        try{
+          let result = null;
+
+          if (typeof s.onEvaluate === 'function'){
+            result = await s.onEvaluate(payload);
+          } else if (s.apiEvaluate && s.apiEvaluate.url){
+            const method = s.apiEvaluate.method || 'POST';
+            const headers = Object.assign({'Content-Type':'application/json'}, s.apiEvaluate.headers || {});
+            const resp = await fetch(s.apiEvaluate.url, { method, headers, body: JSON.stringify(payload) });
+            result = await resp.json().catch(()=>null);
+          }
+
+          window.SLIDE_LAST_REFLEXION = payload;
+          if (result != null) window.SLIDE_LAST_REFLEXION_RESULT = result;
+
+          // >>> ENVIAR EVENTO GLOBAL PARA GUARDAR EN BACKEND <<<
+          try {
+            window.dispatchEvent(new CustomEvent('reflexion:submit', {
+              detail: {
+                id: s.id || 'reflexion',
+                question: qText,
+                value: answer,          // mantenemos "value" por coherencia con encuestas
+                answer,                 // lo duplicamos por claridad
+                ts: Date.now(),
+                meta: { slideId: s.id ?? null },
+                result: (typeof result === 'object' ? result : null) // feedback opcional
+              }
+            }));
+          } catch(_e){}
+
+
+          if (typeof s.onResult === 'function'){
+            try { s.onResult(result, payload); } catch(_e){}
+          }
+        } catch(_err){
+          status.textContent = 'No se pudo evaluar ahora. Tu respuesta se ha guardado.';
+          status.classList.add('is-error');
+        } finally {
+          setBusy(false);
+          if (s.advanceOnSubmit !== false && typeof onAdvance === 'function') onAdvance();
+        }
+      });
+
+      btnSkip.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        if (typeof onAdvance === 'function') onAdvance();
+      });
+
+      if (s.autoFocus !== false){
+        setTimeout(() => { try{ ta.focus(); } catch(_e){} }, 50);
+      }
+    }
+
+    wrap.addEventListener('click', (ev) => ev.stopPropagation());
+    wrap.addEventListener('keydown', (ev) => ev.stopPropagation(), true);
+
+    return {
+      lockText: qText,
+      bindTyping(){},
+      hint: null,
+      noLock: true,
+      suppressRootClick: true,
+      bindControls: wire
+    };
+  });
+
+})();

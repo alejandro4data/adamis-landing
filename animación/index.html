@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Animación Logo Triángulos</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #020202; /* fondo oscuro tipo logo */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #f5f5f5;
+    }
+
+    .logo-container {
+      width: 420px;
+      height: 260px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+      shape-rendering: geometricPrecision;
+    }
+
+    .triangle {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 20;
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      filter: drop-shadow(0 0 12px rgba(0,0,0,0.35));
+    }
+
+    #greenTriangle {
+      stroke: url(#gradGreen);
+      animation: draw 1.2s ease-out forwards;
+    }
+
+    #blueTriangle {
+      stroke: url(#gradBlue);
+      animation: draw 1.2s ease-out forwards;
+      animation-delay: 0.5s;
+    }
+
+    .logo-group {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+      animation-delay: 0.15s;
+    }
+
+    .animate #greenTriangle,
+    .animate #blueTriangle {
+      animation-name: draw;
+    }
+
+    .animate .logo-group {
+      animation-name: fadeIn;
+    }
+
+    @keyframes draw {
+      from {
+        stroke-dashoffset: 1000;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .controls {
+      margin-top: 24px;
+    }
+
+    button {
+      padding: 9px 20px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      background: linear-gradient(90deg, #9dff3b, #0072b0);
+      color: #ffffff;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4);
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.5);
+      opacity: 0.95;
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.6);
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-container animate" id="logoWrapper">
+    <svg viewBox="0 0 400 260">
+      <defs>
+        <!-- Degradado verde aproximado -->
+        <linearGradient id="gradGreen" x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%" stop-color="#a8ff3a" />
+          <stop offset="50%" stop-color="#4bff69" />
+          <stop offset="100%" stop-color="#12c26a" />
+        </linearGradient>
+
+        <!-- Degradado azul aproximado -->
+        <linearGradient id="gradBlue" x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%" stop-color="#12a6c9" />
+          <stop offset="50%" stop-color="#0a7aa4" />
+          <stop offset="100%" stop-color="#00457d" />
+        </linearGradient>
+      </defs>
+
+      <g class="logo-group">
+        <!-- Triángulo verde (izquierda) -->
+        <path
+          id="greenTriangle"
+          class="triangle"
+          d="M 40 210 L 150 40 L 260 210 Z"
+        />
+
+        <!-- Triángulo azul (derecha, solapado) -->
+        <path
+          id="blueTriangle"
+          class="triangle"
+          d="M 140 210 L 250 40 L 360 210 Z"
+        />
+      </g>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <button id="replayBtn">Repetir animación</button>
+  </div>
+
+  <script>
+    const wrapper = document.getElementById("logoWrapper");
+    const replayBtn = document.getElementById("replayBtn");
+
+    replayBtn.addEventListener("click", () => {
+      wrapper.classList.remove("animate");
+      void wrapper.offsetWidth; // fuerza reflow para reiniciar animaciones
+      wrapper.classList.add("animate");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADAMIS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@100;200;300;400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+    <header class="split-hero">
+        
+        <!-- IZQUIERDA: Marca + Botón Explorar -->
+        <div class="hero-left fade-in">
+            <div class="brand-wrapper">
+                <img src="assets/logo.png" alt="ADAMIS Logo" class="hero-logo-img">
+                <h1 class="metallic-title">ADAMIS</h1>
+                <p class="hero-slogan">Tu futuro financiero empieza aquí.</p>
+                
+                <!-- Enlace corregido a #impact -->
+                <a href="#impact" class="btn-explore">
+                    Descubrir la realidad
+                    <i class="ph ph-arrow-down"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- DERECHA: Zona Interactiva -->
+        <div class="hero-right fade-in delay-100" id="heroRight">
+            <!-- Capa para el efecto dorado suave -->
+            <div class="gold-overlay"></div>
+
+            <div class="login-trigger">
+                <span class="trigger-text">Acceso Plataforma</span>
+                
+                <!-- COIN ASSEMBLY -->
+                <div class="trigger-icon scene">
+                    <div class="coin">
+                        <!-- Cara Frontal (Flecha) -->
+                        <div class="coin-face front">
+                            <i class="ph-light ph-arrow-right"></i>
+                            <div class="shine"></div>
+                        </div>
+                        <!-- Cara Trasera (IMAGEN ADAMIS) -->
+                        <div class="coin-face back">
+                            <img src="assets/adamis_login.png" alt="Adamis Login" class="coin-img">
+                            <div class="shine"></div>
+                        </div>
+                    </div>
+                    <!-- Sombra dinámica -->
+                    <div class="coin-shadow"></div>
+                </div>
+
+            </div>
+
+            <div class="access-panel">
+                <h2 class="access-title">Bienvenido</h2>
+                <form class="minimal-form">
+                    <div class="input-group">
+                        <input type="email" placeholder="Usuario / Email" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" placeholder="Contraseña" required>
+                    </div>
+                    <button type="submit" class="btn-access">Iniciar Sesión</button>
+                </form>
+                <div class="close-login" id="closeLogin"><i class="ph ph-x"></i></div>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- SECCIÓN DE ALTO IMPACTO (REDISEÑADA) -->
+    <section id="impact" class="impact-section">
+        
+
+        <div class="container relative-z">
+            
+            <!-- Cabecera Dramática -->
+            <div class="impact-header scroll-reveal">
+                <div class="alert-badge">
+                    <i class="ph-fill ph-warning-circle"></i> Realidad Financiera
+                </div>
+                <h2 class="impact-title">
+                    El sistema educativo <br> 
+                    ha olvidado lo <span class="glow-text">esencial.</span>
+                </h2>
+                <p class="impact-subtitle">
+                    Vivimos en una economía digital compleja, pero enviamos a las nuevas generaciones al mundo real sin un mapa. <strong>La ignorancia financiera es la pandemia silenciosa de esta década.</strong>
+                </p>
+            </div>
+
+            <!-- Bento Grid de Datos -->
+            <div class="bento-grid">
+                <!-- Dato Grande -->
+                <div class="bento-card main-stat scroll-reveal delay-100">
+                    <div class="chart-decoration"></div>
+                    <h3>Estrés Financiero</h3>
+                    <div class="stat-number text-gradient" data-target="73">%</div>
+                    <p>De los adultos admite que el dinero es su mayor fuente de ansiedad y problemas de salud.</p>
+                </div>
+
+                <!-- Dato Secundario -->
+                <div class="bento-card sub-stat-1 scroll-reveal delay-200">
+                    <i class="ph-duotone ph-trend-up icon-float"></i>
+                    <div class="stat-number small" data-target="15">Años</div>
+                    <p>De <strong>ventaja patrimonial</strong> tienen quienes aprenden a invertir antes de los 18 años.</p>
+                </div>
+
+                <!-- Dato Terciario -->
+                <div class="bento-card sub-stat-2 scroll-reveal delay-200">
+                    <i class="ph-duotone ph-exam icon-float"></i>
+                    <div class="stat-number small" data-target="4">/10</div>
+                    <p>Es la nota media actual en <strong>competencia financiera</strong> de los adolescentes.</p>
+                </div>
+            </div>
+
+            <!-- Soluciones B2B / B2C -->
+            <div class="solutions-wrapper">
+                <h3 class="solutions-title">La solución es ADAMIS</h3>
+                
+                <div class="cards-split">
+                    <!-- Tarjeta Familias -->
+                    <div class="solution-card family scroll-reveal">
+                        <div class="card-content">
+                            <div class="card-icon"><i class="ph-fill ph-house-line"></i></div>
+                            <h4>Para Familias</h4>
+                            <p>Convierte la paga semanal en una herramienta educativa. Evita que aprendan a base de errores costosos en el futuro.</p>
+                            <ul class="micro-list">
+                                <li><i class="ph-bold ph-check"></i> Gestión de Paga</li>
+                                <li><i class="ph-bold ph-check"></i> Ahorro Gamificado</li>
+                            </ul>
+                        </div>
+                        <div class="card-glow"></div>
+                    </div>
+
+                    <!-- Tarjeta Colegios -->
+                    <div class="solution-card school scroll-reveal delay-100">
+                        <div class="card-content">
+                            <div class="card-icon"><i class="ph-fill ph-graduation-cap"></i></div>
+                            <h4>Para Colegios</h4>
+                            <p>Lidera la innovación educativa. Integra la competencia transversal más demandada por la OCDE sin carga extra para el profesor.</p>
+                            <ul class="micro-list">
+                                <li><i class="ph-bold ph-check"></i> Curriculum Listo</li>
+                                <li><i class="ph-bold ph-check"></i> Aula Virtual</li>
+                            </ul>
+                        </div>
+                        <div class="card-glow"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- RESTO DE CONTENIDOS -->
+    <main class="content-below" id="features-list">
+        <section class="features-section">
+            <div class="container">
+                <div class="section-header-light">
+                    <h2>¿Por qué funciona?</h2>
+                </div>
+                <div class="grid-3">
+                     <div class="card scroll-reveal">
+                        <div class="icon-box"><i class="ph ph-trophy"></i></div>
+                        <h3>Gamificación</h3>
+                        <p>Aprendizaje basado en recompensas, niveles y logros desbloqueables.</p>
+                    </div>
+                    <div class="card scroll-reveal delay-100">
+                        <div class="icon-box"><i class="ph ph-chart-line-up"></i></div>
+                        <h3>Simulador Real</h3>
+                        <p>Herramientas reales de inversión en un entorno seguro y controlado.</p>
+                    </div>
+                    <div class="card scroll-reveal delay-200">
+                        <div class="icon-box"><i class="ph ph-shield-check"></i></div>
+                        <h3>Control Total</h3>
+                        <p>Los padres o tutores tienen supervisión completa de cada movimiento.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container footer-center">
+                <p class="copyright">&copy; 2023 ADAMIS Inc.</p>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

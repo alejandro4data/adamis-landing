@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es" data-page="clase">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clase</title>
+  <link rel="stylesheet" href="../style.css" />
+
+  <!-- Core y motor -->
+  <script defer src="../slides.js"></script>
+  <script defer src="../app.js"></script>
+
+  <!-- Loader de clase -->
+  <script>
+    (function () {
+      const params = new URLSearchParams(location.search);
+      let choice = (params.get('clase') || '').toLowerCase();
+
+      // Lee el manifest de sets y normaliza {id,label}
+      async function fetchSets() {
+        try {
+          const res = await fetch('../slides/sets.json', { cache: 'no-store' });
+          if (!res.ok) throw new Error('no manifest');
+          const data = await res.json();
+          const raw = Array.isArray(data) ? data
+                    : Array.isArray(data.sets) ? data.sets
+                    : (data && typeof data === 'object') ? Object.entries(data).map(([k, v]) => ({ id: k, label: v }))
+                    : [];
+          const seen = new Set();
+          const labelize = (s) => String(s || '')
+            .replace(/[_-]+/g, ' ')
+            .replace(/\b\p{L}/gu, m => m.toUpperCase());
+          const norm = raw.map(x => {
+            if (typeof x === 'string') return { id: x.trim().toLowerCase(), label: labelize(x) };
+            const id = String(x?.id ?? x?.name ?? x?.key ?? '').trim().toLowerCase();
+            const label = String(x?.label ?? labelize(id));
+            return id ? { id, label } : null;
+          }).filter(Boolean).filter(x => !seen.has(x.id) && seen.add(x.id));
+          return norm;
+        } catch {
+          // Fallback mínimo por si aún no creaste sets.json (funciona con tu estado actual)
+          // Añade aquí más si quieres defaults provisionales.
+          return [{ id: 'ahorro', label: 'Ahorro' }, { id: 'deuda', label: 'Deuda' }];
+        }
+      }
+
+      function buildUI(sets) {
+        const root = document.getElementById('slide-root');
+        // Limpia cualquier placeholder anterior
+        root.querySelectorAll('.slide').forEach(n => n.remove());
+
+        // Pintamos selector vacío; lo rellenamos abajo
+        const box = document.createElement('article');
+        box.className = 'slide empty-state';
+        box.innerHTML = `
+          <div class="empty-state__text">
+            Elige una clase:
+            <select id="classSelector" style="margin-left:8px"></select>
+            <button id="classLoadBtn" class="btn btn--primary" style="margin-left:8px">Cargar</button>
+          </div>`;
+        root.appendChild(box);
+
+        const sel = document.getElementById('classSelector');
+        const btn = document.getElementById('classLoadBtn');
+
+        // Rellena opciones
+        sel.innerHTML = '';
+        for (const s of sets) {
+          const opt = document.createElement('option');
+          opt.value = s.id;
+          opt.textContent = s.label || s.id;
+          sel.appendChild(opt);
+        }
+
+        // Si viene ?clase= y existe, selecciónalo; si no, deja el primero
+        if (choice && sets.some(s => s.id === choice)) {
+          sel.value = choice;
+        } else {
+          choice = sel.value;
+        }
+
+        // Eventos
+        btn.addEventListener('click', () => loadSet(sel.value));
+        sel.addEventListener('change', e => loadSet(e.target.value));
+      }
+
+      function loadSet(kind) {
+        window.slides = [];
+        document.querySelectorAll('script[data-slide-set]').forEach(s => s.remove());
+        document.querySelectorAll('#slide-root .empty-state').forEach(n => n.remove());
+
+        const s = document.createElement('script');
+        s.src = `../slides/slides_${kind}.js`;
+        s.dataset.slideSet = kind;
+        s.onload = () => {
+          // Actualiza la URL para recargar directo a esa clase
+          const url = new URL(location.href);
+          url.searchParams.set('clase', kind);
+          history.replaceState({}, '', url);
+          window.__slidesAPI__ && window.__slidesAPI__.reload();
+        };
+        s.onerror = () => { alert(`No pude cargar ../slides/slides_${kind}.js (revisa la ruta o el nombre).`); };
+        document.body.appendChild(s);
+      }
+
+      window.addEventListener('DOMContentLoaded', async () => {
+        const sets = await fetchSets();
+        // Si venía ?clase= y existe, carga directo; si no, muestra selector
+        if (choice && sets.some(s => s.id === choice)) {
+          loadSet(choice);
+        } else {
+          buildUI(sets);
+        }
+      });
+    })();
+  </script>
+
+
+</head>
+<body>
+  <main>
+    <section id="clase" class="section section--clase is-active" aria-label="Clase">
+      <!-- Botón de volver con estética unificada, fuera de #slide-root -->
+      <a class="btn back-integrated" href="./mapa.html" aria-label="Atrás" title="Atrás"></a>
+
+      <div id="slide-root" class="slide-stage" data-role="slide-root">
+        <!-- OJO: aquí ya no metemos el botón -->
+        <!-- Eliminado el botón de atrás de diapositivas -->
+        <button id="btn-next" class="btn btn--primary nav-btn nav-btn--next" aria-label="Siguiente" title="Siguiente" disabled></button>
+        <div class="progress"><div class="progress__bar"></div></div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

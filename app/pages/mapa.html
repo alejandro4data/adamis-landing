@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es" data-page="mapa">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mapa</title>
+  <link rel="stylesheet" href="../style.css" />
+  <script defer src="../app.js"></script>
+</head>
+<body>
+  <main>
+    <section id="mapa" class="section section--mapa is-active" aria-label="Mapa">
+      <div class="container map-wrap" data-role="map">
+        <!-- Botón integrado sobre el contenedor -->
+        <a class="btn back-integrated" href="./menu.html" aria-label="Atrás" title="Atrás"></a>
+
+        <div class="map-frame">
+          <svg id="campaign-map" viewBox="0 0 1000 600" class="campaign-svg" role="img" aria-label="Mapa de niveles">
+            <defs>
+              <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%"  stop-color="#ffffff" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="nodeShadow" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+                <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="black" flood-opacity="0.30"/>
+              </filter>
+              <radialGradient id="goldDot" cx="50%" cy="50%" r="50%">
+                <stop offset="0%"   stop-color="#fff6cc" stop-opacity="1"/>
+                <stop offset="60%"  stop-color="#ffe082" stop-opacity="1"/>
+                <stop offset="100%" stop-color="#ffc94d" stop-opacity="1"/>
+              </radialGradient>
+              <filter id="dotShadow" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="black" flood-opacity="0.25"/>
+              </filter>
+            </defs>
+
+            <g id="bg-layer" aria-hidden="true">
+              <image href="../assets/images/mapa_clases.png"
+                     x="0" y="0" width="1000" height="600"
+                     preserveAspectRatio="xMidYMid slice"
+                     opacity="0.85" pointer-events="none" />
+            </g>
+
+            <g id="route-layer"></g>
+            <g id="route-dots"></g>
+            <g id="nodes-layer"></g>
+            <g id="avatar-layer"></g>
+          </svg>
+        </div>
+      </div>
+      <script src="../data/config_clases.js"></script>
+      <script defer src="../map.js"></script>
+    </section>
+  </main>
+</body>
+</html>

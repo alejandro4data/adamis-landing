@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es" data-page="splash">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ADAMIS — Inicio</title>
+
+  <link rel="stylesheet" href="../style.css" />
+  <script defer src="../app.js"></script>
+</head>
+<body>
+  <main>
+    <section id="splash" class="section section--splash is-active" aria-label="Pantalla de inicio">
+      <div class="splash-wrap" role="button" tabindex="0" aria-label="Continuar">
+        <h1 class="splash-title">ADAMIS</h1>
+        <p class="splash-slogan">«Porque se puede aprender jugando»</p>
+        <p class="splash-cta"><b>Toca en cualquier parte para sumergirte en una aventura de educación financiera<b></b></p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Redirige a login al tocar/clicar/teclar
+    (function () {
+      const go = () => (window.location.href = './login.html');
+      const root = document.getElementById('splash');
+      // Clic/tap en cualquier parte
+      root.addEventListener('click', go);
+      root.addEventListener('touchstart', go, { passive: true });
+      // Teclas habituales (Enter/Espacio)
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+      });
+    })();
+  </script>
+</body>
+</html>

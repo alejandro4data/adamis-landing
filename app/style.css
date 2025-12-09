@@ -1,0 +1,3732 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&display=swap');
+
+/* ===================== Base & Reset ===================== */
+*{ box-sizing: border-box; border: 0px red solid !important;}
+
+html, body{
+  font-family: "Hanken Grotesk", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+button, input, select, textarea{ font: inherit; }
+
+:root{
+  --c1: #81dc55; --c2: #59d05a; --c3: #1dae69; --c4: #18b28e; --c5: #16a1b4;
+  --c1-rgb: 129 220 85; --c2-rgb: 89 208 90; --c3-rgb: 29 174 105; --c4-rgb: 24 178 142; --c5-rgb: 22 161 180;
+  --c1-10: rgb(var(--c1-rgb)/10%); --c1-20: rgb(var(--c1-rgb)/20%); --c2-10: rgb(var(--c2-rgb)/10%);
+  --c3-10: rgb(var(--c3-rgb)/10%); --c4-10: rgb(var(--c4-rgb)/10%); --c5-10: rgb(var(--c5-rgb)/10%);
+  --or1: #ff8a3d; --or2: #ff6a3d; --rd1: #ff3b3b; --rd2: #ff1744; --yl1: #ffe066; --yl2: #ffd23f;
+  --bg: #f8faf8; --text: #0f172a; --surface: #ffffff; --accent: var(--c3);
+  --btn-bg: var(--accent); --btn-text: #ffffff;
+  --radius: 16px; --gap: 16px; --shadow: 0 8px 24px rgb(0 0 0 / 8%);
+}
+
+/* Secciones (variables por sección) */
+.section--menu{ --bg: var(--c1-10); --surface: #fff; --accent: var(--c3); --btn-bg: var(--accent); }
+.section--mapa{ --bg: var(--c2-10); }
+.section--clase{ --bg: var(--c4-10); }
+.section--actividades{ --bg: var(--c1-10); }
+.section--ranking{ --bg: var(--c5-10); }
+
+/* Page scaffold */
+body{ margin: 0; background: var(--bg); color: var(--text); }
+main{ min-height: 100dvh; position: relative; }
+.section{ display: none; min-height: 100dvh; position: relative; }
+.section.is-active{ display: block; }
+.container{ max-width: 1100px; margin: 0 auto; padding: calc(var(--gap)*2) var(--gap); }
+
+/* Toolbar & botones */
+.toolbar{
+  position: sticky; top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--gap); z-index: 20;
+}
+.toolbar--class{ position: absolute; }
+.toolbar__left, .toolbar__right{ display: flex; gap: 8px; }
+
+.btn{
+  appearance: none; border: 0; cursor: pointer;
+  background: var(--surface); color: var(--text);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+}
+.btn--icon::before{
+  content: ""; display: block; width: 16px; height: 16px; border-radius: 4px; box-shadow: inset 0 0 0 2px var(--accent);
+}
+.btn--primary{ background: var(--btn-bg); color: var(--btn-text); min-width: 56px; }
+.btn:disabled{ opacity: .5; cursor: not-allowed; }
+
+/* Controles clase */
+.section--clase .controls{ position: fixed; inset: auto var(--gap) var(--gap) var(--gap); height: 0; pointer-events: none; }
+.controls__left{ position: fixed; left: var(--gap); bottom: var(--gap); width: 44px; height: 44px; pointer-events: none; }
+.controls__right{ position: fixed; right: var(--gap); bottom: var(--gap); pointer-events: auto; }
+
+.section--clase .progress{
+  position: absolute; left: 0; right: 0; bottom: calc(72px + var(--gap));
+  height: 4px; background: var(--c1-10); border-radius: 999px; margin: 0 var(--gap); overflow: hidden;
+}
+.section--clase .progress__bar{ width: 0%; height: 100%; background: var(--accent); transition: width .3s ease; }
+
+/* Utilidades */
+.card{ background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); min-height: 120px; }
+.hidden{ display: none !important; }
+.flex{ display: flex !important; }
+.center{ display: grid; place-items: center; }
+
+/* Animaciones */
+.fade-in{ animation: fade-in .25s ease both; }
+@keyframes fade-in{ from{opacity:0; transform: translateY(4px);} to{opacity:1; transform: translateY(0);} }
+
+/* ===================== Slides (layout) ===================== */
+.slide{
+  position: relative; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
+  min-height: 320px; padding: clamp(12px, 3vw, 24px); width: 100%; height: 100%;
+  --img-frac: 80%; --gap: 16px;
+}
+
+/* Layout antiguo por data-attr (lo conservamos por compatibilidad) */
+.slide[data-image-position="left"]{  display: grid; grid-template-columns: var(--image-size, 80%) 1fr; gap: var(--gap); }
+.slide[data-image-position="right"]{ display: grid; grid-template-columns: 1fr var(--image-size, 80%); gap: var(--gap); }
+.slide[data-image-position="top"]{   display: grid; grid-template-rows: var(--image-size, 80%) 1fr; gap: var(--gap); }
+.slide[data-image-position="bottom"]{display: grid; grid-template-rows: 1fr var(--image-size, 80%); gap: var(--gap); }
+
+/* Layout actual por clase */
+.slide.layout--left{   display: grid; grid-template-columns: var(--img-frac) 1fr; gap: var(--gap); }
+.slide.layout--right{  display: grid; grid-template-columns: 1fr var(--img-frac); gap: var(--gap); }
+.slide.layout--top{    display: grid; grid-template-rows: var(--img-frac) 1fr; gap: var(--gap); }
+.slide.layout--bottom{ display: grid; grid-template-rows: 1fr var(--img-frac); gap: var(--gap); }
+
+.slide.layout--left   .slide__media{ grid-column: 1; }
+.slide.layout--left   .slide__content, .slide.layout--left   .textpanel{ grid-column: 2; }
+.slide.layout--right  .slide__media{ grid-column: 2; }
+.slide.layout--right  .slide__content, .slide.layout--right  .textpanel{ grid-column: 1; }
+.slide.layout--top    .slide__media{ grid-row: 1; }
+.slide.layout--top    .slide__content, .slide.layout--top    .textpanel{ grid-row: 2; }
+.slide.layout--bottom .slide__media{ grid-row: 2; }
+.slide.layout--bottom .slide__content, .slide.layout--bottom .textpanel{ grid-row: 1; }
+
+/* Media dentro del slide (limpiado) */
+.slide__media{
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  align-self: center;
+  justify-self: center;
+}
+
+/* Text column */
+.slide, .slide__content{ min-width: 0; min-height: 0; }
+.slide__content{ display: grid; align-content: start; overflow: hidden; }
+.slide__title{ font-weight: 800; font-size: clamp(18px, 2.4vw, 28px); }
+.slide__text{ font-size: clamp(14px, 1.8vw, 18px); line-height: 1.35; }
+
+/* ===================== Bubbles legacy (no usados pero compatibles) ===================== */
+.bubble{
+  position: absolute; max-width: min(420px, 70%); padding: 12px 14px; background: var(--surface);
+  box-shadow: var(--shadow); border-radius: 14px;
+}
+.bubble--rounded{ border-radius: 14px; }
+.bubble--cloud{ border-radius: 24px; }
+.bubble--square{ border-radius: 8px; }
+.bubble--top-left{ top: 12px; left: 12px; }
+.bubble--top-right{ top: 12px; right: 12px; }
+.bubble--bottom-left{ bottom: 12px; left: 12px; }
+.bubble--bottom-right{ bottom: 12px; right: 12px; }
+.bubble--center{ inset: 0; margin: auto; height: max-content; }
+
+/* ===================== Empty state ===================== */
+.empty-state{
+  display: grid; place-items: center; min-height: 320px; color: #334155;
+  background: var(--c1-10); border: 2px dashed var(--c1-20); border-radius: var(--radius);
+}
+.empty-state__text{ padding: 24px; opacity: .9; }
+
+/* ===================== Menú ===================== */
+.section--menu{
+  display: grid; grid-template-rows: auto 1fr; min-height: 100dvh;
+  background:
+    radial-gradient(900px 600px at 15% 20%, rgb(var(--c1-rgb)/14%), transparent 60%),
+    radial-gradient(800px 600px at 85% 25%, rgb(var(--c2-rgb)/14%), transparent 60%),
+    radial-gradient(700px 700px at 40% 85%, rgb(var(--c4-rgb)/14%), transparent 60%),
+    linear-gradient(135deg, rgb(var(--c1-rgb)/32%) 0%, rgb(var(--c2-rgb)/28%) 22%, rgb(var(--c3-rgb)/26%) 45%, rgb(var(--c4-rgb)/28%) 68%, rgb(var(--c5-rgb)/32%) 100%);
+}
+.section--menu .container[data-role="content"]{
+  max-width: none; width: 100%; display: grid; place-items: center; padding: 0 var(--gap);
+}
+.menu-frame{ width: 80vw; height: 80vh; margin-inline: auto; display: grid; place-items: center; }
+.menu-grid{
+  display: grid; width: 100%; height: 100%; gap: calc(var(--gap)*1.25);
+  grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; justify-content: center; align-content: center;
+}
+.card--menu{
+  position: relative; display: grid; place-items: center; padding: clamp(16px, 3vw, 28px);
+  border: none; border-radius: 24px;
+  background-color: rgb(255 255 255 / 30%);
+  backdrop-filter: blur(18px) saturate(140%) brightness(1.06);
+  -webkit-backdrop-filter: blur(18px) saturate(140%) brightness(1.06);
+  background-image:
+    radial-gradient(1200px 800px at 120% 120%, rgb(255 255 255 / 10%), transparent 60%),
+    linear-gradient(135deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 18%) 38%, rgb(255 255 255 / 0%) 72%);
+  background-repeat: no-repeat, no-repeat; background-position: bottom right, center; background-size: 80% 80%, 100% 100%;
+  box-shadow: 0 24px 48px rgb(0 0 0 / 22%), 0 8px 20px rgb(0 0 0 / 12%), inset 0 1px 0 rgb(255 255 255 / 45%);
+  overflow: hidden; isolation: isolate; transition: transform .14s ease, box-shadow .14s ease, filter .14s ease, background-color .14s ease;
+  --icon-opacity: .5;
+}
+.card--menu > span{
+  font-size: clamp(22px, 3.4vw, 44px); font-weight: 800; letter-spacing: .2px; color: var(--text);
+  text-align: center; line-height: 1.1; z-index: 2;
+}
+.card--menu::before{
+  content:""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: transparent; mix-blend-mode: normal; opacity: .5;
+}
+.card--menu::after{
+  content:""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1;
+  background-image: var(--icon, none); background-repeat: no-repeat; background-position: calc(100% - 12px) calc(100% - 12px);
+  background-size: var(--icon-size, clamp(140px, 68%, 280px)); opacity: var(--icon-opacity, .18); transition: transform .14s ease;
+}
+.card--menu:hover, .card--menu:focus-visible{
+  transform: translateY(-3px); filter: brightness(1.06) saturate(1.06);
+  box-shadow: 0 28px 56px rgb(0 0 0 / 26%), 0 10px 22px rgb(0 0 0 / 14%), inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+.card--menu:active{
+  transform: translateY(-1px) scale(0.996);
+  box-shadow: 0 22px 42px rgb(0 0 0 / 22%), 0 6px 16px rgb(0 0 0 / 12%), inset 0 2px 6px rgb(0 0 0 / 10%);
+}
+.card--clase{ --icon: url('assets/icons/clases.png'); }
+.card--actividades{ --icon: url('assets/icons/actividades.png'); }
+.card--ranking{ --icon: url('assets/icons/ranking.png'); }
+
+/* ===================== Ranking ===================== */
+.section--ranking{
+  --bg: linear-gradient(140deg, color-mix(in srgb, #fff 20%, #f5c542 80%) 0%, color-mix(in srgb, #fff 10%, #ffdd55 90%) 40%, color-mix(in srgb, #fff 20%, #ffcb3b 80%) 100%);
+  background: radial-gradient(900px 600px at 20% 15%, rgb(255 223 128 / 22%), transparent 60%),
+              radial-gradient(800px 700px at 85% 85%, rgb(255 200 64 / 18%), transparent 60%),
+              var(--bg);
+}
+.ranking-grid{ max-width: none; width: 100%; display: grid; grid-template-columns: 3fr 2fr; gap: clamp(16px, 3vw, 36px); align-items: center; }
+.ranking-left{
+  background: rgb(255 255 255 / 32%); backdrop-filter: blur(14px) saturate(140%) brightness(1.04);
+  -webkit-backdrop-filter: blur(14px) saturate(140%) brightness(1.04);
+  border-radius: 24px; box-shadow: 0 24px 48px rgb(0 0 0 / 18%), inset 0 1px 0 rgb(255 255 255 / 45%);
+  padding: clamp(16px, 2.5vw, 28px); position: relative; overflow: hidden; isolation: isolate;
+}
+.ranking-left::after{
+  content:""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(135deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 20%) 32%, rgb(255 255 255 / 0%) 68%); opacity: .5;
+}
+.ranking-list{ list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(12px, 1.8vw, 18px); }
+.ranking-item{
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: clamp(10px, 2vw, 16px);
+  padding: clamp(10px, 1.6vw, 16px); border-radius: 16px; background: rgb(255 255 255 / 58%);
+  box-shadow: 0 10px 20px rgb(0 0 0 / 10%), inset 0 1px 0 rgb(255 255 255 / 60%);
+}
+.place-badge{
+  width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; font-weight: 800; font-size: 18px; color: #6b4e00;
+  background: linear-gradient(180deg, #ffeaa0 0%, #ffd978 70%, #ffc94d 100%); box-shadow: 0 8px 16px rgb(255 199 61 / 35%), inset 0 1px 0 rgb(255 255 255 / 60%);
+}
+.name{ font-weight: 700; font-size: clamp(16px, 1.8vw, 22px); letter-spacing: .2px; }
+.score{ display: flex; align-items: center; gap: 6px; }
+.coin{ width: clamp(20px, 2.6vw, 28px); height: clamp(20px, 2.6vw, 28px); display: block; filter: drop-shadow(0 4px 6px rgb(0 0 0 / 12%)) saturate(1.1); }
+.ranking-right{ display: grid; place-items: center; }
+.ranking-hero{ width: 100%; max-width: 560px; height: auto; object-fit: contain; filter: drop-shadow(0 24px 48px rgb(0 0 0 / 18%)); }
+
+/* ===================== Actividades ===================== */
+.section--actividades{
+  --bg: linear-gradient(135deg, color-mix(in srgb, #fff 15%, var(--or1) 85%) 0%, color-mix(in srgb, #fff 12%, var(--rd2) 88%) 50%, color-mix(in srgb, #fff 18%, var(--or2) 82%) 100%);
+  background: radial-gradient(900px 650px at 12% 18%, rgb(255 140 90 / 22%), transparent 60%),
+              radial-gradient(900px 650px at 88% 82%, rgb(255 70 70 / 18%), transparent 60%),
+              var(--bg);
+}
+.activities-wrap{ max-width: none; width: 100%; display: grid; gap: clamp(20px, 3vw, 32px); }
+.activities-group{
+  background: rgb(255 255 255 / 28%); backdrop-filter: blur(14px) saturate(140%) brightness(1.05);
+  -webkit-backdrop-filter: blur(14px) saturate(140%) brightness(1.05);
+  border-radius: 24px; box-shadow: 0 24px 48px rgb(0 0 0 / 18%), inset 0 1px 0 rgb(255 255 255 / 50%);
+  padding: clamp(16px, 2.4vw, 28px); position: relative; overflow: hidden; isolation: isolate;
+}
+.activities-group::after{
+  content:""; position:absolute; inset:0; border-radius: inherit; pointer-events:none;
+  background: linear-gradient(135deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 22%) 34%, rgb(255 255 255 / 0%) 66%);
+  opacity: .55;
+}
+.group-header{ display: flex; align-items: center; justify-content: space-between; margin-bottom: clamp(12px, 2.2vw, 18px); }
+.group-header h2{ margin: 0; font-weight: 800; font-size: clamp(20px, 2.4vw, 28px); letter-spacing: .2px; }
+.reward-badge{
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px;
+  background: linear-gradient(180deg, #ffeaa0 0%, #ffd978 70%, #ffc94d 100%); box-shadow: 0 10px 20px rgb(255 180 60 / 35%), inset 0 1px 0 rgb(255 255 255 / 60%);
+}
+.reward-badge img{ width: 22px; height: 22px; display: block; filter: drop-shadow(0 2px 4px rgb(0 0 0 / 16%)); }
+.reward-badge span{ font-weight: 800; }
+
+.activities-grid{ display: grid; gap: clamp(12px, 2vw, 18px); }
+.group--daily   .activities-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.group--weekly  .activities-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.group--monthly .activities-grid{ grid-template-columns: 1fr; }
+
+.activity-card{
+  position: relative; background: rgb(255 255 255 / 58%); border-radius: 18px;
+  padding: clamp(14px, 2vw, 18px);
+  box-shadow: 0 12px 24px rgb(0 0 0 / 12%), inset 0 1px 0 rgb(255 255 255 / 65%);
+  transition: transform .14s ease, box-shadow .14s ease, filter .14s ease;
+}
+.activity-card:hover, .activity-card:focus-visible{
+  transform: translateY(-2px); filter: brightness(1.04) saturate(1.04);
+  box-shadow: 0 16px 32px rgb(0 0 0 / 16%), inset 0 1px 0 rgb(255 255 255 / 70%);
+}
+.activity-card--wide{ grid-column: span 1; }
+.group--weekly .activity-card--wide{ grid-column: span 1; }
+.group--monthly .activity-card--full{ min-height: 160px; }
+
+.activity-title{ margin: 0 0 8px 0; font-weight: 800; font-size: clamp(16px, 2vw, 20px); }
+.activity-meta{
+  display: inline-flex; gap: 6px; align-items: center; padding: 6px 10px; border-radius: 999px;
+  background: color-mix(in srgb, #fff 30%, var(--or1) 70%); box-shadow: 0 6px 12px rgb(255 120 60 / 25%), inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+.activity-meta .coin{ width: 20px; height: 20px; display: block; filter: drop-shadow(0 3px 5px rgb(0 0 0 / 12%)) saturate(1.1); }
+.activity-meta span{ font-weight: 800; }
+
+/* ===================== Mapa ===================== */
+.section--mapa{
+  --bg: linear-gradient(135deg, #16a1b4 0%, #7bb4e4 40%, #c4b5fd 100%);
+  background:
+    radial-gradient(1400px 900px at 10% 15%, rgb(22 161 180 / 18%), transparent 65%),
+    radial-gradient(1200px 800px at 90% 85%, rgb(196 181 253 / 16%), transparent 60%),
+    var(--bg);
+  display: grid; grid-template-rows: auto 1fr; min-height: 100dvh;
+}
+.map-wrap {
+  display: flex;
+  flex-direction: column;   /* Mantiene otros elementos encima o debajo */
+  justify-content: center;  /* Centrado vertical */
+  min-height: 100vh;         /* O la altura que quieras que ocupe */
+}
+
+.section--mapa .container.map-wrap{ max-width: none; width: 100%; padding: 0; }
+.section--mapa .map-frame{
+  height: calc(100dvh - var(--toolbar-h, 72px)); width: 100%; margin: 0; display: grid; place-items: center;
+}
+.section--mapa .campaign-svg{
+  height: 100%; width: auto; max-width: 100%; border-radius: 28px; display: block; overflow: hidden;
+  background-size: 100% 100%, cover; background-position: 0 0, center; background-repeat: no-repeat, no-repeat;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 14%), inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+.section--mapa .map-frame::before, .section--mapa .map-frame::after{
+  content:""; position: absolute; inset: 0; pointer-events: none; border-radius: 28px;
+}
+.section--mapa .map-frame::before{
+  background:
+    radial-gradient(800px 600px at 20% 80%, rgb(22 161 180 / 14%), transparent 60%),
+    radial-gradient(900px 700px at 80% 20%, rgb(196 181 253 / 12%), transparent 60%);
+  filter: blur(2px);
+}
+.section--mapa .map-frame::after{
+  --dot: radial-gradient(circle at center, rgb(255 255 255 / 15%) 0 1px, transparent 2px);
+  background: repeating-conic-gradient(from 0deg, transparent 0 60deg, rgb(255 255 255 / 3%) 60deg 120deg) 0 0 / 200% 200%, var(--dot) 0 0 / 16px 16px;
+  mix-blend-mode: soft-light; opacity: .4;
+}
+
+/* Node/route styles */
+.route{ fill: none; stroke: color-mix(in srgb, #fff 20%, #1dae69 80%); stroke-dasharray: 0 14; stroke-dashoffset: 0; }
+@keyframes dashFlow{ to{ stroke-dashoffset: -28; } }
+
+.node{ cursor: pointer; }
+.node .dot{
+  fill: rgb(255 255 255 / 70%); stroke: color-mix(in srgb, #fff 20%, var(--c5) 80%); stroke-width: 2.5; filter: url(#nodeShadow);
+}
+.node .halo{ fill: url(#haloGrad); opacity: .7; }
+.node.state--done .dot{ fill: color-mix(in srgb, #fff 30%, var(--c3) 70%); stroke: var(--c3); }
+.node.state--done .label{ fill: var(--c3); }
+.node.state--current .dot{ fill: color-mix(in srgb, #fff 30%, var(--or1) 70%); stroke: var(--or2); stroke-width: 3; filter: url(#nodeShadow); }
+.node.state--current .label{ fill: var(--or2); }
+.node.state--locked .dot{ fill: rgb(200 200 200 / 55%); stroke: #aaa; }
+.node.state--locked .label{ fill: #666; }
+.node.state--locked{ pointer-events: none; opacity: .45; }
+.node:focus-visible .dot, .node:hover .dot{ stroke-width: 3; filter: url(#nodeShadow); }
+
+/* Avatar anim */
+@keyframes avatar-bob{ 0%{transform:translateY(0)} 50%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
+#avatar-layer image.avatar{
+  pointer-events: none; filter: drop-shadow(0 6px 12px rgb(0 0 0 / 30%));
+  transform-box: fill-box; transform-origin: 50% 100%; animation: avatar-bob 2.6s ease-in-out infinite;
+}
+.route-dot{ fill: url(#goldDot); opacity: .98; filter: url(#dotShadow); }
+
+/* ===================== Clase (pantalla) ===================== */
+html[data-page="clase"], html[data-page="clase"] body{ height: 100dvh; overflow: hidden; }
+.section--clase{ min-height: 100dvh; overflow: hidden; }
+.section--clase #slide-root{
+  position: relative; max-width: none; width: 100vw; height: 100dvh; padding: 0; margin: 0;
+}
+.section--clase .slide{
+  width: 100vw; height: 100dvh; border-radius: 0; box-shadow: none; overflow: hidden;
+  padding: clamp(12px, 3vw, 24px);
+}
+
+/* ===================== Text panels (compat) ===================== */
+.textpanel{ position: relative; min-width: 0; min-height: 0; overflow: hidden; background: transparent; }
+
+.speech{
+  position: absolute; max-width: min(520px, 92%); padding: 12px 14px; line-height: 1.25; font-weight: 600;
+  box-shadow: 0 8px 22px rgba(0,0,0,.08);
+}
+.speech--bubble{ background: #ffffff; border-radius: 20px; }
+.speech--callout{ background: #59d05a; color: #fff; border-radius: 16px; }
+
+.speech.pos--tl{ top: 12px; left: 12px; }
+.speech.pos--tr{ top: 12px; right: 12px; }
+.speech.pos--bl{ bottom: 12px; left: 12px; }
+.speech.pos--br{ bottom: 12px; right: 12px; }
+.speech.pos--center{ top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+.speech--offset.pos--tl{ top: var(--sy, 12px); left: var(--sx, 12px); }
+.speech--offset.pos--tr{ top: var(--sy, 12px); right: calc(100% - var(--sx, 100%)); }
+.speech--offset.pos--bl{ bottom: calc(100% - var(--sy, 100%)); left: var(--sx, 12px); }
+.speech--offset.pos--br{ bottom: calc(100% - var(--sy, 100%)); right: calc(100% - var(--sx, 100%)); }
+
+/* ===================== Responsive ===================== */
+@media (max-width: 900px){
+  .menu-grid{ grid-template-columns: 1fr; grid-auto-rows: 1fr; }
+  .ranking-grid{ grid-template-columns: 1fr; align-items: start; }
+  .group--daily .activities-grid{ grid-template-columns: 1fr; }
+  .group--weekly .activities-grid{ grid-template-columns: 1fr; }
+}
+
+/* =========================================================
+   ESTÉTICA “CALMA” para sesiones largas (conservada)
+   ========================================================= */
+:root{
+  --bg-soft-1:#f6fbf7; --bg-soft-2:#ecf7f4; --bg-soft-3:#eaf3ff;
+  --surface-soft:#ffffff; --ink:#0f172a; --ink-2:#314163;
+  --shadow-soft: 0 10px 30px rgb(16 24 40 / 10%); --ring-soft: 0 0 0 1px rgb(16 24 40 / 4%);
+  --radius-lg:20px;
+}
+.section--clase{
+  --bg: radial-gradient(1200px 800px at 15% 20%, rgb(129 220 85 / 10%), transparent 60%),
+        radial-gradient(1100px 700px at 85% 80%, rgb(22 161 180 / 10%), transparent 60%),
+        linear-gradient(180deg, var(--bg-soft-1), var(--bg-soft-2) 40%, var(--bg-soft-3));
+  background: var(--bg);
+}
+@media (prefers-reduced-motion: reduce){
+  .section--clase{ background: linear-gradient(180deg, var(--bg-soft-1), var(--bg-soft-2)); }
+}
+.section--clase #slide-root{ padding: clamp(12px, 2vw, 24px); }
+.slide{
+  background: color-mix(in srgb, var(--surface-soft) 92%, #f1faf7 8%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  border: none;
+  padding: clamp(16px, 3vw, 28px);
+}
+.slide__media{ filter: drop-shadow(0 16px 28px rgb(16 24 40 / 14%)); margin: clamp(8px, 2vw, 16px); }
+.slide__content{ align-content: center; gap: clamp(8px, 1.6vw, 14px); }
+.slide__text{
+  color: var(--ink); font-size: clamp(16px, 1.9vw, 20px); line-height: 1.5; letter-spacing: .1px; max-width: 60ch;
+}
+.btn{
+  background: #ffffff; color: var(--ink); border-radius: 14px;
+  box-shadow: var(--ring-soft), 0 8px 18px rgb(16 24 40 / 10%);
+}
+.btn--primary{
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 90%, #fff 10%), color-mix(in srgb, var(--accent) 80%, #000 0%));
+  color: #fff;
+}
+.toolbar{
+  background: linear-gradient(180deg, rgb(255 255 255 / 80%), rgb(255 255 255 / 60%));
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgb(16 24 40 / 6%); box-shadow: 0 4px 16px rgb(16 24 40 / 8%);
+}
+.section--clase .progress{ height: 6px; background: rgb(22 161 180 / 14%); border-radius: 999px; }
+.section--clase .progress__bar{
+  background: linear-gradient(90deg, var(--c3), color-mix(in srgb, var(--c4) 70%, var(--c5) 30%));
+}
+.empty-state{ color: var(--ink-2); background: rgb(22 161 180 / 10%); border-color: rgb(22 161 180 / 18%); }
+@media (max-width: 900px){ .slide__text{ max-width: 100%; } }
+
+/* ===================== Comic bubble SIN COLA ===================== */
+.comic-bubble{
+  --bubble-fill: color-mix(in srgb, #fff 85%, var(--c3) 15%);
+  --bubble-stroke: rgb(16 24 40 / 14%);
+  position: relative;
+  border-radius: 18px;
+  padding: clamp(14px, 2vw, 20px) clamp(16px, 2.4vw, 24px);
+  background: linear-gradient(180deg, #fff, color-mix(in srgb, #fff 92%, var(--c3) 8%));
+  box-shadow: var(--ring-soft), 0 8px 20px rgb(16 24 40 / 12%);
+  /* sin colas: no pseudo-triángulos, no ._tail / ._tail2 */
+}
+.comic-bubble::before{
+  /* textura sutil (no es cola) */
+  content:""; position:absolute; inset:0; border-radius: inherit; pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 25%, rgb(255 255 255 / 0.25) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 75%, rgb(0 0 0 / 0.06) 0 2px, transparent 3px);
+  background-size: 18px 18px, 18px 18px;
+  mix-blend-mode: soft-light; opacity:.55;
+}
+.comic-bubble .slide__text{ margin: 0; }
+
+
+/* ===================== 1) Sin subrayado en botones/enlaces ===================== */
+a, a:link, a:visited, a:hover, a:focus, a:active { text-decoration: none; }
+.btn, .card--menu { text-decoration: none; }
+.btn:focus { outline: none; }
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgb(22 161 180 / 24%), var(--shadow); }
+
+/* ===================== 2) Fondos por botón (menú principal) ===================== */
+/* Clase: AZUL */
+.card--menu.card--clase{
+  background:
+    radial-gradient(1000px 700px at 120% 120%, rgb(255 255 255 / 10%), transparent 60%),
+    linear-gradient(135deg, #0ea5e9 0%, #1e40af 100%);
+  color: #fff;
+}
+.card--menu.card--clase > span{ color:#fff; }
+
+/* Actividades: ROJO-NARANJA */
+.card--menu.card--actividades{
+  background:
+    radial-gradient(1000px 700px at 120% 120%, rgb(255 255 255 / 10%), transparent 60%),
+    linear-gradient(135deg, #ff7a59 0%, #ff1744 100%);
+  color: #fff;
+}
+.card--menu.card--actividades > span{ color:#fff; }
+
+/* Ranking: AMARILLO */
+.card--menu.card--ranking{
+  background:
+    radial-gradient(1000px 700px at 120% 120%, rgb(255 255 255 / 16%), transparent 60%),
+    linear-gradient(135deg, #ffef99 0%, #ffcb3b 100%);
+  color: #6b4e00;
+}
+.card--menu.card--ranking > span{ color:#6b4e00; }
+
+/* También coloreamos los botones primarios por sección */
+.section--clase{ --btn-bg: linear-gradient(180deg, #0ea5e9 0%, #1e40af 100%); --btn-text:#fff; }
+.section--actividades{ --btn-bg: linear-gradient(180deg, #ff7a59 0%, #ff1744 100%); --btn-text:#fff; }
+.section--ranking{ --btn-bg: linear-gradient(180deg, #ffef99 0%, #ffcb3b 100%); --btn-text:#6b4e00; }
+
+/* ===================== 3) Navegación integrada (sin barra) ===================== */
+/* Eliminamos visual de la barra si alguna página la conserva */
+.toolbar{ background: transparent !important; box-shadow: none !important; border: 0 !important; padding: 0 !important; height: 0 !important; overflow: visible; }
+
+/* Botón Atrás integrado en contenedores estándar */
+.back-integrated{
+  position: absolute; top: 16px; left: 16px;
+  width: 44px; height: 44px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgb(255 255 255 / 70%); backdrop-filter: blur(8px);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 12%), inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+.section--mapa    .back-integrated{ background: linear-gradient(180deg, #0ea5e9 0%, #1e40af 100%); color:#fff; }
+.section--actividades .back-integrated{ background: linear-gradient(180deg, #ff7a59 0%, #ff1744 100%); color:#fff; }
+.section--ranking .back-integrated{ background: linear-gradient(180deg, #ffef99 0%, #ffcb3b 100%); color:#6b4e00; }
+
+/* Clase: botones prev/next/exit dentro del área del slide */
+#clase #slide-root{ position: relative; }
+#clase .nav-btn{
+  position: absolute; z-index: 5;
+  width: 52px; height: 52px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 14%), inset 0 1px 0 rgb(255 255 255 / 45%);
+  background: #fff; color: var(--text);
+}
+#clase .nav-btn--exit{ top: 16px; left: 16px; background: rgb(255 255 255 / 75%); backdrop-filter: blur(8px); }
+#clase .nav-btn--prev{ top: 50%; left: 16px; transform: translateY(-50%); }
+#clase .nav-btn--next{ top: 50%; right: 16px; transform: translateY(-50%); background: var(--btn-bg); color: var(--btn-text); }
+
+/* Iconos simples para los botones (si no usas SVG, dibujamos “chevrons” con CSS) */
+#clase .nav-btn--prev::before, #clase .nav-btn--next::before, #clase .nav-btn--exit::before{
+  content: ""; display: block; width: 14px; height: 14px; border-right: 3px solid currentColor; border-bottom: 3px solid currentColor; transform: rotate(225deg);
+}
+#clase .nav-btn--next::before{ transform: rotate(45deg); }
+#clase .nav-btn--exit::before{
+  width: 14px; height: 14px; border-right: 0; border-bottom: 0;
+  border-left: 3px solid currentColor; border-top: 3px solid currentColor; transform: rotate(45deg);
+}
+
+/* Progreso integrado en la parte baja del slide */
+#clase .progress{
+  position: absolute; left: 5%; right: 5%; bottom: 16px;
+  height: 6px; background: rgb(22 161 180 / 14%); border-radius: 999px; overflow: hidden;
+}
+#clase .progress__bar{ height: 100%; width: 0%; background: linear-gradient(90deg, var(--c3), color-mix(in srgb, var(--c4) 70%, var(--c5) 30%)); }
+
+
+#menu {
+  display: flex;
+  justify-content: center;  /* Centrado horizontal */
+  align-items: center;      /* Centrado vertical */
+  min-height: 100vh;        /* Que ocupe toda la altura de la ventana */
+}
+
+/* Bloquear scroll SOLO en Ranking */
+html[data-page="ranking"],
+html[data-page="ranking"] body{
+  height: 100dvh;          /* usa viewport dinámico en móviles */
+  overflow: hidden;        /* sin scroll */
+  overscroll-behavior: none; /* sin “rebote” */
+}
+
+html[data-page="ranking"] main,
+html[data-page="ranking"] #ranking.section--ranking{
+  height: 100%;            /* ocupa todo el alto disponible */
+  min-height: 100dvh;
+  overflow: hidden;        /* asegura no-scroll en contenedor principal */
+}
+
+/* Por si algún interior tuviera overflow:auto */
+html[data-page="ranking"] .ranking-grid{
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* Evitar solapado del botón Atrás en ACTIVIDADES */
+html[data-page="actividades"] .activities-wrap{
+  position: relative;                         /* referencia para el botón absoluto */
+  /* 16px (separación superior del botón) + 44px (diámetro) + 12px (aire extra) */
+  padding-top: calc(16px + 44px + 12px);      /* = 72px de holgura */
+}
+
+/* (opcional) Si en tu CSS el botón tuviera otro tamaño, ajústalo aquí: */
+html[data-page="actividades"] .back-integrated{
+  top: 16px;          /* debe coincidir con el primer sumando de arriba */
+  left: 16px;
+  width: 40px;
+  height: 40px;
+}
+
+
+/* Botón "Atrás" con icono + degradado blanco */
+.back-integrated{
+  position: absolute; top: 16px; left: 16px;
+  width: 40px; height: 40px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  /* Icono centrado (encima) + degradado blanco (debajo) */
+  background:
+    url('assets/icons/go_back.png') center / 37px 37px no-repeat,
+    linear-gradient( #caffcd 0%, #dcffd5 100%);
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid rgb(16 24 40 / 8%);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 12%), inset 0 0px 0 rgb(255 255 255 / 55%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Estado hover/focus sutil (sin subrayado) */
+.back-integrated:hover,
+.back-integrated:focus-visible{
+  background:
+    url('assets/icons/go_back.png') center / 37px 37px no-repeat,
+    linear-gradient( #caffcd 0%, #dcffd5 100%);
+  outline: none;
+  box-shadow: 0 8px 18px rgb(0 0 0 / 14%), inset 0 0px 0 rgb(255 255 255 / 60%);
+}
+
+/* Sobrescribir los colores por sección que pusimos antes (azul/rojo/amarillo) */
+.section--mapa .back-integrated,
+.section--actividades .back-integrated,
+.section--ranking .back-integrated{
+  background:
+    url('assets/icons/go_back.png') center / 37px 37px no-repeat,
+    linear-gradient( #caffcd 0%, #dcffd5 100%);
+  color: var(--text);
+}
+
+/* === CLASE: slides a pantalla completa, sin fugas de fondo === */
+
+/* 1) El escenario no añade rellenos ni muestra scroll */
+html[data-page="clase"],
+html[data-page="clase"] body{
+  height: 100dvh;
+  overflow: hidden;
+}
+html[data-page="clase"] #slide-root{
+  width: 100vw;
+  height: 100dvh;
+  padding: 0 !important;   /* sin bordes visibles alrededor del slide */
+  background: transparent; /* por si tuviera fondo propio */
+}
+
+/* 2) El slide ocupa todo el viewport, sin radios ni sombras */
+html[data-page="clase"] .slide{
+  width: 100vw;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;              /* sin sangrías que dejen ver el fondo */
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--surface); /* superficie limpia y uniforme */
+}
+
+/* 3) layout--top: la fila de imagen y la de texto llenan 100% de alto */
+html[data-page="clase"] .slide.layout--top{
+  display: grid;
+  grid-template-rows: minmax(0, var(--img-frac)) minmax(0, 1fr);
+  gap: 0;                  /* sin separación que deje ver detrás */
+}
+
+/* 4) La imagen rellena su celda completa y queda centrada */
+html[data-page="clase"] .slide.layout--top .slide__media{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: contain;     /* cambia a 'cover' si prefieres cubrir recortando */
+  align-self: stretch;
+  justify-self: center;
+}
+
+/* 5) El bloque de texto queda centrado y con un padding cómodo interno */
+html[data-page="clase"] .slide.layout--top .slide__content{
+  padding: clamp(12px, 2vw, 24px);
+}
+
+/* 6) El bocadillo no añade huecos extra */
+html[data-page="clase"] .comic-bubble{
+  margin: 0;
+}
+
+
+/* === CLASE: que la píldora pueda asomar por encima del bocadillo === */
+html[data-page="clase"] .slide__content{
+  overflow: visible !important;      /* anula el overflow:hidden del estilo base */
+  display: grid;
+  place-items: center;               /* centra el bocadillo en su columna */
+}
+
+/* === Bocadillo estilo "cartoon/Pokémon" (sin cola) === */
+html[data-page="clase"] .comic-bubble{
+  /* ajustes rápidos */
+  --stroke-w: 3px;                    /* grosor del borde */
+  --stroke-col: #2f82854d;                 /* color del borde */
+  --radius: 18px;                     /* radio esquinas */
+  --pad-x: clamp(16px, 2.6vw, 24px);
+  --pad-y: clamp(14px, 2.2vw, 20px);
+  --pill-h: 28px;                     /* alto píldora */
+  --pill-gap: 6px;                    /* aire entre borde y píldora */
+
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: clamp(140px, 28vh, 100px);
+
+  margin: 0;
+  border: var(--stroke-w) solid var(--stroke-col) !important; /* vence cualquier resto */
+  border-radius: var(--radius);
+  background: white;
+  box-shadow: inset 0 0 20px #cafffb57,
+              inset 0 0 30px #90faf557;
+  /* deja hueco arriba para que la píldora “se apoye” en el borde */
+  padding: calc(var(--pad-y) + var(--pill-h)/2 + var(--pill-gap)) var(--pad-x) var(--pad-y);
+
+  overflow: visible;   /* por si algún estilo anterior lo cambiaba */
+}
+
+/* borra cualquier decorado previo del bubble */
+html[data-page="clase"] .comic-bubble::before,
+html[data-page="clase"] .comic-bubble::after{ content: none !important; }
+
+/* Texto dentro del bocadillo */
+html[data-page="clase"] .comic-bubble .slide__text{
+  margin: 0;
+  color: #101010;
+  font-size: clamp(28px, 1.9vw, 28px);
+  line-height: 1.5;
+}
+
+
+
+
+/* ===== PÍLDORA <=> (hexágono) apoyada en el borde del bocadillo ===== */
+/* Padre = “borde” del hexágono; Hijo = relleno y texto */
+html[data-page="clase"] .narrator-pill{
+  --hex-stroke: var(--stroke-w, 2px);       /* grosor del borde de la píldora (usa tu --stroke-w) */
+  --hex-border: var(--stroke-col, #111);    /* color del borde (usa tu --stroke-col) */
+  --hex-bg: #fff;                           /* relleno */
+  --hex-cut: 10%;                           /* mordida lateral (6–12% queda bien) */
+  --pill-h: 34px;                           /* alto visual */
+  --pill-left: clamp(14px, 3vw, 40px);      /* posición lateral (cámbiala si la quieres centrada) */
+
+  position: absolute;
+  top: 0;
+  left: var(--pill-left);
+  transform: translateY(-50%);
+  z-index: 2;
+
+  /* el contenedor externo pinta el BORDE del hexágono */
+  padding: var(--hex-stroke);
+  background: var(--hex-border);
+  display: inline-block;
+
+  /* forma <=> */
+  clip-path: polygon(
+    var(--hex-cut) 0,
+    calc(100% - var(--hex-cut)) 0,
+    100% 50%,
+    calc(100% - var(--hex-cut)) 100%,
+    var(--hex-cut) 100%,
+    0 50%
+  );
+}
+
+/* interior del hexágono (relleno + texto) con el MISMO clip-path */
+html[data-page="clase"] .narrator-pill__in{
+  height: var(--pill-h);
+  padding: 0 20px;
+  display: inline-flex; align-items: center; gap: 8px;
+
+  background: var(--hex-bg);
+  color: #111;
+  font-weight: 800;
+  font-size: clamp(12px, 1.3vw, 20px);
+  line-height: 1;
+
+  clip-path: polygon(
+    var(--hex-cut) 0,
+    calc(100% - var(--hex-cut)) 0,
+    100% 50%,
+    calc(100% - var(--hex-cut)) 100%,
+    var(--hex-cut) 100%,
+    0 50%
+  );
+}
+
+
+/* importante: deja asomar la píldora y centra el bubble como ya hacías */
+html[data-page="clase"] .slide__content{
+  overflow: visible !important;
+  display: grid;
+  place-items: center;
+}
+
+
+/* que el contenido del bubble estire al 100% del ancho interno */
+html[data-page="clase"] .comic-bubble{
+  display: block;                 /* flujo normal, sin centrados raros */
+}
+
+/* el texto ocupa todo el ancho útil del bocadillo */
+html[data-page="clase"] .comic-bubble .slide__text{
+  margin: 0;
+  display: block;
+  width: 100%;
+  inline-size: 100%;              /* por si el navegador usa writing-modes */
+  max-width: none !important;     /* anula límites tipo 60ch de estilos previos */
+  box-sizing: border-box;         /* coherente con el padding del bubble */
+}
+
+
+/* Ocultar el botón “Siguiente” dentro de CLASE */
+html[data-page="clase"] .nav-btn--next{ display: none !important; }
+
+/* El contenedor de texto debe permitir que la píldora/hint “asomen” */
+html[data-page="clase"] .slide__content{
+  overflow: visible !important;
+  display: grid;
+  place-items: center;
+}
+
+/* El bocadillo es clicable (experiencia diálogo) */
+html[data-page="clase"] .comic-bubble{ cursor: pointer; }
+
+/* Hint diegético: “toca para continuar” (tres cheurones) */
+html[data-page="clase"] .cont-hint{
+  position: absolute;
+  right: clamp(10px, 2vw, 16px);
+  bottom: clamp(8px, 1.6vw, 12px);
+  display: inline-flex;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .22s ease, transform .22s ease;
+  pointer-events: none; /* no molesta mientras está oculto */
+}
+html[data-page="clase"] .cont-hint.is-visible{
+  opacity: .9;
+  transform: none;
+  pointer-events: auto;
+}
+html[data-page="clase"] .cont-hint i{
+  width: 8px; height: 8px;
+  border-right: 3px solid rgba(0,0,0,.45);
+  border-bottom: 3px solid rgba(0,0,0,.45);
+  transform: rotate(-45deg);
+  border-radius: 1px;
+  animation: hintNudge 1.2s ease-in-out infinite;
+}
+html[data-page="clase"] .cont-hint i:nth-child(2){ animation-delay: .12s; }
+html[data-page="clase"] .cont-hint i:nth-child(3){ animation-delay: .24s; }
+@keyframes hintNudge{
+  0%,100%{ transform: translateX(0) rotate(-45deg); opacity:.6; }
+  50%    { transform: translateX(3px) rotate(-45deg); opacity:1; }
+}
+
+
+/* --- Hint visible dentro del bocadillo --- */
+html[data-page="clase"] .cont-hint{
+  position: absolute;
+  right: clamp(10px, 2vw, 16px);
+  bottom: clamp(8px, 1.6vw, 12px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .22s ease, transform .22s ease;
+  pointer-events: none;
+}
+html[data-page="clase"] .cont-hint.is-visible{
+  opacity: .95;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* Texto “Toca/Haz clic para continuar” en una mini píldora */
+html[data-page="clase"] .cont-hint .label{
+  font-weight: 800;
+  /*letra en cursiva*/
+  font-style: italic;
+  font-size: clamp(11px, 1.2vw, 13px);
+  line-height: 1;
+  color: #1f2937cb;
+  padding: 6px 10px;
+  border-radius: 9px;
+  border: 1px solid rgb(0 0 0 / 10%);
+}
+
+/* Flechitas animadas (»»») */
+html[data-page="clase"] .cont-hint i{
+  width: 8px; height: 8px;
+  border-right: 3px solid rgba(0,0,0,.45);
+  border-bottom: 3px solid rgba(0,0,0,.45);
+  transform: rotate(-45deg);
+  border-radius: 1px;
+  animation: hintNudge 1.2s ease-in-out infinite;
+}
+html[data-page="clase"] .cont-hint i:nth-child(2){ animation-delay: .12s; }
+html[data-page="clase"] .cont-hint i:nth-child(3){ animation-delay: .24s; }
+
+@keyframes hintNudge{
+  0%,100%{ transform: translateX(0) rotate(-45deg); opacity:.6; }
+  50%    { transform: translateX(3px) rotate(-45deg); opacity:1; }
+}
+
+/* El bocadillo es interactivo y accesible */
+html[data-page="clase"] .comic-bubble{
+  cursor: pointer;
+  outline: none;
+}
+html[data-page="clase"] .comic-bubble:focus-visible{
+  box-shadow: 0 0 0 3px rgb(22 161 180 / 25%);
+}
+
+html[data-page="clase"] .slide { cursor: pointer; }
+
+
+/* =========================
+   Fondo “vivo” EN EL ARTICLE
+   (solo para .slide.layout--top)
+   ========================= */
+html[data-page="clase"] .slide.layout--top{
+  /* base muy suave (no blanco puro) */
+  --aurora-accent: var(--c3);            /* color de acento (puedes cambiarlo) */
+  position: relative;
+  isolation: isolate;                    /* crea stacking propio para capas */
+  background: linear-gradient(180deg, #f6fbf7, #eef6ff);
+  overflow: hidden;                      /* oculta desbordes del fondo animado */
+}
+
+/* Capa “aurora” animada detrás del contenido */
+html[data-page="clase"] .slide.layout--top::before{
+  content:"";
+  position: absolute; inset: -12% -12%; /* rebose para evitar cortes en animación */
+  z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(40% 35% at 20% 25%, color-mix(in srgb, var(--aurora-accent) 30%, #ffffff 70%) 0%, transparent 70%),
+    radial-gradient(45% 40% at 80% 30%, color-mix(in srgb, #81dc55 24%, #ffffff 76%) 0%, transparent 70%),
+    radial-gradient(60% 55% at 50% 85%, color-mix(in srgb, #ffd23f 18%, #ffffff 82%) 0%, transparent 75%);
+  filter: blur(24px) saturate(1.06);
+  opacity: .28;                          /* muy sutil para no distraer */
+  animation: auroraDrift 100s ease-in-out infinite alternate;
+  transform: translate3d(0,0,0);
+}
+
+/* Textura/bokeh ligerísimo encima de la aurora */
+html[data-page="clase"] .slide.layout--top::after{
+  content:"";
+  position: absolute; inset: 0;
+  z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(12px 12px at 15% 20%, rgb(255 255 255 / 14%) 0 2px, transparent 3px),
+    radial-gradient(12px 12px at 85% 75%, rgb(0 0 0 / 5%) 0 2px, transparent 3px);
+  background-size: 22px 22px, 22px 22px;
+  mix-blend-mode: soft-light;
+  opacity: .25;
+  animation: bokehDrift 60s linear infinite;
+}
+
+/* Asegura que imagen y texto queden por ENCIMA del fondo */
+html[data-page="clase"] .slide.layout--top .slide__media,
+html[data-page="clase"] .slide.layout--top .slide__content{
+  position: relative;
+  z-index: 1;
+}
+
+/* Animaciones lentas (no cansan) */
+@keyframes auroraDrift{
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-2%, -1%, 0) scale(1.02); }
+  100% { transform: translate3d(2%, 1%, 0)  scale(1.03); }
+}
+@keyframes bokehDrift{
+  0%   { background-position: 0 0, 0 0; }
+  100% { background-position: 60px 40px, -60px -40px; }
+}
+
+/* Respeta “reducir movimiento” del sistema */
+@media (prefers-reduced-motion: reduce){
+  html[data-page="clase"] .slide.layout--top::before,
+  html[data-page="clase"] .slide.layout--top::after{
+    animation: none;
+  }
+}
+
+/* Aparición suave del article .slide.layout--top */
+html[data-page="clase"] .slide.layout--top{
+  animation: lt-fade-in .25s ease-out both;
+}
+
+@keyframes lt-fade-in{
+  from { opacity: 0; }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Respeta reducir movimiento */
+@media (prefers-reduced-motion: reduce){
+  html[data-page="clase"] .slide.layout--top{ animation: none !important; }
+}
+
+/* Salida suave cuando marcamos .is-exiting */
+html[data-page="clase"] .slide.layout--top.is-exiting{
+  animation: lt-fade-out .20s ease-in forwards;
+}
+
+@keyframes lt-fade-out{
+  to { opacity: 0;  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  html[data-page="clase"] .slide.layout--top.is-exiting{ animation: none !important; }
+}
+
+
+/* ===================== NUEVAS PLANTILLAS ===================== */
+
+/* Titulo-actividad y Explicacion-actividad comparten centrado fluido */
+.slide.tpl--titulo-actividad,
+.slide.tpl--explicacion-actividad{
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3vw, 28px);
+}
+
+/* ----- titulo-actividad ----- */
+.titulo-actividad.center-box{ text-align: center; max-width: 1000px; }
+.titulo-actividad__title{
+  margin: 0 0 .25em 0;
+  font-weight: 900;
+  letter-spacing: .2px;
+  font-size: clamp(28px, 5vw, 64px);
+}
+.titulo-actividad__name{
+  margin: 0;
+  font-weight: 800;
+  opacity: .9;
+  letter-spacing: .2px;
+  font-size: clamp(18px, 3vw, 32px);
+}
+
+/* Hint centrado abajo para plantillas sin bocadillo */
+.tpl--titulo-actividad .cont-hint,
+.tpl--explicacion-actividad .cont-hint{
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 80%);
+  box-shadow: 0 8px 16px rgb(0 0 0 / 12%), inset 0 1px 0 rgb(255 255 255 / 55%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.tpl--titulo-actividad .cont-hint.is-visible,
+.tpl--explicacion-actividad .cont-hint.is-visible{ opacity: 1; }
+
+/* ----- explicacion-actividad (lista de guiones) ----- */
+.activity-expl{ width: min(100%, 920px); }
+.activity-expl__list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(10px, 1.8vw, 16px);
+}
+.activity-expl__item{
+  position: relative;
+  padding: clamp(12px, 1.8vw, 18px) clamp(14px, 2vw, 22px);
+  font-size: clamp(16px, 2vw, 24px);
+  line-height: 1.4;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 60%);
+  border: 1px solid rgb(16 24 40 / 6%);
+  box-shadow: 0 10px 22px rgb(0 0 0 / 10%), inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+.activity-expl__item::before{
+  content: "•";
+  display: inline-block;
+  margin-right: .5em;
+  font-weight: 900;
+}
+
+/* (opcional) entrada suave */
+@keyframes item-pop{ from{opacity:0; transform: translateY(6px)} to{opacity:1; transform: translateY(0)} }
+.activity-expl__item{ animation: item-pop .25s ease both; }
+.activity-expl__item:nth-child(2){ animation-delay: .03s; }
+.activity-expl__item:nth-child(3){ animation-delay: .06s; }
+.activity-expl__item:nth-child(4){ animation-delay: .09s; }
+.activity-expl__item:nth-child(5){ animation-delay: .12s; }
+
+/* Afordancia de click en plantillas de actividad */
+.titulo-actividad.center-box,
+.activity-expl { cursor: pointer; }
+
+
+/* ===================== RECOMPENSA ===================== */
+.reward{
+  width: min(100%, 920px);
+  margin-top: clamp(12px, 2.4vw, 20px);
+  padding: clamp(12px, 2vw, 18px) clamp(14px, 2.4vw, 22px);
+  border-radius: 18px;
+  border: 1px solid rgb(16 24 40 / 12%);
+  background: linear-gradient(135deg,
+    #f7e59c 0%,
+    #f3c13a 40%,
+    #f9e076 65%,
+    #e0b100 100%);
+  box-shadow:
+    0 10px 24px rgb(0 0 0 / 14%),
+    inset 0 1px 0 rgb(255 255 255 / 45%);
+  color: #1a1400;
+}
+
+.reward__title{
+  font-weight: 900;
+  letter-spacing: .2px;
+  margin: 0 0 .25em 0;
+  font-size: clamp(16px, 2vw, 20px);
+  text-transform: uppercase;
+}
+
+.reward__text{
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(16px, 2.1vw, 22px);
+  line-height: 1.35;
+}
+
+.reward__coin{
+  height: 1em;
+  width: auto;
+  margin-left: .32em;
+  vertical-align: -.18em;
+  filter: drop-shadow(0 1px 0 rgb(255 255 255 / 60%)) drop-shadow(0 2px 4px rgb(0 0 0 / 25%));
+}
+
+
+/* ===================== DINÁMICA DE ACTIVIDAD ===================== */
+.slide.tpl--dinamica-actividad{
+  display: grid;
+  place-items: stretch;
+}
+
+.dynact-grid{
+  display: grid;
+  grid-template-areas:
+    "main side"
+    "actions actions";
+  grid-template-columns: 1.6fr 1fr;
+  grid-template-rows: 1fr auto;
+  gap: clamp(12px, 2.4vw, 20px);
+  height: 100%;
+}
+
+/* Imagen protagonista */
+.dynact-main{ grid-area: main; display: grid; place-items: center; }
+.dynact-main__img{
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 16px 28px rgb(16 24 40 / 14%);
+  background: rgb(255 255 255 / 65%);
+}
+
+/* Columna derecha */
+.dynact-side{
+  grid-area: side;
+  display: grid;
+  align-content: start;
+  gap: clamp(12px, 2vw, 16px);
+}
+
+/* Tarjetas (desc + iconos) */
+.dynact-desc,
+.dynact-icons{
+  background: rgb(255 255 255 / 65%);
+  backdrop-filter: blur(10px) saturate(130%);
+  -webkit-backdrop-filter: blur(10px) saturate(130%);
+  border-radius: 18px;
+  box-shadow: 0 12px 24px rgb(0 0 0 / 12%), inset 0 1px 0 rgb(255 255 255 / 60%);
+  padding: clamp(12px, 2vw, 18px);
+}
+
+.dynact-desc p{
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.35;
+}
+
+/* Iconos (1–4) */
+.dynact-icons__list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(8px, 1.6vw, 12px);
+}
+.dynact-icon{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 70%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 55%), 0 6px 12px rgb(0 0 0 / 10%);
+}
+.dynact-icon__img{
+  width: clamp(28px, 2.8vw, 36px);
+  height: clamp(28px, 2.8vw, 36px);
+  object-fit: contain;
+  display: block;
+}
+.dynact-icon__text{
+  font-weight: 800;
+  font-size: clamp(14px, 1.8vw, 18px);
+}
+
+/* Botones inferiores */
+.dynact-actions{
+  grid-area: actions;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 18px);
+  align-items: end;
+  padding-top: clamp(4px, 1vw, 8px);
+  padding-bottom: clamp(4px, 1vw, 8px);
+  align-items: center;
+  justify-items: center;
+}
+
+.dynact-btn{
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  padding: clamp(12px, 1.8vw, 16px);
+  border-radius: 16px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  font-size: clamp(14px, 1.8vw, 18px);
+  color: #fff;
+  box-shadow: 0 12px 24px rgb(0 0 0 / 18%), inset 0 1px 0 rgb(255 255 255 / 50%);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+.dynact-btn:focus-visible{ outline: none; box-shadow: 0 0 0 3px rgb(255 255 255 / 60%), 0 12px 24px rgb(0 0 0 / 18%); }
+.dynact-btn:active{ transform: translateY(1px) scale(0.996); }
+
+/* Degradados específicos */
+.dynact-btn--low{
+  background: linear-gradient(180deg, #ff8ab4 0%, #ff2e77 100%);
+}
+.dynact-btn--mid{
+  background: linear-gradient(180deg, #0ea5e9 0%, #1e40af 100%);
+}
+.dynact-btn--high{
+  background: linear-gradient(180deg, #ffef99 0%, #ffcb3b 100%);
+  color: #6b4e00; /* mejor contraste sobre amarillo */
+}
+
+/* Responsive */
+@media (max-width: 980px){
+  .dynact-grid{
+    grid-template-areas:
+      "main"
+      "side"
+      "actions";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  .dynact-actions{ align-items: stretch; }
+  .dynact-btn{ font-size: clamp(14px, 4vw, 18px); }
+}
+
+
+/* --- Fijar el contenedor y hacer que la imagen se adapte a él --- */
+
+/* 1) Evitar que el contenido “estire” la fila del grid */
+.dynact-main,
+.dynact-side { min-height: 0; padding: 1vh;}
+
+/* 2) El recuadro de la imagen tiene tamaño propio.
+      La imagen se ajusta dentro (object-fit: contain) */
+.dynact-main{
+  align-self: stretch;        /* ocupa toda la altura disponible de su celda */
+  aspect-ratio: 16 / 10;      /* proporción del recuadro (ajústala si quieres) */
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+/* 3) La imagen rellena el recuadro sin deformarse; no cambia el tamaño del recuadro */
+.dynact-main__img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+/* 4) En móviles, un recuadro algo más “alto” para ganar legibilidad */
+@media (max-width: 980px){
+  .dynact-main{ aspect-ratio: 4 / 3; }
+}
+
+
+/* --- Corregir desbordes y ajustar imagen al recuadro --- */
+
+/* 1) Permitir que cada columna de la grid se encoja correctamente */
+.dynact-main,
+.dynact-side {
+  min-width: 0;   /* <- CLAVE para que no “empuje” la otra columna */
+  min-height: 0;  /* evita que el contenido fuerce la altura */
+}
+
+/* 2) El recuadro de imagen ocupa su celda y recorta cualquier sobrante */
+.dynact-main{
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  overflow: hidden;          /* si el bitmap tiene bordes, no se verán fuera del box */
+  aspect-ratio: 16 / 10;     /* ajusta esta relación si prefieres otra (p. ej., 4/3) */
+  display: grid;
+  place-items: center;
+}
+
+/* 3) La imagen se adapta al recuadro sin deformarse (no crece más que el box) */
+.dynact-main__img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  /* si quieres que siempre cubra el recuadro y recorte, usa 'cover' en vez de 'contain' */
+}
+
+/* 4) En móvil, recuadro algo más alto para mantener presencia visual */
+@media (max-width: 980px){
+  .dynact-main{ aspect-ratio: 4 / 3; }
+}
+/* === Centrar verticalmente descripción e iconos con la imagen === */
+.tpl--dinamica-actividad .dynact-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centra verticalmente en su celda */
+  gap: clamp(12px, 2vw, 16px);
+}
+
+/* === Botones más altos y con más padding === */
+.tpl--dinamica-actividad .dynact-btn {
+  width: 25vw;
+  padding: clamp(14px, 2.2vw, 20px); /* más espacio interno */
+  min-height: 56px; /* altura mínima más grande */
+  font-size: clamp(15px, 2vw, 19px); /* ligeramente más grande */
+  border-radius: 18px; /* opcional, para que se vean más cómodos */
+}
+
+
+/* ----- titulo-clase ----- */
+.slide.tpl--titulo-clase{
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3vw, 28px);
+  text-align: center;
+}
+
+.titulo-clase.center-box{ max-width: 1100px; }
+
+.titulo-clase__text{
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: .02em;
+  line-height: .95;
+  font-size: clamp(42px, 8vw, 120px);
+  /* “letras bonitas” con gradiente */
+  background: linear-gradient(180deg, #0ea5e9 0%, #1e40af 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--title-color, #0f172a);
+  /* sutil relieve */
+  text-shadow: 0 2px 10px rgb(0 0 0 / 8%);
+  display: inline-block;
+}
+
+/* Animación por letra (stagger con --i) */
+.titulo-clase__text .char{
+  background: linear-gradient(180deg, #0ea4e9 0%, #1e9eaf 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* aquí, NO en el h1 */
+  color: transparent;
+
+  display: inline-block;
+  transform: translateY(8px);           /* sin scale para que no lave el texto */
+  opacity: 0;
+  animation: title-pop .60s ease-out forwards;
+  animation-delay: calc(var(--i) * 40ms);
+}
+@keyframes title-pop{
+  to{ transform: none; opacity: 1; }
+}
+
+/* Variante imagen como título */
+.titulo-clase__img{
+  max-width: min(90vw, 1000px);
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 36px rgb(0 0 0 / 16%));
+}
+
+/* Hint centrado abajo (reutiliza el patrón de actividad) */
+.tpl--titulo-clase .cont-hint{
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 80%);
+  box-shadow: 0 8px 16px rgb(0 0 0 / 12%), inset 0 1px 0 rgb(255 255 255 / 55%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.tpl--titulo-clase .cont-hint.is-visible{ opacity: 1; }
+
+/* ===== CUADRO DE REFLEXIÓN · versión compacta ===== */
+
+/* Fondo dorado del SLIDE (más específico que .slide global) */
+html[data-page="clase"] .slide.tpl--cuadro-reflexion{
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3vw, 28px);
+  --gold-1: #fff7e6; --gold-2: #ffe6a3; --gold-3: #fdd36a; --gold-4: #f2b53a;
+  background: linear-gradient(135deg,var(--gold-1) 0%,var(--gold-2) 25%,var(--gold-3) 55%,var(--gold-4) 100%) !important;
+  box-sizing: border-box;        /* el padding ya no “suma” altura */
+  min-height: 100dvh;            /* alto real del viewport */
+}
+
+/* Layout interno */
+.reflexion-wrap{
+  width: min(1000px, 92vw);
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0,1fr) auto;
+  gap: clamp(12px, 2vw, 16px);
+}
+
+/* Título con subrayado simple */
+.reflexion-question{
+  margin: 0;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: .2px;
+  font-size: clamp(18px, 2.8vw, 32px);
+  color: var(--ink);
+  position: relative;
+}
+.reflexion-question::after{
+  content: "";
+  display: block;
+  width: min(190px, 38%);
+  height: 4px;
+  margin: 10px auto 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #10a1b4, #22c55e);
+  opacity: .55;
+}
+
+/* Card (único) que envuelve el textarea */
+.reflexion-box{
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  padding: clamp(8px, 1.2vw, 12px);
+  border-radius: 20px;
+  border: 1px solid rgb(16 24 40 / 14%);
+  background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.82));
+  backdrop-filter: blur(6px);
+  box-shadow: 0 12px 30px rgb(16 24 40 / 18%), inset 0 1px 0 rgb(255 255 255 / 60%);
+  transition: box-shadow .25s ease, transform .15s ease;
+  min-height: 0;
+  overflow: hidden; 
+}
+.reflexion-box:focus-within{
+  box-shadow: 0 16px 36px rgb(16 24 40 / 22%), 0 0 0 6px rgb(22 161 180 / 18%), inset 0 1px 0 rgb(255 255 255 / 60%);
+  transform: translateY(-1px);
+}
+
+/* Textarea SIN fondo ni sombra (para evitar el "doble cuadro") */
+.reflexion-input{
+  flex: 1;
+  width: 100%;
+  height: auto;                 /* ocupa gran parte sin desbordar el card */
+  max-height: 100%;
+  min-height: 0;
+  padding: clamp(14px, 2vw, 18px) clamp(16px, 2.4vw, 22px);
+  resize: none;
+  background: transparent;      /* <— clave para no ver dos tarjetas */
+  border: 0;                    /* el foco lo marca el card */
+  color: var(--ink);
+  font-size: clamp(16px, 1.9vw, 20px);
+  line-height: 1.5;
+  outline: none;
+}
+.reflexion-input::placeholder{ color: #6b7280; opacity: .85; }
+
+/* Meta + acciones */
+.reflexion-meta{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 2px 0;
+  color: #314163;
+  font-weight: 700;
+  font-size: clamp(12px, 1.3vw, 14px);
+}
+.reflexion-actions{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 4px;
+}
+.reflexion-actions__right{ display: inline-flex; gap: 8px; }
+.reflexion-status{ min-height: 1.2em; font-weight: 700; font-size: clamp(12px, 1.3vw, 14px); color: #314163; }
+.reflexion-status.is-error{ color: #b91c1c; }
+.reflexion-actions.is-busy .btn{ opacity: .7; cursor: wait; }
+
+/* Botón ghost coherente */
+.btn--ghost{
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid rgb(16 24 40 / 10%);
+  min-width: 56px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgb(16 24 40 / 10%), inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+.btn--ghost:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(22 161 180 / 24%), var(--shadow);
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .reflexion-input{
+    height: 60vh;
+    min-height: 46vh;
+  }
+}
+
+/* Barra de progreso (necesita que el card sea posicionamiento de referencia) */
+.reflexion-box{ position: relative; }
+
+.reflexion-progress{
+  position: absolute;
+  left: clamp(12px, 1.5vw, 18px);
+  bottom: clamp(12px, 1.5vw, 18px);
+  width: min(280px, 38%);
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(16,24,40,.08);
+  box-shadow: inset 0 1px 2px rgba(16,24,40,.18);
+  overflow: hidden;
+}
+.reflexion-progress__bar{
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #f59e0b, #22c55e);
+  transition: width .25s ease;
+}
+.reflexion-progress__bar.is-ok{
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+
+/* ===================== ACTIVIDAD AHORRO 1.x ===================== */
+.act-ahorro{
+  --gap: var(--space-4, 16px);
+  display: grid;
+  grid-template-columns: 220px 1fr 260px;
+  grid-template-rows: auto 1fr auto;
+  align-items: start;
+  gap: var(--gap);
+  min-height: min(86vh, 780px);
+}
+
+/* --- Columna izquierda: contenedor y variables compartidas --- */
+.slide.act-ahorro.tipo-11 .act-left,
+.slide.act-ahorro.tipo-12 .act-left,
+.slide.act-ahorro.tipo-13 .act-left{
+  position: relative;              /* referencia para los absolutos */
+  align-self: stretch;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+
+  /* Vars compartidas (visibles para .pill y .zone-icon) */
+  --pill-w: 56px;       /* ancho de la píldora */
+  --pill-h: 260px;      /* alto de la píldora */
+  --zone-gap: 12px;     /* separación entre píldora e icono */
+}
+
+/* Monedas arriba y por encima del resto si hubiera solape */
+.slide.act-ahorro.tipo-11 .act-left .coins-badge,
+.slide.act-ahorro.tipo-12 .act-left .coins-badge,
+.slide.act-ahorro.tipo-13 .act-left .coins-badge{
+  align-self: start;
+  margin-top: 20px;
+  margin-left: 30px ;
+  position: relative;
+  z-index: 5; /* siempre visible */
+}
+
+/* Píldora centrada exacta usando las vars del ancestro */
+.slide.act-ahorro.tipo-11 .act-left .pill,
+.slide.act-ahorro.tipo-12 .act-left .pill,
+.slide.act-ahorro.tipo-13 .act-left .pill{
+  width: var(--pill-w);
+  height: var(--pill-h);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* por debajo del icono si se solaparan */
+}
+
+/* Icono pegado DEBAJO del borde inferior de la píldora */
+.slide.act-ahorro.tipo-11 .act-left .zone-icon,
+.slide.act-ahorro.tipo-12 .act-left .zone-icon,
+.slide.act-ahorro.tipo-13 .act-left .zone-icon{
+  position: absolute;
+  left: 50%;
+  top: calc(50% + (var(--pill-h) / 2) + var(--zone-gap));
+  transform: translateX(-50%);
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  z-index: 3; /* por encima de la píldora, por debajo de las monedas */
+}
+
+/* Si el alto es pequeño, reducimos un poco el gap */
+@media (max-height: 700px){
+  .slide.act-ahorro.tipo-11 .act-left,
+  .slide.act-ahorro.tipo-12 .act-left,
+  .slide.act-ahorro.tipo-13 .act-left{
+    --zone-gap: 8px;
+  }
+}
+
+/* Header/top text: más grande, con borde y ocupando ~80% del área de columnas 2–3 */
+.slide.act-ahorro.tipo-11 .act-toptext,
+.slide.act-ahorro.tipo-12 .act-toptext,
+.slide.act-ahorro.tipo-13 .act-toptext{
+  grid-column: 2 / 4;
+  font-size: clamp(1.25rem, 1.4vw + .6rem, 1.75rem);
+  line-height: 1.25;
+  border: 3px solid var(--head-border, #111);
+  border-radius: 16px;
+  padding: 16px 22px;
+  margin-top: 12px;            /* separación del borde superior */
+  background: #fff;
+  box-shadow: var(--shadow-1, 0 2px 8px rgba(0,0,0,.08));
+  font-weight: 700;
+  text-align: center;
+
+  /* clave para que no ocupe todo: */
+  width: 80%;                  /* 80% del área que le queda (cols 2–3) */
+  justify-self: center;        /* deja de estirar y céntralo dentro del área */
+  box-sizing: border-box;
+}
+
+/* Panel derecho centrado verticalmente (11/12/13) */
+.slide.act-ahorro.tipo-11 .act-right,
+.slide.act-ahorro.tipo-12 .act-right,
+.slide.act-ahorro.tipo-13 .act-right{
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  align-content: center;
+}
+
+/* Choice cards: más grandes */
+.slide.act-ahorro.tipo-11 .choice-card {
+  width: 100%;
+  min-height: 200px;
+  padding: 22px 24px;
+  font-size: 17px;
+  line-height: 1.35;
+  box-sizing: border-box;
+
+  display: flex;                /* conviertes el card en flex */
+  flex-direction: column;       /* apilas los elementos en columna */
+  justify-content: center;      /* centrado vertical */
+}
+
+/* Cada línea dentro del card:
+   - MISMO HORIZONTAL (space-between)
+   - centrado VERTICAL real
+   - más espacio entre líneas */
+.slide.act-ahorro.tipo-11 .choice-card .choice-card__line{
+  display: flex;
+  justify-content: space-between;     /* mantiene tu distribución izq/dcha */
+  align-items: center !important;     /* ✅ centra VERTICALMENTE (forzamos) */
+  min-height: 44px;                   /* altura mínima por línea */
+  padding-block: 10px;                /* aire vertical dentro de la línea */
+  margin: 0;                          /* reset */
+}
+
+/* separación extra entre los textos (entre líneas) */
+.slide.act-ahorro.tipo-11 .choice-card .choice-card__line + .choice-card__line{
+  margin-top: 14px;                   /* ↑ espacio entre “Dinero” y “Felicidad” */
+}
+
+/* asegura que los hijos se alineen al centro aunque sean inline */
+.slide.act-ahorro.tipo-11 .choice-card .choice-card__line > *{
+  display: inline-flex;
+  align-items: center;
+}
+
+
+
+/* Zonas comunes */
+.act-left{ grid-column: 1; grid-row: 1 / span 3; display: grid; grid-template-rows: auto 1fr auto; align-content: start; justify-items: center; gap: var(--gap); }
+.act-toptext{ grid-column: 2 / 4; grid-row: 1; background: #fff; border: 2px solid #111; border-radius: 16px; padding: 14px 18px; font-weight: 600; text-align: center; }
+.act-image{ grid-column: 2; grid-row: 2; display: grid; place-items: center; }
+.act-image img{ max-width: 100%; max-height: 56vh; border-radius: 14px; border: 3px solid #111; }
+.act-right{ grid-column: 3; grid-row: 2; display: grid; gap: var(--gap); padding-right: 12px; }
+.act-actions{ grid-column: 2; grid-row: 3; display: flex; gap: 28px; justify-content: center; }
+
+/* Monedas arriba-izquierda */
+.coins-badge{
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 12px; border: 3px solid #111; border-radius: 16px; background: #fff;
+  min-width: 90px; justify-content: space-between;
+}
+.coins-badge__num{ font-size: 20px; font-weight: 700; }
+.coins-badge__icon{ width: 28px; height: 28px; object-fit: contain; }
+
+/* Píldora vertical */
+.pill{
+  width: 56px; height: 260px; border-radius: 28px; background: #fff;
+  border: 3px solid #111; position: relative; overflow: hidden;
+}
+.pill__fill{
+  position: absolute; left: 0; right: 0; bottom: 0; height: 0%;
+  background: var(--pill-color, #22c55e);
+  transition: height .6s ease, background-color .25s ease;
+}
+.zone-icon{ width: 64px; height: 64px; object-fit: contain; }
+
+/* Tarjetas de la derecha (solo en 1-1) */
+.choice-card{
+  border: 3px solid #111; border-radius: 16px; background: var(--opt-bg, #eef4ff);
+  padding: 12px 14px; font-size: 15px;
+}
+.choice-card__line{ display: flex; justify-content: space-between; gap: 10px; }
+.choice-card .delta{ font-weight: 700; }
+
+/* Botones inferiores (solo en 1-1) */
+.btn-option{
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 3px solid #111; border-radius: 16px; padding: 14px 18px;
+  background: var(--btn-bg, #2a7fff); color: #fff; font-weight: 700;
+  box-shadow: var(--shadow-1, 0 2px 8px rgba(0,0,0,.08));
+  transition: transform .05s ease;
+}
+.btn-option__icon{ width: 26px; height: 26px; object-fit: contain; }
+.btn-option:is(:hover,:focus){ transform: translateY(-1px); }
+.btn-option.is-selected{ outline: 4px solid rgba(0,0,0,.12); }
+
+/* Colores por defecto para zonas (puedes cambiarlos con variables) */
+:root{
+  --pill-green: #22c55e;
+  --pill-orange: #f59e0b;
+  --pill-red: #ef4444;
+  --btnL: #2a7fff; /* izquierda */
+  --btnR: #10b981; /* derecha */
+}
+
+/* Responsive suave */
+@media (max-width: 1100px){
+  .act-ahorro{
+    grid-template-columns: 180px 1fr;
+    grid-template-rows: auto auto 1fr auto;
+  }
+  .act-toptext{ grid-column: 1 / -1; }
+  .act-right{ grid-column: 2; grid-row: 3; }
+  .act-actions{ grid-column: 2; }
+}
+@media (max-width: 820px){
+  .act-ahorro{ grid-template-columns: 1fr; grid-template-rows: auto auto auto auto auto; }
+  .act-left{ grid-row: auto; grid-column: 1; grid-template-columns: 1fr auto; grid-template-rows: auto auto; gap: 12px; }
+  .act-right{ grid-column: 1; }
+  .act-actions{ grid-column: 1; flex-wrap: wrap; }
+}
+
+/* === Contorno dinámico alrededor de la píldora === */
+/* Píldora vertical */
+.pill{
+  width: 56px; height: 260px; border-radius: 28px; background: #fff;
+  border: 3px solid #111; position: relative; overflow: hidden;
+  /* contorno dinámico un poco más oscuro que el relleno */
+  --pill-stroke: color-mix(in oklab, var(--pill-color, #22c55e), black 22%);
+}
+.pill::after{
+  content: "";
+  position: absolute;
+  inset: 3px;                 /* anillo por dentro del borde negro */
+  border-radius: inherit;
+  border: 2px solid var(--pill-stroke);
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: .9;
+  z-index: 2;                 /* encima del relleno */
+}
+
+/* Nuevo pozo interior que recorta el relleno dentro del anillo */
+.pill__well{
+  position: absolute;
+  inset: 3px;                 /* mismo inset que el anillo */
+  border-radius: inherit;
+  overflow: hidden;           /* recorte real del relleno */
+  z-index: 1;
+}
+
+.pill__fill{
+  position: absolute; left: 0; right: 0; bottom: 0; height: 0%;
+  background: var(--pill-color, #22c55e);
+  border-radius: inherit;     /* esquinas suaves cuando esté lleno */
+  transition: height .6s ease, background-color .25s ease;
+}
+
+/* Fallback si no hay color-mix (opcional) */
+@supports not (color: color-mix(in oklab, white, black)){
+  .pill{ --pill-stroke: var(--pill-color, #22c55e); }
+  .pill::after{ opacity: .35; filter: saturate(.9) brightness(.85); }
+}
+
+
+/* Iconos para labels en los choice cards */
+:root{
+  --cc-icon: 50px; /* tamaño base de los iconos de label */
+}
+
+.slide.act-ahorro.tipo-11 .choice-card__line{
+  display: flex;
+  justify-content: space-between;  /* mantiene tu alineado horizontal actual */
+  align-items: center;             /* centra VERTICALMENTE el contenido */
+  padding-block: 12px;             /* más aire dentro de cada línea */
+  margin-block: 10px;              /* separación entre líneas */
+  column-gap: 18px;
+  font-size: 25px;     /* ajusta este valor a tu gusto (ej. 18px, 22px…) */
+  font-weight: 600;    /* opcional: un poco más grueso */
+  line-height: 1.4;    /* un pelín más de altura de línea para que respire */
+}
+
+.slide.act-ahorro.tipo-11 .cc-label{
+  display: inline-flex;
+  align-items: center;             /* centra verticalmente el icono */
+}
+
+.slide.act-ahorro.tipo-11 .cc-icon{
+  width: var(--cc-icon);
+  height: var(--cc-icon);
+  object-fit: contain;
+  display: block;
+}
+
+/* (opcional) agranda un poco las tarjetas */
+.slide.act-ahorro.tipo-11 .choice-card{
+  width: 100%;
+  min-height: 200px;
+  padding: 22px 24px;
+  font-size: 17px;
+  line-height: 1.35;
+  box-sizing: border-box;
+}
+
+/* Contenedor de botones: que no quede pegado abajo y con buen espacio */
+.slide.act-ahorro.tipo-11 .act-actions{
+  margin-block: 14px 26px;  /* ↑ separación superior e inferior */
+  gap: 36px;                /* un pelín más de hueco entre los dos */
+}
+
+/* Botones grandes, centrados y sólo con icono */
+.slide.act-ahorro.tipo-11 .btn-option{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;             /* ↑ ancho botón */
+  height: 96px;             /* ↑ alto botón */
+  padding: 0;               /* sin padding: sólo el icono */
+  gap: 0;                   /* ya no hay texto */
+}
+
+.slide.act-ahorro.tipo-11 .btn-option__icon{
+  width: 56px;              /* tamaño del icono en el botón */
+  height: 56px;
+  object-fit: contain;
+}
+
+/* (opcional) en pantallas medianas reducir un poco */
+@media (max-width: 1100px){
+  .slide.act-ahorro.tipo-11 .btn-option{ width: 200px; height: 88px; }
+  .slide.act-ahorro.tipo-11 .btn-option__icon{ width: 50px; height: 50px; }
+}
+@media (max-width: 820px){
+  .slide.act-ahorro.tipo-11 .btn-option{ width: 180px; height: 80px; }
+  .slide.act-ahorro.tipo-11 .act-actions{ gap: 24px; margin-block-end: 20px; }
+}
+
+/* Hover: que el icono del botón “crezca” un poco */
+.slide.act-ahorro.tipo-11 .btn-option__icon{
+  transition: transform .18s ease;
+  will-change: transform;
+  transform: translateZ(0); /* evita borrosidad en algunos navegadores */
+}
+
+@media (hover: hover){
+  .slide.act-ahorro.tipo-11 .btn-option:hover .btn-option__icon,
+  .slide.act-ahorro.tipo-11 .btn-option:focus-visible .btn-option__icon{
+    transform: scale(1.12); /* cuanto quieres que “crezca” */
+  }
+  .slide.act-ahorro.tipo-11 .btn-option:active .btn-option__icon{
+    transform: scale(1.06); /* pequeño “press” al hacer click */
+  }
+}
+
+
+/* Centrar verticalmente el bloque de imagen en 11/12/13 */
+.slide.act-ahorro.tipo-11 .act-image,
+.slide.act-ahorro.tipo-12 .act-image,
+.slide.act-ahorro.tipo-13 .act-image{
+  align-self: center;      /* ⬅ deja de estirarse y se centra en su celda (fila 2) */
+  justify-self: center;    /* centrado horizontal por si la col 2 es ancha */
+  height: auto;            /* usa la altura de su contenido */
+}
+
+/* Ya centramos el <img> dentro de su contenedor */
+.slide.act-ahorro.tipo-11 .act-image,
+.slide.act-ahorro.tipo-12 .act-image,
+.slide.act-ahorro.tipo-13 .act-image{
+  display: grid;
+  place-items: center;
+}
+
+/* Por si había estilos anteriores que estiraban el contenedor */
+.slide.act-ahorro.tipo-11 .act-image,
+.slide.act-ahorro.tipo-12 .act-image,
+.slide.act-ahorro.tipo-13 .act-image{
+  margin-block: 0;         /* sin empujes extra arriba/abajo */
+}
+
+/* Mantén límites agradables del propio <img> */
+.slide.act-ahorro .act-image img{
+  display: block;
+  max-width: 100%;
+  max-height: 56vh;        /* ajusta si quieres que pueda crecer más */
+}
+
+/* ================= MODERN LOOK (botones + tarjetas) ================= */
+:root{
+  /* fallback global por si no se pasa color desde el push */
+  --ui-color-default: #2a7fff;
+}
+
+/* ambos comparten el mismo “tema” usando --ui-color / --ui-fg */
+.slide.act-ahorro.tipo-11 :is(.choice-card.ui-modern, .btn-option.ui-modern){
+  /* Tema base y derivados (CSS calcula tonos) */
+  --_c: var(--ui-color, var(--ui-color-default));
+  --_c-weak: color-mix(in oklab, var(--_c), white 22%);
+  --_c-strong: color-mix(in oklab, var(--_c), black 15%);
+  --_border: color-mix(in oklab, var(--_c), black 30%);
+  --_ring: color-mix(in oklab, var(--_c), white 15%);
+
+  background: linear-gradient(135deg, var(--_c-weak), var(--_c));
+  color: var(--ui-fg, #0b1b2b);            /* por defecto texto oscuro en tarjetas */
+  border: 1.5px solid var(--_border);
+  border-radius: 18px;
+  box-shadow:
+    0 10px 18px rgba(0,0,0,.15),
+    inset 0 1px 0 color-mix(in oklab, var(--_c), white 45%);
+  transition: transform .16s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+}
+
+/* Botón: mismo look pero con texto/icono claros */
+.slide.act-ahorro.tipo-11 .btn-option.ui-modern{
+  color: var(--ui-fg, #fff);
+  display: inline-grid;
+  place-items: center;
+}
+
+/* Hover/focus */
+@media (hover:hover){
+  .slide.act-ahorro.tipo-11 :is(.choice-card.ui-modern, .btn-option.ui-modern):hover{
+    transform: translateY(-2px) scale(1.01);
+    box-shadow:
+      0 16px 30px rgba(0,0,0,.18),
+      0 0 0 3px color-mix(in oklab, var(--_ring), transparent 75%);
+    border-color: color-mix(in oklab, var(--_border), white 20%);
+  }
+}
+.slide.act-ahorro.tipo-11 :is(.choice-card.ui-modern, .btn-option.ui-modern):focus-visible{
+  outline: none;
+  box-shadow:
+    0 16px 30px rgba(0,0,0,.18),
+    0 0 0 3px color-mix(in oklab, var(--_ring), transparent 55%);
+}
+
+/* Tamaños un poco mayores por defecto */
+.slide.act-ahorro.tipo-11 .choice-card.ui-modern{
+  width: 100%;
+  min-height: 210px;         /* ↑ tarjetas más altas */
+  padding: 22px 24px;
+  box-sizing: border-box;
+}
+.slide.act-ahorro.tipo-11 .btn-option.ui-modern{
+  width: 220px;              /* ya los hiciste grandes; mantengo */
+  height: 96px;
+  padding: 0;
+}
+
+/* Líneas internas: centrado vertical + más separación */
+.slide.act-ahorro.tipo-11 .choice-card.ui-modern .choice-card__line{
+  display: flex;
+  justify-content: space-between; /* mantiene izq/dcha como lo tenías */
+  align-items: center;            /* ✅ centrado VERTICAL real */
+  column-gap: 18px;
+  padding-block: 12px;            /* ↑ aire dentro de cada línea */
+  margin-block: 12px;             /* ↑ separación entre líneas */
+  font-size: 18px;                /* ↑ texto un poco mayor */
+}
+
+/* Iconos dentro de los botones (crecimiento suave al hover, lo dejaste antes) */
+.slide.act-ahorro.tipo-11 .btn-option__icon{
+  width: 56px; height: 56px; object-fit: contain;
+  transition: transform .18s ease;
+}
+@media (hover:hover){
+  .slide.act-ahorro.tipo-11 .btn-option.ui-modern:hover .btn-option__icon{
+    transform: scale(1.1);
+  }
+}
+
+/* Responsive ajustes suaves */
+@media (max-width: 1100px){
+  .slide.act-ahorro.tipo-11 .choice-card.ui-modern{ min-height: 190px; }
+  .slide.act-ahorro.tipo-11 .btn-option.ui-modern{ width: 200px; height: 88px; }
+}
+@media (max-width: 820px){
+  .slide.act-ahorro.tipo-11 .choice-card.ui-modern{ min-height: 180px; }
+  .slide.act-ahorro.tipo-11 .btn-option.ui-modern{ width: 180px; height: 80px; }
+}
+
+/* ====== COINS BADGE: más grande + degradado dorado ====== */
+:root{
+  /* puedes ajustar estos tonos si quieres un dorado más/menos intenso */
+  --coin-g1: #fff6c1;  /* luz */
+  --coin-g2: #ffd86f;  /* medio */
+  --coin-g3: #e5b93b;  /* dorado */
+  --coin-g4: #ffc95a;  /* medio-luz */
+  --coin-g5: #fff2a1;  /* luz final */
+}
+
+.coins-badge{
+  min-width: 150px;                /* ↑ ancho mínimo */
+  padding: 10px 16px;              /* ↑ relleno */
+  gap: 12px;                       /* ↑ espacio entre número e icono */
+  border-radius: 20px;             /* esquinas más suaves */
+  border: 3px solid color-mix(in oklab, var(--coin-g3), black 35%);
+  background: linear-gradient(
+    135deg,
+    var(--coin-g1) 0%,
+    var(--coin-g2) 28%,
+    var(--coin-g3) 55%,
+    var(--coin-g4) 75%,
+    var(--coin-g5) 100%
+  );
+  box-shadow:
+    0 10px 18px rgba(0,0,0,.15),
+    inset 0 1px 0 color-mix(in oklab, var(--coin-g1), white 40%);
+  color: #2b1a00;                  /* buen contraste sobre dorado */
+  left: 25px;
+}
+
+/* número más grande y con buenos legibles */
+.coins-badge__num{
+  font-size: 28px;                 /* ↑ tamaño del texto */
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .2px;
+}
+
+/* icono un poco más grande también */
+.coins-badge__icon{
+  width: 36px;                     /* ↑ tamaño icono */
+  height: 36px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.25));
+}
+
+/* (si usas el z-index que pusimos, se mantiene) */
+.slide.act-ahorro.tipo-11 .act-left .coins-badge,
+.slide.act-ahorro.tipo-12 .act-left .coins-badge,
+.slide.act-ahorro.tipo-13 .act-left .coins-badge{
+  z-index: 5;
+}
+
+/* Pantalla 1 Actividad 1 Deuda */
+
+
+/* Contenedor principal */
+.tpl--actividad-deuda {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* HEADER: texto centrado grande en banner con borde */
+.deuda-header {
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-top: 30px;
+}
+
+.evento-banner {
+  max-width: 980px;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(1.2rem, 2.2vw, 1.8rem); /* más grande y responsivo */
+  font-weight: 700;
+  padding: 0.9rem 1.2rem;
+  border: 2px solid #1e293b;              /* borde visible */
+  border-radius: 12px;
+  background: #b5fdffbb;                        /* fondo claro dentro del borde */
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);  /* sutil relieve */
+}
+
+/* CUERPO en 3 columnas con separación */
+.deuda-body {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Columna izquierda: separada del borde */
+.deuda-col.left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-left: 5rem;       /* mueve los botones hacia la derecha */
+}
+
+/* Saldo más abajo y con aspecto de badge */
+.saldo-box {
+  align-self: flex-start;
+  border: 2px solid #1e293b;
+  background: linear-gradient(#fff9c4, #ffecb3);
+  border-radius: 12px;
+  padding: 1rem 1rem;
+  font-weight: 700;
+}
+
+/* Columna central (imagen) */
+.deuda-col.center {
+  flex: 0.95;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.evento-imagen {
+  max-width: 580px;
+  max-height: 360px;
+  width: 100%;
+  object-fit: contain;
+}
+
+/* Columna derecha: tabla */
+.deuda-col.right {
+  width: 320px;
+  align-self: flex;      /* asegura que esté arriba */
+  margin-top: -6px;
+  margin-left: -30px        /* acércala a la imagen */
+}
+
+/* Tabla con bordes exteriores visibles */
+.tabla-prestamos {
+  width: 100%;
+  border-collapse: collapse;          /* mantiene bordes unidos */
+  border: 2px solid #1e293b;          /* borde exterior de toda la tabla */
+  border-radius: 10px;                /* opcional si usas wrapper con overflow */
+  overflow: hidden;
+  background: #fff;
+  font-size: 0.95rem;
+}
+
+.tabla-prestamos th,
+.tabla-prestamos td {
+  border: 1px solid #cbd5e1;          /* bordes internos */
+  padding: 0.45rem 0.5rem;
+  text-align: center;
+}
+
+.tabla-prestamos thead th {
+  background: #f1f5f9;
+  font-weight: 700;
+}
+
+/* añade en style.css */
+.tabla-prestamos tbody tr { cursor: pointer; }
+.tabla-prestamos tbody tr:hover { background:#f8fafc; }
+
+/* Contenedor de tabla con botón de info en la esquina */
+.tabla-wrap{ position: static; }
+.loan-info-btn{
+  position: static;
+  width: 22px; height: 22px;
+  margin-left: 6px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  background: #fff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0,0,0,.08);
+  cursor: pointer;
+  vertical-align: middle;
+}
+.loan-info-btn:hover{ filter: brightness(1.03); }
+.loan-info-btn:focus-visible{ outline: 3px solid rgba(59,130,246,.35); outline-offset: 2px; }
+
+
+/* Hint debajo de la tabla de préstamos */
+.loan-hint{
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  color: #334155;
+}
+
+/* Pon el texto + botón en línea y bien alineados */
+.tpl--actividad-deuda .loan-hint{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Forzar al botón a ser inline, sin absolute */
+.tpl--actividad-deuda .loan-info-btn{
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  margin-left: 6px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  background: #fff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0,0,0,.08);
+  vertical-align: middle;
+}
+
+
+/* Refuerzo visual de filas clicables */
+.tabla-prestamos tbody tr.row-clickable { cursor: pointer; }
+.tabla-prestamos tbody tr.row-clickable:hover { background: #f8fafc; }
+
+/* Modal genérico interno de la aplicación */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9990;
+}
+
+.modal {
+  width: min(420px, 92vw);
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  padding: 20px 22px;
+  font-family: inherit;
+}
+
+.modal-title {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal-subtitle {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: #555;
+}
+
+.modal-input-row {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.modal-input-row input[type="number"] {
+  width: 120px;
+  padding: 8px 10px;
+  border: 1px solid #cfd8dc;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: right;
+}
+
+.modal-error {
+  color: #c62828;
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+/* Botones primario y secundario */
+/* Base botón decisión */
+.btn-option {
+  border: none;
+  border-radius: 50px;               /* redondeado completo */
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 14px 32px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-option:hover{ filter: brightness(.98); box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+.btn-option:active{ transform: translateY(1px); }
+.btn-option[disabled]{ opacity:.55; cursor:not-allowed; box-shadow:none; }
+
+/* TEXTURAS SUTILES (visibles en B/N; no molestan en color) */
+.btn-option::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius: inherit;
+  pointer-events:none;
+  opacity:.06; /* muy tenue */
+  background-size: 8px 8px;
+  mix-blend-mode: multiply;
+}
+.btn-option{ position: relative; }
+
+/* Variantes semánticas sin “verde/rojo” */
+.btn-pay{
+  --btn-bg: #2BB5C0;        
+  --btn-fg: #ffffff;
+}
+
+.btn-loan{
+  --btn-bg: #F2A541;          
+  --btn-fg: #ffffff;
+}
+
+.btn-decline{
+  --btn-bg: #8A63D2;       
+  --btn-fg: #ffffff;
+}
+/* Foco accesible */
+.btn-option:focus-visible{
+  outline: 3px solid rgba(59,130,246,.6); /* azul accesible */
+  outline-offset: 2px;
+}
+
+
+
+/* Chips de estado y badges */
+.debt-chip { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; }
+.debt-chip.ok { background:#e8f5e9; color:#1b5e20; }
+.debt-chip.blocked { background:#ffebee; color:#b71c1c; }
+.weeks-badge { padding:4px 8px; border-radius:999px; font-size:12px; font-weight:700; }
+.weeks-badge.safe { background:#e3f2fd; color:#0d47a1; }
+.weeks-badge.warn { background:#fff8e1; color:#e65100; }
+.weeks-badge.due { background:#ffebee; color:#b71c1c; }
+.table-loans td.badge-cell { display:flex; align-items:center; gap:8px; }
+.btn-hint { font-size:12px; color:#666; margin-top:6px; min-height:16px; }
+
+/* ===== FX screen layout (actividad-deuda-3) ===== */
+.fx-screen .fx-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr 420px;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "left center right"
+    "bottom bottom bottom";
+  gap: 24px;
+  align-items: start;
+  min-height: 60vh;
+  padding: 8px 16px 16px;
+}
+
+.fx-screen .saldo-anim-card {
+  grid-area: left;
+  background: #fff;
+  border: 2px solid #eef2f7;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+.fx-screen .saldo-anim-title { font-weight: 700; font-size: 14px; color: #334155; margin-bottom: 8px; }
+.fx-screen .saldo-anim-value { font-weight: 800; font-size: 28px; letter-spacing: 0.4px; }
+
+.fx-screen .fx-center { grid-area: center; display: flex; justify-content: center; align-items: center; }
+.fx-screen .fx-image  { max-width: 100%; height: auto; display: block; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+
+.fx-screen .fx-right { grid-area: right; }
+.fx-screen .tabla-prestamos {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  border: 2px solid #eef2f7; border-radius: 12px; overflow: hidden;
+}
+.fx-screen .loan-hint { margin-top: 8px; font-size: 13px; color: #475569; }
+
+/* barra inferior */
+.fx-screen .fx-bottom { grid-area: bottom; display: flex; justify-content: flex-end; align-items: center; padding-top: 6px; }
+.fx-screen .btn-continue { min-width: 180px; }
+
+/* UX fila clicable */
+.tabla-prestamos tbody tr.row-clickable { cursor: pointer; }
+.tabla-prestamos tbody tr.row-clickable:hover { background: #f8fafc; }
+
+
+
+/* Objetivo bajo el contador de monedas — colocado en la FILA 1 de .act-left */
+html[data-page="clase"] .slide.act-ahorro .act-left .goal-target{
+  display: flex; align-items: center; gap: .5rem;
+
+  /* clave: colócalo en la MISMA fila 1 que las monedas */
+  grid-row: 1;                /* ← fila superior (auto) */
+  justify-self: start;        /* ← no lo centres (la grid de .act-left centra por defecto) */
+  align-self: start;
+
+  /* alinear con el badge de monedas */
+  margin-left: 30px;          /* ← mismo desplazamiento que .coins-badge */
+  margin-top: 6px;            /* ↓ un pelín debajo del badge */
+
+  /* por encima de la píldora (z=2) y del icono (z=3), pero debajo de las monedas (z=5) */
+  position: relative;
+  z-index: 4;
+
+  /* estilo visual */
+  opacity: .6;
+  font-weight: 600;
+  font-size: .95rem;
+}
+
+html[data-page="clase"] .slide.act-ahorro .act-left .goal-target__icon{
+  width: 18px; height: 18px; object-fit: contain;
+  transform: translateY(1px);
+}
+
+
+
+/* === Wrapper para apilar monedas + objetivo (misma esquina) === */
+.slide.act-ahorro.tipo-11 .act-left .coins-wrap,
+.slide.act-ahorro.tipo-12 .act-left .coins-wrap,
+.slide.act-ahorro.tipo-13 .act-left .coins-wrap,
+.slide.act-ahorro.tipo-11 .act-left .coins-wrap { /* 1-4 usa tipo-11 */
+  align-self: start;
+  margin-top: 20px;
+  margin-left: 30px;
+  position: relative;
+  z-index: 5;            /* por encima de la píldora */
+  display: grid;
+  row-gap: 6px;          /* separación entre badge y “Objetivo” */
+}
+
+/* Dentro del wrapper, el badge NO necesita márgenes ni desplazamiento */
+.slide.act-ahorro .act-left .coins-wrap .coins-badge{
+  margin: 0; left: 0;    /* anula margin-left:30px y left:25px heredados */
+}
+
+/* Estilo del “Objetivo: X 🪙” cuando va bajo el badge (en el wrapper) */
+.slide.act-ahorro .act-left .coins-wrap .goal-target{
+  display: inline-flex; align-items: center; gap: .5rem;
+  opacity: .6; font-weight: 600; font-size: .95rem;
+}
+.slide.act-ahorro .act-left .coins-wrap .goal-target__icon{
+  width: 18px; height: 18px; object-fit: contain; transform: translateY(1px);
+}
+
+
+/* ====== SLIDE: término intro (60/40 + cristal + dorado) ====== */
+.slide.tpl--termino-intro{
+  --gold-1:#fff7e6; --gold-2:#ffe6a3; --gold-3:#fdd36a; --gold-4:#f2b53a;
+  background:
+    radial-gradient(900px 650px at 14% 78%, rgb(255 219 128 / 20%), transparent 60%),
+    radial-gradient(900px 650px at 86% 18%, rgb(255 200 64 / 18%), transparent 60%),
+    linear-gradient(135deg, var(--gold-1) 0%, var(--gold-2) 25%, var(--gold-3) 55%, var(--gold-4) 100%) !important;
+  display: grid;
+  place-items: stretch;
+  padding: clamp(16px, 2.6vw, 24px);
+  min-height: 100vh;
+}
+
+/* Grid 60/40 */
+.ti-grid{
+  position: relative;
+  display: grid;
+  grid-template-columns: 3fr 2fr;   /* 60% / 40% */
+  gap: clamp(14px, 2.2vw, 20px);
+  height: 100%;
+}
+
+/* Columna izquierda: 70% imagen / 30% diálogo */
+.ti-left{
+  display: grid;
+  grid-template-rows: 7fr 3fr;
+  gap: clamp(10px, 1.6vw, 14px);
+  min-width: 0; min-height: 0;
+  padding-left: clamp(16px, 2.6vw, 28px);
+  padding-top: 3vh;
+}
+
+/* Contenedor de imagen */
+.ti-image{
+  margin: 0;
+  padding: clamp(6px, 1vw, 10px);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 55%);
+  box-shadow: 0 16px 28px rgb(16 24 40 / 14%);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+/* La imagen SIEMPRE entra completa (sin recortes) */
+.ti-image__img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+.ti-dialog{
+  display: grid; place-items: center; min-width: 0; min-height: 0;
+}
+.ti-dialog .comic-bubble{ width: 100%; max-width: 1000px; }
+
+/* Columna derecha */
+.ti-right{ display: grid; place-items: center; }
+
+/* Card tipo vidrio */
+.term-card{
+  position: relative;
+  width: min(92%, 520px);
+  height: min(70vh, 520px);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.65);
+  backdrop-filter: blur(14px) saturate(140%) brightness(1.05);
+  -webkit-backdrop-filter: blur(14px) saturate(140%) brightness(1.05);
+  box-shadow: 0 24px 48px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.60);
+  overflow: hidden;
+  isolation: isolate;
+  perspective: 1200px;     /* giro 3D */
+  will-change: transform;
+  --gold-grad: linear-gradient(180deg, #ffd25a 0%, #ffc233 55%, #d49a08 100%);
+}
+.term-card{ z-index: 2; }
+
+/* Flip 3D */
+.term-card__inner{
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .5s ease;
+}
+.term-card.is-flipped .term-card__inner{ transform: rotateY(180deg); }
+
+/* Cara base (NO centramos aquí para no heredar en la trasera) */
+.term-card__face{
+  position: absolute; inset: 0;
+  display: grid;
+  padding: clamp(16px, 2.2vw, 22px);
+  backface-visibility: hidden;
+}
+
+/* Frontal centrado */
+.term-card__front{ gap: 16px; place-items: center; }
+
+/* Trasera: grid en 3 filas (título / texto / botones) */
+.term-card__back{
+  transform: rotateY(180deg);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: stretch;              /* anula centrado heredado */
+  justify-items: stretch;
+  padding: 16px 20px 20px 20px;
+  gap: 8px;
+}
+
+/* “Término Especial” (frontal) */
+.term-word{
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: .02em;
+  line-height: 1;
+  text-align: center;
+  font-size: clamp(36px, 6.5vw, 78px);
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #1a1400; /* fallback */
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 12px rgba(0,0,0,.10);
+}
+
+/* Término real en la trasera (arriba-izquierda) */
+.term-badge{
+  justify-self: start;
+  align-self: start;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(22px, 3vw, 34px);
+  letter-spacing: .2px;
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #1a1400; /* fallback */
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 1px 8px rgb(0 0 0 / 10%);
+  margin-left: 4px;
+}
+
+/* Definición: justificada y centrada verticalmente en su fila */
+.term-def{
+  margin: 0;
+  padding: 6px 6px 0 6px;
+  font-weight: 700;
+  font-size: clamp(16px, 2.2vw, 22px);
+  color: #0f172a;
+  text-align: justify;
+  line-height: 1.4;
+  align-self: center;         /* ocupa el centro de la fila 2 (que es 1fr) */
+  justify-self: stretch;
+}
+
+/* Botonería */
+.ti-btn{
+  appearance: none; border: 0; cursor: pointer;
+  padding: 10px 14px; border-radius: 14px; font-weight: 900; letter-spacing: .2px;
+  box-shadow: 0 10px 20px rgb(0 0 0 / 12%), inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+.ti-btn--ghost{
+  background: #ffffff; color: #0f172a; border: 1px solid rgb(16 24 40 / 10%);
+}
+.ti-btn--gold{
+  background: linear-gradient(180deg, #ffef99 0%, #ffcb3b 100%);
+  color: #6b4e00;
+}
+
+/* “Ver término” abajo-dcha en el frontal */
+.ti-btn--ask{ position: absolute; right: 16px; bottom: 16px; }
+
+/* Acciones (trasera) pegadas abajo-derecha */
+.ti-back-actions{
+  justify-self: end;
+  align-self: end;
+  display: flex;
+  gap: 10px;
+  position: static;  /* aseguramos que NO está en absolute */
+  margin: 0;
+}
+
+/* “Continuar” (se muestra vía JS al girar) */
+.ti-continue{ display: none; }
+
+/* Responsive */
+@media (max-width: 980px){
+  .ti-grid{ grid-template-columns: 1fr; grid-auto-rows: auto auto; }
+  .term-card{ width: 100%; height: 56vh; }
+}
+
+
+/* Barra base y umbral (más visible) */
+.impatience-bar{
+  position:relative;height:14px;border-radius:8px;overflow:hidden;
+  background:#e0e0e0;box-shadow:inset 0 1px 3px rgba(0,0,0,.2);
+  width:100%;
+}
+.impatience-fill{
+  height:100%;
+  /* VERDE por defecto */
+  background:linear-gradient(90deg,#43a047,#2e7d32);
+  width:0%;
+  transition:background-color .15s linear;
+}
+/* ROJO cuando supera el umbral */
+.impatience-fill.danger{
+  background:linear-gradient(90deg,#e53935,#b71c1c);
+}
+/* Raya de umbral más gruesa y visible + etiqueta */
+.impatience-cap{
+  position:absolute;top:0;bottom:0;width:3px;
+  background:#111827; opacity:.4;
+}
+.impatience-cap::after{
+  content:'UMBRAL'; position:absolute; top:-18px; left:50%;
+  transform:translateX(-50%); font-size:10px; font-weight:700;
+  color:#11182799; letter-spacing:.4px;
+}
+
+
+
+html .logout-integrated{
+  position: fixed;
+  top: 16px; right: 24px;
+  background: transparent;
+  color: #374151; /* gris oscuro */
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+html .logout-integrated:hover{
+  text-decoration: underline;
+  color: #111827;
+}
+
+
+
+/* === LOGIN (solo en esta página) === */
+
+/* ─── Login: variables (igual que ya tienes) ─── */
+html[data-page="login"]{
+  --login-ink: #0f172a;
+  --login-muted: #5b6678;
+  --login-accent: #2563eb;
+  --login-bg-soft: #fffeef;   /* dorado casi blanco */
+  --login-card-bg: #ffffff;
+  --login-border: rgba(2,6,23,.10);
+  --login-shadow: 0 12px 30px rgba(2,6,23,.12);
+}
+
+/* Fondo */
+html[data-page="login"] body{ background: var(--login-bg-soft); }
+
+/* ====== PANTALLA DIVIDIDA ====== */
+/* La sección es una grid de 2 columnas: izquierda fija para el form, derecha flexible. */
+html[data-page="login"] .section--login{
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* 2 columnas iguales */
+}
+
+/* El bloque del formulario ocupa toda la columna izquierda */
+html[data-page="login"] .login-card{
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(40px, 8vmin, 80px);   /* padding amplio */
+  background: var(--login-card-bg);
+  box-shadow: none;       /* quita sombra, ya no es tarjeta flotante */
+  border-radius: 0;       /* ocupa toda la columna */
+  width: 100%;
+  height: 100%;
+}
+
+/* Adamis como gran marca de agua en la COLUMNA DERECHA (2ª mitad de la pantalla) */
+html[data-page="login"] .section--login::after{
+  content: "";
+  position: absolute;
+  left: 50%;                 /* empieza justo donde termina la columna izquierda */
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-image: url("./assets/images/adamis_login.png"); /* ruta relativa a style.css */
+  background-repeat: no-repeat;
+  background-size: min(95%, 1100px); /* grande pero con margen */
+  background-position: 90% center;   /* mueve la imagen dentro del panel derecho */
+  opacity: 0.30;                     /* traslúcido; ajusta 0.05–0.12 a gusto */
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Tipografía e inputs (como ya tenías) */
+html[data-page="login"] .login-title{
+  font-size: clamp(28px, 5vmin, 40px);
+  font-weight: 800;
+  text-align: left;
+  margin-bottom: 32px;
+}
+
+html[data-page="login"] .login-form {
+  display: grid;
+  gap: 24px;              /* antes 16px, ahora más espacio entre campos */
+  max-width: 420px;       /* controla el ancho del formulario */
+}
+html[data-page="login"] .field{ display: grid; gap: 8px; }
+html[data-page="login"] .field label{ color: var(--login-muted); font-weight: 600; }
+
+html[data-page="login"] .login-input{
+  appearance: none;
+  width: 100%;
+  font: inherit;
+  color: var(--login-ink);
+  background: #fff;
+  border: 4px solid var(--login-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  outline: none;
+}
+html[data-page="login"] .login-input::placeholder{ color: #9aa3b2; }
+html[data-page="login"] .login-input:focus{
+  border-color: var(--login-accent);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+
+html[data-page="login"] .actions {
+  display: flex;          /* en vez de grid */
+  justify-content: center; /* alinea con el texto a la izquierda */
+  margin-top: 8px;
+}
+
+
+html[data-page="login"] .btn--coin{ 
+  background: #f6d97a; /* dorado claro, suave */
+  color:#3b2b00; 
+  font-weight:900; 
+  letter-spacing:.2px;
+  padding:14px 32px; 
+  border-radius:18px; 
+  border:1px solid #f0c95c;
+  box-shadow:0 10px 24px rgba(246, 217, 122, .45),
+             inset 0 1px 0 rgba(255, 255, 255, .6);
+  transition: filter .2s ease, box-shadow .2s ease;
+}
+
+html[data-page="login"] .btn--coin:hover{ 
+  filter: brightness(1.05) saturate(1.05);
+  box-shadow:0 12px 28px rgba(246, 217, 122, .55),
+             inset 0 1px 0 rgba(255, 255, 255, .7);
+}
+
+html[data-page="login"] .btn--coin:focus-visible{ 
+  outline:3px solid rgba(246, 217, 122,.6); 
+  outline-offset:3px; 
+}
+
+/* ===== Logout modal (estilo propio) ===== */
+.logout-modal {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(15,23,42,.35); backdrop-filter: blur(2px);
+  display: grid; place-items: center;
+  opacity: 0; visibility: hidden; transition: opacity .18s ease, visibility .18s ease;
+}
+.logout-modal.is-open { opacity: 1; visibility: visible; }
+
+.logout-dialog {
+  width: min(92vw, 480px);
+  background: #fff; color: #0f172a;
+  border: 1px solid rgba(2,6,23,.08);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(2,6,23,.18), 0 6px 16px rgba(2,6,23,.08);
+  padding: 20px 20px 16px;
+}
+
+.logout-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.logout-title { font-size: 1.25rem; font-weight: 800; margin: 0; }
+.logout-close {
+  appearance: none; border: 0; background: transparent; cursor: pointer;
+  font-size: 1.2rem; line-height: 1; padding: 6px; border-radius: 10px;
+}
+.logout-close:hover { background: rgba(2,6,23,.06); }
+
+.logout-body { margin: 10px 0 16px; color: #475569; }
+
+.logout-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* Botones */
+.btn { cursor: pointer; border: 0; border-radius: 12px; padding: 12px 22px; font-weight: 800; }
+
+.btn-cancel {
+  background: #fff; color: #0f172a; border: 2px solid rgba(15,23,42,.15);
+}
+.btn-cancel:hover { background: #f9fafb; }
+
+/* “Cerrar sesión” (azul coherente con la app) */
+.btn-primary {
+  background: #2563eb; color: #fff; box-shadow: 0 10px 24px rgba(37,99,235,.22);
+}
+.btn-primary:hover { filter: brightness(1.06); }
+
+/* Si prefieres dorado “moneda” para el primario, cambia .btn-primary por: */
+html[data-page="login"] .btn-coin,
+.btn-coin {
+  background: #f6d97a; color: #3b2b00; border: 1px solid #f0c95c;
+  box-shadow: 0 10px 24px rgba(246,217,122,.45), inset 0 1px 0 rgba(255,255,255,.6);
+}
+.btn-coin:hover { filter: brightness(1.05) saturate(1.05); }
+
+/* Ocultar el botón fijo en login (por si no lo tenías ya) */
+html[data-page="login"] .logout-integrated { display: none !important; }
+
+
+
+
+/* Oculta logout en login si lo tienes global */
+html[data-page="login"] .logout-integrated{ display: none !important; }
+
+/* Responsive: en móvil vuelve a pila, centrado y la imagen al fondo abajo-dcha */
+@media (max-width: 900px){
+  html[data-page="login"] .section--login{
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+  html[data-page="login"] .section--login::after{
+    left: auto; right: -4vw; top: auto; bottom: -6vw;
+    width: clamp(300px, 80vw, 600px);
+    height: clamp(300px, 80vw, 600px);
+    background-size: contain;
+    background-position: right bottom;
+  }
+}
+
+/* Botones internos del modal de logout */
+.logout-actions .btn {
+  min-width: 120px;          /* asegura que tienen ancho suficiente */
+  padding: 12px 20px;        /* espacio interno cómodo */
+  font-size: 0.95rem;        /* tamaño equilibrado */
+  line-height: 1.3;          /* altura de línea correcta */
+  text-align: center;        /* centra texto horizontal */
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;   /* centra texto vertical/horizontal */
+  border-radius: 12px;
+}
+
+/* Botón cancelar */
+.logout-actions .btn-cancel {
+  background: #fff; 
+  color: #0f172a; 
+  border: 2px solid rgba(15,23,42,.15);
+}
+.logout-actions .btn-cancel:hover { 
+  background: #f9fafb; 
+}
+
+/* Botón confirmar (azul por defecto) */
+.logout-actions .btn-primary {
+  background: #2563eb; 
+  color: #fff; 
+  border: none;
+  box-shadow: 0 6px 16px rgba(37,99,235,.25);
+}
+.logout-actions .btn-primary:hover { 
+  filter: brightness(1.06); 
+}
+
+
+/* ===================== PALABRA DEL DÍA (tipo Wordle) ===================== */
+.wdl-wrap{ max-width: 980px; margin: 0 auto; display: grid; gap: clamp(16px,2.6vw,24px); }
+.wdl-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.wdl-title{
+  margin:0; font-weight:900; letter-spacing:.2px;
+  font-size: clamp(22px, 3vw, 36px);
+}
+
+/* Tablero */
+.wdl-board{
+  --tile: clamp(44px, 7.2vw, 64px);
+  display: grid; gap: clamp(8px,1.6vw,12px);
+}
+.wdl-row{ display: grid; grid-template-columns: repeat(var(--cols, 5), var(--tile)); gap: clamp(8px,1.6vw,12px); justify-content:center; }
+/* Casilla visual para los espacios (no se escribe en ellas) */
+.wdl-tile.wdl-tile--space{
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+.wdl-tile{
+  width: var(--tile); height: var(--tile);
+  display: grid; place-items: center;
+  border-radius: 10px; font-weight: 800; font-size: calc(var(--tile) * 0.46);
+  text-transform: uppercase; background: #fff;
+  border: 2px solid rgb(16 24 40 / 12%);
+  box-shadow: 0 8px 18px rgb(0 0 0 / 10%), inset 0 1px 0 rgb(255 255 255 / 55%);
+  color: var(--text);
+  user-select: none;
+}
+.wdl-tile[data-state="correct"]{
+  background: linear-gradient(180deg, var(--c3) 0%, color-mix(in srgb, var(--c3) 85%, #000 0%));
+  color:#fff; border-color: color-mix(in srgb, var(--c3), #000 25%);
+}
+.wdl-tile[data-state="present"]{
+  background: linear-gradient(180deg, var(--yl2) 0%, color-mix(in srgb, var(--yl2) 85%, #000 0%));
+  color:#6b4e00; border-color: color-mix(in srgb, var(--yl2), #000 25%);
+}
+.wdl-tile[data-state="absent"]{
+  background: #e5e7eb; color:#334155; border-color: #cbd5e1;
+}
+
+/* Teclado */
+.wdl-kb{ display:grid; gap: 8px; justify-content:center; }
+.wdl-kb-row{ display:grid; grid-auto-flow: column; gap:6px; }
+.wdl-kb-spacer{ width: 12px; }
+.wdl-key{
+  appearance:none; border:0; cursor:pointer;
+  min-width: 36px; height: 48px; padding: 0 10px;
+  border-radius: 10px; font-weight: 800; letter-spacing:.2px;
+  background:#fff; color:var(--text);
+  border: 1px solid rgb(16 24 40 / 10%);
+  box-shadow: 0 8px 18px rgb(0 0 0 / 10%), inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+.wdl-key:active{ transform: translateY(1px); }
+.wdl-key--wide{ min-width: 64px; }
+.wdl-key[data-state="correct"]{
+  background: linear-gradient(180deg, var(--c3) 0%, color-mix(in srgb, var(--c3) 85%, #000 0%));
+  color:#fff; border-color: color-mix(in srgb, var(--c3), #000 25%);
+}
+.wdl-key[data-state="present"]{
+  background: linear-gradient(180deg, var(--yl2) 0%, color-mix(in srgb, var(--yl2) 85%, #000 0%));
+  color:#6b4e00; border-color: color-mix(in srgb, var(--yl2), #000 25%);
+}
+.wdl-key[data-state="absent"]{
+  background:#e5e7eb; color:#334155; border-color:#cbd5e1;
+}
+
+/* Toasts */
+.wdl-toast{
+  position: fixed; left: 50%; top: 14px; transform: translateX(-50%) translateY(-8px);
+  padding: 10px 14px; border-radius: 14px;
+  background: rgb(255 255 255 / 90%); color:#111;
+  border: 1px solid rgb(16 24 40 / 12%);
+  box-shadow: 0 10px 24px rgb(0 0 0 / 14%), inset 0 1px 0 rgb(255 255 255 / 60%);
+  font-weight: 800; opacity: 0; pointer-events: none; transition: opacity .18s ease, transform .18s ease;
+}
+.wdl-toast.is-visible{ opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Responsive: tablero más compacto en móvil estrecho */
+@media (max-width: 420px){
+  .wdl-board{ --tile: 46px; }
+}
+
+
+/* ===== Modal Palabra del día ===== */
+.wdl-modal[hidden]{ display:none; }
+.wdl-modal{
+  position: fixed; inset: 0; z-index: 1000;
+  display: grid; place-items: center;
+}
+.wdl-modal__backdrop{
+  position: absolute; inset: 0;
+  background: rgba(16,24,40,.45);
+  backdrop-filter: blur(2px);
+}
+.wdl-modal__dialog{
+  position: relative;
+  width: min(560px, 92vw);
+  background: #fff;
+  color: var(--text, #111);
+  border: 1px solid rgba(16,24,40,.12);
+  border-radius: 18px;
+  box-shadow: 0 24px 56px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.6);
+  overflow: hidden;
+}
+
+/* Encabezado y cuerpo */
+.wdl-modal__header{
+  padding: 16px 18px;
+  background: linear-gradient(180deg, var(--c3, #38bdf8) 0%, color-mix(in srgb, var(--c3, #38bdf8) 85%, #000 0%));
+  color: #fff; font-weight: 900;
+}
+.wdl-modal__title{ margin:0; font-size: clamp(18px, 2.2vw, 22px); letter-spacing:.2px; }
+
+.wdl-modal__body{ padding: 18px; }
+.wdl-modal__text{
+  margin: 0; line-height: 1.5;
+  font-size: clamp(14px, 1.9vw, 16px);
+}
+
+/* Footer + botón */
+.wdl-modal__footer{
+  display: flex; justify-content: flex-end; gap: 10px;
+  padding: 14px 18px 18px;
+}
+.wdl-btn{
+  appearance: none; border: 1px solid rgba(16,24,40,.12);
+  background: #fff;
+  padding: 12px 18px; border-radius: 12px;
+  font-weight: 800; letter-spacing:.2px; cursor: pointer;
+  box-shadow: 0 10px 18px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.55);
+}
+.wdl-btn:hover{ filter: saturate(1.05); transform: translateY(-1px); }
+.wdl-btn:active{ transform: translateY(0); }
+
+/* ==== Palabra del día — Modal mejorado (look top) ==== */
+.wdl-modal.is-win .wdl-modal__header{
+  background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+}
+.wdl-modal.is-lose .wdl-modal__header{
+  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
+}
+
+.wdl-result{
+  text-align: center;
+  display: grid;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.wdl-result-badge{
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  background: rgba(16,24,40,.08);
+}
+.wdl-modal.is-win .wdl-result-badge{
+  background: color-mix(in srgb, #22c55e 30%, #ffffff 70%);
+  color: #065f46;
+}
+.wdl-modal.is-lose .wdl-result-badge{
+  background: color-mix(in srgb, #ef4444 30%, #ffffff 70%);
+  color: #7f1d1d;
+}
+
+.wdl-result-word{
+  margin: 0;
+  font-weight: 900;
+  font-size: clamp(28px, 4.6vw, 56px);
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #ffd23f 0%, #ffb300 48%, #b7791f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.wdl-result-def{
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+/* === PALABRA DEL DÍA · flip por letra === */
+.wdl-row{ perspective: 900px; }                /* profundidad 3D para el flip */
+.wdl-tile{
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+.wdl-tile.wdl-flip{ animation: wdl-flip .28s ease forwards; } /* duración del giro */
+@keyframes wdl-flip{
+  0%   { transform: rotateX(0deg); }
+  50%  { transform: rotateX(-90deg); }  /* mitad: se “oculta”, aplicamos color por JS */
+  100% { transform: rotateX(0deg); }
+}
+
+/* Mientras se revelan las letras, desactiva el teclado en pantalla */
+.wdl-kb.is-busy{
+  pointer-events: none;
+  opacity: .55;
+  filter: grayscale(.15);
+}
+
+/* === Palabra del día: que el enlace no parezca enlace ni quede "presionado" === */
+.activities-grid a.activity-card{
+  color: inherit;                 /* sin morado de visited */
+  text-decoration: none;          /* (por si algún reset falla) */
+  -webkit-tap-highlight-color: transparent; /* sin flash gris en móvil */
+}
+
+/* anula el look de "focus/active" SOLO para la card-enlace */
+.activities-grid a.activity-card:focus,
+.activities-grid a.activity-card:focus-visible,
+.activities-grid a.activity-card:active{
+  outline: none;
+  transform: none;                /* quita el "salto" visual */
+  filter: none;
+  /* sombra/base igual que el estado normal de .activity-card */
+  box-shadow: 0 12px 24px rgb(0 0 0 / 12%), inset 0 1px 0 rgb(255 255 255 / 65%);
+}
+
+
+/* ===================== FRASE DEL DÍA (Snake) ===================== */
+.snake-wrap{ max-width: 980px; margin: 0 auto; display: grid; gap: clamp(16px,2.6vw,24px); }
+.snake-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.snake-card{
+  background: rgb(255 255 255 / 60%);
+  border: 1px solid rgb(16 24 40 / 12%);
+  border-radius: 20px;
+  box-shadow: 0 16px 32px rgb(0 0 0 / 16%), inset 0 1px 0 rgb(255 255 255 / 60%);
+  padding: clamp(12px, 2vw, 18px);
+  display: grid;
+  gap: clamp(12px, 2vw, 16px);
+}
+
+#snake-canvas{
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 55%), 0 10px 22px rgb(0 0 0 / 10%);
+}
+
+/* Pastilla con el progreso de la frase */
+.phrase-pill{
+  display: flex; flex-wrap: wrap; gap: 6px 8px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 80%);
+  border: 1px solid rgb(16 24 40 / 10%);
+  box-shadow: 0 8px 18px rgb(0 0 0 / 10%), inset 0 1px 0 rgb(255 255 255 / 55%);
+  min-height: 44px;
+}
+
+.ph-ch{
+  font-weight: 900;
+  letter-spacing: .2px;
+  font-size: clamp(14px, 2vw, 18px);
+  line-height: 1;
+}
+.ph-ch--on{
+  background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ph-ch--off{
+  color: #9ca3af;
+  border-bottom: 2px solid #e5e7eb;
+  display: inline-block;
+  transform: translateY(2px);
+}
+.ph-space{ width: 10px; display: inline-block; }
+.ph-punct{ color: #6b7280; }
+
+.snake-cta{ display:flex; justify-content:flex-end; }
+.snake-help{ margin: 0; opacity: .8; font-weight: 700; }
+
+/* Ajuste responsive */
+@media (max-width: 480px){
+  .phrase-pill{ border-radius: 14px; }
+}
+
+/* ==== Modal resultado: variantes ganar/perder (para snake también) ==== */
+.wdl-modal.is-win .wdl-modal__header{
+  background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+}
+.wdl-modal.is-lose .wdl-modal__header{
+  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
+}
+
+/* === Mejora estética Snake (solo estilos visuales) === */
+.snake-card{
+  background: rgb(255 255 255 / 66%);
+  border: 1px solid rgb(16 24 40 / 12%);
+  border-radius: 20px;
+  box-shadow: 0 22px 42px rgb(0 0 0 / 16%), inset 0 1px 0 rgb(255 255 255 / 60%);
+  backdrop-filter: blur(10px) saturate(130%);
+  -webkit-backdrop-filter: blur(10px) saturate(130%);
+}
+
+/* Canvas más “nítido” y con leve marco */
+#snake-canvas{
+  image-rendering: auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow:
+    0 10px 22px rgb(0 0 0 / 10%),
+    inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+
+
+/* --- Fullscreen sin scroll para la página del Snake --- */
+html, body {
+  margin: 0;
+  height: 100svh;          /* usa la altura real de la pantalla móvil/portátil */
+  overflow: hidden;        /* << no aparece scroll */
+}
+
+#snake-canvas {
+  display: block;
+  margin: 0 auto;          /* centrado horizontal */
+  max-width: 92vw;         /* seguridad por si hay paddings */
+  max-height: 92svh;       /* seguridad vertical */
+}
+
+
+/* Pastilla con el progreso de la frase */
+.phrase-pill{
+  display:flex; flex-wrap:wrap; gap:6px 8px; align-items:center;
+  padding:10px 12px; min-height:44px; border-radius:999px;
+  background:rgb(255 255 255 / 80%);
+  border:1px solid rgb(16 24 40 / 10%);
+  box-shadow:0 8px 18px rgb(0 0 0 / 10%), inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+.ph-ch{
+  font-weight:900; letter-spacing:.2px;
+  font-size:clamp(14px, 2vw, 18px); line-height:1;
+}
+.ph-ch--on{
+  background:linear-gradient(180deg,#22c55e 0%, #16a34a 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.ph-ch--off{
+  color:#9ca3af; border-bottom:2px solid #e5e7eb;
+  display:inline-block; transform:translateY(2px);
+}
+.ph-space{ width:10px; display:inline-block; }  /* para espacios */
+
+/* ===== Cinemática Frase Completada ===== */
+.cinematic{
+  position: fixed; inset: 0; z-index: 60; display: grid; place-items: center;
+}
+.cinematic.is-hidden{ display: none; }
+
+.cinematic__backdrop{
+  position: absolute; inset: 0;
+  background: radial-gradient(1200px 800px at 50% 50%, rgb(0 0 0 / 30%), rgb(0 0 0 / 55%));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.cinematic__dialog{
+  position: relative; width: min(880px, 92vw);
+  background: rgb(255 255 255 / 80%);
+  border: 1px solid rgb(16 24 40 / 12%);
+  border-radius: 22px;
+  box-shadow: 0 28px 64px rgb(0 0 0 / 30%), inset 0 1px 0 rgb(255 255 255 / 60%);
+  overflow: hidden;
+  animation: cin-pop .22s ease-out both;
+}
+@keyframes cin-pop{
+  from{ transform: scale(.96); opacity: 0; } to{ transform:none; opacity:1; }
+}
+
+.cinematic__header{
+  padding: 14px 18px;
+  background: linear-gradient(180deg, #ffeaa0 0%, #ffd978 70%, #ffc94d 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 65%);
+}
+.cinematic__title{
+  margin: 0; font-weight: 900; letter-spacing: .2px; color:#6b4e00;
+  font-size: clamp(18px, 2.6vw, 28px);
+}
+
+.cinematic__body{
+  padding: clamp(16px, 3vw, 28px);
+  text-align: center;
+}
+.cinematic__phrase{
+  margin: 0;
+  font-weight: 900; letter-spacing: .3px;
+  font-size: clamp(22px, 4.5vw, 48px);
+  line-height: 1.15;
+  background: linear-gradient(180deg, #2b3446 0%, #0f172a 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  text-wrap: balance;
+}
+
+.cinematic__footer{
+  display: flex; justify-content: center; gap: 10px;
+  padding: 16px 18px 18px;
+}
+
+/* Botón usa tu look general (wdl-btn ya existe en tu CSS) */
+.cinematic .wdl-btn{
+  padding: 12px 18px; border-radius: 14px; font-weight: 800;
+  background: var(--btn-bg); color: var(--btn-text);
+  box-shadow: 0 10px 22px rgb(0 0 0 / 14%), inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+.cinematic .wdl-btn:focus-visible{ outline: 2px solid rgb(16 24 40 / 35%); outline-offset: 2px; }
+
+/* Respeta reducir movimiento */
+@media (prefers-reduced-motion: reduce){
+  .cinematic__dialog{ animation: none; }
+}
+
+
+/* ===== ENCUESTA (slide) ===== */
+html[data-page="clase"] .tpl--encuesta{
+  display: grid;
+  grid-template-rows: 1fr;
+  place-items: center;
+  padding: clamp(12px, 3vw, 20px);
+  background: linear-gradient(180deg, #f7fbff, #fff);
+}
+
+.poll{
+  width: min(900px, 92vw);
+  display: grid;
+  gap: clamp(12px, 2vw, 18px);
+  padding: clamp(14px, 2vw, 20px);
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid rgb(16 24 40 / 10%);
+  box-shadow: 0 16px 34px rgb(16 24 40 / 12%);
+}
+
+.poll__question{
+  margin: 0;
+  text-align: center;
+  font-weight: 900;
+  font-size: clamp(18px, 2.6vw, 30px);
+  color: var(--ink, #0f172a);
+}
+
+.poll__form{ display: grid; gap: 12px; }
+
+/* Opción múltiple */
+.poll__options{ display: grid; gap: 10px; }
+.poll__option{
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgb(16 24 40 / 10%);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff, #fbfbff);
+  cursor: pointer;
+  user-select: none;
+}
+.poll__option:hover{ box-shadow: 0 6px 16px rgb(16 24 40 / 10%); }
+.poll__option input{ position: absolute; opacity: 0; pointer-events: none; }
+.poll__option-faux{
+  width: 18px; height: 18px; border-radius: 999px;
+  border: 2px solid #9ca3af; box-shadow: inset 0 0 0 4px #fff;
+}
+.poll__option input:checked + .poll__option-faux{
+  border-color: #16a1b4; box-shadow: inset 0 0 0 5px #16a1b4;
+}
+.poll__option-label{ font-weight: 800; color: #111827; }
+
+/* Texto */
+.poll__textwrap{ display: grid; gap: 6px; }
+.poll__textarea{
+  width: 100%; min-height: clamp(120px, 24vh, 220px);
+  resize: vertical;
+  padding: 12px 14px; border-radius: 14px;
+  border: 1px solid rgb(16 24 40 / 14%);
+  outline: none;
+}
+.poll__textarea:focus{
+  border-color: #16a1b4; box-shadow: 0 0 0 4px rgb(22 161 180 / 16%);
+}
+.poll__textmeta{ display: flex; justify-content: flex-end; font-size: 12px; color: #64748b; }
+.poll__counter{ font-variant-numeric: tabular-nums; }
+
+/* Escala */
+.poll__scalewrap{ display: grid; gap: 8px; }
+.poll__scaleout{
+  justify-self: center;
+  font-weight: 900; font-size: 22px; color: #0f172a;
+}
+.poll__scale{ width: 100%; }
+.poll__scalelabels{
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: #64748b; font-weight: 700;
+}
+
+/* Acciones */
+.poll__actions{
+  display: flex; gap: 10px; justify-content: center; align-items: center;
+}
+.btn.btn--ghost{
+  background: #fff; color: #0f172a;
+  border: 1px solid rgb(16 24 40 / 12%);
+}
+
+/* Asegura que el botón "Atrás" siempre quede por encima del slide y sea clicable */
+.section--clase .back-integrated{
+  z-index: 10;         /* más que cualquier nav interno */
+  position: absolute;  /* ya lo tienes así en tu CSS */
+  top: 16px;
+  left: 16px;
+}
+
+
+/* ======= Numeración de nodos en el mapa ======= */
+.campaign-svg .node-num {
+  font: 700 16px/1.1 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  fill: #1b1b1b;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 3px;
+  letter-spacing: 0.2px;
+  text-anchor: middle;
+  alignment-baseline: middle;
+  pointer-events: none; /* que no tape el click del nodo */
+}
+
+/* ======= Efecto dorado brillante cuando la clase está activa ======= */
+@keyframes goldPulse {
+  0%   { opacity: .55; transform: scale(1); }
+  50%  { opacity: .85; transform: scale(1.15); }
+  100% { opacity: .55; transform: scale(1); }
+}
+
+.campaign-svg [data-clase-active="true"] .node-dot {
+  fill: url(#goldDot);          /* ya existe en el <defs> del SVG */
+  filter: url(#dotShadow);      /* sombra suave ya definida */
+}
+
+.campaign-svg [data-clase-active="true"] .node-glow {
+  display: block;
+  animation: goldPulse 1.8s ease-in-out infinite;
+}
+
+.campaign-svg .node-glow {
+  display: none;
+  pointer-events: none;
+}
+
+/* ========= SPLASH (pantalla de inicio) ========= */
+html[data-page="splash"] {
+  --splash-bg: #fff7cc;         /* dorado más cálido */
+  --splash-ink: #121826;        /* negro claro */
+  --splash-ink-sub: #475569;    /* texto secundario */
+}
+
+html[data-page="splash"] body{
+  position: relative;
+  overflow: hidden;
+}
+
+html[data-page="splash"] body::after{
+  content:"";
+  position: fixed; inset:0; z-index:-1;
+  background-image: url("./assets/images/adamis_login.png");
+  background-repeat: repeat;
+  background-size: 90px;
+  opacity: .08;                         /* traslúcido */
+  animation: coinsDrift 18s linear infinite;
+}
+
+@keyframes coinsDrift{
+  0%   { background-position: 0 0; }
+  100% { background-position: 120px 80px; }  /* desplazamiento lento */
+}
+
+
+/* contenedor principal */
+.section--splash {
+  min-height: 100vh;
+  display: flex;
+  place-items: center;
+  text-align: center;
+  position: relative;
+  padding: 25vmin 4vmin;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* bloque central */
+.splash-wrap {
+  max-width: min(92vw, 980px);
+  color: var(--splash-ink);
+  animation: splashFade .6s ease both;
+  z-index: 1;
+  position: relative;
+}
+
+/* título y textos */
+.splash-title {
+  font-size: clamp(110px, 17vw, 160px);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: .02em;
+  margin: 0 0 .6em 0;
+}
+
+.splash-slogan {
+  font-size: clamp(32px, 5.2vw, 32px);
+  font-style: italic;
+  color: var(--splash-ink-sub);
+  margin: 0 0 2.4em 0;
+}
+
+.splash-cta {
+  font-size: clamp(14px, 2vw, 18px);
+  color: var(--splash-ink-sub);
+  opacity: .9;
+}
+
+/* Animación de entrada */
+@keyframes splashFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* === Título y slogan en color oro fijo (sin animaciones) === */
+
+html[data-page="splash"] .splash-title {
+  color: #d4af37;            /* dorado clásico */
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: .03em;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.15);  /* sutil relieve */
+}
+
+html[data-page="splash"] .splash-slogan {
+  color: #c5a028;            /* dorado un poco más oscuro */
+  font-style: italic;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.1);   /* profundidad ligera */
+}
+
+
+/* === FIX BOTÓN DE ENCUESTA (Continuar / Enviar y seguir) === */
+.poll__actions .btn {
+  font-size: 1.1rem;       /* texto más grande */
+  padding: 0.9em 2em;      /* más espacio interno horizontal y vertical */
+  min-width: 180px;        /* evita que sea demasiado estrecho */
+  white-space: normal;     /* permite que el texto salte de línea si es muy largo */
+  line-height: 1.3;        /* mejora la lectura */
+  word-break: keep-all;    /* no corta palabras */
+}
+
+.poll__actions .btn--primary {
+  font-weight: 600;
+  border-radius: 10px;     /* bordes más redondeados (opcional) */
+}
+
+/* Opcional: más separación entre botones Continuar / Saltar */
+.poll__actions {
+  gap: 1rem;               /* deja aire entre los botones */
+}
+
+
+/* === Escenario responsivo universal (fit-to-screen) === */
+.fit-stage{
+  position: relative;
+  width: 100%;
+  height: 100vh;               /* ocupa alto de ventana */
+  overflow: hidden;
+  /* espacio respiración opcional en bordes (se puede tocar en JS como padding) */
+}
+
+.fit-target{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: top left;   /* imprescindible para escalar desde esquina */
+  will-change: transform;
+}
+
+/* Evita que bordes/sombras se recorten si el contenido natural es mayor */
+.fit-stage *{
+  box-sizing: border-box;
+}
+
+/* Si tienes barras superiores globales, puedes restar su alto aquí
+html.has-topbar .fit-stage{ height: calc(100vh - var(--topbar-h, 64px)); } */
+
+/* Solo si lo tuvieras fixed: */
+.slide.act-ahorro .act-actions{
+  position: absolute; /* no fixed */
+  left: 35%;
+  transform: translateX(-50%);
+  bottom: 0px; /* o tu valor */
+}
