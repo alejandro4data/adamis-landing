@@ -1,9 +1,0 @@
-# 1. El Guardián (Protege la carpeta /app/)
-[[edge_functions]]
-  path = "/app/*"
-  function = "guardian"
-
-# 2. El Login (Procesa el formulario)
-[[edge_functions]]
-  path = "/auth-login"   # Esta es la URL "falsa" que procesará el login
-  function = "login"
