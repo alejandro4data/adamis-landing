@@ -23,7 +23,7 @@
       .pattern-overlay {
           position: absolute;
           top: 0; left: 0; width: 100%; height: 200%;
-          background-image: url('./assets/images/adamis_login.png');
+          background-image: url('/app/assets/images/adamis_login.png');
           background-size: 90px 90px;
           background-repeat: repeat;
           opacity: 0.08; 
@@ -98,7 +98,7 @@
     // Redirige al tocar/clicar/teclar en cualquier sitio
     (function () {
       // NOTA: Ajusta esta ruta si 'pages' está dentro de una carpeta 'app'
-      const go = () => { window.location.href = './pages/menu.html'; };
+      const go = () => { window.location.href = '/app/pages/menu.html'; };
       
       // Usamos 'document' para asegurar que captura el clic en toda la pantalla
       document.addEventListener('click', go);
