@@ -1,7 +1,7 @@
 (function () {
   const ENDPOINT = "/api/collect";
 
-  function getClassIdFromUrl() {
+  function classIdFromUrl() {
     try {
       const u = new URL(window.location.href);
       return u.searchParams.get("clase") || "";
@@ -13,17 +13,22 @@
   async function send(type, detail) {
     const payload = {
       ...detail,
-      classId: getClassIdFromUrl(),
+      classId: classIdFromUrl(),
       url: window.location.href,
       user_agent: navigator.userAgent
     };
 
     try {
-      await fetch(ENDPOINT, {
+      const r = await fetch(ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type, payload })
       });
+
+      if (!r.ok) {
+        const t = await r.text();
+        console.warn("Collector respondió error:", r.status, t);
+      }
     } catch (e) {
       console.warn("No se pudo guardar la respuesta:", e);
     }
