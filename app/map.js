@@ -14,7 +14,7 @@ const CURRENT_LEVEL = 7; // <--- cámbialo dinámicamente según tu lógica
   if (!svg) return;
 
   // ===== Precarga de instrucciones =====
-  const INSTRUCCIONES_URL = "./assets/images/instrucciones.avif";
+  const INSTRUCCIONES_URL = "/app/assets/images/instrucciones.avif";
   let __preloadedInstr = false;
 
   function preloadInstrucciones() {
