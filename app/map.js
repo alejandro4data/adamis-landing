@@ -13,24 +13,21 @@ const CURRENT_LEVEL = 7; // <--- cámbialo dinámicamente según tu lógica
   const svg = document.getElementById('campaign-map');
   if (!svg) return;
 
-    // ===== Precarga de assets críticos (instrucciones) =====
+  // ===== Precarga de instrucciones =====
   const INSTRUCCIONES_URL = "../assets/images/instrucciones.avif";
-
-  let __preloaded = false;
+  let __preloadedInstr = false;
 
   function preloadInstrucciones() {
-    if (__preloaded) return;
-    __preloaded = true;
+    if (__preloadedInstr) return;
+    __preloadedInstr = true;
 
     const img = new Image();
     img.decoding = "async";
     img.src = INSTRUCCIONES_URL;
 
-    // (opcional) fuerza decode si el navegador lo soporta
-    if (img.decode) {
-      img.decode().catch(() => {});
-    }
+    if (img.decode) img.decode().catch(() => {});
   }
+
 
 
   // ---- PUNTOS (viewBox 1000 x 600) ----
@@ -153,24 +150,24 @@ const CURRENT_LEVEL = 7; // <--- cámbialo dinámicamente según tu lógica
 
     nodeRefs[i] = g; // guarda referencia por número
 
-        // Precarga cuando el usuario muestra intención de entrar
+    // Desktop + móvil: precarga cuando hay intención
     g.addEventListener("mouseenter", preloadInstrucciones, { passive: true });
-    g.addEventListener("focus", preloadInstrucciones, { passive: true });      // teclado
-    g.addEventListener("touchstart", preloadInstrucciones, { passive: true }); // móvil
-    g.addEventListener("pointerdown", preloadInstrucciones, { passive: true }); // general
+    g.addEventListener("touchstart", preloadInstrucciones, { passive: true });
 
-        g.addEventListener("click", (ev) => {
-      // inicia precarga sí o sí
+    // Click: precarga y navega con micro-delay para evitar el "flash"
+    g.addEventListener("click", (ev) => {
       preloadInstrucciones();
 
-      // deja que el navegador navegue, pero con un pequeño margen
-      // (esto reduce muchísimo el "flash" al entrar a clase)
-      const href = g.getAttribute("href") || g.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+      const href =
+        g.getAttribute("href") ||
+        g.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+
       if (!href) return;
 
       ev.preventDefault();
       setTimeout(() => { window.location.href = href; }, 120);
     });
+
 
 
   });
