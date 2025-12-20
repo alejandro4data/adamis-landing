@@ -344,14 +344,27 @@ function ensureRendererLoaded(tipo){
     if (lockTicker){ clearInterval(lockTicker); lockTicker = null; }
 
     const slides = window.slides || [];
-    if (!slides.length){
-      const empty = document.createElement('div');
-      empty.className = 'slide empty-state';
-      empty.innerHTML = '<div class="empty-state__text">Sin diapositivas aún</div>';
-      slideRoot.appendChild(empty);
+
+    // Si todavía no han cargado/generado slides, muestra "Cargando..." y reintenta
+    if (!slides.length) {
+      const loading = document.createElement('div');
+      loading.className = 'slide empty-state';
+      loading.innerHTML = '<div class="empty-state__text">Cargando…</div>';
+      slideRoot.appendChild(loading);
       updateNav(); updateProgress();
+
+      // Reintento corto para esperar a que slides.js termine
+      setTimeout(() => {
+        // Solo re-render si seguimos en página clase y el root sigue ahí
+        if (document.documentElement.getAttribute('data-page') === 'clase' && slideRoot.isConnected) {
+          renderCurrent();
+        }
+      }, 120);
+
       return;
     }
+
+
 
     const s0 = slides[i] || {};
     const s = Object.assign({}, s0);
