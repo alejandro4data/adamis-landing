@@ -88,9 +88,20 @@
     cancelBtn.addEventListener('click', closeModal);
 
     confirmBtn.addEventListener('click', () => {
-      try { localStorage.removeItem('currentUser'); } catch (e) {}
-      
-      window.location.href = '../../splash.html'; 
+      // 1) Limpiar datos de sesión (lo importante en aula)
+      try { sessionStorage.clear(); } catch (_e) {}
+
+      // 2) Limpiar restos legacy (por si en algún PC quedaron respuestas antiguas en localStorage)
+      try {
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith('poll:')) localStorage.removeItem(k);
+        }
+        localStorage.removeItem('currentUser');
+      } catch (_e) {}
+
+      // 3) Volver al splash
+      window.location.href = '../../splash.html';
     });
   });
 })();
@@ -370,6 +381,13 @@ function ensureRendererLoaded(tipo){
     const s = Object.assign({}, s0);
     const rawTipo = (s.tipo || '').toLowerCase().trim();
     let tipo = rawTipo;
+    // 🔓 Desbloquea encuesta general al ENTRAR en cualquier slide de tipo "encuesta"
+    try {
+      if (tipo === 'encuesta') {
+        sessionStorage.setItem('general_survey_unlocked', 'true');
+      }
+    } catch (_e) {}
+
     if (!tipo || tipo === 'explicacion') tipo = 'explicacion-bocadillo';
 
     const root = document.createElement('article');
@@ -521,100 +539,3 @@ function ensureRendererLoaded(tipo){
   };
 })();
 
-/* ===== Envío de encuestas al backend (guardar en archivo) ===== */
-(() => {
-  // 4) IMPORTANTE: URL del endpoint en IONOS (PHP)
-  const API_URL = '/api/save.php';
-
-  function getCurrentUser(){
-    try {
-      const raw = localStorage.getItem('currentUser');
-      if (!raw) return null;
-      const u = JSON.parse(raw);
-      return {
-        id: u?.id || u?.uid || null,
-        name: u?.name || u?.username || null,
-        email: u?.email || null,
-        raw: u
-      };
-    } catch(_e){
-      return null;
-    }
-  }
-
-  async function postEncuesta(payload){
-    try {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json' },
-        body: JSON.stringify(payload)
-      });
-    } catch (e) {
-      console.warn('[encuesta] No se pudo enviar al backend. ¿ save.php existe y tiene permisos?', e);
-    }
-  }
-
-  // Escucha cuando se envía una encuesta
-  window.addEventListener('encuesta:submit', (ev) => {
-    const d = ev.detail || {};
-    const clase = (window.CURRENT_CLASS || '').toLowerCase() || 'desconocida';
-
-    // d = { id, mode, question, value, ts, meta }
-    const payload = {
-      clase,
-      id: d.id,
-      mode: d.mode,
-      question: d.question,
-      value: d.value,
-      ts: d.ts,
-      meta: d.meta || null,
-      user: getCurrentUser()
-    };
-    postEncuesta(payload);
-  });
-})();
-
-
-/* ===== Envío de CUADROS DE REFLEXIÓN al backend ===== */
-(() => {
-  const API_URL_REFLEX = '/api/save_reflexion.php';
-
-  function getCurrentUser(){
-    try {
-      const raw = localStorage.getItem('currentUser');
-      if (!raw) return null;
-      const u = JSON.parse(raw);
-      return { id: u?.id || u?.uid || null, name: u?.name || u?.username || null, email: u?.email || null, raw: u };
-    } catch { return null; }
-  }
-
-  async function postReflexion(payload){
-    try{
-      await fetch(API_URL_REFLEX, {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json' },
-        body: JSON.stringify(payload)
-      });
-    } catch(e){
-      console.warn('[reflexion] No se pudo enviar al backend:', e);
-    }
-  }
-
-  window.addEventListener('reflexion:submit', (ev) => {
-    const d = ev.detail || {};
-    const clase = (window.CURRENT_CLASS || '').toLowerCase() || 'desconocida';
-
-    const payload = {
-      clase,
-      id: d.id || 'reflexion',
-      question: d.question || '',
-      answer: d.answer ?? d.value ?? '',
-      value: d.value ?? d.answer ?? '',
-      ts: d.ts || Date.now(),
-      meta: d.meta || null,
-      result: d.result || null,
-      user: getCurrentUser()
-    };
-    postReflexion(payload);
-  });
-})();

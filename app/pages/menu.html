@@ -6,9 +6,42 @@
   <title>Menú</title>
   <link rel="stylesheet" href="../style.css" />
   <link rel="preload" as="image" href="/app/assets/images/mapa_clases.png">
+  <style>
+    .general-survey-star{
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: none; /* se activa por JS */
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 24px;
+      line-height: 1;
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+      border: 2px solid rgba(230,200,116,0.9);
+      animation: starPulse 1.2s ease-in-out infinite;
+      z-index: 9999;
+    }
+    @keyframes starPulse{
+      0%{ transform: scale(1); }
+      50%{ transform: scale(1.13); }
+      100%{ transform: scale(1); }
+    }
+  </style>
+
    <script defer src="../app.js"></script>
 </head>
 <body>
+  <a id="generalSurveyStar"
+   class="general-survey-star"
+   href="./clase.html?clase=encuesta_general"
+   aria-label="Encuesta general"
+   title="Encuesta general">⭐</a>
+
   <main>
     <section id="menu" class="section section--menu is-active" aria-label="Menú principal">
       <div class="container" data-role="content">
@@ -23,5 +56,15 @@
       </div>
     </section>
   </main>
+  <script>
+    (function(){
+      try{
+        const star = document.getElementById("generalSurveyStar");
+        const unlocked = sessionStorage.getItem("general_survey_unlocked") === "true";
+        if (star) star.style.display = unlocked ? "flex" : "none";
+      } catch(_e){}
+    })();
+  </script>
+
 </body>
 </html>

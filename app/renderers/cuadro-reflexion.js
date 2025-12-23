@@ -138,15 +138,10 @@
 
           // >>> ENVIAR EVENTO GLOBAL PARA GUARDAR EN BACKEND <<<
           try {
-            window.dispatchEvent(new CustomEvent('reflexion:submit', {
+            window.dispatchEvent(new CustomEvent('encuesta:submit', {
               detail: {
-                id: s.id || 'reflexion',
-                question: qText,
-                value: answer,          // mantenemos "value" por coherencia con encuestas
-                answer,                 // lo duplicamos por claridad
-                ts: Date.now(),
-                meta: { slideId: s.id ?? null },
-                result: (typeof result === 'object' ? result : null) // feedback opcional
+                id: s.id || null,        // a_r_1, d_r_2, etc.
+                respuesta: answer       // texto del alumno
               }
             }));
           } catch(_e){}

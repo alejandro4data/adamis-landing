@@ -73,6 +73,29 @@ window.slides.push( Slide({
   narratorColor: '#16a1b4'
 }));
 
+window.slides.push( SlideCuadroReflexion({
+  id: 'a_r_1',
+  pregunta: "Si quisieras comprarte una bici, ¿cómo ahorrarías para conseguirla?",
+  placeholder: "Escribe aquí tu respuesta...",
+  minChars: 40,          // mínimo recomendado para que no respondan con 1 línea
+  maxChars: 300,         // tope razonable para 10–14 años
+  allowSkip: true,       // permite saltar (puedes poner false si quieres forzarlo)
+  autoFocus: true,       // enfoca el textarea al entrar en la slide
+  advanceOnSubmit: true, // al evaluar, pasa a la siguiente slide
+
+  // ===== OPCIÓN A (callback local): usa UNA de las dos =====
+  onEvaluate: async ({ question, answer }) => {
+    // Ejemplo sencillo: considera "bien" si mencionan ideas clave
+    const ok = /libertad|elegir|objetivo|emergencia|plan|decisiones/i.test(answer);
+    return {
+      ok,
+      feedback: ok
+        ? "Bien: conectas el ahorro con tomar mejores decisiones y cumplir objetivos."
+        : "Mejorable: explica cómo el ahorro te permite decidir mejor (emergencias, objetivos, menos dependencia)."
+    };
+  }
+}) );
+
 window.slides.push( SlideTituloClase({ titulo: 'Sección 1' }) );
 
 window.slides.push( Slide({
@@ -925,7 +948,7 @@ window.slides.push( Slide({
 }));
 
 window.slides.push( SlideCuadroReflexion({
-  id: 'reflex_ahorro_estrategia',
+  id: 'a_r_2',
   pregunta: "¿Qué estrategia usarías? O invéntate tu estrategia ideal para tí.",
   placeholder: "Recuerda, no escribas demasiado...",
   minChars: 40,          // mínimo recomendado para que no respondan con 1 línea
@@ -968,7 +991,7 @@ window.slides.push( Slide({
 }));
 
 window.slides.push( Slide({
-  text: 'Ahora contesta 5 preguntas ¡Queremos saber tu opinión de esta clase!',
+  text: 'Ahora contesta 3 preguntas ¡Queremos saber tu opinión de esta clase!',
   img: '../assets/ahorro/escenas/escena42.avif',
   textPosition: 'bottom',
   imageFraction: '80%',
@@ -978,46 +1001,16 @@ window.slides.push( Slide({
 }));
 
 
-// 1) Opción múltiple (n opciones arbitrarias)
-window.slides.push(
-  SlideEncuestaOpcionMultiple({
-    id: 'ahorro_q1',
-    pregunta: '¿Te gustaría aprender estrategias para ahorrar?',
-    options: [
-      'Sí, me gustaría.',
-      'No, no me gusta ahorrar.',
-      'Me da igual.'
-    ],
-    shuffle: true,            // mezcla las opciones
-    required: true,           // obliga a elegir antes de continuar
-    submitText: 'Continuar'
-  })
-);
+// ====== ENCUESTA DE SATISFACCIÓN ======
 
+// 1) Escala
 window.slides.push(
-  SlideEncuestaOpcionMultiple({
-    id: 'ahorro_q2',
-    pregunta: '¿Te gustaría tener una asignatura para aprender a usar el dinero?',
-    options: [
-      'Sí, me gustaría.',
-      'El dinero me da igual.'
-    ],
-    shuffle: true,            // mezcla las opciones
-    required: true,           // obliga a elegir antes de continuar
-    submitText: 'Continuar'
-  })
-);
-
-window.slides.push(
-  SlideEncuestaOpcionMultiple({
-    id: 'ahorro_q3',
-    pregunta: '¿Te gustaría dar clases usando el ordenador?',
-    options: [
-      'Sí, me gustaría.',
-      'No, prefiero los libros.'
-    ],
-    shuffle: true,            // mezcla las opciones
-    required: true,           // obliga a elegir antes de continuar
+  SlideEncuestaEscala({
+    id: 'a_1',
+    pregunta: 'Después de la clase, del 1 al 10, ¿cómo de seguro te sientes para administrar tu paga?',
+    min: 1, max: 10, step: 1, initial: 5,
+    labels: { min: 'Poco', max: 'Mucho' },
+    required: true,
     submitText: 'Continuar'
   })
 );
@@ -1026,7 +1019,7 @@ window.slides.push(
 // 2) Texto libre
 window.slides.push(
   SlideEncuestaTexto({
-    id: 'ahorro_q4',
+    id: 'a_2',
     pregunta: '¿Qué es lo que MÁS te ha gustado de la clase?',
     placeholder: 'Escribe aquí tu respuesta...',
     minChars: 10,
@@ -1038,8 +1031,8 @@ window.slides.push(
 
 window.slides.push(
   SlideEncuestaTexto({
-    id: 'ahorro_q5',
-    pregunta: '¿Qué es lo que MENOS te ha gustado de la clase?',
+    id: 'a_3',
+    pregunta: 'Cómo mejorarías la clase?',
     placeholder: 'Escribe aquí tu respuesta...',
     minChars: 10,
     maxChars: 180,
@@ -1048,17 +1041,6 @@ window.slides.push(
   })
 );
 
-// 3) Escala 1–10
-window.slides.push(
-  SlideEncuestaEscala({
-    id: 'ahorro_q6',
-    pregunta: 'Del 1 al 10, ¿Cuánto crees que es de importante aprender a utilizar el dinero de forma inteligente?',
-    min: 1, max: 10, step: 1, initial: 5,
-    labels: { min: 'Poco', max: 'Mucho' },
-    required: true,
-    submitText: 'Continuar'
-  })
-);
 
 window.slides.push( SlideTituloClase({ titulo: '¡Muchas Gracias!' }) );
 

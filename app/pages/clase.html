@@ -110,8 +110,8 @@
       window.addEventListener('DOMContentLoaded', async () => {
         const sets = await fetchSets();
         // Si venía ?clase= y existe, carga directo; si no, muestra selector
-        if (choice && sets.some(s => s.id === choice)) {
-          loadSet(choice);
+        if (choice) {
+          loadSet(choice); // intenta cargar directo aunque no esté en sets.json
         } else {
           buildUI(sets);
         }

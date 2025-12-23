@@ -12,3 +12,5 @@ app0.js
 passgen.php
 whereami.php
 index.html
+.env
+.vercel

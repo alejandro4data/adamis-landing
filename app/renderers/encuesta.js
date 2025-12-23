@@ -34,17 +34,15 @@
 
     let currentValue = null;
     try {
-      const prev = localStorage.getItem(lsKey);
+      const prev = sessionStorage.getItem(lsKey);
       if (prev != null) currentValue = JSON.parse(prev);
     } catch(_e){}
 
     function setValue(v){
       currentValue = v;
-      try { localStorage.setItem(lsKey, JSON.stringify(v)); } catch(_e){}
-      (window.ENCUESTA_RESPUESTAS ||= {})[id] = {
-        id, mode, question: q.textContent, value: v, ts: Date.now()
-      };
-      window.ENCUESTA_LAST = { id, mode, question: q.textContent, value: v };
+      try { sessionStorage.setItem(lsKey, JSON.stringify(v)); } catch(_e){}
+      (window.ENCUESTA_RESPUESTAS ||= {})[id] = { id, respuesta: v };
+      window.ENCUESTA_LAST = { id, respuesta: v };
       window.dispatchEvent(new CustomEvent('encuesta:change', { detail: window.ENCUESTA_LAST }));
       updateBtnState();
     }
@@ -201,7 +199,7 @@
     // --- submit ---
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const payload = { id, mode, question: q.textContent, value: currentValue, ts: Date.now(), meta: { required } };
+      const payload = { id, respuesta: currentValue };
       window.dispatchEvent(new CustomEvent('encuesta:submit', { detail: payload }));
       if (typeof s.onSubmit === 'function'){
         try { s.onSubmit(payload); } catch(_e){}

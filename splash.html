@@ -15,7 +15,7 @@
             background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 20px;
             box-shadow: 0 20px 50px rgba(92, 75, 37, 0.15); text-align: center; width: 300px;
         }
-        input {
+        input, select {
             width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #E6C874;
             border-radius: 8px; font-size: 1.2rem; text-align: center; color: #5C4B25; outline: none; box-sizing: border-box;
         }
@@ -36,6 +36,13 @@
         <h2>Acceso Estudiantes</h2>
         
         <form action="/api/auth-login" method="POST">
+            <select name="centro" id="centro" required>
+                <option value="" disabled selected>Selecciona tu centro</option>
+                <option value="Colegio Ábaco">Colegio Ábaco</option>
+                <!--<option value="centro_b">Centro B</option> -->
+                <!--<option value="centro_c">Centro C</option> -->
+            </select>
+
             <input type="password" name="password" placeholder="Contraseña de la Clase" required>
             <button type="submit">Entrar</button>
         </form>
@@ -51,6 +58,39 @@
             // Vibración para feedback móvil
             if(navigator.vibrate) navigator.vibrate(200);
         }
+    </script>
+    <script>
+        (function () {
+        const form = document.querySelector("form");
+        const centroSelect = document.getElementById("centro");
+
+        function uuid() {
+            if (crypto?.randomUUID) return crypto.randomUUID();
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+            const r = Math.random()*16|0, v = c==='x'?r:(r&0x3|0x8);
+            return v.toString(16);
+            });
+        }
+
+        function clearLegacyLocalStorage() {
+            try {
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const k = localStorage.key(i);
+                if (k && k.startsWith("poll:")) localStorage.removeItem(k);
+            }
+            } catch {}
+        }
+
+        form.addEventListener("submit", () => {
+            try {
+            sessionStorage.clear();
+            clearLegacyLocalStorage();
+
+            sessionStorage.setItem("session_uuid", uuid());
+            sessionStorage.setItem("centro", centroSelect.value);
+            } catch {}
+        });
+        })();
     </script>
 </body>
 </html>

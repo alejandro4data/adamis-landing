@@ -39,32 +39,6 @@ window.slides.push( Slide({
   narratorColor: '#16a1b4'
 }));
 
-window.slides.push( SlideTituloClase({ titulo: 'Cuadro de Reflexión' }) );
-
-
-window.slides.push( SlideCuadroReflexion({
-  id: 'reflex_deuda_donar_prestar',
-  pregunta: "Explica con tus palabras la diferencia entre donar y prestar dinero. ",
-  placeholder: "Recuerda, no escribas demasiado...",
-  minChars: 40,          // mínimo recomendado para que no respondan con 1 línea
-  maxChars: 300,         // tope razonable para 10–14 años
-  allowSkip: true,       // permite saltar (puedes poner false si quieres forzarlo)
-  autoFocus: true,       // enfoca el textarea al entrar en la slide
-  advanceOnSubmit: true, // al evaluar, pasa a la siguiente slide
-
-  // ===== OPCIÓN A (callback local): usa UNA de las dos =====
-  onEvaluate: async ({ question, answer }) => {
-    // Ejemplo sencillo: considera "bien" si mencionan ideas clave
-    const ok = /libertad|elegir|objetivo|emergencia|plan|decisiones/i.test(answer);
-    return {
-      ok,
-      feedback: ok
-        ? "Bien: conectas el ahorro con tomar mejores decisiones y cumplir objetivos."
-        : "Mejorable: explica cómo el ahorro te permite decidir mejor (emergencias, objetivos, menos dependencia)."
-    };
-  }
-}) );
-
 window.slides.push( Slide({
   text: '¡No es lo mismo! Cuando das dinero sin esperar que te lo devuelvan, eso es un regalo o una donación.',
   img: '../assets/deuda/escenas/escena4.avif',
@@ -186,6 +160,30 @@ window.slides.push( Slide({
   narrator: 'Adamis',
   narratorColor: '#16a1b4'
 }));
+
+window.slides.push( SlideCuadroReflexion({
+  id: 'd_r_1',
+  pregunta: "¿Sabrías decir cuál es la diferencia entre deuda buena y deuda mala?",
+  placeholder: "Recuerda, no escribas demasiado...",
+  minChars: 40,          // mínimo recomendado para que no respondan con 1 línea
+  maxChars: 300,         // tope razonable para 10–14 años
+  allowSkip: true,       // permite saltar (puedes poner false si quieres forzarlo)
+  autoFocus: true,       // enfoca el textarea al entrar en la slide
+  advanceOnSubmit: true, // al evaluar, pasa a la siguiente slide
+
+  // ===== OPCIÓN A (callback local): usa UNA de las dos =====
+  onEvaluate: async ({ question, answer }) => {
+    // Ejemplo sencillo: considera "bien" si mencionan ideas clave
+    const ok = /libertad|elegir|objetivo|emergencia|plan|decisiones/i.test(answer);
+    return {
+      ok,
+      feedback: ok
+        ? "Bien: conectas el ahorro con tomar mejores decisiones y cumplir objetivos."
+        : "Mejorable: explica cómo el ahorro te permite decidir mejor (emergencias, objetivos, menos dependencia)."
+    };
+  }
+}) );
+
 
 window.slides.push( Slide({
   text: 'Carlos quiere una consola de videojuegos que cuesta 500 €. No tiene dinero suficiente ahorrado, así que pide prestado y promete devolverlo en 6 meses.',
@@ -628,6 +626,41 @@ SlideActividadDeuda14({
 )
 );
 
+
+window.slides.push( Slide({
+  text: 'Ahora te voy a hacer la misma pregunta que al principio de la clase...',
+  img: '../assets/deuda/escenas/escena24-bis.avif',
+  textPosition: 'bottom',
+  imageFraction: '80%',
+  typeSpeed: 44,
+  narrator: 'Adamis',
+  narratorColor: '#16a1b4'
+}));
+
+window.slides.push( SlideCuadroReflexion({
+  id: 'd_r_2',
+  pregunta: "Después de la clase, ¿sabrías decirme un ejemplo de deuda buena y otro de deuda mala?",
+  placeholder: "Recuerda, no escribas demasiado...",
+  minChars: 40,          // mínimo recomendado para que no respondan con 1 línea
+  maxChars: 300,         // tope razonable para 10–14 años
+  allowSkip: true,       // permite saltar (puedes poner false si quieres forzarlo)
+  autoFocus: true,       // enfoca el textarea al entrar en la slide
+  advanceOnSubmit: true, // al evaluar, pasa a la siguiente slide
+
+  // ===== OPCIÓN A (callback local): usa UNA de las dos =====
+  onEvaluate: async ({ question, answer }) => {
+    // Ejemplo sencillo: considera "bien" si mencionan ideas clave
+    const ok = /libertad|elegir|objetivo|emergencia|plan|decisiones/i.test(answer);
+    return {
+      ok,
+      feedback: ok
+        ? "Bien: conectas el ahorro con tomar mejores decisiones y cumplir objetivos."
+        : "Mejorable: explica cómo el ahorro te permite decidir mejor (emergencias, objetivos, menos dependencia)."
+    };
+  }
+}) );
+
+
 window.slides.push( Slide({
   text: '¡Pues aquí ha terminado la clase de hoy!',
   img: '../assets/deuda/escenas/escena24.avif',
@@ -649,7 +682,7 @@ window.slides.push( Slide({
 }));
 
 window.slides.push( Slide({
-  text: 'Ahora contesta 5 preguntas ¡Queremos saber tu opinión de esta clase!',
+  text: 'Ahora contesta 3 preguntas ¡Queremos saber tu opinión de esta clase!',
   img: '../assets/deuda/escenas/escena26.avif',
   textPosition: 'bottom',
   imageFraction: '80%',
@@ -658,54 +691,26 @@ window.slides.push( Slide({
   narratorColor: '#afb416ff'
 }));
 
-// 1) Opción múltiple (n opciones arbitrarias)
+
+// ====== ENCUESTA DE SATISFACCIÓN ======
+
+// 1) Escala
 window.slides.push(
-  SlideEncuestaOpcionMultiple({
-    id: 'deuda_q1',
-    pregunta: '¿Te gustaría aprender a usar bien la deuda?',
-    options: [
-      'Sí, me gustaría.',
-      'No, no me interesa la deuda.',
-      'Me da igual.'
-    ],
-    shuffle: true,            // mezcla las opciones
-    required: true,           // obliga a elegir antes de continuar
+  SlideEncuestaEscala({
+    id: 'd_1',
+    pregunta: 'Después de lo aprendido hoy, ¿cómo de seguro te sientes para saber si pedir dinero prestado es una buena decisión o una deuda mala?',
+    min: 1, max: 10, step: 1, initial: 5,
+    labels: { min: 'Poco', max: 'Mucho' },
+    required: true,
     submitText: 'Continuar'
   })
 );
 
-window.slides.push(
-  SlideEncuestaOpcionMultiple({
-    id: 'deuda_q2',
-    pregunta: '¿Te gustaría tener una asignatura para aprender a usar el dinero?',
-    options: [
-      'Sí, me gustaría.',
-      'El dinero me da igual.'
-    ],
-    shuffle: true,            // mezcla las opciones
-    required: true,           // obliga a elegir antes de continuar
-    submitText: 'Continuar'
-  })
-);
-
-window.slides.push(
-  SlideEncuestaOpcionMultiple({
-    id: 'deuda_q3',
-    pregunta: '¿Te gustaría dar clases usando el ordenador?',
-    options: [
-      'Sí, me gustaría.',
-      'No, prefiero los libros.'
-    ],
-    shuffle: true,            // mezcla las opciones
-    required: true,           // obliga a elegir antes de continuar
-    submitText: 'Continuar'
-  })
-);
 
 // 2) Texto libre
 window.slides.push(
   SlideEncuestaTexto({
-    id: 'deuda_q4',
+    id: 'd_2',
     pregunta: '¿Qué es lo que MÁS te ha gustado de la clase?',
     placeholder: 'Escribe aquí tu respuesta...',
     minChars: 10,
@@ -717,8 +722,8 @@ window.slides.push(
 
 window.slides.push(
   SlideEncuestaTexto({
-    id: 'deuda_q5',
-    pregunta: '¿Qué es lo que MENOS te ha gustado de la clase?',
+    id: 'd_3',
+    pregunta: 'Cómo mejorarías la clase?',
     placeholder: 'Escribe aquí tu respuesta...',
     minChars: 10,
     maxChars: 180,
@@ -727,16 +732,5 @@ window.slides.push(
   })
 );
 
-// 3) Escala 1–10
-window.slides.push(
-  SlideEncuestaEscala({
-    id: 'deuda_q6',
-    pregunta: 'Del 1 al 10, ¿Cuánto crees que es de importante aprender a utilizar el dinero de forma inteligente?',
-    min: 1, max: 10, step: 1, initial: 5,
-    labels: { min: 'Poco', max: 'Mucho' },
-    required: true,
-    submitText: 'Continuar'
-  })
-);
 
 window.slides.push( SlideTituloClase({ titulo: '¡Muchas Gracias!' }) );

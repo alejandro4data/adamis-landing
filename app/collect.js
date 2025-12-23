@@ -10,13 +10,29 @@
     }
   }
 
+  function getSessionData() {
+    try {
+      return {
+        session_uuid: sessionStorage.getItem("session_uuid") || null,
+        centro: sessionStorage.getItem("centro") || null
+      };
+    } catch {
+      return { session_uuid: null, centro: null };
+    }
+  }
+
   async function send(type, detail) {
+    const session = getSessionData();
+
     const payload = {
-      ...detail,
-      classId: classIdFromUrl(),
-      url: window.location.href,
-      user_agent: navigator.userAgent
+      id: detail?.id ?? null,
+      respuesta: detail?.respuesta ?? null,
+      clase: classIdFromUrl(),
+      session_uuid: session.session_uuid,
+      centro: session.centro,
+      fecha_gmt: new Date().toISOString()
     };
+
 
     try {
       const r = await fetch(ENDPOINT, {
