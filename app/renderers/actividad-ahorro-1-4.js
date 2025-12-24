@@ -407,6 +407,24 @@
             // 1) guarda la elección (para que 1-2 lea state.last/choice)
             select(activeSide, activeOpt, () => {});
 
+            // 1.5) calcular y guardar a_rec (0/1) + emitir como encuesta
+            try {
+              const sp2 = Number(state.setpoints?.sp2 ?? 60);
+              const happyAfter = clamp100(state.happiness + Number(activeOpt.dHappy || 0));
+
+              // aprobado = compra bici (left) + felicidad en zona verde (>= sp2)
+              const completedOk = (activeSide === 'left') && (happyAfter >= sp2);
+              const a_rec = completedOk ? 1 : 0;
+
+              sessionStorage.setItem('a_rec', String(a_rec));
+
+              // Emitir como si fuera una encuesta normal para que vaya a Sheets como columna a_rec
+              window.dispatchEvent(new CustomEvent('encuesta:submit', {
+                detail: { id: 'a_rec', respuesta: a_rec }
+              }));
+            } catch (_e) {}
+
+
             // 2) decide color y si hay fuegos
             const isYes = (activeSide === 'left');    // “sí” = left
             const color = isYes

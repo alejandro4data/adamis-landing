@@ -52,15 +52,32 @@ const success = underCap && !hasPrestamosPendientes;
   root.appendChild(header);
   root.appendChild(body);
 
-  // Botón Finalizar (opcional)
+  // Click normal en cualquier parte de la slide para finalizar
   if (window.SlideActions && typeof SlideActions.next === 'function') {
-    const btn = H.el('button', { className: 'btn-option btn-continue' }, H.txt(success ? 'Finalizar' : 'Reintentar / Finalizar'));
-    btn.addEventListener('click', () => {
+    let sent = false;
+
+    root.style.cursor = 'pointer';
+
+    root.addEventListener('click', (e) => {
+      // Evitar doble envío por clicks múltiples
+      if (sent) return;
+      sent = true;
+
       st.lastAction = { type: 'cierre', success, week: st.week };
+
+      const recId = 'd_rec';
+      const recVal = success ? 1 : 0;
+
+      try { sessionStorage.setItem(recId, String(recVal)); } catch (_) {}
+
+      window.dispatchEvent(new CustomEvent('encuesta:submit', {
+        detail: { id: recId, respuesta: recVal }
+      }));
+
       SlideActions.next();
-    });
-    body.appendChild(H.el('div', { className: 'deuda-col left' }, btn));
+    }, { once: true });
   }
+
 
   // === Fuegos artificiales / confeti en caso de éxito ===
   if (success && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {

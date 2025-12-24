@@ -537,5 +537,8 @@ function ensureRendererLoaded(tipo){
     goto: setIndex,
     reload(){ i = 0; renderCurrent(); }
   };
+
+  // Compatibilidad con renderers legacy (deuda) que usan SlideActions.next()
+  window.SlideActions = window.__slidesAPI__;
 })();
 
