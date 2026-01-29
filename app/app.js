@@ -137,16 +137,36 @@ function ensureRendererLoaded(tipo){
   if (window.SlideRendererRegistry.get(key)) return Promise.resolve(true);
   if (__SLIDE_RENDERER_LOADS__[key]) return __SLIDE_RENDERER_LOADS__[key];
 
-  // Nota: pages/clase.html está una carpeta por debajo, así que subimos con ..
-  const url = `../renderers/${key}.js`;
-  __SLIDE_RENDERER_LOADS__[key] = new Promise((resolve) => {
-    const s = document.createElement('script');
-    s.src = url;
-    s.async = true;
-    s.onload  = () => resolve(!!window.SlideRendererRegistry.get(key));
-    s.onerror = () => resolve(false);
-    document.head.appendChild(s);
-  });
+  // Rutas candidatas según convención de carpetas
+  const candidateUrls = (() => {
+    const urls = [];
+    if (key.startsWith('actividad-deuda-')) {
+      urls.push(`../renderers/deuda/actividad-1/${key}.js`);
+    } else if (key.startsWith('actividad-ahorro-')) {
+      urls.push(`../renderers/ahorro/actividad-1/${key}.js`);
+    }
+
+    // Comunes
+    urls.push(`../renderers/common/${key}.js`);
+
+    // Legacy raíz (compatibilidad)
+    urls.push(`../renderers/${key}.js`);
+    return urls;
+  })();
+
+  const loadSequential = (urls, idx = 0) => {
+    if (idx >= urls.length) return Promise.resolve(false);
+    return new Promise((resolve) => {
+      const s = document.createElement('script');
+      s.src = urls[idx];
+      s.async = true;
+      s.onload  = () => resolve(!!window.SlideRendererRegistry.get(key));
+      s.onerror = () => resolve(false);
+      document.head.appendChild(s);
+    }).then((ok) => ok ? true : loadSequential(urls, idx + 1));
+  };
+
+  __SLIDE_RENDERER_LOADS__[key] = loadSequential(candidateUrls);
   return __SLIDE_RENDERER_LOADS__[key];
 }
 
