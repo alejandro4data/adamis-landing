@@ -3,7 +3,7 @@
 // (Contraste reducido + limpieza de modo "Fin")
 // =====================================================
 
-(function ensureTutorialStyles(){
+(function ensureTutorialStyles(){ 
   const ID = 'deuda-11t-style'; if (document.getElementById(ID)) return;
   const css = document.createElement('style'); css.id = ID;
   css.textContent = `
