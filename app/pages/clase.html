@@ -6,6 +6,13 @@
   <title>Clase</title>
   <link rel="stylesheet" href="../style.css" />
   <link rel="preload" as="image" href="../assets/images/instrucciones.avif">
+  <style>
+    /* Oculta flecha de atrás y botón de salir solo cuando una clase está cargada */
+    html.class-loaded .back-integrated,
+    html.class-loaded .logout-integrated {
+      display: none !important;
+    }
+  </style>
 
 
   <!-- Core y motor -->
@@ -49,6 +56,8 @@
       }
 
       function buildUI(sets) {
+        // Al volver al selector, vuelve a mostrar los botones globales
+        document.documentElement.classList.remove('class-loaded');
         const root = document.getElementById('slide-root');
         // Limpia cualquier placeholder anterior
         root.querySelectorAll('.slide').forEach(n => n.remove());
@@ -89,6 +98,8 @@
       }
 
       function loadSet(kind) {
+        // Marca que ya estamos dentro de una clase cargada
+        document.documentElement.classList.add('class-loaded');
         window.slides = [];
         document.querySelectorAll('script[data-slide-set]').forEach(s => s.remove());
         document.querySelectorAll('#slide-root .empty-state').forEach(n => n.remove());

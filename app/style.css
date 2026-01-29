@@ -1591,20 +1591,39 @@ html[data-page="clase"] .slide.tpl--cuadro-reflexion{
   left: clamp(12px, 1.5vw, 18px);
   bottom: clamp(12px, 1.5vw, 18px);
   width: min(280px, 38%);
+  display: grid;
+  gap: 6px;
+}
+.reflexion-progress::before{
+  content:"";
+  display: block;
   height: 6px;
   border-radius: 999px;
   background: rgba(16,24,40,.08);
   box-shadow: inset 0 1px 2px rgba(16,24,40,.18);
-  overflow: hidden;
 }
 .reflexion-progress__bar{
-  height: 100%;
+  height: 6px;
   width: 0%;
+  border-radius: 999px;
   background: linear-gradient(90deg, #f59e0b, #22c55e);
   transition: width .25s ease;
 }
+.reflexion-progress__bar.is-low{
+  background: linear-gradient(90deg, #ef4444, #b91c1c);
+}
+.reflexion-progress__bar.is-warn{
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+}
 .reflexion-progress__bar.is-ok{
   background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+.reflexion-progress__label{
+  display: inline-block;
+  margin-top: 6px;
+  font-weight: 800;
+  font-size: 12px;
+  color: #0f172a;
 }
 
 
@@ -2719,8 +2738,53 @@ html[data-page="clase"] .slide.act-ahorro .act-left .goal-target__icon{
   color: #6b4e00;
 }
 
-/* “Ver término” abajo-dcha en el frontal */
-.ti-btn--ask{ position: absolute; right: 16px; bottom: 16px; }
+/* Frente clicable del término */
+.term-front-clickable{
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.term-front-clickable:focus-visible{
+  outline: 3px solid rgb(255 193 59 / 70%);
+  outline-offset: 4px;
+  box-shadow: 0 14px 30px rgb(0 0 0 / 16%);
+}
+.term-front-clickable:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 18px 32px rgb(0 0 0 / 14%);
+}
+
+.term-card.tease{
+  animation: cardPulse 2s ease-in-out infinite;
+  will-change: transform, box-shadow;
+}
+.term-card.tease:hover,
+.term-card.tease:focus-within{
+  animation-play-state: paused;
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 20px 36px rgb(0 0 0 / 16%), inset 0 1px 0 rgb(255 255 255 / 60%);
+}
+@keyframes cardPulse{
+  0%   { transform: scale(1);       box-shadow: 0 14px 30px rgb(0 0 0 / 10%); }
+  50%  { transform: scale(1.07);   box-shadow: 0 18px 36px rgb(0 0 0 / 16%); }
+  100% { transform: scale(1);       box-shadow: 0 14px 30px rgb(0 0 0 / 10%); }
+}
+.term-hint{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffef99 0%, #ffd768 100%);
+  color: #6b4e00;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgb(255 193 59 / 24%), inset 0 1px 0 rgb(255 255 255 / 70%);
+}
+.term-hint::before{
+  content:"⇩";
+  font-weight: 900;
+  font-size: 16px;
+  translate: 0 -1px;
+}
 
 /* Acciones (trasera) pegadas abajo-derecha */
 .ti-back-actions{

@@ -82,7 +82,7 @@
 
     // Tarjeta de cristal + flip
     const card = document.createElement('article');
-    card.className = 'term-card';
+    card.className = 'term-card tease';
     if (s.goldGradient) setVar(card, '--gold-grad', s.goldGradient);
 
     const inner = document.createElement('div');
@@ -90,15 +90,16 @@
 
     // Cara delantera: término + botón "¿Qué significa?"
     const front = document.createElement('div');
-    front.className = 'term-card__face term-card__front';
+    front.className = 'term-card__face term-card__front term-front-clickable';
+    front.setAttribute('role','button');
+    front.setAttribute('tabindex','0');
     const termEl = document.createElement('h3');
     termEl.className = 'term-word';
     termEl.textContent = 'Término Especial';
-    const askBtn = document.createElement('button');
-    askBtn.type = 'button';
-    askBtn.className = 'ti-btn ti-btn--ghost ti-btn--ask';
-    askBtn.textContent = 'Ver término';
-    front.append(termEl, askBtn);
+    const hint = document.createElement('div');
+    hint.className = 'term-hint';
+    hint.textContent = 'Pulsa para ver';
+    front.append(termEl, hint);
 
     // Cara trasera: definición + botón "Volver"
     const back = document.createElement('div');
@@ -164,23 +165,33 @@
 
     // ===================== WIRING =====================
     function showContinue(v){
-        contBtn.style.display = v ? 'inline-flex' : 'none';  // <-- antes era ''
+        contBtn.style.display = v ? 'inline-flex' : 'none';
         contBtn.setAttribute('aria-hidden', v ? 'false' : 'true');
     }
 
-    askBtn.addEventListener('click', (ev) => {
-        ev.stopPropagation();
+    function flipToBack(ev){
+        if (ev) ev.stopPropagation();
         card.classList.add('is-flipped');
-        showContinue(true);        // <— se muestra cuando damos la vuelta
-        askBtn.style.display = 'none';
+        showContinue(true);
+        card.classList.remove('tease');
+    }
+
+    function flipToFront(ev){
+        if (ev) ev.stopPropagation();
+        card.classList.remove('is-flipped');
+        showContinue(false);
+    }
+
+    const activateKeys = ['Enter',' '];
+    front.addEventListener('click', flipToBack);
+    front.addEventListener('keydown', (ev) => {
+      if (activateKeys.includes(ev.key)){
+        ev.preventDefault();
+        flipToBack(ev);
+      }
     });
 
-    backBtn.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-        card.classList.remove('is-flipped');
-        showContinue(false);       // <— se oculta al volver al frente
-        askBtn.style.display = '';
-    });
+    backBtn.addEventListener('click', flipToFront);
 
     // El engine nos pasa onAdvance: lo disparamos SOLO desde "Continuar"
     function bindControls(onAdvance){

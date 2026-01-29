@@ -26,7 +26,8 @@
     ta.spellcheck = true;
     ta.autocapitalize = 'sentences';
     ta.autocomplete = 'off';
-    if (typeof s.maxChars === 'number' && s.maxChars > 0) ta.maxLength = s.maxChars;
+    const MAX_CHARS = 500;
+    ta.maxLength = MAX_CHARS;
     if (s.value) ta.value = String(s.value);
     box.appendChild(ta);
 
@@ -34,7 +35,9 @@
     prog.className = 'reflexion-progress';
     const progBar = document.createElement('div');
     progBar.className = 'reflexion-progress__bar';
-    prog.appendChild(progBar);
+    const progLabel = document.createElement('span');
+    progLabel.className = 'reflexion-progress__label';
+    prog.append(progBar, progLabel);
     box.appendChild(prog);
     wrap.appendChild(box);
 
@@ -43,27 +46,31 @@
     meta.className = 'reflexion-meta';
     const count = document.createElement('span');
     count.className = 'reflexion-count';
-    const minChars = Number(s.minChars || 0);
-    const maxChars = Number(s.maxChars || 0);
+    const minChars = 0;
+    const maxChars = MAX_CHARS;
 
     function refreshCount(){
       const len = ta.value.length;
       count.textContent = maxChars > 0 ? `${len}/${maxChars}` : `${len} caracteres`;
-      const target = (minChars > 0) ? minChars : (maxChars > 0 ? maxChars : 500);
-      const p = Math.max(0, Math.min(1, len / target));
+      const p = Math.max(0, Math.min(1, len / maxChars));
       if (progBar){
         progBar.style.width = Math.round(p * 100) + '%';
-        progBar.classList.toggle('is-ok', (minChars > 0 && len >= minChars));
+        progBar.classList.remove('is-low','is-warn','is-ok');
+        if (len < 15){
+          progBar.classList.add('is-low');
+          progLabel.textContent = 'Respuesta muy corta';
+        } else if (len < 40){
+          progBar.classList.add('is-warn');
+          progLabel.textContent = 'Longitud aceptable';
+        } else {
+          progBar.classList.add('is-ok');
+          progLabel.textContent = 'Buena longitud de respuesta';
+        }
       }
     }
     refreshCount();
 
-    const minNote = document.createElement('span');
-    minNote.className = 'reflexion-min';
-    if (minChars > 0) minNote.textContent = `Mínimo ${minChars} caracteres.`;
-
     meta.appendChild(count);
-    meta.appendChild(minNote);
     wrap.appendChild(meta);
 
     // Acciones
@@ -74,12 +81,6 @@
     status.className = 'reflexion-status';
     actions.appendChild(status);
 
-    const btnSkip = document.createElement('button');
-    btnSkip.type = 'button';
-    btnSkip.className = 'btn btn--ghost';
-    btnSkip.textContent = s.skipText || 'Omitir';
-    if (s.allowSkip === false) btnSkip.style.display = 'none';
-
     const btnEval = document.createElement('button');
     btnEval.type = 'button';
     btnEval.className = 'btn btn--primary';
@@ -87,7 +88,6 @@
 
     const btnsRight = document.createElement('div');
     btnsRight.className = 'reflexion-actions__right';
-    btnsRight.appendChild(btnSkip);
     btnsRight.appendChild(btnEval);
     actions.appendChild(btnsRight);
 
@@ -99,7 +99,6 @@
 
     function setBusy(v){
       btnEval.disabled = v;
-      btnSkip.disabled = v;
       actions.classList.toggle('is-busy', v);
       status.textContent = v ? 'Evaluando…' : '';
       status.classList.toggle('is-error', false);
@@ -109,12 +108,6 @@
       btnEval.addEventListener('click', async (ev) => {
         ev.stopPropagation();
         const answer = ta.value.trim();
-
-        if (minChars > 0 && answer.length < minChars){
-          status.textContent = `Añade al menos ${minChars - answer.length} caracteres para completar tu reflexión.`;
-          status.classList.add('is-error');
-          return;
-        }
 
         status.classList.remove('is-error');
         setBusy(true);
@@ -157,11 +150,6 @@
           setBusy(false);
           if (s.advanceOnSubmit !== false && typeof onAdvance === 'function') onAdvance();
         }
-      });
-
-      btnSkip.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-        if (typeof onAdvance === 'function') onAdvance();
       });
 
       if (s.autoFocus !== false){
