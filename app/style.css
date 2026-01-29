@@ -3794,3 +3794,88 @@ html.has-topbar .fit-stage{ height: calc(100vh - var(--topbar-h, 64px)); } */
   transform: translateX(-50%);
   bottom: 0px; /* o tu valor */
 }
+.tpl--boton-unico{
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background: var(--bg);
+  padding: clamp(16px, 3vw, 28px);
+}
+.single-btn{
+  appearance: none;
+  cursor: pointer;
+  border: none;
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+  min-width: clamp(220px, 48vw, 420px);
+  max-width: min(92vw, 640px);
+  padding: clamp(20px, 4.8vw, 30px) clamp(32px, 10vw, 52px);
+  line-height: 1.25;
+  font-weight: 900;
+  font-size: clamp(20px, 4.2vw, 30px);
+  letter-spacing: .2px;
+  background: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
+  color: #ffffff;
+  box-shadow:
+    0 18px 42px rgb(0 0 0 / 18%),
+    inset 0 1px 0 rgb(255 255 255 / 55%);
+  position: relative;
+  overflow: hidden;
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+  animation: ctaPulse 2.4s ease-in-out infinite;
+}
+.single-btn:hover,
+.single-btn:focus-visible{
+  transform: translateY(-2px) scale(1.01);
+  box-shadow:
+    0 22px 52px rgb(0 0 0 / 24%),
+    inset 0 1px 0 rgb(255 255 255 / 60%);
+  animation-play-state: paused;
+}
+.single-btn:focus-visible{
+  outline: 3px solid rgb(34 197 94 / 70%);
+  outline-offset: 6px;
+}
+.single-btn:active{
+  transform: translateY(0) scale(.995);
+}
+.single-btn::after{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius: inherit;
+  background: radial-gradient(circle at center, rgb(255 255 255 / 32%), transparent 55%);
+  opacity: 0;
+  animation: ctaHalo 1.8s ease-out infinite;
+  pointer-events: none;
+}
+.single-btn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(120deg, transparent 0%, transparent 45%, rgb(255 255 255 / 48%) 50%, transparent 55%, transparent 100%);
+  transform: translateX(-120%);
+  animation: ctaSheen 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ctaPulse{
+  0%   { transform: scale(1);     box-shadow: 0 18px 42px rgb(0 0 0 / 18%), inset 0 1px 0 rgb(255 255 255 / 55%); }
+  50%  { transform: scale(1.025); box-shadow: 0 22px 50px rgb(0 0 0 / 22%), inset 0 1px 0 rgb(255 255 255 / 60%); }
+  100% { transform: scale(1);     box-shadow: 0 18px 42px rgb(0 0 0 / 18%), inset 0 1px 0 rgb(255 255 255 / 55%); }
+}
+@keyframes ctaHalo{
+  0%   { opacity: 0.55; transform: scale(0.94); }
+  70%  { opacity: 0;    transform: scale(1.12); }
+  100% { opacity: 0;    transform: scale(1.15); }
+}
+@keyframes ctaSheen{
+  0%, 8%   { transform: translateX(-120%); }
+  22%      { transform: translateX(120%); }
+  100%     { transform: translateX(120%); }
+}

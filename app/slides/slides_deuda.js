@@ -733,4 +733,7 @@ window.slides.push(
 );
 
 
-window.slides.push( SlideTituloClase({ titulo: '¡Muchas Gracias!' }) );
+window.slides.push( SlideBotonUnico({ 
+  texto:'Volver al menú',
+  action: 'menu' }) 
+);

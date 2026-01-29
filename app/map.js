@@ -104,6 +104,8 @@ const CURRENT_LEVEL = 7; // <--- cámbialo dinámicamente según tu lógica
   // Precreamos los nodos 1..N (como ya hacías) y luego les aplicamos la config JSON
   const nodeRefs = []; // guardamos referencia a cada <a.node> por nivel
 
+  const LOCKED_MAX_LEVEL = 5; // niveles 1..5 no son interactivos
+
   POINTS.forEach(([x, y], idx) => {
     const i = idx + 1; // nivel 1..18
 
@@ -154,8 +156,13 @@ const CURRENT_LEVEL = 7; // <--- cámbialo dinámicamente según tu lógica
     g.addEventListener("mouseenter", preloadInstrucciones, { passive: true });
     g.addEventListener("touchstart", preloadInstrucciones, { passive: true });
 
-    // Click: precarga y navega con micro-delay para evitar el "flash"
+    // Click: precarga y navega (salvo niveles bloqueados 1..5)
     g.addEventListener("click", (ev) => {
+      if (i <= LOCKED_MAX_LEVEL) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        return;
+      }
       preloadInstrucciones();
 
       const href =

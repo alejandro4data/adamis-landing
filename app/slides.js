@@ -264,6 +264,17 @@ function SlideEncuesta({
   };
 }
 
+// ---------- NUEVA: Botón único centrado ----------
+// Uso: window.slides.push(SlideBotonUnico({ texto:'Volver al menú', action:'menu' }));
+// action: 'menu' | 'next' (default)
+function SlideBotonUnico({ texto, text, label, action, comportamiento } = {}){
+  return {
+    tipo: 'boton-unico',
+    label: label ?? texto ?? text ?? '',
+    action: action ?? comportamiento ?? 'next'
+  };
+}
+
 function SlideEncuestaOpcionMultiple({ id, pregunta, options, opciones, shuffle, required = true, allowSkip = false, advanceOnSubmit = true, submitText, skipText, onSubmit } = {}){
   return SlideEncuesta({ id, mode: 'choice', pregunta, options: options ?? opciones, shuffle, required, allowSkip, advanceOnSubmit, submitText, skipText, onSubmit });
 }
