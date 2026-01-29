@@ -1047,7 +1047,7 @@ window.slides.push( SlideBotonUnico({
   action: 'menu' }) 
 );
 
-window.slides.push( SlideTituloClase({ titulo: '¡Muchas Gracias!' }) );
+// window.slides.push( SlideTituloClase({ titulo: '¡Muchas Gracias!' }) );
 
 /*
 
