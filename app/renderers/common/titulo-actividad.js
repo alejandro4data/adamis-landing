@@ -3,6 +3,25 @@
 
   SlideRendererRegistry.register('titulo-actividad', function(s, root, ctx){
     const { makeHint, CONT_LABEL } = ctx;
+    const bindAdvance = (window.RendererUtils && window.RendererUtils.bindAdvance) || function(node, onAdvance){
+      if (!node || typeof onAdvance !== 'function') return;
+      let advanced = false;
+      node.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        if (advanced) return;
+        advanced = true;
+        onAdvance();
+      }, { once: true });
+      node.addEventListener('keydown', (ev) => {
+        if (ev.code === 'Space' || ev.code === 'Enter'){
+          ev.preventDefault();
+          ev.stopPropagation();
+          if (advanced) return;
+          advanced = true;
+          onAdvance();
+        }
+      });
+    };
 
     root.classList.add('tpl--titulo-actividad');
     const box = document.createElement('div');
@@ -34,26 +53,7 @@
       noLock: true,
       suppressRootClick: true,   // ← clave para que app.js no añada el click del root
       bindControls(onAdvance){
-        let advanced = false;
-
-        // CLICK EN CUALQUIER PARTE DE LA SLIDE (root)
-        root.addEventListener('click', (ev) => {
-          ev.stopPropagation();
-          if (advanced) return;
-          advanced = true;
-          onAdvance();
-        }, { once: true });
-
-        // TECLAS ACCESIBLES (espacio/enter) en la slide
-        root.addEventListener('keydown', (ev) => {
-          if (ev.code === 'Space' || ev.code === 'Enter'){
-            ev.preventDefault();
-            ev.stopPropagation();
-            if (advanced) return;
-            advanced = true;
-            onAdvance();
-          }
-        });
+        bindAdvance(root, onAdvance);
       }
 
     };

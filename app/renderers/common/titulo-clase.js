@@ -3,6 +3,25 @@
 
   SlideRendererRegistry.register('titulo-clase', function(s, root, ctx){
     const { makeHint, CONT_LABEL } = ctx;
+    const bindAdvance = (window.RendererUtils && window.RendererUtils.bindAdvance) || function(node, onAdvance){
+      if (!node || typeof onAdvance !== 'function') return;
+      let advanced = false;
+      node.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        if (advanced) return;
+        advanced = true;
+        onAdvance();
+      }, { once: true });
+      node.addEventListener('keydown', (ev) => {
+        if (ev.code === 'Space' || ev.code === 'Enter'){
+          ev.preventDefault();
+          ev.stopPropagation();
+          if (advanced) return;
+          advanced = true;
+          onAdvance();
+        }
+      });
+    };
 
     root.classList.add('tpl--titulo-clase');
 
@@ -66,26 +85,7 @@
       noLock: true,
       suppressRootClick: true,   // ← clave para evitar doble avance del handler global
       bindControls(onAdvance){
-        let advanced = false;
-
-        // CLICK EN CUALQUIER PARTE DE LA SLIDE (root)
-        root.addEventListener('click', (ev) => {
-          ev.stopPropagation();            // no dejes que burbujee
-          if (advanced) return;            // guard anti-múltiples clics
-          advanced = true;
-          onAdvance();
-        }, { once: true });                 // además, que solo se atienda el primer click
-
-        // TECLAS ACCESIBLES (espacio/enter) a nivel de slide
-        root.addEventListener('keydown', (ev) => {
-          if (ev.code === 'Space' || ev.code === 'Enter'){
-            ev.preventDefault();
-            ev.stopPropagation();
-            if (advanced) return;
-            advanced = true;
-            onAdvance();
-          }
-        });
+        bindAdvance(root, onAdvance);
       }
 
     };
