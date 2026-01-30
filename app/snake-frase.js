@@ -26,9 +26,10 @@
   // ---------- Config ----------
   const GRID = 12;
   const CSS_MAX = 440;
-  const STEP_MS = 160;
-  const STEP_MIN = 130;
-  const COIN_ACCEL = 0;
+  const STEP_MS = 190;
+  const STEP_MIN = 150;
+  const COIN_ACCEL = 3;
+  const EAT_ACCEL = 2;
 
   // Retina / escala
   let DPR = Math.max(1, window.devicePixelRatio || 1);
@@ -146,9 +147,25 @@
   // ---------- Canvas / DPI ----------
   function resizeCanvas(){
     DPR = Math.max(1, window.devicePixelRatio || 1);
-    const PADDING = 16;
-    const availW = Math.max(200, window.innerWidth  - PADDING * 2);
-    const availH = Math.max(200, window.innerHeight - PADDING * 2);
+    const wrap = document.querySelector('.snake-wrap');
+    const headerEl = document.querySelector('.snake-header');
+    const helpEl = document.querySelector('.snake-help');
+    const pillEl = document.querySelector('.phrase-pill');
+    const ctaEl = document.querySelector('.snake-cta');
+
+    const wrapStyle = wrap ? getComputedStyle(wrap) : null;
+    const padY = wrapStyle
+      ? (parseFloat(wrapStyle.paddingTop) || 0) + (parseFloat(wrapStyle.paddingBottom) || 0)
+      : 0;
+
+    const headerH = headerEl ? headerEl.offsetHeight : 0;
+    const helpH = helpEl ? helpEl.offsetHeight : 0;
+    const pillH = pillEl ? pillEl.offsetHeight : 0;
+    const ctaH = ctaEl ? ctaEl.offsetHeight : 0;
+    const cardGap = 24; // margen/gap interno estimado
+
+    const availW = Math.max(200, window.innerWidth  - 32);
+    const availH = Math.max(200, window.innerHeight - headerH - helpH - padY - pillH - ctaH - cardGap);
     const cssSide = Math.floor(Math.min(CSS_MAX, availW, availH));
     canvas.style.width = cssSide+'px';
     canvas.style.height= cssSide+'px';
@@ -280,6 +297,7 @@
 
       // la serpiente crece siempre que come
       length++;
+      stepMs = Math.max(STEP_MIN, stepMs - EAT_ACCEL);
 
       if (completed){
         // Mostrar cinemática y NO generar nuevo target aún

@@ -149,8 +149,21 @@ function SlideActividadAhorro11({
   };
 }
 
-function SlideActividadAhorro12({ text, image, alt, duration = 900, advanceAfter = 0, showGoal, goal, goalAmount, objetivo } = {}){
-  return { tipo: 'actividad-ahorro-1-2', text, image, alt, duration, advanceAfter, showGoal, goal: goal ?? goalAmount ?? objetivo };
+function SlideActividadAhorro12({
+  text, image, alt,
+  duration = 900, advanceAfter = 0,
+  showGoal, goal, goalAmount, objetivo,
+  showContinueButton, continueText
+} = {}){
+  return {
+    tipo: 'actividad-ahorro-1-2',
+    text, image, alt,
+    duration, advanceAfter,
+    showGoal,
+    goal: goal ?? goalAmount ?? objetivo,
+    showContinueButton,
+    continueText
+  };
 }
 
 function SlideActividadAhorro13({ text, image, alt, paga = 0, duration = 800, advanceAfter = 0, showGoal, goal, goalAmount, objetivo } = {}){
@@ -191,8 +204,8 @@ function SlideActividadDeuda1s({ text, image, alt, event } = {}){
   return { tipo: 'actividad-deuda-1s', text, image, alt, event };
 }
 
-function SlideActividadDeuda14({ text, image, alt, event } = {}){
-  return { tipo: 'actividad-deuda-1-4', text, image, alt, event };
+function SlideActividadDeuda14({ text, image, alt, event, showContinueButton, continueText } = {}){
+  return { tipo: 'actividad-deuda-1-4', text, image, alt, event, showContinueButton, continueText };
 }
 
 function SlideActividadDeuda11Tutorial({ text, image, alt, event, tutorial } = {}) {

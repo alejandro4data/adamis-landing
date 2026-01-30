@@ -242,6 +242,18 @@ function ensureRendererLoaded(tipo){
 
   const IS_TOUCH   = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
   const CONT_LABEL = IS_TOUCH ? 'Toca para continuar' : 'Haz clic para continuar';
+  const CLASS_LEVEL_BY_ID = { ahorro: 6, deuda: 7 };
+  const classIdFromUrl = () => {
+    try { return new URLSearchParams(window.location.search).get('clase') || ''; }
+    catch (_) { return ''; }
+  };
+  const getActiveClassId = () => String(window.CURRENT_CLASS || classIdFromUrl()).toLowerCase();
+  const markClassCompletedIfNeeded = (idx, total) => {
+    if (total <= 0 || idx !== total - 1) return;
+    const level = CLASS_LEVEL_BY_ID[getActiveClassId()];
+    if (!level) return;
+    try { localStorage.setItem(`class_completed_${level}`, 'true'); } catch (_) {}
+  };
 
   // ----- utils -----
   const clear = (n) => { while (n.firstChild) n.removeChild(n.firstChild); };
@@ -408,6 +420,8 @@ function ensureRendererLoaded(tipo){
     }
 
 
+
+    markClassCompletedIfNeeded(i, slides.length);
 
     const s0 = slides[i] || {};
     const s = Object.assign({}, s0);

@@ -16,6 +16,8 @@ SlideRendererRegistry.register('actividad-deuda-1-4', function (s, root) {
 
   // === Resolver capPct (umbral) ===
   const ev = s?.event || {};
+  const wantsCTA = Boolean(s.showContinueButton);
+  const continueText = s.continueText || 'Continuar';
   const capFromEvent = Number((ev.impatience && ev.impatience.capPct) ?? undefined);
   const lastCap = (st.fx && Number.isFinite(st.fx.impatienceCap)) ? Number(st.fx.impatienceCap) : undefined;
   const CAP_PCT = Number.isFinite(capFromEvent) ? capFromEvent : (Number.isFinite(lastCap) ? lastCap : 70);
@@ -52,14 +54,23 @@ const success = underCap && !hasPrestamosPendientes;
   root.appendChild(header);
   root.appendChild(body);
 
+  let ctaBtn = null;
+  if (wantsCTA){
+    root.classList.add('deuda-cta-has-continue');
+    const ctaWrap = H.el('div', { className: 'deuda-cta-actions' });
+    ctaBtn = H.el('button', { className: 'btn-option deuda-cta-continue', type: 'button' }, H.txt(continueText));
+    ctaWrap.appendChild(ctaBtn);
+    body.appendChild(ctaWrap);
+  }
+
   // Click normal en cualquier parte de la slide para finalizar
   if (window.SlideActions && typeof SlideActions.next === 'function') {
     let sent = false;
 
     root.style.cursor = 'pointer';
 
-    root.addEventListener('click', (e) => {
-      // Evitar doble envío por clicks múltiples
+    const finalize = () => {
+      // Evitar doble envio por clicks multiples
       if (sent) return;
       sent = true;
 
@@ -75,7 +86,18 @@ const success = underCap && !hasPrestamosPendientes;
       }));
 
       SlideActions.next();
+    };
+
+    root.addEventListener('click', () => {
+      finalize();
     }, { once: true });
+
+    if (ctaBtn){
+      ctaBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        finalize();
+      }, { once: true });
+    }
   }
 
 
@@ -94,6 +116,42 @@ const success = underCap && !hasPrestamosPendientes;
       .cierre-stage  { height:clamp(400px, 85vh, 900px); width:100%; display:flex; align-items:center; justify-content:center; }
       .cierre-imagen { max-width:100%; max-height:100%; object-fit:contain; display:block; }
       .fwx-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events:none; z-index: 9999; }
+      .tpl--actividad-deuda.deuda-cta-has-continue{ position:relative; }
+      .deuda-cta-actions{
+        position:absolute;
+        left:clamp(18px, 3vw, 36px);
+        bottom:clamp(18px, 3vw, 36px);
+        display:flex;
+        align-items:flex-end;
+        justify-content:flex-start;
+        padding:0;
+        pointer-events:auto;
+      }
+      .deuda-cta-continue{
+        width:min(460px,92%);
+        margin:18px 0 6px;
+        padding:18px 26px;
+        border-radius:16px;
+        border:none;
+        background:linear-gradient(135deg,#1fe4a8,#12b0ff);
+        color:#06202e;
+        font-weight:800;
+        font-size:20px;
+        letter-spacing:.1px;
+        box-shadow:0 10px 30px rgba(0,0,0,.16);
+        cursor:pointer;
+        transition:transform .12s ease, box-shadow .12s ease, filter .15s ease;
+        animation: deuda-cta-pulse 1.6s ease-in-out infinite;
+      }
+      .deuda-cta-continue:hover{ transform:translateY(-2px) scale(1.01); box-shadow:0 14px 36px rgba(0,0,0,.18); filter:brightness(.98); }
+      .deuda-cta-continue:active{ transform:translateY(0); box-shadow:0 8px 22px rgba(0,0,0,.18); }
+      @media (max-width: 820px){
+        .cierre-body{ flex-direction: column; }
+      }
+      @keyframes deuda-cta-pulse{
+        0%,100%{ transform:scale(1); }
+        50%{ transform:scale(1.05); }
+      }
     `;
     document.head.appendChild(css);
   })();

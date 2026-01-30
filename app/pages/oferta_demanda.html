@@ -1,0 +1,256 @@
+﻿<!doctype html>
+<html lang="es" data-page="actividades">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oferta y demanda</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main>
+    <section id="oferta-demanda" class="section section--actividades is-active" aria-label="Oferta y demanda">
+      <div class="container od-wrap" data-role="content" id="od-game">
+        <a class="btn back-integrated" href="./actividades.html" aria-label="Atras" title="Atras"></a>
+
+        <header class="od-header">
+          <div>
+            <h1 class="od-title">Oferta y demanda</h1>
+            <p class="od-subtitle">Simulador educativo de una heladeria: ajusta stock y precios segun el clima.</p>
+          </div>
+          <div class="reward-badge">
+            <img src="../assets/icons/coin_ranking.png" alt="" />
+            <span>5</span>
+          </div>
+        </header>
+
+        <nav class="od-steps" aria-label="Fases del dia">
+          <span class="od-step is-active" data-step="prep">Preparacion</span>
+          <span class="od-step" data-step="sim">Simulacion</span>
+          <span class="od-step" data-step="summary">Balance</span>
+        </nav>
+
+        <section class="od-screen od-screen--prep is-active" id="od-screen-prep" aria-live="polite">
+          <div class="od-prep-grid">
+            <article class="od-card od-forecast">
+              <div class="od-forecast-icon" id="od-weather-icon">&#9728;</div>
+              <div class="od-forecast-body">
+                <span class="od-pill" id="od-weather-label">Soleado</span>
+                <h2 class="od-forecast-temp"><span id="od-weather-temp">30</span>&deg;C</h2>
+                <p class="od-muted" id="od-weather-tip">Dia ideal para vender helados.</p>
+              </div>
+            </article>
+
+            <article class="od-card od-stock">
+              <h2 class="od-card-title">Compra de stock</h2>
+              <div class="od-row">
+                <span class="od-label">Capital inicial</span>
+                <strong id="od-initial-money">$50.00</strong>
+              </div>
+              <input class="od-range" type="range" id="od-stock-range" min="0" max="100" step="1" value="0" />
+              <div class="od-row">
+                <span class="od-label">Unidades</span>
+                <strong id="od-stock-value">0</strong>
+              </div>
+              <div class="od-row">
+                <span class="od-label">Costo total</span>
+                <strong id="od-stock-cost">$0.00</strong>
+              </div>
+              <div class="od-row od-row--highlight">
+                <span class="od-label">Dinero restante</span>
+                <strong id="od-cash-remaining">$50.00</strong>
+              </div>
+            </article>
+
+            <article class="od-card od-price">
+              <h2 class="od-card-title">Precio inicial</h2>
+              <div class="od-price-controls">
+                <button class="od-price-btn" id="od-price-down" type="button" aria-label="Bajar precio">-</button>
+                <div class="od-price-display" id="od-price-display">$2.50</div>
+                <button class="od-price-btn" id="od-price-up" type="button" aria-label="Subir precio">+</button>
+              </div>
+              <p class="od-muted">Ajusta segun el clima. Precio mas alto = mas ganancia, pero menos ventas.</p>
+            </article>
+          </div>
+
+          <div class="od-actions">
+            <button id="od-start" class="wdl-btn od-start" disabled>ABRIR TIENDA</button>
+          </div>
+        </section>
+
+        <section class="od-screen od-screen--sim" id="od-screen-sim">
+          <div class="od-sim-grid">
+            <div class="od-stage-card">
+              <div class="od-stage-info" id="od-stage-info">Soleado · 30&deg;C</div>
+              <div class="od-stage-control">
+                <button class="od-stage-btn" id="od-pause" type="button">Pausar</button>
+              </div>
+              <div class="od-stage" id="od-stage">
+                <div class="od-clouds"></div>
+                <div class="od-rain"></div>
+                <div class="od-ground"></div>
+                <div class="od-stand" id="od-stand">
+                  <div class="od-stand-roof"></div>
+                  <div class="od-stand-body">
+                    <span>HELADOS</span>
+                  </div>
+                </div>
+                <div class="od-lane" id="od-lane" aria-hidden="true"></div>
+                <div class="od-progress">
+                  <div class="od-progress-bar" id="od-progress-bar"></div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="od-sim-panel">
+              <div class="od-card od-hud">
+                <div class="od-hud-item">
+                  <span>Hora</span>
+                  <strong id="od-clock">08:00</strong>
+                </div>
+                <div class="od-hud-item" id="od-stock-hud">
+                  <span>Stock</span>
+                  <strong id="od-stock-live">0</strong>
+                </div>
+                <div class="od-hud-item">
+                  <span>Dinero</span>
+                  <strong id="od-cash-live">$0.00</strong>
+                </div>
+              </div>
+
+              <div class="od-card od-price-live">
+                <h2 class="od-card-title">Precio actual</h2>
+                <div class="od-price-controls od-price-controls--live">
+                  <button class="od-price-btn" id="od-live-price-down" type="button" aria-label="Bajar precio">-</button>
+                  <div class="od-price-display" id="od-live-price-display">$2.50</div>
+                  <button class="od-price-btn" id="od-live-price-up" type="button" aria-label="Subir precio">+</button>
+                </div>
+                <p class="od-muted">Cambia el precio en tiempo real segun la afluencia.</p>
+              </div>
+
+              <div class="od-card od-log">
+                <h2 class="od-card-title">Ultimo cliente</h2>
+                <p id="od-log">Listo para abrir.</p>
+              </div>
+
+              <div class="od-card od-legend-panel">
+                <h2 class="od-card-title">Perfiles de clientes</h2>
+                <ul class="od-legend-list od-legend-list--choices">
+                  <li class="od-legend-row">
+                    <button class="od-legend-btn" data-profile="impulsive" type="button">
+                      <span class="od-legend-swatch is-impulsive" aria-hidden="true"></span>
+                      <strong>Naranja · Impulsivo</strong>
+                    </button>
+                  </li>
+                  <li class="od-legend-row">
+                    <button class="od-legend-btn" data-profile="saver" type="button">
+                      <span class="od-legend-swatch is-saver" aria-hidden="true"></span>
+                      <strong>Azul · Ahorrador</strong>
+                    </button>
+                  </li>
+                  <li class="od-legend-row">
+                    <button class="od-legend-btn" data-profile="vip" type="button">
+                      <span class="od-legend-swatch is-vip" aria-hidden="true"></span>
+                      <strong>Púrpura · VIP</strong>
+                    </button>
+                  </li>
+                </ul>
+                <p class="od-muted">Toca un perfil para ver su forma de comprar.</p>
+              </div>
+            </aside>
+          </div>
+
+          <div class="od-legend-modal" id="od-legend-modal" aria-hidden="true">
+            <div class="od-legend-modal__backdrop" id="od-legend-backdrop"></div>
+            <div class="od-legend-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="od-legend-title">
+              <button class="od-legend-close" id="od-legend-close" type="button" aria-label="Cerrar perfiles">×</button>
+              <div class="od-legend-modal__body">
+                <span class="od-legend-swatch" id="od-legend-modal-swatch" aria-hidden="true"></span>
+                <div>
+                  <h3 class="od-legend-modal__title" id="od-legend-title">Perfil</h3>
+                  <p class="od-muted" id="od-legend-modal-desc"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="od-screen od-screen--summary" id="od-screen-summary">
+          <div class="od-summary-top">
+            <article class="od-card od-result">
+              <h2 id="od-result-title">Resultado</h2>
+              <div class="od-result-amount" id="od-result-amount">$0.00</div>
+              <p class="od-muted" id="od-result-sub">Balance del dia.</p>
+            </article>
+
+            <article class="od-card od-table">
+              <h2 class="od-card-title">Desglose financiero</h2>
+              <div class="od-row">
+                <span class="od-label">Dinero inicial</span>
+                <strong id="od-sum-initial">$0.00</strong>
+              </div>
+              <div class="od-row">
+                <span class="od-label">Gastos (stock)</span>
+                <strong id="od-sum-expense">$0.00</strong>
+              </div>
+              <div class="od-row">
+                <span class="od-label">Ingresos por ventas</span>
+                <strong id="od-sum-revenue">$0.00</strong>
+              </div>
+              <div class="od-row od-row--highlight">
+                <span class="od-label">Balance final</span>
+                <strong id="od-sum-final">$0.00</strong>
+              </div>
+              <p class="od-muted" id="od-waste-note"></p>
+            </article>
+          </div>
+
+          <div class="od-summary-charts">
+            <article class="od-card od-funnel">
+              <h2 class="od-card-title">Embudo de clientes</h2>
+              <div class="od-funnel-row">
+                <span class="od-label">Total</span>
+                <div class="od-funnel-bar"><div class="od-funnel-fill is-total" id="od-funnel-total"></div></div>
+                <strong id="od-funnel-total-text">0</strong>
+              </div>
+              <div class="od-funnel-row">
+                <span class="od-label">Compraron</span>
+                <div class="od-funnel-bar"><div class="od-funnel-fill is-buy" id="od-funnel-buy"></div></div>
+                <strong id="od-funnel-buy-text">0</strong>
+              </div>
+              <div class="od-funnel-row">
+                <span class="od-label">Muy caro</span>
+                <div class="od-funnel-bar"><div class="od-funnel-fill is-price" id="od-funnel-price"></div></div>
+                <strong id="od-funnel-price-text">0</strong>
+              </div>
+              <div class="od-funnel-row">
+                <span class="od-label">Sin stock</span>
+                <div class="od-funnel-bar"><div class="od-funnel-fill is-stock" id="od-funnel-stock"></div></div>
+                <strong id="od-funnel-stock-text">0</strong>
+              </div>
+            </article>
+
+            <article class="od-card od-hourly">
+              <h2 class="od-card-title">Rendimiento por hora</h2>
+              <div class="od-hourly-chart" id="od-hourly-chart"></div>
+              <div class="od-hourly-legend">
+                <span class="od-legend-item"><i class="od-swatch od-swatch--sale"></i>Ventas</span>
+                <span class="od-legend-item"><i class="od-swatch od-swatch--price"></i>Muy caro</span>
+                <span class="od-legend-item"><i class="od-swatch od-swatch--stock"></i>Sin stock</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="od-actions">
+            <button id="od-restart" class="wdl-btn">Jugar otro dia</button>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="../oferta_demanda.js"></script>
+</body>
+</html>
+
+
+

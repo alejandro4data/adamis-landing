@@ -10,7 +10,7 @@ window.slides.push( SlideTituloClase({ titulo: 'Introducción' }) );
 
 // Texto abajo, imagen ~80%, efecto y narrador
 window.slides.push( Slide({
-  text: 'Hola! Mi nombre es Adamis.',
+  text: '¡Hola de nuevo!',
   img: '../assets/deuda/escenas/escena1.avif',
   textPosition: 'bottom',
   imageFraction: '80%',
@@ -620,7 +620,9 @@ SlideActividadDeuda14({
     successImage: '../assets/deuda/actividades/actividad1-cierre-exito.avif',
     failText: 'Te has pasado del umbral o llegaste con impagos...',
     failImage: '../assets/deuda/actividades/actividad1-cierre-fracaso.avif'
-  }
+  },
+  showContinueButton: true,
+  continueText: 'Continuar'
 
 } 
 )
@@ -723,7 +725,7 @@ window.slides.push(
 window.slides.push(
   SlideEncuestaTexto({
     id: 'd_3',
-    pregunta: 'Cómo mejorarías la clase?',
+    pregunta: '¿Cómo mejorarías la clase?',
     placeholder: 'Escribe aquí tu respuesta...',
     minChars: 10,
     maxChars: 180,
