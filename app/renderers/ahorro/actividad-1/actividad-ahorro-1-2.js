@@ -20,6 +20,7 @@
   const clamp01 = (x)=> Math.max(0, Math.min(1, x));
   const clamp100 = (x)=> Math.max(0, Math.min(100, x));
   function zoneOf(h, {sp1, sp2}){ return h < sp1 ? 'red' : (h < sp2 ? 'orange' : 'green'); }
+  function fmtDelta(n){ const sign = n>0?'+':(n<0?'-':'±'); return `${sign}${Math.abs(n)}`; }
   function applyColorsForZone(el, z){
     const map = { red:'var(--pill-red, #ef4444)', orange:'var(--pill-orange, #f59e0b)', green:'var(--pill-green, #22c55e)' };
     const c = map[z] || map.green;
@@ -176,6 +177,30 @@
     function wire(onAdvance){
       animateNumber(ui.coins.querySelector('.coins-badge__num'), beforeCoins, afterCoins, dur);
       animateFill(beforeHappy, afterHappy, dur);
+      const deltaCoins = Math.round(afterCoins - beforeCoins);
+      if (deltaCoins < 0){
+        const wrap = ui.coins.parentElement;
+        if (wrap){
+          const bubble = document.createElement('div');
+          bubble.className = 'coins-float coins-float--neg';
+          bubble.textContent = fmtDelta(deltaCoins);
+          wrap.appendChild(bubble);
+          requestAnimationFrame(() => bubble.classList.add('is-on'));
+          setTimeout(() => bubble.remove(), 1400);
+        }
+      }
+      const deltaHappy = Math.round(afterHappy - beforeHappy);
+      if (deltaHappy !== 0){
+        const bubble = document.createElement('div');
+        bubble.className = 'happy-float';
+        bubble.textContent = fmtDelta(deltaHappy);
+        bubble.style.setProperty('--happy-float-bg', deltaHappy > 0
+          ? 'var(--pill-green, #22c55e)'
+          : 'var(--pill-red, #ef4444)');
+        ui.left.appendChild(bubble);
+        requestAnimationFrame(() => bubble.classList.add('is-on'));
+        setTimeout(() => bubble.remove(), 1400);
+      }
       setTimeout(() => {
         state.coins = afterCoins;
         state.happiness = afterHappy;

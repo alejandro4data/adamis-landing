@@ -310,8 +310,31 @@ function installFitToScreen(stageEl, targetEl, opts = {}){
       
       return btn;
     }
-    const btnL = btnFor(leftOpt,'left'); const btnR = btnFor(rightOpt,'right');
-    ui.footer.append(btnL, btnR);
+    function infoFor(opt){
+      const wrap = document.createElement('div');
+      wrap.className = 'act-action-info';
+      wrap.innerHTML = `
+        <div class="act-action-info__line">
+          <img class="act-action-info__icon" src="../assets/icons/coin_ranking.png" alt="Monedas">
+          <span class="act-action-info__delta">${fmtDelta(Number(opt.dCoins||0))}</span>
+        </div>
+        <div class="act-action-info__line">
+          <img class="act-action-info__icon" src="../assets/icons/felicidad.png" alt="Felicidad">
+          <span class="act-action-info__delta">${fmtDelta(Number(opt.dHappy||0))}</span>
+        </div>
+      `;
+      return wrap;
+    }
+
+    const btnL = btnFor(leftOpt,'left');
+    const btnR = btnFor(rightOpt,'right');
+    const wrapL = document.createElement('div');
+    wrapL.className = 'act-action';
+    wrapL.append(infoFor(leftOpt), btnL);
+    const wrapR = document.createElement('div');
+    wrapR.className = 'act-action';
+    wrapR.append(infoFor(rightOpt), btnR);
+    ui.footer.append(wrapL, wrapR);
 
     function select(side, opt, onAdvance){
       const rawNext = opt.nextImage || opt.image12 || opt.afterImage || opt.nextImg || null;
