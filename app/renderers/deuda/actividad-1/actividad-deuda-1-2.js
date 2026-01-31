@@ -161,19 +161,78 @@
       .recap-msg{ white-space:pre-line; text-align:center; }
 
       /* Coins */
-      .coins-wrap{ display:inline-flex; flex-direction:column; gap:6px; align-items:center; }
+      .coins-wrap{ display:inline-flex; flex-direction:column; gap:6px; align-items:center; position:relative; }
       .coins-badge{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;min-width:88px;border-radius:14px;background:linear-gradient(135deg,#ffd776,#f2b93a);box-shadow:0 6px 18px rgba(0,0,0,.08);font-weight:800;font-size:28px;color:#111827}
       .coins-badge__num{line-height:1}
       .coins-badge__icon{width:26px;height:26px;object-fit:contain}
 
       /* Impaciencia (sin margen-top propio; usa .align-top) */
-      .impatience-wrap{display:flex;flex-direction:column;gap:4px}
+      .impatience-wrap{display:flex;flex-direction:column;gap:4px;position:relative}
       .impatience-label{font-size:13px;color:#444;font-weight:600}
       .impatience-bar{position:relative;height:14px;border-radius:8px;overflow:hidden;background:#e0e0e0;box-shadow:inset 0 1px 3px rgba(0,0,0,.2)}
       .impatience-fill{height:100%;background:linear-gradient(90deg,#43a047,#2e7d32);width:0%}
       .impatience-fill.danger{background:linear-gradient(90deg,#e53935,#b71c1c)}
       .impatience-cap{position:absolute;top:0;bottom:0;width:3px;background:#111827;opacity:.4}
       .impatience-cap::after{content:'UMBRAL';position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:#11182799;letter-spacing:.4px}
+
+      /* Burbuja delta: saldo */
+      .tpl--actividad-deuda .coins-wrap .coins-float{
+        position:absolute;
+        top:-6px;
+        left:50%;
+        transform: translate(-50%, 0) scale(.96);
+        padding:10px 16px;
+        border-radius:999px;
+        background: var(--coins-float-bg, linear-gradient(135deg, #22c55e, #16a1b4));
+        color:#fff;
+        font-weight:900;
+        font-size:16px;
+        letter-spacing:.2px;
+        box-shadow:0 12px 22px rgba(0,0,0,.2);
+        opacity:0;
+        pointer-events:none;
+      }
+      .tpl--actividad-deuda .coins-wrap .coins-float.coins-float--neg{
+        --coins-float-bg: linear-gradient(135deg, #ef4444, #f97316);
+      }
+      .tpl--actividad-deuda .coins-wrap .coins-float.is-on{
+        animation: deudaCoinsFloat 1.45s ease-out forwards;
+      }
+      @keyframes deudaCoinsFloat{
+        0%   { transform: translate(-50%, 0) scale(.96); opacity: 0; }
+        20%  { transform: translate(-50%, -8px) scale(1.04); opacity: 1; }
+        100% { transform: translate(-50%, -40px) scale(1.08); opacity: 0; }
+      }
+
+      /* Burbuja delta: impaciencia */
+      .tpl--actividad-deuda .impatience-float{
+        position:absolute;
+        top:-8px;
+        right:-6px;
+        width:48px;
+        height:48px;
+        border-radius:999px;
+        background: var(--imp-float-bg, #22c55e);
+        color:#fff;
+        font-weight:900;
+        font-size:14px;
+        letter-spacing:.2px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        box-shadow:0 12px 22px rgba(0,0,0,.2);
+        opacity:0;
+        pointer-events:none;
+        transform: translate(0, 0) scale(.96);
+      }
+      .tpl--actividad-deuda .impatience-float.is-on{
+        animation: deudaImpFloat 1.45s ease-out forwards;
+      }
+      @keyframes deudaImpFloat{
+        0%   { transform: translate(0, 0) scale(.96); opacity: 0; }
+        20%  { transform: translate(0, -8px) scale(1.04); opacity: 1; }
+        100% { transform: translate(0, -40px) scale(1.08); opacity: 0; }
+      }
     `; document.head.appendChild(css);
   })();
 })();
@@ -254,6 +313,7 @@ SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
 
   const capPct = Number.isFinite(st.fx?.impatienceCap) ? Number(st.fx.impatienceCap) : 70;
   H.setImpatienceBar({ fillEl: impFill, capEl: impCap, valuePct: st.impatience || 0, capPct: capPct });
+  const fmtDelta = (n)=>{ const sign = n>0?'+':(n<0?'-':'±'); return `${sign}${Math.abs(n)}`; };
 
   const msgLines=[];
   msgLines.push(`\nHas cobrado tu paga semanal: ${H.formatEUR(paga)}.\n`);
@@ -336,6 +396,16 @@ SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
   // Animación saldo
   const msPerEuro=60, minMs=400, maxMs=2500;
   let saldoAnimFrom=prevSaldo, saldoAnimTo=st.saldo, startTs=null;
+  const deltaSaldo = Math.round(saldoAnimTo - saldoAnimFrom);
+  if (deltaSaldo !== 0 && saldoW?.node){
+    const bubble = document.createElement('div');
+    bubble.className = 'coins-float';
+    if (deltaSaldo < 0) bubble.classList.add('coins-float--neg');
+    bubble.textContent = fmtDelta(deltaSaldo);
+    saldoW.node.appendChild(bubble);
+    requestAnimationFrame(() => bubble.classList.add('is-on'));
+    setTimeout(() => bubble.remove(), 1400);
+  }
   function easeInOutCubic(x){ return x<0.5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2; }
   const duration=Math.max(minMs, Math.min(maxMs, Math.abs(saldoAnimTo - saldoAnimFrom) * msPerEuro));
   function stepSaldo(ts){ if(startTs===null) startTs=ts; const p=Math.min(1,(ts-startTs)/duration); const v=Math.round(saldoAnimFrom + (saldoAnimTo - saldoAnimFrom)*easeInOutCubic(p)); shownSaldo=v; saldoW.set(v); if(p<1){ requestAnimationFrame(stepSaldo);} else { shownSaldo=saldoAnimTo; saldoW.set(saldoAnimTo); window.ACT_DEUDA_LAST_SALDO = saldoAnimTo; } }

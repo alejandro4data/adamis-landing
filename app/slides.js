@@ -208,15 +208,9 @@ function SlideActividadDeuda14({ text, image, alt, event, showContinueButton, co
   return { tipo: 'actividad-deuda-1-4', text, image, alt, event, showContinueButton, continueText };
 }
 
-function SlideActividadDeuda11Tutorial({ text, image, alt, event, tutorial } = {}) {
+function SlideActividadDeuda11TutorialV2({ text, image, alt, event, tutorial } = {}) {
   return {
-    tipo: 'actividad-deuda-1-1-tutorial',
-    text, image, alt, event, tutorial
-  };
-}
-function SlideActividadDeuda11FinTutorial({ text, image, alt, event, tutorial } = {}) {
-  return {
-    tipo: 'actividad-deuda-1-1-fin-tutorial',
+    tipo: 'actividad-deuda-1-1-tutorial-v2',
     text, image, alt, event, tutorial
   };
 }

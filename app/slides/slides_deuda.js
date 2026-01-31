@@ -365,44 +365,28 @@ window.slides.push( Slide({
   narratorColor: '#16a1b4'
 }));
 
-window.slides.push(SlideActividadDeuda11Tutorial({
-  text: 'Primero, intenta rechazar la compra de algo que te apetece.',
-  event: { cost: 6, weeks: 8, loanWeeks: 2 },
-  tutorial: { step:'rechazar', text:'Pulsa Rechazar', block:true, autoNext:true}
-}));
-
-
-window.slides.push(SlideActividadDeuda11Tutorial({
-  text: 'Ahora intenta pagar 2 € para comprar algo que quieres.',
-  event: { cost: 2},
-  tutorial: { step:'pagar', text:'Pulsa “Pagar”', block:true, autoNext:true}
-}));
-
-window.slides.push(SlideActividadDeuda11Tutorial({
-  text: 'Pide un préstamo y compra algo que cuesta 5€.',
-  event: { cost: 5, weeks: 8, loanWeeks: 2 },
+window.slides.push(SlideActividadDeuda11TutorialV2({
+  text: 'Tutorial de deuda',
+  event: {
+    saldoStart: 3,
+    payCost: 2,
+    loanCost: 5,
+    loanWeeks: 2,
+    activityWeeks: 8,
+    impatienceStart: 0,
+    deltaOnPay: -35,
+    deltaOnReject: 75,
+    capPct: 60
+  },
   tutorial: {
-    step:'pedir',
-    text:'Pulsa “Pedir préstamo”',
-    block:true,
-    nextStep:'tabla',
-    tablaText:'Mira cómo aparece el nuevo préstamo en la tabla',
-    autoNext:true
+    steps: [
+      { key: 'rechazar', text: 'Intenta rechazar el plan' },
+      { key: 'pagar',    text: 'Intenta pagar para hacer el plan' },
+      { key: 'pedir',    text: 'Intenta pedir un préstamo' },
+      { key: 'devolver', text: 'Intenta devolver un préstamo' }
+    ]
   }
 }));
-
-window.slides.push(SlideActividadDeuda11Tutorial({
-  text: 'Devuelve el préstamo que has pedido y toma una decisión (pagar o rechazar).',
-  event: {},
-  tutorial: {
-    step: 'devolver',
-    text: 'Pulsa en la fila del préstamo para devolverlo',
-    block: false,          
-    autoNext: true        
-  }
-}));
-
-window.slides.push(SlideActividadDeuda11FinTutorial());
 
 
 window.slides.push( Slide({

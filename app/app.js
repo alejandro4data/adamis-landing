@@ -209,8 +209,7 @@ function ensureRendererLoaded(tipo){
       'actividad-deuda-1-3',
       'actividad-deuda-1-4',
       'actividad-deuda-1s',
-      'actividad-deuda-1-1-tutorial',
-      'actividad-deuda-1-1-fin-tutorial'
+      'actividad-deuda-1-1-tutorial-v2'
     ];
 
     // Hook temporal hasta que se renderice la primera slide

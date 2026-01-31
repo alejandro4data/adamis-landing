@@ -8,7 +8,14 @@
 // =====================================================
 
 (function initDeudaHelpers(){
-  if (window.DeudaHelpers) return;
+  const existing = window.DeudaHelpers;
+  const hasFull =
+    existing &&
+    typeof existing.ensureState === 'function' &&
+    typeof existing.openInfoModal === 'function' &&
+    typeof existing.openConfirmModal === 'function' &&
+    typeof existing.makeSaldoWidget === 'function';
+  if (hasFull) return;
 
   const STATUS  = { ACTIVO: 'Activo', IMPAGADO: 'Impagado' };
   const PENALTY = 5;
@@ -208,8 +215,28 @@
     capEl.style.left = cap + '%';
     if (v >= cap) fillEl.classList.add('danger'); else fillEl.classList.remove('danger');
   }
+  function animateImpatienceBar({ fillEl, capEl, from, to, capPct, duration }){
+    const start = performance.now();
+    const vFrom = Math.min(100, Math.max(0, Number(from||0)));
+    const vTo   = Math.min(100, Math.max(0, Number(to||0)));
+    const diff  = Math.abs(vTo - vFrom);
+    const ms    = Number.isFinite(duration) ? Number(duration) : Math.max(250, Math.min(900, diff * 12));
+    return new Promise((resolve) => {
+      function step(t){
+        const p = Math.min(1, (t - start) / ms);
+        const cur = vFrom + (vTo - vFrom) * p;
+        setImpatienceBar({ fillEl, capEl, valuePct: cur, capPct });
+        if (p < 1) requestAnimationFrame(step);
+        else {
+          setImpatienceBar({ fillEl, capEl, valuePct: vTo, capPct });
+          resolve();
+        }
+      }
+      requestAnimationFrame(step);
+    });
+  }
 
-  window.DeudaHelpers = { STATUS, PENALTY, el, txt, makeSaldoWidget, openInfoModal, openConfirmModal, setImpatienceBar,
+  window.DeudaHelpers = { STATUS, PENALTY, el, txt, makeSaldoWidget, openInfoModal, openConfirmModal, setImpatienceBar, animateImpatienceBar,
     ensureState(){
       if (!window.ACT_DEUDA_STATE) {
         window.ACT_DEUDA_STATE = { week:1, saldo:10, loans:[], nextLoanId:1, blocked:false, lastAction:null, incomes:[], impatience:0 };
@@ -481,7 +508,9 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
   }
 
   // Acciones principales
-  btnPagar.addEventListener('click', ()=>{
+  let actionBusy = false;
+  btnPagar.addEventListener('click', async ()=>{
+    if (actionBusy) return;
     if (st.saldo < cost) { H.openInfoModal({title:'No puedes pagar', message:'Necesitas saldo suficiente para pagar esta actividad.'}); return; }
 
     const prevImp = st.impatience || 0;
@@ -507,13 +536,18 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
     st.lastAction = { type:'pagar', cost, week:st.week, incomeNextWeek };
     window.ACT_DEUDA_LAST_SALDO = st.fx.saldoTo;
 
-    // feedback inmediato en 1-1
-    H.setImpatienceBar({ fillEl: impatienceFill, capEl: impCap, valuePct: nextImp, capPct: CAP_PCT });
-
+    // feedback animado en 1-1
+    actionBusy = true;
+    if (H.animateImpatienceBar) {
+      await H.animateImpatienceBar({ fillEl: impatienceFill, capEl: impCap, from: prevImp, to: nextImp, capPct: CAP_PCT });
+    } else {
+      H.setImpatienceBar({ fillEl: impatienceFill, capEl: impCap, valuePct: nextImp, capPct: CAP_PCT });
+    }
     SlideActions.next();
   });
 
-  btnRechazar.addEventListener('click', ()=>{
+  btnRechazar.addEventListener('click', async ()=>{
+    if (actionBusy) return;
     const prevImp = st.impatience || 0;
     const nextImp = clamp(prevImp + DELTA_REJECT, 0, 100);
 
@@ -532,9 +566,13 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
 
     window.ACT_DEUDA_LAST_SALDO = st.fx.saldoTo;
 
-    // feedback inmediato en 1-1
-    H.setImpatienceBar({ fillEl: impatienceFill, capEl: impCap, valuePct: nextImp, capPct: CAP_PCT });
-
+    // feedback animado en 1-1
+    actionBusy = true;
+    if (H.animateImpatienceBar) {
+      await H.animateImpatienceBar({ fillEl: impatienceFill, capEl: impCap, from: prevImp, to: nextImp, capPct: CAP_PCT });
+    } else {
+      H.setImpatienceBar({ fillEl: impatienceFill, capEl: impCap, valuePct: nextImp, capPct: CAP_PCT });
+    }
     SlideActions.next();
   });
 
