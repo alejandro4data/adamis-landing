@@ -1,7 +1,65 @@
 (() => {
   'use strict';
 
+  const DRAFT_PREFIX = 'reflexion_draft_';
+  const DRAFT_TTL_MS = 60 * 60 * 1000; // 1 hora
+
+  function isReload(){
+    try{
+      const navs = performance.getEntriesByType && performance.getEntriesByType('navigation');
+      const nav = navs && navs[0];
+      return nav ? nav.type === 'reload'
+        : (performance.navigation && performance.navigation.type === performance.navigation.TYPE_RELOAD);
+    } catch(_){ return false; }
+  }
+
+  function ensureDraftPolicy(){
+    if (window.__REFLEXION_DRAFTS_READY) return;
+    window.__REFLEXION_DRAFTS_READY = true;
+    if (!isReload()) return;
+    try{
+      for (let i = sessionStorage.length - 1; i >= 0; i--){
+        const k = sessionStorage.key(i);
+        if (k && k.startsWith(DRAFT_PREFIX)) sessionStorage.removeItem(k);
+      }
+    } catch(_){}
+  }
+
+  function hashStr(s){
+    let h = 5381;
+    for (let i = 0; i < s.length; i++) h = ((h << 5) + h) + s.charCodeAt(i);
+    return (h >>> 0).toString(36);
+  }
+  function getDraftKey(s, qText){
+    const id = String(s.id || '').trim();
+    if (id) return `${DRAFT_PREFIX}id_${id}`;
+    const q = String(qText || '').trim();
+    if (!q) return null;
+    return `${DRAFT_PREFIX}q_${hashStr(q)}`;
+  }
+  function loadDraft(key){
+    if (!key) return null;
+    try{
+      const raw = sessionStorage.getItem(key);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data || typeof data.text !== 'string' || !Number.isFinite(data.ts)) return null;
+      if ((Date.now() - data.ts) > DRAFT_TTL_MS){
+        sessionStorage.removeItem(key);
+        return null;
+      }
+      return data.text;
+    } catch(_){ return null; }
+  }
+  function saveDraft(key, text){
+    if (!key) return;
+    try{
+      sessionStorage.setItem(key, JSON.stringify({ text: String(text ?? ''), ts: Date.now() }));
+    } catch(_){}
+  }
+
   SlideRendererRegistry.register('cuadro-reflexion', function(s, root /*, ctx */){
+    ensureDraftPolicy();
     root.classList.add('tpl--cuadro-reflexion');
 
     const wrap = document.createElement('div');
@@ -28,7 +86,10 @@
     ta.autocomplete = 'off';
     const MAX_CHARS = 500;
     ta.maxLength = MAX_CHARS;
-    if (s.value) ta.value = String(s.value);
+    const draftKey = getDraftKey(s, qText);
+    const draftText = loadDraft(draftKey);
+    if (draftText != null) ta.value = draftText;
+    else if (s.value) ta.value = String(s.value);
     box.appendChild(ta);
 
     const prog = document.createElement('div');
@@ -95,7 +156,14 @@
     root.appendChild(wrap);
 
     // Eventos UI
-    ta.addEventListener('input', refreshCount);
+    let saveTimer = null;
+    function scheduleSave(){
+      if (!draftKey) return;
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => saveDraft(draftKey, ta.value), 200);
+    }
+
+    ta.addEventListener('input', () => { refreshCount(); scheduleSave(); });
 
     function setBusy(v){
       btnEval.disabled = v;

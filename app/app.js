@@ -132,10 +132,32 @@
 
 /* -------- Carga dinámica de /renderers/<tipo>.js -------- */
 const __SLIDE_RENDERER_LOADS__ = Object.create(null);
+const __RENDERER_BASE_SCRIPTS__ = [
+  '../renderers/common/base/renderer-utils.js'
+];
+let __RENDERER_BASE_PROMISE__ = null;
+
+function loadSequential(urls, idx = 0) {
+  if (!Array.isArray(urls) || idx >= urls.length) return Promise.resolve(false);
+  return new Promise((resolve) => {
+    const s = document.createElement('script');
+    s.src = urls[idx];
+    s.async = true;
+    s.onload = () => resolve(true);
+    s.onerror = () => resolve(false);
+    document.head.appendChild(s);
+  }).then((ok) => ok ? true : loadSequential(urls, idx + 1));
+}
+
 function ensureRendererLoaded(tipo){
   const key = String(tipo || '').toLowerCase().trim();
   if (window.SlideRendererRegistry.get(key)) return Promise.resolve(true);
   if (__SLIDE_RENDERER_LOADS__[key]) return __SLIDE_RENDERER_LOADS__[key];
+
+  // Cargar base común una sola vez (helpers compartidos)
+  if (!__RENDERER_BASE_PROMISE__) {
+    __RENDERER_BASE_PROMISE__ = loadSequential(__RENDERER_BASE_SCRIPTS__);
+  }
 
   // Rutas candidatas según convención de carpetas
   const candidateUrls = (() => {
@@ -154,19 +176,9 @@ function ensureRendererLoaded(tipo){
     return urls;
   })();
 
-  const loadSequential = (urls, idx = 0) => {
-    if (idx >= urls.length) return Promise.resolve(false);
-    return new Promise((resolve) => {
-      const s = document.createElement('script');
-      s.src = urls[idx];
-      s.async = true;
-      s.onload  = () => resolve(!!window.SlideRendererRegistry.get(key));
-      s.onerror = () => resolve(false);
-      document.head.appendChild(s);
-    }).then((ok) => ok ? true : loadSequential(urls, idx + 1));
-  };
-
-  __SLIDE_RENDERER_LOADS__[key] = loadSequential(candidateUrls);
+  __SLIDE_RENDERER_LOADS__[key] = __RENDERER_BASE_PROMISE__.then(() =>
+    loadSequential(candidateUrls).then((ok) => ok && !!window.SlideRendererRegistry.get(key))
+  );
   return __SLIDE_RENDERER_LOADS__[key];
 }
 
@@ -197,8 +209,7 @@ function ensureRendererLoaded(tipo){
       'actividad-deuda-1-3',
       'actividad-deuda-1-4',
       'actividad-deuda-1s',
-      'actividad-deuda-1-1-tutorial',
-      'actividad-deuda-1-1-fin-tutorial'
+      'actividad-deuda-1-1-tutorial-v2'
     ];
 
     // Hook temporal hasta que se renderice la primera slide
@@ -230,6 +241,18 @@ function ensureRendererLoaded(tipo){
 
   const IS_TOUCH   = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
   const CONT_LABEL = IS_TOUCH ? 'Toca para continuar' : 'Haz clic para continuar';
+  const CLASS_LEVEL_BY_ID = { ahorro: 6, deuda: 7 };
+  const classIdFromUrl = () => {
+    try { return new URLSearchParams(window.location.search).get('clase') || ''; }
+    catch (_) { return ''; }
+  };
+  const getActiveClassId = () => String(window.CURRENT_CLASS || classIdFromUrl()).toLowerCase();
+  const markClassCompletedIfNeeded = (idx, total) => {
+    if (total <= 0 || idx !== total - 1) return;
+    const level = CLASS_LEVEL_BY_ID[getActiveClassId()];
+    if (!level) return;
+    try { localStorage.setItem(`class_completed_${level}`, 'true'); } catch (_) {}
+  };
 
   // ----- utils -----
   const clear = (n) => { while (n.firstChild) n.removeChild(n.firstChild); };
@@ -396,6 +419,8 @@ function ensureRendererLoaded(tipo){
     }
 
 
+
+    markClassCompletedIfNeeded(i, slides.length);
 
     const s0 = slides[i] || {};
     const s = Object.assign({}, s0);

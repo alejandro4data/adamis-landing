@@ -5,7 +5,13 @@
    - Ajusta posiciones en 'POINTS' si quieres otra ruta
    ===================================================== */
 
-const CURRENT_LEVEL = 7; // <--- cámbialo dinámicamente según tu lógica
+const LOCK_CLASS7 = (typeof window.MAP_LOCK_CLASS7 === 'boolean') ? window.MAP_LOCK_CLASS7 : true;
+const CLASS6_COMPLETED = (() => {
+  if (!LOCK_CLASS7) return true;
+  try { return localStorage.getItem('class_completed_6') === 'true'; }
+  catch (_) { return false; }
+})();
+const CURRENT_LEVEL = CLASS6_COMPLETED ? 7 : 6; // avatar en 6 hasta completar, luego en 7
 
 (() => {
   'use strict';
@@ -104,6 +110,8 @@ const CURRENT_LEVEL = 7; // <--- cámbialo dinámicamente según tu lógica
   // Precreamos los nodos 1..N (como ya hacías) y luego les aplicamos la config JSON
   const nodeRefs = []; // guardamos referencia a cada <a.node> por nivel
 
+  const LOCKED_MAX_LEVEL = 5; // niveles 1..5 no son interactivos
+
   POINTS.forEach(([x, y], idx) => {
     const i = idx + 1; // nivel 1..18
 
@@ -113,7 +121,9 @@ const CURRENT_LEVEL = 7; // <--- cámbialo dinámicamente según tu lógica
     if (i < CURRENT_LEVEL) stateClass = 'state--done';
     if (i === CURRENT_LEVEL) stateClass = 'state--current';
     g.setAttribute('class', `node ${stateClass}`);
-    g.setAttribute('tabindex', '0');
+    const isLocked = (stateClass === 'state--locked');
+    g.setAttribute('tabindex', isLocked ? '-1' : '0');
+    if (isLocked) g.setAttribute('aria-disabled', 'true');
     g.setAttribute('aria-label', `Nivel ${i}`);
     g.setAttribute('transform', `translate(${x} ${y})`);
 
@@ -154,8 +164,13 @@ const CURRENT_LEVEL = 7; // <--- cámbialo dinámicamente según tu lógica
     g.addEventListener("mouseenter", preloadInstrucciones, { passive: true });
     g.addEventListener("touchstart", preloadInstrucciones, { passive: true });
 
-    // Click: precarga y navega con micro-delay para evitar el "flash"
+    // Click: precarga y navega (salvo niveles bloqueados 1..5)
     g.addEventListener("click", (ev) => {
+      if (i <= LOCKED_MAX_LEVEL || (LOCK_CLASS7 && !CLASS6_COMPLETED && i === 7)) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        return;
+      }
       preloadInstrucciones();
 
       const href =
@@ -248,7 +263,8 @@ const CURRENT_LEVEL = 7; // <--- cámbialo dinámicamente según tu lógica
 
       // Atributos para el CSS del dorado
       if (info.id) g.setAttribute('data-clase-id', info.id);
-      g.setAttribute('data-clase-active', info.activa ? 'true' : 'false');
+      const isLocked = g.classList.contains('state--locked');
+      g.setAttribute('data-clase-active', (!isLocked && info.activa) ? 'true' : 'false');
 
       // Si hay id de clase, el href salta a clase.html?clase=<id>
       if (info.id) {

@@ -1,4 +1,6 @@
 // data/config_clases.js
+// Toggle de desarrollo: false = no bloquear clase 7 (dev), true = bloquear hasta completar clase 6 (prod)
+window.MAP_LOCK_CLASS7 = false;
 window.CONFIG_CLASES = {
   clases: [
     { id: "ahorro", numero: 6, activa: true },

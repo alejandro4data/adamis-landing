@@ -14,7 +14,7 @@ window.slides.push( SlideTituloClase({ titulo: 'Introducción' }) );
 
 // Texto abajo, imagen ~80%, efecto y narrador
 window.slides.push( Slide({
-  text: 'Holaa! Mi nombre es Adamis.',
+  text: '¡Holaa! Mi nombre es Adamis.',
   img: '../assets/ahorro/escenas/escena1.avif',
   textPosition: 'bottom',
   imageFraction: '80%',
@@ -64,7 +64,7 @@ window.slides.push( Slide({
 }));
 
 window.slides.push( Slide({
-  text: '¡Hoy desubriremos el súperpoder del AHORRO!',
+  text: '¡Hoy descubriremos el súperpoder del AHORRO!',
   img: '../assets/ahorro/escenas/escena6.avif',
   textPosition: 'bottom',
   imageFraction: '80%',
@@ -409,16 +409,24 @@ window.slides.push( SlideExplicacionActividad({
 
 window.ACT_AHORRO_STATE = window.ACT_AHORRO_STATE || {};
 window.ACT_AHORRO_STATE.showGoal   = true;  // mostrarlo por defecto en todas
-window.ACT_AHORRO_STATE.goalAmount = 30;    // objetivo por defecto
+window.ACT_AHORRO_STATE.goalAmount = 25;    // objetivo por defecto
 
 
 window.slides.push( SlideTituloClase({ titulo: 'Semana 1' }) );
 
 window.slides.push(
+  SlideActividadAhorro13({
+    text: "¡La primera paga semanal!",
+    image: '../assets/ahorro/actividades/actividad1-4.avif',
+    paga: 5,
+    duration: 800,
+    advanceAfter: 0 // pon >0 si quieres que avance sola
+  }),
+
   SlideActividadAhorro11({
     text: "¡Tarde de juegos con pizzas!",
     image: "../assets/ahorro/actividades/actividad1-1.avif",
-    coins: 10,
+    coins: 5,
     happiness: 55,
     setpoints: { sp1: 30, sp2: 65, sp3: 100 },
     zoneIcons: {
@@ -444,20 +452,20 @@ window.slides.push(
     text: "Así afecta tu decisión…",
     duration: 1000,
     advanceAfter: 0
-  }),
-
-  SlideActividadAhorro13({
-    text: "¡La primera paga semanal!",
-    image: '../assets/ahorro/actividades/actividad1-4.avif',
-    paga: 5,
-    duration: 800,
-    advanceAfter: 0 // pon >0 si quieres que avance sola
   })
 );
 
 window.slides.push( SlideTituloClase({ titulo: 'Semana 2' }) );
 
 window.slides.push(
+  SlideActividadAhorro13({
+    text: "¡Al empezar la segunda semana Lucía recibe la paga!",
+    image: '../assets/ahorro/actividades/actividad1-4.avif',
+    paga: 5,
+    duration: 800,
+    advanceAfter: 0 // pon >0 si quieres que avance sola
+  }),
+
   SlideActividadAhorro11({
     text: "Lucía va por la calle y ve una tienda. ¡Quiere comprar un cómic!",
     image: "../assets/ahorro/actividades/actividad1-5.avif",
@@ -485,20 +493,20 @@ window.slides.push(
     text: "Así afecta tu decisión…",
     duration: 1000,
     advanceAfter: 0
-  }),
-
-  SlideActividadAhorro13({
-    text: "¡Al acabar la segunda semana Lucía recibe la paga!",
-    image: '../assets/ahorro/actividades/actividad1-4.avif',
-    paga: 5,
-    duration: 800,
-    advanceAfter: 0 // pon >0 si quieres que avance sola
   })
 );
 
 window.slides.push( SlideTituloClase({ titulo: 'Semana 3' }) );
 
 window.slides.push(
+  SlideActividadAhorro13({
+    text: "Mi momento favorito, ¡hooora de la paga!",
+    image: '../assets/ahorro/actividades/actividad1-4.avif',
+    paga: 5,
+    duration: 800,
+    advanceAfter: 0 // pon >0 si quieres que avance sola
+  }),
+
   SlideActividadAhorro11({
     text: "Tarde de bolera y restaurante con amigos. Ir le daría a Lucía mucha felicidad.",
     image: "../assets/ahorro/actividades/actividad1-8.avif",
@@ -526,18 +534,19 @@ window.slides.push(
     text: "Así afecta tu decisión…",
     duration: 1000,
     advanceAfter: 0
-  }),
-
-  SlideActividadAhorro13({
-    text: "¡Hoora de la paga!",
-    image: '../assets/ahorro/actividades/actividad1-4.avif',
-    paga: 5,
-    duration: 800,
-    advanceAfter: 0 // pon >0 si quieres que avance sola
   })
 );
 
 window.slides.push( SlideTituloClase({ titulo: 'Semana 4' }) );
+
+// Paga al inicio de la semana 4
+window.slides.push( SlideActividadAhorro13({
+  text: "Cuarta semana, ¡cuarta paga!",
+  image: '../assets/ahorro/actividades/actividad1-4.avif',
+  paga: 5,
+  duration: 800,
+  advanceAfter: 0 // pon >0 si quieres que avance sola
+}) );
 
 window.slides.push( Slide({
   text: 'Esta semana unos amigos del colegio me han invitado a un torneo de baloncesto.',
@@ -600,18 +609,19 @@ window.slides.push(
     text: "Así afecta tu decisión…",
     duration: 1000,
     advanceAfter: 0
-  }),
-
-  SlideActividadAhorro13({
-    text: "Cuarta semana, ¡cuarta paga!",
-    image: '../assets/ahorro/actividades/actividad1-4.avif',
-    paga: 5,
-    duration: 800,
-    advanceAfter: 0 // pon >0 si quieres que avance sola
   })
 );
 
 window.slides.push( SlideTituloClase({ titulo: 'Semana 5' }) );
+
+// Paga al inicio de la semana 5
+window.slides.push( SlideActividadAhorro13({
+  text: "¡Lucía recibe la paga!",
+  image: '../assets/ahorro/actividades/actividad1-4.avif',
+  paga: 5,
+  duration: 800,
+  advanceAfter: 0 // pon >0 si quieres que avance sola
+}) );
 
 window.slides.push( Slide({
   text: 'No me gusta mi funda de móvil, me quiero comprar una nueva.',
@@ -652,18 +662,19 @@ window.slides.push(
     text: "Así afecta tu decisión…",
     duration: 1000,
     advanceAfter: 0
-  }),
-
-  SlideActividadAhorro13({
-    text: "¡Lucía recibe la paga!",
-    image: '../assets/ahorro/actividades/actividad1-4.avif',
-    paga: 5,
-    duration: 800,
-    advanceAfter: 0 // pon >0 si quieres que avance sola
   })
 );
 
 window.slides.push( SlideTituloClase({ titulo: 'Semana 6' }) );
+
+// Paga al inicio de la semana 6
+window.slides.push( SlideActividadAhorro13({
+  text: "¡La sexta paga!",
+  image: '../assets/ahorro/actividades/actividad1-4.avif',
+  paga: 5,
+  duration: 800,
+  advanceAfter: 0 // pon >0 si quieres que avance sola
+}) );
 
 window.slides.push( Slide({
   text: 'Esta semana mi familia me ha propuesto acampar en el campo. ¡Me encanta pasar tiempo con ellos!',
@@ -726,18 +737,19 @@ window.slides.push(
     text: "Así afecta tu decisión…",
     duration: 1000,
     advanceAfter: 0
-  }),
-
-  SlideActividadAhorro13({
-    text: "¡La sexta paga!",
-    image: '../assets/ahorro/actividades/actividad1-4.avif',
-    paga: 5,
-    duration: 800,
-    advanceAfter: 0 // pon >0 si quieres que avance sola
   })
 );
 
 window.slides.push( SlideTituloClase({ titulo: 'Semana 7' }) );
+
+// Paga al inicio de la semana 7
+window.slides.push( SlideActividadAhorro13({
+  text: "¡Séptima paga semanal!",
+  image: '../assets/ahorro/actividades/actividad1-4.avif',
+  paga: 5,
+  duration: 800,
+  advanceAfter: 0 // pon >0 si quieres que avance sola
+}) );
 
 window.slides.push( Slide({
   text: '¡Ohh! Se me había olvidado que tengo que entregar una maqueta del sistema solar.',
@@ -787,19 +799,20 @@ window.slides.push(
     text: "Así afecta tu decisión…",
     duration: 1000,
     advanceAfter: 0
-  }),
-
-  SlideActividadAhorro13({
-    text: "¡¡Esta es la última paga!!",
-    image: '../assets/ahorro/actividades/actividad1-4.avif',
-    paga: 5,
-    duration: 800,
-    advanceAfter: 0 // pon >0 si quieres que avance sola
   })
 );
 
 
 window.slides.push( SlideTituloClase({ titulo: 'Semana 8' }) );
+
+// Paga al inicio de la semana 8
+window.slides.push( SlideActividadAhorro13({
+  text: "¡La última paga!",
+  image: '../assets/ahorro/actividades/actividad1-4.avif',
+  paga: 5,
+  duration: 800,
+  advanceAfter: 0 // pon >0 si quieres que avance sola
+}) );
 
 window.slides.push(
   SlideActividadAhorro14({
@@ -828,7 +841,9 @@ window.slides.push(
   SlideActividadAhorro12({
     text: "Así afecta tu decisión…",
     duration: 1000,
-    advanceAfter: 0
+    advanceAfter: 0,
+    showContinueButton: true,
+    continueText: 'Continuar'
   })
 );
 
@@ -855,7 +870,7 @@ window.slides.push( Slide({
 
 
 window.slides.push( Slide({
-  text: 'A veces, nos podemos podemos dejar llevar por el momento y gastar de más...',
+  text: 'A veces, nos podemos dejar llevar por el momento y gastar de más...',
   img: '../assets/ahorro/escenas/escena31.avif',
   textPosition: 'bottom',
   imageFraction: '80%',
@@ -1032,7 +1047,7 @@ window.slides.push(
 window.slides.push(
   SlideEncuestaTexto({
     id: 'a_3',
-    pregunta: 'Cómo mejorarías la clase?',
+    pregunta: '¿Cómo mejorarías la clase?',
     placeholder: 'Escribe aquí tu respuesta...',
     minChars: 10,
     maxChars: 180,
@@ -1042,7 +1057,12 @@ window.slides.push(
 );
 
 
-window.slides.push( SlideTituloClase({ titulo: '¡Muchas Gracias!' }) );
+window.slides.push( SlideBotonUnico({ 
+  texto:'Volver al menú',
+  action: 'menu' }) 
+);
+
+// window.slides.push( SlideTituloClase({ titulo: '¡Muchas Gracias!' }) );
 
 /*
 
@@ -1116,3 +1136,4 @@ window.slides.push( SlideDinamicaActividad({
 }) );
 
 */
+

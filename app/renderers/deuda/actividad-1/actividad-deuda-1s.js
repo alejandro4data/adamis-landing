@@ -9,7 +9,7 @@
   if (window.DeudaHelpers) return;
 
   const STATUS  = { ACTIVO: 'Activo', IMPAGADO: 'Impagado' };
-  const PENALTY = 5;
+  const PENALTY = 12;
 
   const el = (tag, props = {}, ...children) => {
     const node = document.createElement(tag);
@@ -179,6 +179,13 @@
       const st = window.ACT_DEUDA_STATE;
       if (!Array.isArray(st.incomes)) st.incomes = [];
       if (typeof st.impatience !== 'number') st.impatience = 0;
+      if (!st.rules || typeof st.rules !== 'object') st.rules = {};
+      if (!Array.isArray(st.rules.allowedLoanPurposes)) st.rules.allowedLoanPurposes = ['negocio','medicina'];
+      if (typeof st.rules.maxOtherExpenses !== 'number') st.rules.maxOtherExpenses = 2;
+      if (typeof st.rules.otherExpensesPaid !== 'number') st.rules.otherExpensesPaid = 0;
+      if (typeof st.rules.loanPurposeViolation !== 'boolean') st.rules.loanPurposeViolation = false;
+      if (typeof st.rules.impatienceBreached !== 'boolean') st.rules.impatienceBreached = false;
+      if (typeof st.rules.impatienceCap !== 'number') st.rules.impatienceCap = 50;
       st.blocked = st.loans.some(x => !x.given && x.status === STATUS.IMPAGADO);
       return st;
     },
@@ -381,12 +388,22 @@
         const saldoFrom = st.saldo;
         const saldoTo   = (st.saldo || 0) - GIVE_AMOUNT;
 
-        // Registrar préstamo concedido (no es deuda propia)
-        st.loans = (st.loans || []).concat([{ id, amount: GIVE_AMOUNT, weeksLeft: GIVE_WEEKS, status: H.STATUS.ACTIVO, given:true, role:'giver' }]);
-        st.saldo = saldoTo;
-
         // Programar ingreso diferido (capital + interés opcional)
         const dueWeek = (st.week || 1) + GIVE_WEEKS;
+
+        // Registrar préstamo concedido (no es deuda propia)
+        st.loans = (st.loans || []).concat([{
+          id,
+          amount: GIVE_AMOUNT,
+          weeksLeft: GIVE_WEEKS,
+          status: H.STATUS.ACTIVO,
+          given: true,
+          role: 'giver',
+          dueWeek,
+          payoff
+        }]);
+        st.saldo = saldoTo;
+
         st.incomes = (st.incomes || []).concat([{ amount: payoff, dueWeek, source:'prestamo-concedido', loanId: id }]);
 
         // FX para 1-3 (no cambiamos impaciencia en esta decisión)

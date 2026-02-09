@@ -11,6 +11,14 @@
     cont.setAttribute('role','button');
     cont.setAttribute('tabindex','0');
 
+    const titleText = (s.title ?? s.heading ?? 'Normas de la Actividad');
+    if (titleText){
+      const title = document.createElement('h2');
+      title.className = 'activity-expl__title';
+      title.textContent = String(titleText);
+      cont.appendChild(title);
+    }
+
     const ul = document.createElement('ul');
     ul.className = 'activity-expl__list';
 

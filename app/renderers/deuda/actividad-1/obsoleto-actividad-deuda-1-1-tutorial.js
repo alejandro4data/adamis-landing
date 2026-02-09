@@ -91,6 +91,65 @@
     }
     .saldo-flyout.show{ opacity:1; transform:translateY(0); transition:opacity .25s ease, transform .25s ease; }
 
+    /* Burbuja delta (saldo e impaciencia) */
+    .tpl--actividad-deuda[data-render="1-1t"] .coins-wrap{ position:relative; }
+    .tpl--actividad-deuda[data-render="1-1t"] .impatience-wrap{ position:relative; }
+    .tpl--actividad-deuda[data-render="1-1t"] .coins-wrap .coins-float{
+      position:absolute;
+      top:-6px;
+      left:50%;
+      transform: translate(-50%, 0) scale(.96);
+      padding:10px 16px;
+      border-radius:999px;
+      background: var(--coins-float-bg, linear-gradient(135deg, #22c55e, #16a1b4));
+      color:#fff;
+      font-weight:900;
+      font-size:16px;
+      letter-spacing:.2px;
+      box-shadow:0 12px 22px rgba(0,0,0,.2);
+      opacity:0;
+      pointer-events:none;
+    }
+    .tpl--actividad-deuda[data-render="1-1t"] .coins-wrap .coins-float.coins-float--neg{
+      --coins-float-bg: linear-gradient(135deg, #ef4444, #f97316);
+    }
+    .tpl--actividad-deuda[data-render="1-1t"] .coins-wrap .coins-float.is-on{
+      animation: deudaCoinsFloat 1.45s ease-out forwards;
+    }
+    @keyframes deudaCoinsFloat{
+      0%   { transform: translate(-50%, 0) scale(.96); opacity: 0; }
+      20%  { transform: translate(-50%, -8px) scale(1.04); opacity: 1; }
+      100% { transform: translate(-50%, -40px) scale(1.08); opacity: 0; }
+    }
+    .tpl--actividad-deuda[data-render="1-1t"] .impatience-float{
+      position:absolute;
+      top:-8px;
+      right:-6px;
+      width:48px;
+      height:48px;
+      border-radius:999px;
+      background: var(--imp-float-bg, #22c55e);
+      color:#fff;
+      font-weight:900;
+      font-size:14px;
+      letter-spacing:.2px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 12px 22px rgba(0,0,0,.2);
+      opacity:0;
+      pointer-events:none;
+      transform: translate(0, 0) scale(.96);
+    }
+    .tpl--actividad-deuda[data-render="1-1t"] .impatience-float.is-on{
+      animation: deudaImpFloat 1.45s ease-out forwards;
+    }
+    @keyframes deudaImpFloat{
+      0%   { transform: translate(0, 0) scale(.96); opacity: 0; }
+      20%  { transform: translate(0, -8px) scale(1.04); opacity: 1; }
+      100% { transform: translate(0, -40px) scale(1.08); opacity: 0; }
+    }
+
     /* Modales por encima del overlay del tutorial */
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:12000}
     .modal{width:min(480px,92vw);background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:20px 22px;font-family:inherit; z-index:12010}
@@ -214,22 +273,53 @@ SlideRendererRegistry.register('actividad-deuda-1-1-tutorial', function (s, root
   // Feedback rápido de saldo
   let flyout;
   if (saldoBadge) { flyout=document.createElement('div'); flyout.className='saldo-flyout'; saldoBadge.style.position='relative'; saldoBadge.appendChild(flyout); }
-  const saldoFeedback = (text)=>{ if(!saldoBadge||!flyout) return; flyout.textContent=text; flyout.classList.add('show'); saldoBadge.classList.add('coin-pulse'); setTimeout(()=>{ flyout.classList.remove('show'); saldoBadge.classList.remove('coin-pulse'); }, 600); };
+  const fmtDelta = (n)=>{ const sign = n>0?'+':(n<0?'-':'±'); return `${sign}${Math.abs(n)}`; };
+  const saldoFeedback = (text, delta)=>{
+    if(!saldoBadge||!flyout) return;
+    flyout.textContent=text;
+    flyout.classList.add('show');
+    saldoBadge.classList.add('coin-pulse');
+    if (Number.isFinite(delta)) showSaldoBubble(delta);
+    setTimeout(()=>{ flyout.classList.remove('show'); saldoBadge.classList.remove('coin-pulse'); }, 600);
+  };
+
+  function showSaldoBubble(delta){
+    if (!saldoW?.node || !Number.isFinite(delta) || delta === 0) return;
+    const bubble = document.createElement('div');
+    bubble.className = 'coins-float';
+    if (delta < 0) bubble.classList.add('coins-float--neg');
+    bubble.textContent = fmtDelta(delta);
+    saldoW.node.appendChild(bubble);
+    requestAnimationFrame(()=> bubble.classList.add('is-on'));
+    setTimeout(()=> bubble.remove(), 1400);
+  }
+
+  function showImpBubble(delta){
+    if (!impWrap || !Number.isFinite(delta) || delta === 0) return;
+    const bubble = document.createElement('div');
+    bubble.className = 'impatience-float';
+    bubble.textContent = fmtDelta(delta);
+    bubble.style.setProperty('--imp-float-bg', delta > 0 ? '#ef4444' : '#22c55e');
+    impWrap.appendChild(bubble);
+    requestAnimationFrame(()=> bubble.classList.add('is-on'));
+    setTimeout(()=> bubble.remove(), 1400);
+  }
 
   // Controles
   const btnPagar    = H.el ? H.el('button',{className:'btn-option btn-pay'   , dataset:{action:'pagar'}},     H.txt('Pagar'))          : (()=>{const x=document.createElement('button'); x.className='btn-option btn-pay';     x.dataset.action='pagar';    x.textContent='Pagar'; return x;})();
   const btnPedir    = H.el ? H.el('button',{type:'button', className:'btn-option btn-loan'  , dataset:{action:'pedir-tutorial'}}, H.txt('Pedir préstamo')) : (()=>{const x=document.createElement('button'); x.type='button'; x.className='btn-option btn-loan';    x.dataset.action='pedir';    x.textContent='Pedir préstamo'; return x;})();
   const btnRechazar = H.el ? H.el('button',{className:'btn-option btn-decline', dataset:{action:'rechazar'}},  H.txt('Rechazar'))       : (()=>{const x=document.createElement('button'); x.className='btn-option btn-decline'; x.dataset.action='rechazar'; x.textContent='Rechazar'; return x;})();
 
-  const left = H.el
-    ? H.el('div',{className:'deuda-col left'},
-        H.el('div',{className:'impatience-wrap'}, H.el('div',{className:'impatience-label'}, H.txt('Impaciencia')), impBar),
-        saldoW.node, btnPagar, btnPedir, btnRechazar)
-    : (()=>{ const d=document.createElement('div'); d.className='deuda-col left';
-        const w=document.createElement('div'); w.className='impatience-wrap';
+  const impWrap = H.el
+    ? H.el('div',{className:'impatience-wrap'}, H.el('div',{className:'impatience-label'}, H.txt('Impaciencia')), impBar)
+    : (()=>{ const w=document.createElement('div'); w.className='impatience-wrap';
         const l=document.createElement('div'); l.className='impatience-label'; l.textContent='Impaciencia';
-        w.appendChild(l); w.appendChild(impBar);
-        d.appendChild(w); d.appendChild(saldoW.node); d.appendChild(btnPagar); d.appendChild(btnPedir); d.appendChild(btnRechazar); return d; })();
+        w.appendChild(l); w.appendChild(impBar); return w; })();
+
+  const left = H.el
+    ? H.el('div',{className:'deuda-col left'}, impWrap, saldoW.node, btnPagar, btnPedir, btnRechazar)
+    : (()=>{ const d=document.createElement('div'); d.className='deuda-col left';
+        d.appendChild(impWrap); d.appendChild(saldoW.node); d.appendChild(btnPagar); d.appendChild(btnPedir); d.appendChild(btnRechazar); return d; })();
 
   const center = H.el
     ? H.el('div',{className:'deuda-col center'}, H.el('div',{className:'visual-stage'}, H.el('img',{className:'fx-image', src: s?.image || './assets/deuda/default.png', alt: s?.alt || 'Situación'})))
@@ -575,7 +665,12 @@ function placeTipAround(el, tipEl, pref='right') {
     return advanced;
   }
   function advanceSlideAggressive(){
-    [0, 100, 250].forEach((delay)=> setTimeout(()=>{ try { advanceSlideOnce(); } catch(e){} }, delay));
+    let advanced = false;
+    const tryOnce = () => {
+      if (advanced) return;
+      try { advanced = !!advanceSlideOnce(); } catch(e){}
+    };
+    [0, 100, 250].forEach((delay)=> setTimeout(tryOnce, delay));
   }
 
   function flashTable(el){
@@ -607,23 +702,37 @@ function placeTipAround(el, tipEl, pref='right') {
   }
 
   // Mantener 3s para lectura (ajustable con holdMs)
-  function animateImpatienceTo(nextPct, { duration = 700, tipText, holdMs = 3000 } = {}) {
+  function animateImpatienceTo(nextPct, { duration = 700, tipText, holdMs = 3000, requireClick = false } = {}) {
     const prev = Number(st.impatience || 0);
     const to   = clamp(Number(nextPct || 0), 0, 100);
     const cleanup = focusImpatience(tipText);
     return new Promise((resolve) => {
-      const start = performance.now();
-      const step = (t) => {
-        const k = Math.min(1, (t - start) / duration);
-        const cur = prev + (to - prev) * k;
-        setImp({ fillEl: impFill, capEl: impCap, valuePct: cur, capPct: CAP_PCT });
-        if (k < 1) requestAnimationFrame(step);
-        else {
-          setImp({ fillEl: impFill, capEl: impCap, valuePct: to, capPct: CAP_PCT });
-          setTimeout(() => { cleanup(); resolve(); }, Math.max(0, holdMs));
-        }
+      const startAnim = () => {
+        const start = performance.now();
+        const step = (t) => {
+          const k = Math.min(1, (t - start) / duration);
+          const cur = prev + (to - prev) * k;
+          setImp({ fillEl: impFill, capEl: impCap, valuePct: cur, capPct: CAP_PCT });
+          if (k < 1) requestAnimationFrame(step);
+          else {
+            setImp({ fillEl: impFill, capEl: impCap, valuePct: to, capPct: CAP_PCT });
+            setTimeout(() => { cleanup(); resolve(); }, Math.max(0, holdMs));
+          }
+        };
+        requestAnimationFrame(step);
       };
-      requestAnimationFrame(step);
+      if (!requireClick) {
+        startAnim();
+        return;
+      }
+      const target = impWrap || impBar;
+      const onClick = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        target.removeEventListener('click', onClick, true);
+        startAnim();
+      };
+      target.addEventListener('click', onClick, { capture:true, once:true });
     });
   }
 
@@ -644,15 +753,17 @@ function placeTipAround(el, tipEl, pref='right') {
     // saldo
     st.saldo = (st.saldo||0) - cost;
     saldoW.set(st.saldo);
-    saldoFeedback(`-€${cost}`);
+    saldoFeedback(`-€${cost}`, -Number(cost||0));
     st.lastAction = { type:'pagar', cost, week:st.week };
 
     // impaciencia
     const prevImp = Number(st.impatience || 0);
     const nextImp = clamp(prevImp + DELTA_PAY, 0, 100);
+    const deltaImp = nextImp - prevImp;
     st.impatience = nextImp;
+    showImpBubble(deltaImp);
 
-    await animateImpatienceTo(nextImp, { tipText: 'La impaciencia cambia al pagar' });
+    await animateImpatienceTo(nextImp, { tipText: 'Pulsa la barra para ver cómo baja', requireClick: true });
     disableAllTutUI();   
     // flujo normal: avanzar
     try { advanceSlideAggressive(); } catch {}
@@ -672,7 +783,7 @@ function placeTipAround(el, tipEl, pref='right') {
       st.saldo = (st.saldo||0) + loanAmount;
       saldoW.set(st.saldo);
       fillLoans(tbody, st.loans);
-      saldoFeedback(`+€${loanAmount}`);
+      saldoFeedback(`+€${loanAmount}`, Number(loanAmount||0));
 
       setTimeout(()=>{
         tut.step = 'pagar';
@@ -736,7 +847,7 @@ function placeTipAround(el, tipEl, pref='right') {
       // Actualizamos estado
       st.saldo = (st.saldo||0) - Number(loan.amount||0);
       saldoW.set(st.saldo);
-      saldoFeedback(`-€${loan.amount}`);
+      saldoFeedback(`-€${loan.amount}`, -Number(loan.amount||0));
       st.loans = (st.loans||[]).filter(x => Number(x.id)!==id);
       fillLoans(tbody, st.loans);
 
@@ -754,8 +865,10 @@ function placeTipAround(el, tipEl, pref='right') {
     st.lastAction = { type:'rechazar', week:st.week };
     const prevImp = Number(st.impatience || 0);
     const nextImp = clamp(prevImp + DELTA_REJECT, 0, 100);
+    const deltaImp = nextImp - prevImp;
     st.impatience = nextImp;
-    await animateImpatienceTo(nextImp, { tipText: 'La impaciencia cambia al rechazar' });
+    showImpBubble(deltaImp);
+    await animateImpatienceTo(nextImp, { tipText: 'Pulsa la barra para ver cómo sube', requireClick: true });
     disableAllTutUI();   
     // flujo normal: avanzar
     try { advanceSlideAggressive(); } catch {}

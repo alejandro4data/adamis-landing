@@ -149,8 +149,21 @@ function SlideActividadAhorro11({
   };
 }
 
-function SlideActividadAhorro12({ text, image, alt, duration = 900, advanceAfter = 0, showGoal, goal, goalAmount, objetivo } = {}){
-  return { tipo: 'actividad-ahorro-1-2', text, image, alt, duration, advanceAfter, showGoal, goal: goal ?? goalAmount ?? objetivo };
+function SlideActividadAhorro12({
+  text, image, alt,
+  duration = 900, advanceAfter = 0,
+  showGoal, goal, goalAmount, objetivo,
+  showContinueButton, continueText
+} = {}){
+  return {
+    tipo: 'actividad-ahorro-1-2',
+    text, image, alt,
+    duration, advanceAfter,
+    showGoal,
+    goal: goal ?? goalAmount ?? objetivo,
+    showContinueButton,
+    continueText
+  };
 }
 
 function SlideActividadAhorro13({ text, image, alt, paga = 0, duration = 800, advanceAfter = 0, showGoal, goal, goalAmount, objetivo } = {}){
@@ -183,27 +196,40 @@ function SlideActividadDeuda12({ text, image, alt, paga = 10 } = {}){
   return { tipo: 'actividad-deuda-1-2', text, image, alt, paga };
 }
 
-function SlideActividadDeuda13({ text, image, alt } = {}){
-  return { tipo: 'actividad-deuda-1-3', text, image, alt };
+function SlideActividadDeuda13({ text, image, alt, event } = {}){
+  return { tipo: 'actividad-deuda-1-3', text, image, alt, event };
 }
 
 function SlideActividadDeuda1s({ text, image, alt, event } = {}){
   return { tipo: 'actividad-deuda-1s', text, image, alt, event };
 }
 
-function SlideActividadDeuda14({ text, image, alt, event } = {}){
-  return { tipo: 'actividad-deuda-1-4', text, image, alt, event };
+function SlideActividadDeuda14({ text, image, alt, event, showContinueButton, continueText } = {}){
+  return { tipo: 'actividad-deuda-1-4', text, image, alt, event, showContinueButton, continueText };
 }
 
-function SlideActividadDeuda11Tutorial({ text, image, alt, event, tutorial } = {}) {
+function SlideMiniactividadOrdenarFrase({
+  introTitle, introText, introButtonText,
+  intro,
+  phrases, frases, frase,
+  autoAdvanceMs
+} = {}){
+  const list = Array.isArray(phrases) ? phrases
+    : Array.isArray(frases) ? frases
+    : (frase != null ? [frase] : []);
   return {
-    tipo: 'actividad-deuda-1-1-tutorial',
-    text, image, alt, event, tutorial
+    tipo: 'miniactividad-ordenar-frase',
+    introTitle: introTitle ?? intro?.title,
+    introText: introText ?? intro?.text,
+    introButtonText: introButtonText ?? intro?.buttonText,
+    phrases: list,
+    autoAdvanceMs
   };
 }
-function SlideActividadDeuda11FinTutorial({ text, image, alt, event, tutorial } = {}) {
+
+function SlideActividadDeuda11TutorialV2({ text, image, alt, event, tutorial } = {}) {
   return {
-    tipo: 'actividad-deuda-1-1-fin-tutorial',
+    tipo: 'actividad-deuda-1-1-tutorial-v2',
     text, image, alt, event, tutorial
   };
 }
@@ -261,6 +287,17 @@ function SlideEncuesta({
     min, max, step, initial,
     labels, submitText, skipText,
     onSubmit
+  };
+}
+
+// ---------- NUEVA: Botón único centrado ----------
+// Uso: window.slides.push(SlideBotonUnico({ texto:'Volver al menú', action:'menu' }));
+// action: 'menu' | 'next' (default)
+function SlideBotonUnico({ texto, text, label, action, comportamiento } = {}){
+  return {
+    tipo: 'boton-unico',
+    label: label ?? texto ?? text ?? '',
+    action: action ?? comportamiento ?? 'next'
   };
 }
 

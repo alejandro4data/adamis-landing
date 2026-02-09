@@ -114,6 +114,16 @@
       if (paga !== 0){
         animateNumber(ui.coins.querySelector('.coins-badge__num'), state.coins, target, dur);
         setTimeout(()=>{ state.coins = target; }, dur + 10);
+        // Burbuja flotante +X cerca del badge
+        const wrap = ui.coins.parentElement;
+        if (wrap){
+          const bubble = document.createElement('div');
+          bubble.className = 'coins-float';
+          bubble.textContent = `+${paga}`;
+          wrap.appendChild(bubble);
+          requestAnimationFrame(()=> bubble.classList.add('is-on'));
+          setTimeout(() => bubble.remove(), 1200);
+        }
       }
       const ms = Number(s.advanceAfter || 0);
       if (ms > 0 && typeof onAdvance === 'function'){

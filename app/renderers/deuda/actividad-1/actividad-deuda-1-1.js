@@ -8,10 +8,17 @@
 // =====================================================
 
 (function initDeudaHelpers(){
-  if (window.DeudaHelpers) return;
+  const existing = window.DeudaHelpers;
+  const hasFull =
+    existing &&
+    typeof existing.ensureState === 'function' &&
+    typeof existing.openInfoModal === 'function' &&
+    typeof existing.openConfirmModal === 'function' &&
+    typeof existing.makeSaldoWidget === 'function';
+  if (hasFull) return;
 
   const STATUS  = { ACTIVO: 'Activo', IMPAGADO: 'Impagado' };
-  const PENALTY = 5;
+  const PENALTY = 12;
 
   const el = (tag, props = {}, ...children) => {
     const node = document.createElement(tag);
@@ -208,8 +215,28 @@
     capEl.style.left = cap + '%';
     if (v >= cap) fillEl.classList.add('danger'); else fillEl.classList.remove('danger');
   }
+  function animateImpatienceBar({ fillEl, capEl, from, to, capPct, duration }){
+    const start = performance.now();
+    const vFrom = Math.min(100, Math.max(0, Number(from||0)));
+    const vTo   = Math.min(100, Math.max(0, Number(to||0)));
+    const diff  = Math.abs(vTo - vFrom);
+    const ms    = Number.isFinite(duration) ? Number(duration) : Math.max(250, Math.min(900, diff * 12));
+    return new Promise((resolve) => {
+      function step(t){
+        const p = Math.min(1, (t - start) / ms);
+        const cur = vFrom + (vTo - vFrom) * p;
+        setImpatienceBar({ fillEl, capEl, valuePct: cur, capPct });
+        if (p < 1) requestAnimationFrame(step);
+        else {
+          setImpatienceBar({ fillEl, capEl, valuePct: vTo, capPct });
+          resolve();
+        }
+      }
+      requestAnimationFrame(step);
+    });
+  }
 
-  window.DeudaHelpers = { STATUS, PENALTY, el, txt, makeSaldoWidget, openInfoModal, openConfirmModal, setImpatienceBar,
+  window.DeudaHelpers = { STATUS, PENALTY, el, txt, makeSaldoWidget, openInfoModal, openConfirmModal, setImpatienceBar, animateImpatienceBar,
     ensureState(){
       if (!window.ACT_DEUDA_STATE) {
         window.ACT_DEUDA_STATE = { week:1, saldo:10, loans:[], nextLoanId:1, blocked:false, lastAction:null, incomes:[], impatience:0 };
@@ -217,6 +244,13 @@
       const st = window.ACT_DEUDA_STATE;
       if (!Array.isArray(st.incomes)) st.incomes = [];
       if (typeof st.impatience !== 'number') st.impatience = 0;
+      if (!st.rules || typeof st.rules !== 'object') st.rules = {};
+      if (!Array.isArray(st.rules.allowedLoanPurposes)) st.rules.allowedLoanPurposes = ['negocio','medicina'];
+      if (typeof st.rules.maxOtherExpenses !== 'number') st.rules.maxOtherExpenses = 2;
+      if (typeof st.rules.otherExpensesPaid !== 'number') st.rules.otherExpensesPaid = 0;
+      if (typeof st.rules.loanPurposeViolation !== 'boolean') st.rules.loanPurposeViolation = false;
+      if (typeof st.rules.impatienceBreached !== 'boolean') st.rules.impatienceBreached = false;
+      if (typeof st.rules.impatienceCap !== 'number') st.rules.impatienceCap = 50;
       st.blocked = st.loans.some(x => x.status === STATUS.IMPAGADO);
       return st;
     },
@@ -279,6 +313,9 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
   const activityWeeks  = Number(s?.event?.activityWeeks || s?.event?.weeks || 8);
   const incomeNextWeek = Number(s?.event?.incomeNextWeek || 0);
   const incomeSource   = s?.event?.incomeSource || 'Actividad';
+  const purposeRaw     = s?.event?.purpose || 'otro';
+  const purpose        = String(purposeRaw).toLowerCase();
+  const isOtherPurpose = (purpose !== 'negocio' && purpose !== 'medicina');
   const MAX_LOAN_WEEKS = 3;
 
   // Impaciencia por slide
@@ -287,6 +324,8 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
   const DELTA_REJECT = Number(impCfg.deltaOnReject ?? +15);
   const CAP_PCT      = Math.max(0, Math.min(100, Number(impCfg.capPct ?? 70)));
   const clamp = (v,min,max)=>Math.min(max,Math.max(min,v));
+  const rules = st.rules || (st.rules = {});
+  rules.impatienceCap = CAP_PCT;
 
   // Click-guard
   const guardCapture = (e) => {
@@ -472,7 +511,10 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
       maxWeeks: Math.min(activityWeeks, MAX_LOAN_WEEKS),
       defaultWeeks: Math.min(Math.max(1,(s?.event?.loanWeeks||2)), Math.min(activityWeeks,MAX_LOAN_WEEKS)),
       onConfirm:(loanAmount, weeksSel)=>{
-        st.loans.push({ id:st.nextLoanId++, amount:loanAmount, weeksLeft:weeksSel, status:H.STATUS.ACTIVO });
+        st.loans.push({ id:st.nextLoanId++, amount:loanAmount, weeksLeft:weeksSel, status:H.STATUS.ACTIVO, purpose });
+        if (!Array.isArray(rules.allowedLoanPurposes) || !rules.allowedLoanPurposes.includes(purpose)) {
+          rules.loanPurposeViolation = true;
+        }
         st.saldo += loanAmount;
         st.lastAction={type:'prestamo-only', loanAmount, loanWeeks:weeksSel, week:st.week};
         refreshUI();
@@ -481,13 +523,17 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
   }
 
   // Acciones principales
-  btnPagar.addEventListener('click', ()=>{
+  let actionBusy = false;
+  btnPagar.addEventListener('click', async ()=>{
+    if (actionBusy) return;
     if (st.saldo < cost) { H.openInfoModal({title:'No puedes pagar', message:'Necesitas saldo suficiente para pagar esta actividad.'}); return; }
 
     const prevImp = st.impatience || 0;
     const nextImp = clamp(prevImp + DELTA_PAY, 0, 100);
+    if (nextImp >= CAP_PCT) rules.impatienceBreached = true;
 
     const saldoBefore=st.saldo; st.saldo -= cost;
+    if (isOtherPurpose) rules.otherExpensesPaid += 1;
 
     if (incomeNextWeek > 0) {
       st.incomes.push({ amount:incomeNextWeek, dueWeek:st.week, source:incomeSource });
@@ -507,15 +553,21 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
     st.lastAction = { type:'pagar', cost, week:st.week, incomeNextWeek };
     window.ACT_DEUDA_LAST_SALDO = st.fx.saldoTo;
 
-    // feedback inmediato en 1-1
-    H.setImpatienceBar({ fillEl: impatienceFill, capEl: impCap, valuePct: nextImp, capPct: CAP_PCT });
-
+    // feedback animado en 1-1
+    actionBusy = true;
+    if (H.animateImpatienceBar) {
+      await H.animateImpatienceBar({ fillEl: impatienceFill, capEl: impCap, from: prevImp, to: nextImp, capPct: CAP_PCT });
+    } else {
+      H.setImpatienceBar({ fillEl: impatienceFill, capEl: impCap, valuePct: nextImp, capPct: CAP_PCT });
+    }
     SlideActions.next();
   });
 
-  btnRechazar.addEventListener('click', ()=>{
+  btnRechazar.addEventListener('click', async ()=>{
+    if (actionBusy) return;
     const prevImp = st.impatience || 0;
     const nextImp = clamp(prevImp + DELTA_REJECT, 0, 100);
+    if (nextImp >= CAP_PCT) rules.impatienceBreached = true;
 
     st.fx = {
       saldoFrom: st.saldo,
@@ -532,9 +584,13 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
 
     window.ACT_DEUDA_LAST_SALDO = st.fx.saldoTo;
 
-    // feedback inmediato en 1-1
-    H.setImpatienceBar({ fillEl: impatienceFill, capEl: impCap, valuePct: nextImp, capPct: CAP_PCT });
-
+    // feedback animado en 1-1
+    actionBusy = true;
+    if (H.animateImpatienceBar) {
+      await H.animateImpatienceBar({ fillEl: impatienceFill, capEl: impCap, from: prevImp, to: nextImp, capPct: CAP_PCT });
+    } else {
+      H.setImpatienceBar({ fillEl: impatienceFill, capEl: impCap, valuePct: nextImp, capPct: CAP_PCT });
+    }
     SlideActions.next();
   });
 

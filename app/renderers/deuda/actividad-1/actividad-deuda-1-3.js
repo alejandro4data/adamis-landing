@@ -74,6 +74,7 @@ SlideRendererRegistry.register('actividad-deuda-1-3', function (s, root) {
         pointer-events:auto;
       }
       .btn-option{padding:10px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:700;font-size:15px}
+      .btn-option[disabled]{opacity:.55;cursor:not-allowed;filter:grayscale(.1)}
       .btn-continue{
         background:#7be495; color:#083b0b;
         box-shadow:0 6px 16px rgba(0,0,0,.15);
@@ -94,13 +95,73 @@ SlideRendererRegistry.register('actividad-deuda-1-3', function (s, root) {
       .coins-badge__icon{width:26px;height:26px;object-fit:contain}
 
       /* Impaciencia */
-      .impatience-wrap{display:flex-start;flex-direction:column;gap:4px;margin-top:0px}
+      .impatience-wrap{display:flex-start;flex-direction:column;gap:4px;margin-top:0px;position:relative}
       .impatience-label{font-size:13px;color:#444;font-weight:600}
       .impatience-bar{position:relative;height:14px;border-radius:8px;overflow:hidden;background:#e0e0e0;box-shadow:inset 0 1px 3px rgba(0,0,0,.2)}
       .impatience-fill{height:100%;background:linear-gradient(90deg,#43a047,#2e7d32);width:0%}
       .impatience-fill.danger{background:linear-gradient(90deg,#e53935,#b71c1c)}
       .impatience-cap{position:absolute;top:0;bottom:0;width:3px;background:#111827;opacity:.4}
       .impatience-cap::after{content:'UMBRAL';position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:#11182799;letter-spacing:.4px}
+
+      /* Burbuja delta: saldo */
+      .tpl--actividad-deuda .coins-wrap{ position:relative; }
+      .tpl--actividad-deuda .coins-wrap .coins-float{
+        position:absolute;
+        top:-6px;
+        left:50%;
+        transform: translate(-50%, 0) scale(.96);
+        padding:10px 16px;
+        border-radius:999px;
+        background: var(--coins-float-bg, linear-gradient(135deg, #22c55e, #16a1b4));
+        color:#fff;
+        font-weight:900;
+        font-size:16px;
+        letter-spacing:.2px;
+        box-shadow:0 12px 22px rgba(0,0,0,.2);
+        opacity:0;
+        pointer-events:none;
+      }
+      .tpl--actividad-deuda .coins-wrap .coins-float.coins-float--neg{
+        --coins-float-bg: linear-gradient(135deg, #ef4444, #f97316);
+      }
+      .tpl--actividad-deuda .coins-wrap .coins-float.is-on{
+        animation: deudaCoinsFloat 1.45s ease-out forwards;
+      }
+      @keyframes deudaCoinsFloat{
+        0%   { transform: translate(-50%, 0) scale(.96); opacity: 0; }
+        20%  { transform: translate(-50%, -8px) scale(1.04); opacity: 1; }
+        100% { transform: translate(-50%, -40px) scale(1.08); opacity: 0; }
+      }
+
+      /* Burbuja delta: impaciencia */
+      .tpl--actividad-deuda .impatience-float{
+        position:absolute;
+        top:-8px;
+        right:-6px;
+        width:48px;
+        height:48px;
+        border-radius:999px;
+        background: var(--imp-float-bg, #22c55e);
+        color:#fff;
+        font-weight:900;
+        font-size:14px;
+        letter-spacing:.2px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        box-shadow:0 12px 22px rgba(0,0,0,.2);
+        opacity:0;
+        pointer-events:none;
+        transform: translate(0, 0) scale(.96);
+      }
+      .tpl--actividad-deuda .impatience-float.is-on{
+        animation: deudaImpFloat 1.45s ease-out forwards;
+      }
+      @keyframes deudaImpFloat{
+        0%   { transform: translate(0, 0) scale(.96); opacity: 0; }
+        20%  { transform: translate(0, -8px) scale(1.04); opacity: 1; }
+        100% { transform: translate(0, -40px) scale(1.08); opacity: 0; }
+      }
     
     `; document.head.appendChild(css);
   })();
@@ -118,25 +179,73 @@ SlideRendererRegistry.register('actividad-deuda-1-3', function (s, root) {
   const isRow = (t)=>t && t.closest && t.closest('.tabla-prestamos tbody tr.row-clickable');
   const isBtn = (t)=>t && t.closest && t.closest('.btn-continue');
   const isInfo= (t)=>t && t.closest && t.closest('.loan-info-btn');
-  const guardCapture=(e)=>{ const t=e.target; if(isRow(t)||isBtn(t)||isInfo(t)) return; e.stopPropagation(); e.preventDefault(); };
+  const guardCapture=(e)=>{ const t=e.target; if(isRow(t)||isBtn(t)||isInfo(t)) return; e.stopImmediatePropagation?.(); e.stopPropagation(); e.preventDefault(); };
   ['click','pointerdown','pointerup','mousedown','mouseup'].forEach(evt=>root.addEventListener(evt, guardCapture, true));
-  root.addEventListener('click',(e)=>{ e.stopPropagation(); }, false);
+  root.addEventListener('click',(e)=>{ e.stopImmediatePropagation?.(); e.stopPropagation(); }, false);
 
   root.classList.add('tpl--actividad-deuda');
 
   const fx = st.fx || {};
+  const ev = s?.event || {};
+  const processGivenLoans = !!ev.processGivenLoans;
+  if (processGivenLoans) {
+    const incomesDbg = Array.isArray(st.incomes)
+      ? st.incomes.map(i => ({ amount: i?.amount, dueWeek: i?.dueWeek, source: i?.source, loanId: i?.loanId }))
+      : st.incomes;
+    const loansDbg = Array.isArray(st.loans)
+      ? st.loans.map(l => ({ id: l?.id, amount: l?.amount, weeksLeft: l?.weeksLeft, given: l?.given, dueWeek: l?.dueWeek, payoff: l?.payoff }))
+      : st.loans;
+    console.log('[deuda-1-3] processGivenLoans:start', { week: st.week, incomes: incomesDbg, loans: loansDbg });
+  }
   const title  = s?.text  || fx.title || 'Aplicando tu decisión…';
-  const imgSrc = (st.lastAction?.type==='rechazar' ? (s?.event?.imageRejected || fx.image || s?.image) : (fx.image || s?.image));
+  const imgSrc = processGivenLoans
+    ? (s?.image || fx.image)
+    : (st.lastAction?.type==='rechazar' ? (s?.event?.imageRejected || fx.image || s?.image) : (fx.image || s?.image));
 
-  // Ingresos que caen esta semana (no provenientes de prestamo-concedido)
+  // Ingresos que caen esta semana (o devolución de préstamos concedidos en slide especial)
+  const targetWeek = (st.week || 1);
+  const isDue = (x) => {
+    if (!x) return false;
+    const dueWeek = Number(x.dueWeek || 0);
+    if (processGivenLoans) return x.source === 'prestamo-concedido' && dueWeek <= targetWeek;
+    return x.source !== 'prestamo-concedido' && dueWeek === targetWeek;
+  };
   let ingresoTotal = 0;
-  const dueNow = Array.isArray(st.incomes)
-    ? st.incomes.filter(x => x.dueWeek === st.week && x.source !== 'prestamo-concedido')
-    : [];
+  let dueNow = Array.isArray(st.incomes) ? st.incomes.filter(isDue) : [];
+  if (processGivenLoans && !dueNow.length) {
+    const dueLoans = (st.loans || []).filter(l => {
+      if (!l || !l.given) return false;
+      const dueWeek = Number(l.dueWeek || 0);
+      const byDueWeek = Number.isFinite(dueWeek) && dueWeek > 0 ? dueWeek <= targetWeek : false;
+      const byWeeksLeft = Number(l.weeksLeft || 0) <= 0;
+      return byDueWeek || byWeeksLeft;
+    });
+    if (dueLoans.length) {
+      dueNow = dueLoans.map(l => ({
+        amount: Number((l.payoff ?? l.amount) || 0),
+        dueWeek: targetWeek,
+        source: 'prestamo-concedido',
+        loanId: l.id,
+        _fromLoan: true
+      }));
+    }
+  }
+  if (processGivenLoans && !dueNow.length) {
+    console.warn('[deuda-1-3] processGivenLoans:skip (sin devoluciones)', { week: st.week, targetWeek, incomes: st.incomes, loans: st.loans });
+    if (window.SlideActions && typeof SlideActions.next === 'function') {
+      setTimeout(() => SlideActions.next(), 0);
+    }
+    return { suppressRootClick: true, noLock: true };
+  }
   if (dueNow.length) {
-    for (const inc of dueNow) ingresoTotal += Number(inc.amount || 0);
+    for (const inc of dueNow) {
+      ingresoTotal += Number(inc.amount || 0);
+      if (processGivenLoans && inc.loanId != null) {
+        st.loans = (st.loans || []).filter(l => !(l.given && l.id === inc.loanId));
+      }
+    }
     st.saldo += ingresoTotal;
-    st.incomes = st.incomes.filter(x => !(x.dueWeek === st.week && x.source !== 'prestamo-concedido'));
+    st.incomes = st.incomes.filter(x => !isDue(x));
   }
 
   // Saldo animación: from → to
@@ -153,6 +262,7 @@ SlideRendererRegistry.register('actividad-deuda-1-3', function (s, root) {
   const impFrom = Number.isFinite(fx.impatienceFrom) ? Number(fx.impatienceFrom) : (st.impatience||0);
   const impTo   = Number.isFinite(fx.impatienceTo)   ? Number(fx.impatienceTo)   : (st.impatience||0);
   const impCap  = Number.isFinite(fx.impatienceCap)  ? Number(fx.impatienceCap)  : 70;
+  const fmtDelta = (n)=>{ const sign = n>0?'+':(n<0?'-':'±'); return `${sign}${Math.abs(n)}`; };
 
   // ===== Header =====
   const header = (H.el ? H.el('div',{className:'deuda-header'}, H.el('div',{className:'evento-banner'}, H.txt(title)))
@@ -179,7 +289,14 @@ SlideRendererRegistry.register('actividad-deuda-1-3', function (s, root) {
   const impWrap = (H.el? H.el('div',{className:'impatience-wrap'}, H.el('div',{className:'impatience-label'}, H.txt('Impaciencia')), impBar)
                       : (function(){const w=document.createElement('div'); w.className='impatience-wrap align-top'; const l=document.createElement('div'); l.className='impatience-label'; l.textContent='Impaciencia'; w.appendChild(l); w.appendChild(impBar); return w;})());
 
-  const msgLines=[]; if (ingresoTotal > 0) msgLines.push(`\n💰 Has recibido un ingreso ${H.formatEUR?H.formatEUR(ingresoTotal):`€${ingresoTotal}`} por la actividad de la semana anterior.\n`);
+  const msgLines=[];
+  if (ingresoTotal > 0) {
+    if (processGivenLoans) {
+      msgLines.push(`\nHas recibido ${H.formatEUR?H.formatEUR(ingresoTotal):`€${ingresoTotal}`} de la devolución de un préstamo concedido.\n`);
+    } else {
+      msgLines.push(`\n💰 Has recibido un ingreso ${H.formatEUR?H.formatEUR(ingresoTotal):`€${ingresoTotal}`} por la actividad de la semana anterior.\n`);
+    }
+  }
   const recapMsg = (H.el? H.el('div',{className:'btn-hint'}, H.txt(msgLines.join('\n'))) : (function(){const d=document.createElement('div'); d.className='btn-hint'; d.textContent=msgLines.join('\n'); return d;})());
 
   const leftCol = (H.el? H.el('div',{className:'deuda-col left'}, impWrap, saldoW.node, recapMsg)
@@ -242,13 +359,47 @@ SlideRendererRegistry.register('actividad-deuda-1-3', function (s, root) {
 
   // --- BOTTOM: Continuar flotante ---
   const bottomBar = (H.el? H.el('div',{className:'fx-bottom'}) : (function(){const d=document.createElement('div'); d.className='fx-bottom'; return d;})());
-  const btnSeguir = (H.el? H.el('button',{className:'btn-option btn-continue'}, H.txt('Continuar'))
-                         : (function(){const b=document.createElement('button'); b.className='btn-option btn-continue'; b.textContent='Continuar'; return b;})());
+  const btnSeguir = (H.el? H.el('button',{className:'btn-option btn-continue', type:'button'}, H.txt('Continuar'))
+                         : (function(){const b=document.createElement('button'); b.className='btn-option btn-continue'; b.type='button'; b.textContent='Continuar'; return b;})());
+  btnSeguir.disabled = true;
+  btnSeguir.setAttribute('aria-disabled','true');
+  let canAdvance = false;
+  let armedAdvance = false;
+  const originalNext = (window.SlideActions && typeof SlideActions.next === 'function') ? SlideActions.next : null;
+  if (originalNext) {
+    const guardedNext = function(){
+      if (!canAdvance) return;
+      return originalNext.call(SlideActions);
+    };
+    SlideActions.next = guardedNext;
+    const restoreWhenDetached = () => {
+      if (!root.isConnected) {
+        if (window.SlideActions && SlideActions.next === guardedNext) SlideActions.next = originalNext;
+        return;
+      }
+      requestAnimationFrame(restoreWhenDetached);
+    };
+    requestAnimationFrame(restoreWhenDetached);
+  }
   let currentShown = saldoFrom;
-  btnSeguir.addEventListener('click', () => {
+  btnSeguir.addEventListener('pointerdown', () => {
+    if (!canAdvance) return;
+    armedAdvance = true;
+  });
+  btnSeguir.addEventListener('keydown', (e) => {
+    if (!canAdvance) return;
+    if (e.key === 'Enter' || e.key === ' ') armedAdvance = true;
+  });
+  btnSeguir.addEventListener('click', (e) => {
+    if (!canAdvance || (!armedAdvance && e.detail !== 0)) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    armedAdvance = false;
     window.ACT_DEUDA_LAST_SALDO = currentShown;
     if (typeof impShown === 'number' && Number.isFinite(impShown)) st.impatience = impShown;
-    SlideActions.next();
+    if (window.SlideActions && typeof SlideActions.next === 'function') SlideActions.next();
   });
   bottomBar.appendChild(btnSeguir);
 
@@ -273,30 +424,78 @@ SlideRendererRegistry.register('actividad-deuda-1-3', function (s, root) {
   // ----- Barra de impaciencia: estado inicial + animación -----
   setImpatienceBar({ fillEl: impFill, capEl: impCapEl, valuePct: impFrom, capPct: impCap });
 
-  const impMinMs=250, impMaxMs=900;
-  const impDiff=Math.abs(impTo - impFrom);
-  const impDur=Math.max(impMinMs, Math.min(impMaxMs, impDiff*20));
-  let impStart=null;
   let impShown = impFrom;
-  function stepImp(ts){
-    if(impStart===null) impStart=ts;
-    const p=Math.min(1,(ts-impStart)/impDur);
-    const val=Math.round(impFrom + (impTo - impFrom)*p);
-    impShown = val;
-    setImpatienceBar({ fillEl: impFill, capEl: impCapEl, valuePct: val, capPct: impCap });
-    if(p<1) requestAnimationFrame(stepImp);
-    else {
-      st.impatience = impTo;
-      setImpatienceBar({ fillEl: impFill, capEl: impCapEl, valuePct: impTo, capPct: impCap });
-    }
+  const animMs = Math.max(0, Number(s?.duration ?? 900));
+  const deltaImp = Math.round(impTo - impFrom);
+  if (deltaImp !== 0){
+    const bubble = document.createElement('div');
+    bubble.className = 'impatience-float';
+    bubble.textContent = fmtDelta(deltaImp);
+    bubble.style.setProperty('--imp-float-bg', deltaImp > 0 ? '#ef4444' : '#22c55e');
+    impWrap.appendChild(bubble);
+    requestAnimationFrame(()=> bubble.classList.add('is-on'));
+    setTimeout(()=> bubble.remove(), 1400);
   }
-  requestAnimationFrame(stepImp);
+  function animateImpatience(from, to, ms){
+    const dur = Number.isFinite(ms) ? ms : 0;
+    if (dur <= 0 || from === to){
+      impShown = to;
+      setImpatienceBar({ fillEl: impFill, capEl: impCapEl, valuePct: to, capPct: impCap });
+      st.impatience = to;
+      return;
+    }
+    const t0 = performance.now();
+    function step(t){
+      const p = Math.max(0, Math.min(1, (t - t0) / dur));
+      const val = Math.round(from + (to - from) * p);
+      impShown = val;
+      setImpatienceBar({ fillEl: impFill, capEl: impCapEl, valuePct: val, capPct: impCap });
+      if (p < 1) requestAnimationFrame(step);
+      else {
+        st.impatience = to;
+        setImpatienceBar({ fillEl: impFill, capEl: impCapEl, valuePct: to, capPct: impCap });
+      }
+    }
+    requestAnimationFrame(step);
+  }
+  animateImpatience(impFrom, impTo, animMs);
 
   // ----- Animación saldo (from → to) -----
-  const msPerEuro=60, minMs=400, maxMs=2500;
-  let startTs=null;
-  const duration=Math.max(minMs, Math.min(maxMs, Math.abs(saldoTo - saldoFrom) * msPerEuro));
-  function easeInOutCubic(x){ return x<0.5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2; }
-  function stepSaldo(ts){ if(startTs===null) startTs=ts; const p=Math.min(1,(ts-startTs)/duration); const v=Math.round(saldoFrom + (saldoTo - saldoFrom)*easeInOutCubic(p)); currentShown=v; saldoW.set(v); if(p<1) requestAnimationFrame(stepSaldo); else { currentShown=saldoTo; saldoW.set(saldoTo); } }
-  requestAnimationFrame(stepSaldo);
+  const unlockDelay = Math.max(0, animMs) + 80;
+  setTimeout(() => {
+    if (!root.isConnected) return;
+    canAdvance = true;
+    btnSeguir.disabled = false;
+    btnSeguir.removeAttribute('aria-disabled');
+  }, unlockDelay);
+  const deltaSaldo = Math.round(saldoTo - saldoFrom);
+  if (deltaSaldo !== 0 && saldoW?.node){
+    const bubble = document.createElement('div');
+    bubble.className = 'coins-float';
+    if (deltaSaldo < 0) bubble.classList.add('coins-float--neg');
+    bubble.textContent = fmtDelta(deltaSaldo);
+    saldoW.node.appendChild(bubble);
+    requestAnimationFrame(() => bubble.classList.add('is-on'));
+    setTimeout(() => bubble.remove(), 1400);
+  }
+  function animateSaldo(from, to, ms){
+    const dur = Number.isFinite(ms) ? ms : 0;
+    if (dur <= 0 || from === to){
+      currentShown = to;
+      saldoW.set(to);
+      return;
+    }
+    const t0 = performance.now();
+    function step(t){
+      const p = Math.max(0, Math.min(1, (t - t0) / dur));
+      const v = Math.round(from + (to - from) * p);
+      currentShown = v;
+      saldoW.set(v);
+      if (p < 1) requestAnimationFrame(step);
+      else { currentShown = to; saldoW.set(to); }
+    }
+    requestAnimationFrame(step);
+  }
+  animateSaldo(saldoFrom, saldoTo, animMs);
+  return { suppressRootClick: true, noLock: true };
 });

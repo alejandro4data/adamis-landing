@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es" data-page="actividades">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crucigrama del día</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main>
+    <section id="crucigrama" class="section section--actividades is-active" aria-label="Crucigrama del día">
+      <div class="container crx-wrap">
+        <a class="btn back-integrated" href="./actividades.html" aria-label="Atrás" title="Atrás"></a>
+
+        <header class="crx-header">
+          <h1 class="wdl-title">Crucigrama del día</h1>
+          <div class="reward-badge">
+            <img src="../assets/icons/coin_ranking.png" alt="" />
+            <span>1</span>
+          </div>
+        </header>
+
+        <section class="crx-body" aria-live="polite">
+          <div id="crx-grid" class="crx-grid" role="grid" aria-label="Tablero del crucigrama"></div>
+
+          <aside class="crx-clues" aria-label="Pistas">
+            <div class="crx-clue-group">
+              <h2>Horizontal</h2>
+              <ol id="crx-across" class="crx-clue-list"></ol>
+            </div>
+            <div class="crx-clue-group">
+              <h2>Vertical</h2>
+              <ol id="crx-down" class="crx-clue-list"></ol>
+            </div>
+          </aside>
+        </section>
+
+        <footer class="crx-actions">
+          <button id="crx-check" class="wdl-btn">Comprobar</button>
+          <button id="crx-reset" class="wdl-btn">Nuevo</button>
+        </footer>
+
+        <div id="crx-toast" class="wdl-toast crx-toast" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal resultado (estética compartida con Wordle) -->
+  <div id="crx-result" class="wdl-modal" hidden>
+    <div class="wdl-modal__backdrop"></div>
+    <div class="wdl-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="crx-result-title">
+      <header class="wdl-modal__header">
+        <h2 class="wdl-modal__title" id="crx-result-title">¡Crucigrama completado!</h2>
+      </header>
+      <div class="wdl-modal__body">
+        <div class="wdl-result">
+          <div class="wdl-result-badge" id="crx-result-badge">¡Correcto!</div>
+          <p class="wdl-result-def" id="crx-result-text">
+            Has completado todas las palabras del crucigrama.
+          </p>
+        </div>
+      </div>
+      <footer class="wdl-modal__footer">
+        <button type="button" class="wdl-btn" id="crx-result-ok">Continuar</button>
+        <a class="wdl-btn" href="./actividades.html">Salir</a>
+      </footer>
+    </div>
+  </div>
+
+  <script src="../crucigrama.js"></script>
+</body>
+</html>
