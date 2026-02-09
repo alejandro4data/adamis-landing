@@ -186,18 +186,66 @@ SlideRendererRegistry.register('actividad-deuda-1-3', function (s, root) {
   root.classList.add('tpl--actividad-deuda');
 
   const fx = st.fx || {};
+  const ev = s?.event || {};
+  const processGivenLoans = !!ev.processGivenLoans;
+  if (processGivenLoans) {
+    const incomesDbg = Array.isArray(st.incomes)
+      ? st.incomes.map(i => ({ amount: i?.amount, dueWeek: i?.dueWeek, source: i?.source, loanId: i?.loanId }))
+      : st.incomes;
+    const loansDbg = Array.isArray(st.loans)
+      ? st.loans.map(l => ({ id: l?.id, amount: l?.amount, weeksLeft: l?.weeksLeft, given: l?.given, dueWeek: l?.dueWeek, payoff: l?.payoff }))
+      : st.loans;
+    console.log('[deuda-1-3] processGivenLoans:start', { week: st.week, incomes: incomesDbg, loans: loansDbg });
+  }
   const title  = s?.text  || fx.title || 'Aplicando tu decisión…';
-  const imgSrc = (st.lastAction?.type==='rechazar' ? (s?.event?.imageRejected || fx.image || s?.image) : (fx.image || s?.image));
+  const imgSrc = processGivenLoans
+    ? (s?.image || fx.image)
+    : (st.lastAction?.type==='rechazar' ? (s?.event?.imageRejected || fx.image || s?.image) : (fx.image || s?.image));
 
-  // Ingresos que caen esta semana (no provenientes de prestamo-concedido)
+  // Ingresos que caen esta semana (o devolución de préstamos concedidos en slide especial)
+  const targetWeek = (st.week || 1);
+  const isDue = (x) => {
+    if (!x) return false;
+    const dueWeek = Number(x.dueWeek || 0);
+    if (processGivenLoans) return x.source === 'prestamo-concedido' && dueWeek <= targetWeek;
+    return x.source !== 'prestamo-concedido' && dueWeek === targetWeek;
+  };
   let ingresoTotal = 0;
-  const dueNow = Array.isArray(st.incomes)
-    ? st.incomes.filter(x => x.dueWeek === st.week && x.source !== 'prestamo-concedido')
-    : [];
+  let dueNow = Array.isArray(st.incomes) ? st.incomes.filter(isDue) : [];
+  if (processGivenLoans && !dueNow.length) {
+    const dueLoans = (st.loans || []).filter(l => {
+      if (!l || !l.given) return false;
+      const dueWeek = Number(l.dueWeek || 0);
+      const byDueWeek = Number.isFinite(dueWeek) && dueWeek > 0 ? dueWeek <= targetWeek : false;
+      const byWeeksLeft = Number(l.weeksLeft || 0) <= 0;
+      return byDueWeek || byWeeksLeft;
+    });
+    if (dueLoans.length) {
+      dueNow = dueLoans.map(l => ({
+        amount: Number((l.payoff ?? l.amount) || 0),
+        dueWeek: targetWeek,
+        source: 'prestamo-concedido',
+        loanId: l.id,
+        _fromLoan: true
+      }));
+    }
+  }
+  if (processGivenLoans && !dueNow.length) {
+    console.warn('[deuda-1-3] processGivenLoans:skip (sin devoluciones)', { week: st.week, targetWeek, incomes: st.incomes, loans: st.loans });
+    if (window.SlideActions && typeof SlideActions.next === 'function') {
+      setTimeout(() => SlideActions.next(), 0);
+    }
+    return { suppressRootClick: true, noLock: true };
+  }
   if (dueNow.length) {
-    for (const inc of dueNow) ingresoTotal += Number(inc.amount || 0);
+    for (const inc of dueNow) {
+      ingresoTotal += Number(inc.amount || 0);
+      if (processGivenLoans && inc.loanId != null) {
+        st.loans = (st.loans || []).filter(l => !(l.given && l.id === inc.loanId));
+      }
+    }
     st.saldo += ingresoTotal;
-    st.incomes = st.incomes.filter(x => !(x.dueWeek === st.week && x.source !== 'prestamo-concedido'));
+    st.incomes = st.incomes.filter(x => !isDue(x));
   }
 
   // Saldo animación: from → to
@@ -241,7 +289,14 @@ SlideRendererRegistry.register('actividad-deuda-1-3', function (s, root) {
   const impWrap = (H.el? H.el('div',{className:'impatience-wrap'}, H.el('div',{className:'impatience-label'}, H.txt('Impaciencia')), impBar)
                       : (function(){const w=document.createElement('div'); w.className='impatience-wrap align-top'; const l=document.createElement('div'); l.className='impatience-label'; l.textContent='Impaciencia'; w.appendChild(l); w.appendChild(impBar); return w;})());
 
-  const msgLines=[]; if (ingresoTotal > 0) msgLines.push(`\n💰 Has recibido un ingreso ${H.formatEUR?H.formatEUR(ingresoTotal):`€${ingresoTotal}`} por la actividad de la semana anterior.\n`);
+  const msgLines=[];
+  if (ingresoTotal > 0) {
+    if (processGivenLoans) {
+      msgLines.push(`\nHas recibido ${H.formatEUR?H.formatEUR(ingresoTotal):`€${ingresoTotal}`} de la devolución de un préstamo concedido.\n`);
+    } else {
+      msgLines.push(`\n💰 Has recibido un ingreso ${H.formatEUR?H.formatEUR(ingresoTotal):`€${ingresoTotal}`} por la actividad de la semana anterior.\n`);
+    }
+  }
   const recapMsg = (H.el? H.el('div',{className:'btn-hint'}, H.txt(msgLines.join('\n'))) : (function(){const d=document.createElement('div'); d.className='btn-hint'; d.textContent=msgLines.join('\n'); return d;})());
 
   const leftCol = (H.el? H.el('div',{className:'deuda-col left'}, impWrap, saldoW.node, recapMsg)

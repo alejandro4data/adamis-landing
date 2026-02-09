@@ -10,13 +10,21 @@
 (function initDeudaHelpersPatch(){
   if (!window.DeudaHelpers) {
     const STATUS  = { ACTIVO: 'Activo', IMPAGADO: 'Impagado' };
-    const PENALTY = 5;
+    const PENALTY = 12;
     const el = (t,p={},...c)=>{const n=document.createElement(t);for(const[k,v] of Object.entries(p||{})){if(k==='className')n.className=v; else if(k==='dataset')Object.assign(n.dataset,v); else if(k in n)n[k]=v; else n.setAttribute(k,v)}; for(const ch of c.flat()){if(ch==null)continue; n.appendChild(ch.nodeType?ch:document.createTextNode(String(ch)))}; return n};
     const txt = s=>document.createTextNode(String(s??''));
     function ensureState(){
       if(!window.ACT_DEUDA_STATE){ window.ACT_DEUDA_STATE={week:1,saldo:10,loans:[],nextLoanId:1,blocked:false,lastAction:null,incomes:[], impatience:0}; }
       if(!Array.isArray(window.ACT_DEUDA_STATE.incomes)) window.ACT_DEUDA_STATE.incomes=[];
-      return window.ACT_DEUDA_STATE;
+      const st = window.ACT_DEUDA_STATE;
+      if (!st.rules || typeof st.rules !== 'object') st.rules = {};
+      if (!Array.isArray(st.rules.allowedLoanPurposes)) st.rules.allowedLoanPurposes = ['negocio','medicina'];
+      if (typeof st.rules.maxOtherExpenses !== 'number') st.rules.maxOtherExpenses = 2;
+      if (typeof st.rules.otherExpensesPaid !== 'number') st.rules.otherExpensesPaid = 0;
+      if (typeof st.rules.loanPurposeViolation !== 'boolean') st.rules.loanPurposeViolation = false;
+      if (typeof st.rules.impatienceBreached !== 'boolean') st.rules.impatienceBreached = false;
+      if (typeof st.rules.impatienceCap !== 'number') st.rules.impatienceCap = 50;
+      return st;
     }
     const formatEUR = n=>`€${Number(n||0)}`;
     function fillLoansTable(tbody, loans){
@@ -138,6 +146,24 @@
         width:22px;height:22px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;
         background:#f1f5f9;border:1px solid #e2e8f0;box-shadow:0 1px 2px rgba(2,6,23,.04);color:#0f172a;font-weight:800;font-size:13px;line-height:1;cursor:pointer
       }
+      .tabla-wrap.loan-alert{
+        border-radius:16px;
+        box-shadow:0 0 0 3px rgba(220,38,38,.9), 0 0 18px 6px rgba(220,38,38,.25);
+        animation: deudaLoanPulse 2.6s ease-in-out infinite;
+      }
+      @keyframes deudaLoanPulse{
+        0%,100%{ box-shadow:0 0 0 3px rgba(220,38,38,.9), 0 0 18px 6px rgba(220,38,38,.18); }
+        50%{ box-shadow:0 0 0 4px rgba(220,38,38,1), 0 0 28px 10px rgba(220,38,38,.35); }
+      }
+      .deuda-warn-modal .modal-actions{ justify-content:space-between; }
+      .deuda-warn-modal .btn-danger{
+        background:#dc2626;color:#fff;border:none;
+        padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;
+      }
+      .deuda-warn-modal .btn-ghost{
+        background:#fff;color:#111827;border:1px solid #e5e7eb;
+        padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;
+      }
 
       /* Botón "Continuar" pequeño, verde claro, flotante esquina inferior derecha */
       .fx-bottom{
@@ -240,6 +266,7 @@
 SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
   const H  = window.DeudaHelpers;
   const st = H.ensureState();
+  const weekBefore = st.week;
 
   const isRow = (t)=>t && t.closest && t.closest('.tabla-prestamos tbody tr.row-clickable');
   const isBtn = (t)=>t && t.closest && t.closest('.btn-continue');
@@ -259,21 +286,7 @@ SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
     ? Number(window.ACT_DEUDA_LAST_SALDO)
     : (st.fx && Number.isFinite(st.fx.saldoTo) ? Number(st.fx.saldoTo) : Number(st.saldo));
 
-  // === COBRO de ingresos diferidos de PRÉSTAMO CONCEDIDO (solo aquí en 1-2) ===
-  let ingresoPrestamos = 0;
-  const duePrestamoNow = Array.isArray(st.incomes)
-    ? st.incomes.filter(x => x.dueWeek === st.week && x.source === 'prestamo-concedido')
-    : [];
-  if (duePrestamoNow.length) {
-    for (const inc of duePrestamoNow) {
-      ingresoPrestamos += Number(inc.amount || 0);
-      if (inc.loanId != null) {
-        st.loans = (st.loans || []).filter(l => !(l.given && l.id === inc.loanId));
-      }
-    }
-    st.saldo += ingresoPrestamos;
-    st.incomes = st.incomes.filter(x => !(x.dueWeek === st.week && x.source === 'prestamo-concedido'));
-  }
+  // Nota: devolución de préstamos concedidos se procesa en una slide separada después de la paga.
   // Paga semanal
   const paga = Number(s?.paga ?? 10);
   st.saldo += paga;
@@ -285,9 +298,11 @@ SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
       l.weeksLeft = Math.max(0, (l.weeksLeft || 0) - 1);
       if (!l.given && l.weeksLeft === 0) {
         l.status = H.STATUS.IMPAGADO;
-        l.amount = (l.amount || 0) + 5;
+        l.amount = (l.amount || 0) + H.PENALTY;
         nuevosImpagos++;
       }
+    } else if (!l.given && l.status === H.STATUS.IMPAGADO) {
+      l.amount = (l.amount || 0) + H.PENALTY;
     }
   }
   st.blocked = st.loans.some(l => !l.given && l.status === H.STATUS.IMPAGADO);
@@ -320,9 +335,6 @@ SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
   if (nuevosImpagos) msgLines.push(`\n${nuevosImpagos} préstamo(s) ha(n) vencido. +${H.PENALTY}€ de penalización. No puedes pedir nuevos préstamos.\n`);
   else if (st.blocked) msgLines.push('\nAún hay impagos. No puedes pedir nuevos préstamos.\n');
   else msgLines.push('\nTodo en orden. Puedes pedir préstamos si lo necesitas.\n');
-  if (ingresoPrestamos > 0) {
-    msgLines.push(`\nHas recibido ${H.formatEUR(ingresoPrestamos)} de la devolución de un préstamo concedido.\n`);
-  }
   const recapMsg = H.el('div', { className: 'recap-msg' }, H.txt(msgLines.join('\n')));
 
   const left  = H.el('div',{className:'fx-left'}, impWrap, saldoW.node, recapMsg);
@@ -354,6 +366,14 @@ SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
   );
 
   const right=H.el('div',{className:'fx-right'}, tablaWrap, loanHint);
+  const isLastRecap = (weekBefore >= 7) || /semana\s*7/i.test(String(s?.text || ''));
+  const hasPendingLoans = () => (st.loans || []).some(l => !l.given && (l.status === H.STATUS.ACTIVO || l.status === H.STATUS.IMPAGADO));
+  function updateLoanAlert(){
+    const pending = hasPendingLoans();
+    if (isLastRecap && pending) tablaWrap.classList.add('loan-alert');
+    else tablaWrap.classList.remove('loan-alert');
+    return pending;
+  }
 
   // Acciones info
   function openLoansHelp(){
@@ -378,7 +398,68 @@ SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
   const bottomBar=H.el('div',{className:'fx-bottom'});
   const btnSeguir=H.el('button',{className:'btn-option btn-continue'}, H.txt('Continuar'));
   let shownSaldo = prevSaldo;
-  btnSeguir.addEventListener('click', ()=>{ window.ACT_DEUDA_LAST_SALDO = shownSaldo; SlideActions.next(); });
+  let advanceBlocked = false;
+  let guardNextInstalled = false;
+  const originalNext = (window.SlideActions && typeof SlideActions.next === 'function') ? SlideActions.next : null;
+  function ensureAdvanceGuard(){
+    if (!originalNext || guardNextInstalled) return;
+    const guardedNext = function(){
+      if (advanceBlocked) return;
+      return originalNext.call(SlideActions);
+    };
+    SlideActions.next = guardedNext;
+    guardNextInstalled = true;
+    const restoreWhenDetached = () => {
+      if (!root.isConnected) {
+        if (window.SlideActions && SlideActions.next === guardedNext) SlideActions.next = originalNext;
+        return;
+      }
+      requestAnimationFrame(restoreWhenDetached);
+    };
+    requestAnimationFrame(restoreWhenDetached);
+  }
+  function warnPendingLoans({ onIgnore, onReview } = {}){
+    const msg = 'Te quedan préstamos sin pagar, si no los pagas perderás la actividad.';
+    const overlay = document.createElement('div'); overlay.className='modal-overlay deuda-warn-modal';
+    const modal = document.createElement('div'); modal.className='modal';
+    modal.innerHTML = `
+      <h3 class="modal-title">Préstamos pendientes</h3>
+      <div class="modal-content">${msg}</div>
+      <div class="modal-actions">
+        <button id="warnIgnore" class="btn-danger">No pagar prestamos</button>
+        <button id="warnReview" class="btn-ghost">Revisar prestamos</button>
+      </div>
+    `;
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    modal.querySelector('#warnIgnore').onclick = () => { close(); onIgnore && onIgnore(); };
+    modal.querySelector('#warnReview').onclick = () => { close(); onReview && onReview(); };
+    overlay.addEventListener('click',(ev)=>{ ev.stopPropagation(); if(ev.target===overlay){ close(); onReview && onReview(); }});
+  }
+  function goNext(){
+    window.ACT_DEUDA_LAST_SALDO = shownSaldo;
+    if (window.SlideActions && typeof SlideActions.next === 'function') SlideActions.next();
+  }
+  btnSeguir.addEventListener('click', (ev)=>{
+    const pending = isLastRecap && updateLoanAlert();
+    if (pending) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      advanceBlocked = true;
+      ensureAdvanceGuard();
+      warnPendingLoans({
+        onIgnore(){
+          advanceBlocked = false;
+          goNext();
+        },
+        onReview(){ }
+      });
+      return;
+    }
+    advanceBlocked = false;
+    goNext();
+  });
   bottomBar.appendChild(btnSeguir);
 
   body.appendChild(left); body.appendChild(center); body.appendChild(right); body.appendChild(bottomBar); root.appendChild(body);
@@ -386,10 +467,11 @@ SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
   // Tabla
   const refreshLoans = ()=>{ (H.fillLoansTable ? H.fillLoansTable(tbody, st.loans) : (function(){ tbody.innerHTML=''; if(!st.loans.length){ const tr=document.createElement('tr'); const td=document.createElement('td'); td.colSpan=4; td.textContent='Sin préstamos'; tr.appendChild(td); tbody.appendChild(tr); return; } st.loans.forEach(l=>{ const tr=document.createElement('tr'); [l.id, `€${l.amount}`, `${l.weeksLeft} sem.`, l.status].forEach(v=>{ const td=document.createElement('td'); td.textContent=String(v); tr.appendChild(td); }); if(l.status==='Activo'||l.status==='Impagado') tr.classList.add('row-clickable'); tbody.appendChild(tr); }); })()); };
   refreshLoans();
+  updateLoanAlert();
   if (window.DeudaHelpers.attachRepayHandler) {
     window.DeudaHelpers.attachRepayHandler({
       tbody, state: st,
-      onAfterChange(){ saldoAnimFrom=shownSaldo; saldoAnimTo=st.saldo; startTs=null; requestAnimationFrame(stepSaldo); refreshLoans(); }
+      onAfterChange(){ saldoAnimFrom=shownSaldo; saldoAnimTo=st.saldo; startTs=null; requestAnimationFrame(stepSaldo); refreshLoans(); updateLoanAlert(); }
     });
   }
 
@@ -410,4 +492,6 @@ SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
   const duration=Math.max(minMs, Math.min(maxMs, Math.abs(saldoAnimTo - saldoAnimFrom) * msPerEuro));
   function stepSaldo(ts){ if(startTs===null) startTs=ts; const p=Math.min(1,(ts-startTs)/duration); const v=Math.round(saldoAnimFrom + (saldoAnimTo - saldoAnimFrom)*easeInOutCubic(p)); shownSaldo=v; saldoW.set(v); if(p<1){ requestAnimationFrame(stepSaldo);} else { shownSaldo=saldoAnimTo; saldoW.set(saldoAnimTo); window.ACT_DEUDA_LAST_SALDO = saldoAnimTo; } }
   requestAnimationFrame(stepSaldo);
+
+  return { suppressRootClick: true, noLock: true };
 });

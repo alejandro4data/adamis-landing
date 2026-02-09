@@ -23,11 +23,19 @@ SlideRendererRegistry.register('actividad-deuda-1-4', function (s, root) {
   const CAP_PCT = Number.isFinite(capFromEvent) ? capFromEvent : (Number.isFinite(lastCap) ? lastCap : 70);
 
 
- // Falla si existe cualquier préstamo TOMADO por el alumno (no 'given') que siga pendiente: Activo o Impagado.
-const hasPrestamosPendientes = (st.loans || []).some(
-l => !l.given && (l.status === H.STATUS.ACTIVO || l.status === H.STATUS.IMPAGADO));  
-const underCap = (st.impatience || 0) < CAP_PCT;
-const success = underCap && !hasPrestamosPendientes;
+  const rules = st.rules || {};
+  const maxOther = Number.isFinite(rules.maxOtherExpenses) ? rules.maxOtherExpenses : 2;
+  const otherPaid = Number.isFinite(rules.otherExpensesPaid) ? rules.otherExpensesPaid : 0;
+  const loanPurposeViolation = rules.loanPurposeViolation === true;
+  const impatienceBreached = rules.impatienceBreached === true;
+  const hasImpagados = (st.loans || []).some(l => !l.given && l.status === H.STATUS.IMPAGADO);
+  const underCap = (st.impatience || 0) < CAP_PCT;
+  const success =
+    !hasImpagados &&
+    !loanPurposeViolation &&
+    !impatienceBreached &&
+    (otherPaid <= maxOther) &&
+    underCap;
 
   // === Mensajes / imágenes (con defaults) ===
   const successText  = ev.successText || '🎉 ¡Enhorabuena! Has mantenido tu impaciencia bajo control y terminas sin impagos.';

@@ -196,8 +196,8 @@ function SlideActividadDeuda12({ text, image, alt, paga = 10 } = {}){
   return { tipo: 'actividad-deuda-1-2', text, image, alt, paga };
 }
 
-function SlideActividadDeuda13({ text, image, alt } = {}){
-  return { tipo: 'actividad-deuda-1-3', text, image, alt };
+function SlideActividadDeuda13({ text, image, alt, event } = {}){
+  return { tipo: 'actividad-deuda-1-3', text, image, alt, event };
 }
 
 function SlideActividadDeuda1s({ text, image, alt, event } = {}){
@@ -206,6 +206,25 @@ function SlideActividadDeuda1s({ text, image, alt, event } = {}){
 
 function SlideActividadDeuda14({ text, image, alt, event, showContinueButton, continueText } = {}){
   return { tipo: 'actividad-deuda-1-4', text, image, alt, event, showContinueButton, continueText };
+}
+
+function SlideMiniactividadOrdenarFrase({
+  introTitle, introText, introButtonText,
+  intro,
+  phrases, frases, frase,
+  autoAdvanceMs
+} = {}){
+  const list = Array.isArray(phrases) ? phrases
+    : Array.isArray(frases) ? frases
+    : (frase != null ? [frase] : []);
+  return {
+    tipo: 'miniactividad-ordenar-frase',
+    introTitle: introTitle ?? intro?.title,
+    introText: introText ?? intro?.text,
+    introButtonText: introButtonText ?? intro?.buttonText,
+    phrases: list,
+    autoAdvanceMs
+  };
 }
 
 function SlideActividadDeuda11TutorialV2({ text, image, alt, event, tutorial } = {}) {

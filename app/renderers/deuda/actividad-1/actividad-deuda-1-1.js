@@ -18,7 +18,7 @@
   if (hasFull) return;
 
   const STATUS  = { ACTIVO: 'Activo', IMPAGADO: 'Impagado' };
-  const PENALTY = 5;
+  const PENALTY = 12;
 
   const el = (tag, props = {}, ...children) => {
     const node = document.createElement(tag);
@@ -244,6 +244,13 @@
       const st = window.ACT_DEUDA_STATE;
       if (!Array.isArray(st.incomes)) st.incomes = [];
       if (typeof st.impatience !== 'number') st.impatience = 0;
+      if (!st.rules || typeof st.rules !== 'object') st.rules = {};
+      if (!Array.isArray(st.rules.allowedLoanPurposes)) st.rules.allowedLoanPurposes = ['negocio','medicina'];
+      if (typeof st.rules.maxOtherExpenses !== 'number') st.rules.maxOtherExpenses = 2;
+      if (typeof st.rules.otherExpensesPaid !== 'number') st.rules.otherExpensesPaid = 0;
+      if (typeof st.rules.loanPurposeViolation !== 'boolean') st.rules.loanPurposeViolation = false;
+      if (typeof st.rules.impatienceBreached !== 'boolean') st.rules.impatienceBreached = false;
+      if (typeof st.rules.impatienceCap !== 'number') st.rules.impatienceCap = 50;
       st.blocked = st.loans.some(x => x.status === STATUS.IMPAGADO);
       return st;
     },
@@ -306,6 +313,9 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
   const activityWeeks  = Number(s?.event?.activityWeeks || s?.event?.weeks || 8);
   const incomeNextWeek = Number(s?.event?.incomeNextWeek || 0);
   const incomeSource   = s?.event?.incomeSource || 'Actividad';
+  const purposeRaw     = s?.event?.purpose || 'otro';
+  const purpose        = String(purposeRaw).toLowerCase();
+  const isOtherPurpose = (purpose !== 'negocio' && purpose !== 'medicina');
   const MAX_LOAN_WEEKS = 3;
 
   // Impaciencia por slide
@@ -314,6 +324,8 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
   const DELTA_REJECT = Number(impCfg.deltaOnReject ?? +15);
   const CAP_PCT      = Math.max(0, Math.min(100, Number(impCfg.capPct ?? 70)));
   const clamp = (v,min,max)=>Math.min(max,Math.max(min,v));
+  const rules = st.rules || (st.rules = {});
+  rules.impatienceCap = CAP_PCT;
 
   // Click-guard
   const guardCapture = (e) => {
@@ -499,7 +511,10 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
       maxWeeks: Math.min(activityWeeks, MAX_LOAN_WEEKS),
       defaultWeeks: Math.min(Math.max(1,(s?.event?.loanWeeks||2)), Math.min(activityWeeks,MAX_LOAN_WEEKS)),
       onConfirm:(loanAmount, weeksSel)=>{
-        st.loans.push({ id:st.nextLoanId++, amount:loanAmount, weeksLeft:weeksSel, status:H.STATUS.ACTIVO });
+        st.loans.push({ id:st.nextLoanId++, amount:loanAmount, weeksLeft:weeksSel, status:H.STATUS.ACTIVO, purpose });
+        if (!Array.isArray(rules.allowedLoanPurposes) || !rules.allowedLoanPurposes.includes(purpose)) {
+          rules.loanPurposeViolation = true;
+        }
         st.saldo += loanAmount;
         st.lastAction={type:'prestamo-only', loanAmount, loanWeeks:weeksSel, week:st.week};
         refreshUI();
@@ -515,8 +530,10 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
 
     const prevImp = st.impatience || 0;
     const nextImp = clamp(prevImp + DELTA_PAY, 0, 100);
+    if (nextImp >= CAP_PCT) rules.impatienceBreached = true;
 
     const saldoBefore=st.saldo; st.saldo -= cost;
+    if (isOtherPurpose) rules.otherExpensesPaid += 1;
 
     if (incomeNextWeek > 0) {
       st.incomes.push({ amount:incomeNextWeek, dueWeek:st.week, source:incomeSource });
@@ -550,6 +567,7 @@ SlideRendererRegistry.register('actividad-deuda-1-1', function (s, root) {
     if (actionBusy) return;
     const prevImp = st.impatience || 0;
     const nextImp = clamp(prevImp + DELTA_REJECT, 0, 100);
+    if (nextImp >= CAP_PCT) rules.impatienceBreached = true;
 
     st.fx = {
       saldoFrom: st.saldo,
