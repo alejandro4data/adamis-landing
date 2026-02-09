@@ -160,7 +160,7 @@ window.slides.push( Slide({
   narrator: 'Adamis',
   narratorColor: '#16a1b4'
 }));
-
+ 
 
 window.slides.push( Slide({
   text: 'La deuda buena...',
