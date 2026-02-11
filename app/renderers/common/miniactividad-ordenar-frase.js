@@ -99,9 +99,18 @@
       .mini-token:hover{ box-shadow:0 10px 24px rgba(15,23,42,.12); border-color:#d1d5db; }
       .mini-token:active{ transform:translateY(1px); }
       .mini-token.is-inanswer{
-        background:#0f172a;
-        color:#ffffff;
-        border-color:#0f172a;
+        box-shadow:0 8px 20px rgba(15,23,42,.12);
+        border-color:rgba(15,23,42,.45);
+      }
+      .mini-token.is-correct{
+        background:#22c55e !important;
+        color:#ffffff !important;
+        border-color:#16a34a !important;
+      }
+      .mini-token.is-wrong{
+        background:#ef4444 !important;
+        color:#ffffff !important;
+        border-color:#dc2626 !important;
       }
       .mini-actions{
         display:flex;
@@ -132,6 +141,34 @@
       }
       .mini-feedback.ok{ color:#16a34a; }
       .mini-feedback.err{ color:#dc2626; }
+      .mini-skip{
+        position:fixed;
+        top:24px;
+        right:24px;
+        z-index:6;
+        appearance:none;
+        border:1px solid #0b1220;
+        border-radius:999px;
+        padding:16px 26px;
+        font-weight:800;
+        font-size:16px;
+        letter-spacing:.02em;
+        background:linear-gradient(135deg,#0b1220 0%, #0f1f3a 45%, #1e3a8a 100%);
+        color:#ffffff;
+        box-shadow:0 16px 36px rgba(2,6,23,.4), 0 0 0 8px rgba(30,58,138,.12);
+        cursor:pointer;
+        display:none;
+        animation: mini-skip-pulse 1.4s ease-in-out infinite;
+      }
+      .mini-skip:hover{
+        transform:translateY(-1px);
+        box-shadow:0 20px 44px rgba(2,6,23,.45), 0 0 0 10px rgba(30,58,138,.16);
+      }
+      .mini-skip:active{ transform:translateY(0); }
+      @keyframes mini-skip-pulse{
+        0%,100%{ transform:scale(1); }
+        50%{ transform:scale(1.03); }
+      }
 
       .mini-intro{
         position:fixed;
@@ -273,6 +310,28 @@
     requestAnimationFrame(tick);
   }
 
+  function friendlyPalette() {
+    return [
+      '#FFE8A3', // amarillo suave
+      '#FFD6C0', // melocoton
+      '#E6F4C2', // verde menta
+      '#CFE8FF', // azul cielo
+      '#EBD7FF', // lavanda
+      '#FFC9DE', // rosa suave
+      '#D7F5F0', // turquesa claro
+      '#FFF1CC', // crema
+      '#DDE7FF', // periwinkle
+      '#FAD7D7'  // salmón claro
+    ];
+  }
+
+  function applyTokenColor(btn, color) {
+    if (!color) return;
+    btn.style.background = color;
+    btn.style.borderColor = 'rgba(15,23,42,.18)';
+    btn.style.color = '#0f172a';
+  }
+
   SlideRendererRegistry.register('miniactividad-ordenar-frase', function(s, root){
     ensureStyles();
     root.classList.add('tpl--miniact-ordenar-frase');
@@ -350,6 +409,31 @@
     let advanceTimer = null;
     let advanced = false;
     let currentTokens = [];
+    let wrongAttempts = 0;
+
+    const skipBtn = document.createElement('button');
+    skipBtn.type = 'button';
+    skipBtn.className = 'mini-skip';
+    skipBtn.textContent = 'Saltar frase';
+    skipBtn.addEventListener('click', () => {
+      if (locked) return;
+      wrongAttempts = 0;
+      hideSkip();
+      if (idx < phrases.length - 1) {
+        idx += 1;
+        renderPhrase();
+      } else {
+        goNextSlide();
+      }
+    });
+    root.appendChild(skipBtn);
+
+    function showSkip() {
+      skipBtn.style.display = 'inline-flex';
+    }
+    function hideSkip() {
+      skipBtn.style.display = 'none';
+    }
 
     function goNextSlide() {
       if (advanced) return;
@@ -368,19 +452,45 @@
       return Array.from(answerZone.querySelectorAll('.mini-token')).map(btn => Number(btn.dataset.id));
     }
 
+    function clearPlacementMarks() {
+      const btns = answerZone.querySelectorAll('.mini-token');
+      btns.forEach(btn => {
+        btn.classList.remove('is-correct');
+        btn.classList.remove('is-wrong');
+      });
+    }
+
+    function markPlacement(ids) {
+      const btns = Array.from(answerZone.querySelectorAll('.mini-token'));
+      btns.forEach((btn, i) => {
+        const id = Number(btn.dataset.id);
+        if (id === i) {
+          btn.classList.add('is-correct');
+          btn.classList.remove('is-wrong');
+        } else {
+          btn.classList.add('is-wrong');
+          btn.classList.remove('is-correct');
+        }
+      });
+    }
+
     function checkComplete() {
       const ids = getAnswerIds();
       if (ids.length !== currentTokens.length) {
         answerZone.classList.remove('is-wrong');
+        clearPlacementMarks();
         if (feedback.classList.contains('err')) setFeedback('', '');
         return;
       }
       const correct = ids.every((id, i) => id === i);
       if (correct) {
+        markPlacement(ids);
         answerZone.classList.remove('is-wrong');
         answerZone.classList.add('is-correct');
         setFeedback('ok', 'Correcto. Muy bien.');
         locked = true;
+        wrongAttempts = 0;
+        hideSkip();
         launchConfetti(root);
         if (advanceTimer) clearTimeout(advanceTimer);
         advanceTimer = setTimeout(() => {
@@ -393,10 +503,13 @@
           }
         }, autoAdvanceMs);
       } else {
+        markPlacement(ids);
         answerZone.classList.remove('is-correct');
         answerZone.classList.add('is-wrong');
         setFeedback('err', 'Orden incorrecto. Intentalo de nuevo.');
         setTimeout(() => answerZone.classList.remove('is-wrong'), 400);
+        wrongAttempts += 1;
+        if (wrongAttempts >= 3) showSkip();
       }
     }
 
@@ -406,10 +519,11 @@
       btn.className = 'mini-token' + (inAnswer ? ' is-inanswer' : '');
       btn.textContent = token.text;
       btn.dataset.id = String(token.id);
+      applyTokenColor(btn, token.color);
       return btn;
     }
 
-    function renderPhrase() {
+    function renderPhrase({ preserveAttempts = false } = {}) {
       if (!root.isConnected) return;
       locked = false;
       answerZone.classList.remove('is-correct');
@@ -417,10 +531,21 @@
       setFeedback('', '');
       answerZone.innerHTML = '';
       bankZone.innerHTML = '';
+      if (!preserveAttempts) {
+        wrongAttempts = 0;
+        hideSkip();
+      } else if (wrongAttempts >= 3) {
+        showSkip();
+      }
 
       const phrase = phrases[idx];
       const parts = phrase.split(/\s+/).filter(Boolean);
-      currentTokens = parts.map((text, i) => ({ id: i, text }));
+      const palette = shuffleTokens(friendlyPalette());
+      currentTokens = parts.map((text, i) => ({
+        id: i,
+        text,
+        color: palette[i % palette.length]
+      }));
       const shuffled = shuffleAvoidSame(currentTokens);
 
       function makeBankBtn(token) {
@@ -456,7 +581,7 @@
 
     resetBtn.addEventListener('click', () => {
       if (locked) return;
-      renderPhrase();
+      renderPhrase({ preserveAttempts: true });
     });
 
     // Intro modal

@@ -1,5 +1,13 @@
 // ==================== SLIDES DE LA CLASE DE DEUDA ====================
-
+window.slides.push( SlideMiniactividadOrdenarFrase({
+  introTitle: 'Miniactividad',
+  introText: 'Ordena la frase haciendo clic en las palabras en el orden correcto.',
+  introButtonText: 'Empezar',
+  frases: [
+    'Los caprichos son una deuda mala.',
+    'La deuda buena genera más dinero.',
+  ]
+}) );
 window.CURRENT_CLASS = 'deuda';
 
 window.slides.push( SlideTituloClase({ mode:'imagen', img:'../assets/instrucciones.avif' }) );
@@ -697,8 +705,8 @@ window.slides.push( SlideMiniactividadOrdenarFrase({
   introText: 'Ordena la frase haciendo clic en las palabras en el orden correcto.',
   introButtonText: 'Empezar',
   frases: [
-    'La deuda mala es la que se utiliza en caprichos.',
-    'La deuda buena es la que se utiliza para generar más dinero.',
+    'Los caprichos son una deuda mala.',
+    'La deuda buena genera más dinero.',
   ]
 }) );
 
