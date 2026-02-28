@@ -11,15 +11,45 @@
 (() => {
   const PAGE = document.documentElement.getAttribute('data-page') || '';
   if (PAGE === 'login' || PAGE === 'splash') return;
+  const tr = (value, vars) => {
+    if (!window.I18N) return String(value || '');
+    const mapped = window.I18N.tr(String(value || ''));
+    if (!vars) return mapped;
+    return mapped.replace(/\{(\w+)\}/g, (_m, k) =>
+      Object.prototype.hasOwnProperty.call(vars, k) ? String(vars[k]) : `{${k}}`
+    );
+  };
 
   window.addEventListener('DOMContentLoaded', () => {
-    // 1) Botón fijo arriba-derecha
+    // 1) Botón fijo arriba-derecha (rueda de ajustes)
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'logout-integrated btn';       // tus estilos base; puedes añadir otra clase si quieres
-    btn.setAttribute('aria-label', 'Cerrar sesión');
-    btn.textContent = 'Salir';
+    btn.className = 'logout-integrated btn settings-gear-btn';
+    btn.setAttribute('aria-label', tr('Ajustes'));
+    btn.title = tr('Ajustes');
+    btn.textContent = '';
+    btn.style.backgroundImage = "url('../assets/icons/engranaje.png')";
+    btn.style.backgroundRepeat = 'no-repeat';
+    btn.style.backgroundPosition = 'center';
+    btn.style.backgroundSize = '35px 35px';
+    btn.style.minWidth = '64px';
+    btn.style.minHeight = '64px';
     document.body.appendChild(btn);
+
+    const menu = document.createElement('div');
+    menu.className = 'logout-modal';
+    menu.style.background = 'transparent';
+    menu.style.alignItems = 'flex-start';
+    menu.style.justifyContent = 'flex-end';
+    menu.style.padding = '68px 16px 0 0';
+    menu.innerHTML = `
+      <div class="logout-dialog" style="max-width:260px;width:min(260px,92vw);padding:10px;">
+        <div class="logout-actions" style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn btn-cancel" data-action="lang">${tr('Idioma')}: ${(window.I18N?.getLang?.() || 'es').toUpperCase()}</button>
+          <button class="btn btn-primary" data-action="logout">${tr('Salir')}</button>
+        </div>
+      </div>`;
+    document.body.appendChild(menu);
 
     // 2) Modal (inyección única)
     const modal = document.createElement('div');
@@ -27,15 +57,15 @@
     modal.innerHTML = `
       <div class="logout-dialog" role="dialog" aria-modal="true" aria-labelledby="logout-title" aria-describedby="logout-desc">
         <div class="logout-head">
-          <h2 id="logout-title" class="logout-title">¿Cerrar sesión?</h2>
-          <button class="logout-close" aria-label="Cerrar">✕</button>
+          <h2 id="logout-title" class="logout-title">${tr('¿Cerrar sesión?')}</h2>
+          <button class="logout-close" aria-label="${tr('Cerrar')}">✕</button>
         </div>
         <div id="logout-desc" class="logout-body">
-          Vas a salir de tu sesión. Podrás volver a entrar cuando quieras.
+          ${tr('Vas a salir de tu sesión. Podrás volver a entrar cuando quieras.')}
         </div>
         <div class="logout-actions">
-          <button class="btn btn-cancel" data-action="cancel">Cancelar</button>
-          <button class="btn btn-primary" data-action="confirm">Cerrar sesión</button>
+          <button class="btn btn-cancel" data-action="cancel">${tr('Cancelar')}</button>
+          <button class="btn btn-primary" data-action="confirm">${tr('Cerrar sesión')}</button>
           <!-- Si prefieres dorado, cambia btn-primary por btn-coin -->
         </div>
       </div>`;
@@ -46,18 +76,45 @@
     const closeBtn = modal.querySelector('.logout-close');
     const cancelBtn = modal.querySelector('[data-action="cancel"]');
     const confirmBtn = modal.querySelector('[data-action="confirm"]');
+    const langBtn = menu.querySelector('[data-action="lang"]');
+    const logoutBtn = menu.querySelector('[data-action="logout"]');
     const focusablesSelector =
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
     let lastFocused = null;
 
     function openModal() {
+      menu.classList.remove('is-open');
       lastFocused = document.activeElement;
       modal.classList.add('is-open');
       // foco al primer botón
       (confirmBtn || dialog).focus();
       document.addEventListener('keydown', onKeydown);
       modal.addEventListener('click', onBackdrop);
+    }
+
+    function openMenu() {
+      menu.classList.add('is-open');
+      langBtn?.focus();
+      document.addEventListener('keydown', onMenuKeydown);
+      menu.addEventListener('click', onMenuBackdrop);
+    }
+
+    function closeMenu() {
+      menu.classList.remove('is-open');
+      document.removeEventListener('keydown', onMenuKeydown);
+      menu.removeEventListener('click', onMenuBackdrop);
+    }
+
+    function onMenuBackdrop(e) {
+      if (e.target === menu) closeMenu();
+    }
+
+    function onMenuKeydown(e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeMenu();
+      }
     }
 
     function closeModal() {
@@ -83,7 +140,16 @@
     }
 
     // Listeners
-    btn.addEventListener('click', openModal);
+    btn.addEventListener('click', () => {
+      if (menu.classList.contains('is-open')) closeMenu();
+      else openMenu();
+    });
+    logoutBtn?.addEventListener('click', openModal);
+    langBtn?.addEventListener('click', () => {
+      if (!window.I18N || typeof window.I18N.toggleLang !== 'function') return;
+      window.I18N.toggleLang();
+      window.location.reload();
+    });
     closeBtn.addEventListener('click', closeModal);
     cancelBtn.addEventListener('click', closeModal);
 
@@ -187,6 +253,11 @@ function ensureRendererLoaded(tipo){
   'use strict';
   const PAGE = document.documentElement.getAttribute('data-page') || '';
   if (PAGE !== 'clase') return;
+  const tr = (value) => (window.I18N ? window.I18N.tr(String(value || '')) : String(value || ''));
+  const tCommon = (key, fallback) => {
+    if (!window.I18N || typeof window.I18N.t !== 'function') return fallback;
+    return window.I18N.t(key);
+  };
 
   // ----- refs -----
   const slideRoot   = document.getElementById('slide-root');
@@ -240,7 +311,9 @@ function ensureRendererLoaded(tipo){
   let lockTicker = null;
 
   const IS_TOUCH   = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-  const CONT_LABEL = IS_TOUCH ? 'Toca para continuar' : 'Haz clic para continuar';
+  const CONT_LABEL = IS_TOUCH
+    ? tCommon('common.touchContinue', 'Toca para continuar')
+    : tCommon('common.clickContinue', 'Haz clic para continuar');
   const CLASS_LEVEL_BY_ID = { ahorro: 6, deuda: 7 };
   const classIdFromUrl = () => {
     try { return new URLSearchParams(window.location.search).get('clase') || ''; }
@@ -356,13 +429,14 @@ function ensureRendererLoaded(tipo){
     box.className = 'reward';
     const title = document.createElement('div');
     title.className = 'reward__title';
-    title.textContent = 'Recompensa';
+    title.textContent = tr('Recompensa');
     const p = document.createElement('p');
     p.className = 'reward__text';
-    p.appendChild( coinifyTextToNodes(text) );
+    const translated = tr(String(text || ''));
+    p.appendChild( coinifyTextToNodes(translated) );
     box.appendChild(title);
     box.appendChild(p);
-    return { el: box, plain: String(text || '') };
+    return { el: box, plain: translated };
   }
 
   const updateProgress = () => {
@@ -403,7 +477,7 @@ function ensureRendererLoaded(tipo){
     if (!slides.length) {
       const loading = document.createElement('div');
       loading.className = 'slide empty-state';
-      loading.innerHTML = '<div class="empty-state__text">Cargando…</div>';
+      loading.innerHTML = `<div class="empty-state__text">${tCommon('common.loading', 'Cargando...')}</div>`;
       slideRoot.appendChild(loading);
       updateNav(); updateProgress();
 
@@ -423,7 +497,10 @@ function ensureRendererLoaded(tipo){
     markClassCompletedIfNeeded(i, slides.length);
 
     const s0 = slides[i] || {};
-    const s = Object.assign({}, s0);
+    let s = Object.assign({}, s0);
+    if (window.I18N && typeof window.I18N.translateSlideValue === 'function') {
+      s = window.I18N.translateSlideValue(s0, null);
+    }
     const rawTipo = (s.tipo || '').toLowerCase().trim();
     let tipo = rawTipo;
     // 🔓 Desbloquea encuesta general al ENTRAR en cualquier slide de tipo "encuesta"
@@ -443,7 +520,7 @@ function ensureRendererLoaded(tipo){
     let factory = window.SlideRendererRegistry.get(tipo);
     if (!factory){
       root.classList.add('loading');
-      root.innerHTML = '<div class="empty-state__text">Cargando plantilla…</div>';
+      root.innerHTML = `<div class="empty-state__text">${tCommon('common.loadingTemplate', 'Cargando plantilla...')}</div>`;
       ensureRendererLoaded(tipo).then((ok) => {
         if (!ok && tipo !== 'explicacion-bocadillo'){
           // Fallback a explicacion-bocadillo si no existe el tipo solicitado
@@ -465,7 +542,7 @@ function ensureRendererLoaded(tipo){
         ensureRendererLoaded('explicacion-bocadillo').then(() => { i=Math.max(0,i); renderCurrent(); });
         return;
       } else {
-        root.innerHTML = '<div class="empty-state__text">No se pudo renderizar esta diapositiva.</div>';
+        root.innerHTML = `<div class="empty-state__text">${tCommon('common.renderError', 'No se pudo renderizar esta diapositiva.')}</div>`;
       }
     }
 

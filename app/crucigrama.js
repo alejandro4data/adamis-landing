@@ -2,6 +2,27 @@
 (() => {
   'use strict';
 
+  const tr = (text) => {
+    try {
+      if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(text);
+    } catch (_) {}
+    return text;
+  };
+  const currentLang = () => {
+    try {
+      if (window.I18N && typeof window.I18N.getLang === 'function') return window.I18N.getLang();
+    } catch (_) {}
+    try {
+      const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
+      if (stored.startsWith('en')) return 'en';
+    } catch (_) {}
+    try {
+      const htmlLang = String(document.documentElement.lang || '').toLowerCase();
+      if (htmlLang.startsWith('en')) return 'en';
+    } catch (_) {}
+    return 'es';
+  };
+
   const gridEl = document.getElementById('crx-grid');
   if (!gridEl) return;
 
@@ -18,7 +39,7 @@
   const MIN_WORDS = 6;
   const MAX_ATTEMPTS = 60;
 
-  const WORD_POOL = [
+  const WORD_POOL_BY_LANG = { es: [
     { word: 'AHORRO', clue: 'Guardar una parte del dinero para el futuro.' },
     { word: 'GASTO', clue: 'Dinero que sale al comprar o pagar algo.' },
     { word: 'PAGA', clue: 'Dinero que recibes cada semana o mes.' },
@@ -50,7 +71,36 @@
     { word: 'VENTA', clue: 'Acción de dar algo a cambio de dinero.' }, // *
     { word: 'TOTAL', clue: 'Suma final de todo el dinero.' }, // *
     { word: 'CAJA', clue: 'Lugar donde se guarda el dinero en tiendas.' } // *
-  ];
+  ], en: [
+    { word: 'SAVING', clue: 'Keeping part of your money for the future.' },
+    { word: 'EXPENSE', clue: 'Money that goes out when you buy or pay.' },
+    { word: 'INCOME', clue: 'Money that comes in.' },
+    { word: 'GOAL', clue: 'Target you want to achieve.' },
+    { word: 'DEBT', clue: 'Money you must pay back.' },
+    { word: 'BANK', clue: 'Place where you store or borrow money.' },
+    { word: 'PLAN', clue: 'Set of steps to achieve something.' },
+    { word: 'PRICE', clue: 'Amount of money something costs.' },
+    { word: 'INTEREST', clue: 'Extra money paid on a loan.' },
+    { word: 'BUDGET', clue: 'Plan for how to use your money.' },
+    { word: 'COIN', clue: 'Money made of metal.' },
+    { word: 'RISK', clue: 'Possibility of losing money.' },
+    { word: 'ACCOUNT', clue: 'Bank place where your money is kept.' },
+    { word: 'VALUE', clue: 'Worth or price of something.' },
+    { word: 'CASH', clue: 'Physical money.' },
+    { word: 'CARD', clue: 'Plastic used to pay without cash.' },
+    { word: 'BALANCE', clue: 'Money currently available.' },
+    { word: 'OFFER', clue: 'Item sold at a lower price.' },
+    { word: 'PAY', clue: 'Give money for something.' },
+    { word: 'LOAN', clue: 'Money borrowed for a period.' },
+    { word: 'CHANGE', clue: 'Money returned after you pay.' },
+    { word: 'RECEIPT', clue: 'Proof that a payment happened.' },
+    { word: 'PROFIT', clue: 'Money earned after costs.' },
+    { word: 'WAGE', clue: 'Money you earn by working.' },
+    { word: 'SALE', clue: 'Exchange of goods for money.' },
+    { word: 'TOTAL', clue: 'Final sum of all amounts.' },
+    { word: 'STORE', clue: 'Place where things are sold.' }
+  ] };
+  const getWordPool = () => WORD_POOL_BY_LANG[currentLang() === 'en' ? 'en' : 'es'];
 
   function showToast(msg){
     if (!toastEl) return;
@@ -142,7 +192,7 @@
     for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++){
       const board = createBoard(GRID_SIZE);
       const placements = [];
-      const entries = shuffle(WORD_POOL)
+      const entries = shuffle(getWordPool())
         .map(x => ({ word: normalize(x.word), clue: x.clue }))
         .filter(x => x.word.length >= 3 && x.word.length <= GRID_SIZE);
       const picks = entries.slice(0, WORD_COUNT);
@@ -239,7 +289,10 @@
         input.inputMode = 'text';
         input.dataset.r = String(r);
         input.dataset.c = String(c);
-        input.setAttribute('aria-label', `Fila ${r + 1}, Columna ${c + 1}`);
+        input.setAttribute(
+          'aria-label',
+          currentLang() === 'en' ? `Row ${r + 1}, Column ${c + 1}` : `Fila ${r + 1}, Columna ${c + 1}`
+        );
         input.dataset.letter = cell.letter;
         cellEl.appendChild(input);
         if (cell.number){
@@ -398,11 +451,11 @@
     if (filled && correct){
       openModal();
     } else if (filled && !correct){
-      showToast('Hay letras incorrectas');
+      showToast(tr('Hay letras incorrectas'));
     } else if (!filled && !correct){
-      showToast('Revisa las letras marcadas');
+      showToast(tr('Revisa las letras marcadas'));
     } else {
-      showToast('Sigue completando');
+      showToast(tr('Sigue completando'));
     }
   }
 
@@ -421,7 +474,7 @@
   function resetGame(){
     const generated = generateCrossword();
     if (!generated){
-      showToast('No se pudo crear un crucigrama');
+      showToast(tr('No se pudo crear un crucigrama'));
       return;
     }
     board = generated.board;
@@ -436,5 +489,9 @@
   modalOk && modalOk.addEventListener('click', closeModal);
 
   window.addEventListener('resize', resizeGrid);
+  document.addEventListener('i18n:change', () => {
+    closeModal();
+    resetGame();
+  });
   resetGame();
 })();

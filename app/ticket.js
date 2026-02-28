@@ -2,6 +2,27 @@
 (() => {
   'use strict';
 
+  const tr = (text) => {
+    try {
+      if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(text);
+    } catch (_) {}
+    return text;
+  };
+  const currentLang = () => {
+    try {
+      if (window.I18N && typeof window.I18N.getLang === 'function') return window.I18N.getLang();
+    } catch (_) {}
+    try {
+      const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
+      if (stored.startsWith('en')) return 'en';
+    } catch (_) {}
+    try {
+      const htmlLang = String(document.documentElement.lang || '').toLowerCase();
+      if (htmlLang.startsWith('en')) return 'en';
+    } catch (_) {}
+    return 'es';
+  };
+
   const purchaseGrid = document.getElementById('ticket-purchase-grid');
   if (!purchaseGrid) return;
 
@@ -19,6 +40,17 @@
   const ASSETS_DIR = '../assets/assets_ticket/';
   const ALLOWED_EXTS = ['.png', '.jpg', '.jpeg', '.webp', '.avif'];
   const CAN_FETCH_LISTING = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+  const PRODUCT_NAME_MAP = {
+    'botella de agua': { en: 'Water bottle' },
+    'gafas de sol': { en: 'Sunglasses' },
+    'gorra': { en: 'Cap' },
+    'libro': { en: 'Book' },
+    'lapiz': { en: 'Pencil' },
+    'osito': { en: 'Teddy bear' },
+    'pan': { en: 'Bread' },
+    'patata': { en: 'Potato' },
+    'tomate': { en: 'Tomato' }
+  };
 
   const isAllowedExt = (name) => {
     const lower = String(name || '').toLowerCase();
@@ -114,7 +146,12 @@
 
   function displayNameFromFile(fileName) {
     const base = String(fileName || '').replace(/\.[^/.]+$/, '');
-    return base.replace(/_/g, ' ').trim();
+    const raw = base.replace(/_/g, ' ').trim();
+    const key = raw.toLowerCase();
+    if (currentLang() === 'en' && PRODUCT_NAME_MAP[key] && PRODUCT_NAME_MAP[key].en) {
+      return PRODUCT_NAME_MAP[key].en;
+    }
+    return raw;
   }
 
   function buildPurchase(files) {
@@ -413,8 +450,8 @@
 
     if (resultText) {
       const msg = mistakes === 0
-        ? 'Perfecto. No tuviste fallos.'
-        : `Has terminado con ${mistakes} fallo${mistakes === 1 ? '' : 's'}.`;
+        ? tr('Perfecto. No tuviste fallos.')
+        : tr(`Has terminado con ${mistakes} fallo${mistakes === 1 ? '' : 's'}.`);
       resultText.textContent = msg;
     }
 
@@ -446,9 +483,9 @@
 
     if (!files.length) {
       const hint = CAN_FETCH_LISTING
-        ? 'Agrega PNG, JPG, JPEG, WEBP o AVIF para iniciar la actividad.'
-        : 'Abre la pagina con un servidor local o actualiza manifest.js con tus imagenes.';
-      purchaseGrid.innerHTML = '<div class="ticket-empty">No hay imagenes en assets_ticket.</div>';
+        ? tr('Agrega PNG, JPG, JPEG, WEBP o AVIF para iniciar la actividad.')
+        : tr('Abre la pagina con un servidor local o actualiza manifest.js con tus imagenes.');
+      purchaseGrid.innerHTML = `<div class="ticket-empty">${tr('No hay imagenes en assets_ticket.')}</div>`;
       receiptBody.innerHTML = `<div class="ticket-empty">${hint}</div>`;
       totalEl.textContent = '--';
       paidEl.textContent = '--';
@@ -542,7 +579,7 @@
         if (totalErrors > 0) {
           noErrorsBtn.classList.add('is-wrong');
           mistakes += 1;
-          showToast('Si hay errores');
+          showToast(tr('Si hay errores'));
           lockButton(noErrorsBtn);
           return;
         }

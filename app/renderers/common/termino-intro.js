@@ -1,5 +1,22 @@
-(() => {
+﻿(() => {
   'use strict';
+
+  const tr = (text) => {
+    try {
+      if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(text);
+    } catch (_) {}
+    return text;
+  };
+  const getLang = () => {
+    try {
+      if (window.I18N && typeof window.I18N.getLang === 'function') return window.I18N.getLang();
+    } catch (_) {}
+    try {
+      const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
+      if (stored.startsWith('en')) return 'en';
+    } catch (_) {}
+    return 'es';
+  };
 
   // Render de slide "termino-intro"
   SlideRendererRegistry.register('termino-intro', function (s, root, ctx) {
@@ -33,7 +50,7 @@
     fig.appendChild(img);
     left.appendChild(fig);
 
-    // Bocadillo ~30% del alto — reutiliza estética de "explicacion-bocadillo"
+    // Bocadillo ~30% del alto â€” reutiliza estÃ©tica de "explicacion-bocadillo"
     const dialogWrap = document.createElement('div');
     dialogWrap.className = 'ti-dialog';
     const bubble = document.createElement('div');
@@ -41,7 +58,7 @@
     bubble.setAttribute('role','button');
     bubble.setAttribute('tabindex','0');
 
-    // Píldora con nombre del narrador (misma estética)
+    // PÃ­ldora con nombre del narrador (misma estÃ©tica)
     if (s.narrator) {
       const pill = document.createElement('div');
       pill.className = 'narrator-pill';
@@ -66,12 +83,15 @@
     // Tecleo opcional (igual que en explicacion-bocadillo)
     const wantsTW = (s.typewriter === undefined) ? true : Boolean(s.typewriter);
     const speed = (typeof s.typeSpeed === 'number') ? s.typeSpeed : 22;
+    const isEn = getLang() === 'en';
+    const termText = isEn ? (s.term_en ?? s.termEn ?? s.term) : s.term;
+    const meaningText = isEn ? (s.meaning_en ?? s.meaningEn ?? s.meaning) : s.meaning;
     function bindTyping() {
       if (wantsTW && s.text) {
-        const t = typeIn(textNode, String(s.text), speed);
+        const t = typeIn(textNode, tr(String(s.text)), speed);
         registerTyper(t);
       } else {
-        textNode.textContent = String(s.text || '');
+        textNode.textContent = tr(String(s.text || ''));
       }
     }
 
@@ -88,35 +108,35 @@
     const inner = document.createElement('div');
     inner.className = 'term-card__inner';
 
-    // Cara delantera: término + botón "¿Qué significa?"
+    // Cara delantera: tÃ©rmino + botÃ³n "Â¿QuÃ© significa?"
     const front = document.createElement('div');
     front.className = 'term-card__face term-card__front term-front-clickable';
     front.setAttribute('role','button');
     front.setAttribute('tabindex','0');
     const termEl = document.createElement('h3');
     termEl.className = 'term-word';
-    termEl.textContent = 'Término Especial';
+    termEl.textContent = tr('Término Especial');
     const hint = document.createElement('div');
     hint.className = 'term-hint';
-    hint.textContent = 'Pulsa para ver';
+    hint.textContent = tr('Pulsa para ver');
     front.append(termEl, hint);
 
-    // Cara trasera: definición + botón "Volver"
+    // Cara trasera: definiciÃ³n + botÃ³n "Volver"
     const back = document.createElement('div');
     back.className = 'term-card__face term-card__back';
     const termBadge = document.createElement('div');
     termBadge.className = 'term-badge';
-    termBadge.textContent = String(s.term || '');
+    termBadge.textContent = tr(String(termText || ''));
     back.appendChild(termBadge); // se posiciona por CSS (absolute)
     const def = document.createElement('p');
     def.className = 'term-def';
-    def.textContent = String(s.meaning || '');
+    def.textContent = tr(String(meaningText || ''));
     const backActions = document.createElement('div');
     backActions.className = 'ti-back-actions';
     const backBtn = document.createElement('button');
     backBtn.type = 'button';
     backBtn.className = 'ti-btn ti-btn--ghost ti-btn--back';
-    backBtn.textContent = 'Volver';
+    backBtn.textContent = tr('Volver');
     backActions.appendChild(backBtn);
     back.append(def, backActions);
 
@@ -124,17 +144,17 @@
     card.appendChild(inner);
     right.appendChild(card);
 
-    // Botón CONTINUAR (ahora va junto a “Volver” en la cara trasera)
+    // BotÃ³n CONTINUAR (ahora va junto a â€œVolverâ€ en la cara trasera)
     const contBtn = document.createElement('button');
     contBtn.type = 'button';
     contBtn.className = 'ti-btn ti-btn--gold ti-continue';
-    contBtn.textContent = 'Continuar';
+    contBtn.textContent = tr('Continuar');
     contBtn.setAttribute('aria-hidden', 'true');
-    backActions.appendChild(contBtn);   // <— cambia grid por backActions
+    backActions.appendChild(contBtn);   // <â€” cambia grid por backActions
 
 
-    // ===================== BLOQUEO DE NAVEGACIÓN (solo este slide) =====================
-    // Patrón por-slide con cleanup al desmontar (igual que actividad 1-1)
+    // ===================== BLOQUEO DE NAVEGACIÃ“N (solo este slide) =====================
+    // PatrÃ³n por-slide con cleanup al desmontar (igual que actividad 1-1)
     function attachPerSlideKeyBlocker(rootEl){
       const stop = (ev) => {
         const t = ev.target && ev.target.tagName;
@@ -213,3 +233,4 @@
   });
 
 })();
+

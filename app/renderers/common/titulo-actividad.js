@@ -1,6 +1,13 @@
 (() => {
   'use strict';
 
+  const tr = (text) => {
+    try {
+      if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(text);
+    } catch (_) {}
+    return text;
+  };
+
   SlideRendererRegistry.register('titulo-actividad', function(s, root, ctx){
     const { makeHint, CONT_LABEL } = ctx;
     const bindAdvance = (window.RendererUtils && window.RendererUtils.bindAdvance) || function(node, onAdvance){
@@ -31,12 +38,12 @@
 
     const h1 = document.createElement('h1');
     h1.className = 'titulo-actividad__title';
-    h1.textContent = 'Actividad Interactiva';
+    h1.textContent = tr('Actividad Interactiva');
 
     const h2 = document.createElement('h2');
     h2.className = 'titulo-actividad__name';
     const nombre = s.actividad || s.nombre || s.name || '';
-    h2.textContent = String(nombre);
+    h2.textContent = tr(String(nombre));
 
     box.appendChild(h1);
     box.appendChild(h2);

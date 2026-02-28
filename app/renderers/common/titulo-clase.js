@@ -1,6 +1,13 @@
 (() => {
   'use strict';
 
+  const tr = (text) => {
+    try {
+      if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(text);
+    } catch (_) {}
+    return text;
+  };
+
   SlideRendererRegistry.register('titulo-clase', function(s, root, ctx){
     const { makeHint, CONT_LABEL } = ctx;
     const bindAdvance = (window.RendererUtils && window.RendererUtils.bindAdvance) || function(node, onAdvance){
@@ -50,7 +57,7 @@
       img.src = src; img.alt = alt;
       box.appendChild(img);
     } else {
-      const text = String(s.titulo ?? s.title ?? s.text ?? '').trim();
+      const text = tr(String(s.titulo ?? s.title ?? s.text ?? '').trim());
       lockText = text;
 
       const h1 = document.createElement('h1');

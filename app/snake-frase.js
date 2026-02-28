@@ -5,6 +5,26 @@
 // - Cinemática centrada con "Continuar" que pausa/reanuda el juego
 (() => {
   const $ = (s, r=document) => r.querySelector(s);
+  const tr = (text) => {
+    try {
+      if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(text);
+    } catch (_) {}
+    return text;
+  };
+  const currentLang = () => {
+    try {
+      if (window.I18N && typeof window.I18N.getLang === 'function') return window.I18N.getLang();
+    } catch (_) {}
+    try {
+      const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
+      if (stored.startsWith('en')) return 'en';
+    } catch (_) {}
+    try {
+      const htmlLang = String(document.documentElement.lang || '').toLowerCase();
+      if (htmlLang.startsWith('en')) return 'en';
+    } catch (_) {}
+    return 'es';
+  };
 
   // ---------- DOM ----------
   const canvas = $('#snake-canvas'); if (!canvas) return;
@@ -88,16 +108,23 @@
 
   // ---------- Frases ----------
   function loadPhrases(){
-    if (Array.isArray(window.FRASES) && window.FRASES.length){
-      phrases = window.FRASES
+    const lang = currentLang() === 'en' ? 'en' : 'es';
+    const fromByLang = window.FRASES_BY_LANG && Array.isArray(window.FRASES_BY_LANG[lang])
+      ? window.FRASES_BY_LANG[lang]
+      : null;
+    const source = fromByLang || (Array.isArray(window.FRASES) ? window.FRASES : []);
+    if (source.length){
+      phrases = source
         .map(s => String((s && (s.texto ?? s.frase)) || s).toUpperCase())
         .filter(Boolean);
     } else {
-      phrases = ["AHORRA PRIMERO GASTA DESPUES","EVITA LAS DEUDAS CARAS","CADA MONEDA CUENTA"];
+      phrases = lang === 'en'
+        ? ['SAVE FIRST SPEND LATER', 'AVOID EXPENSIVE DEBT', 'EVERY COIN COUNTS']
+        : ['AHORRA PRIMERO GASTA DESPUES', 'EVITA LAS DEUDAS CARAS', 'CADA MONEDA CUENTA'];
     }
   }
   function pickPhrase(){
-    phrase = phrases[(Math.random()*phrases.length)|0] || "AHORRA PRIMERO";
+    phrase = phrases[(Math.random()*phrases.length)|0] || (currentLang() === 'en' ? 'SAVE FIRST' : 'AHORRA PRIMERO');
     pIndex=0; inCoins=false; while (pIndex<phrase.length && phrase[pIndex]===' ') pIndex++;
     renderPill();
   }
@@ -548,6 +575,7 @@
     coins=0; scoreEl && (scoreEl.textContent='0');
     eyeDirX = 1; eyeDirY = 0;
     stepMs=STEP_MS; dead=false; running=true;
+    loadPhrases();
     pickPhrase(); placeSnake(); spawnTarget();
     acc=0; lastTs=0; dirQueue.length = 0; closeLoseModal();
     isCinematic = false;  // por si acaso
@@ -620,4 +648,7 @@
   }
   window.addEventListener('resize', resizeCanvas);
   init();
+  document.addEventListener('i18n:change', () => {
+    hardRestart();
+  });
 })();

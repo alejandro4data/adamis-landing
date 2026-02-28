@@ -1,6 +1,13 @@
 (() => {
   'use strict';
 
+  const tr = (text) => {
+    try {
+      if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(text);
+    } catch (_) {}
+    return text;
+  };
+
   SlideRendererRegistry.register('explicacion-actividad', function(s, root, ctx){
     const { makeHint, makeRewardBox, CONT_LABEL } = ctx;
 
@@ -11,11 +18,11 @@
     cont.setAttribute('role','button');
     cont.setAttribute('tabindex','0');
 
-    const titleText = (s.title ?? s.heading ?? 'Normas de la Actividad');
+    const titleText = (s.title ?? s.heading ?? tr('Normas de la Actividad'));
     if (titleText){
       const title = document.createElement('h2');
       title.className = 'activity-expl__title';
-      title.textContent = String(titleText);
+      title.textContent = tr(String(titleText));
       cont.appendChild(title);
     }
 
@@ -32,7 +39,7 @@
     cleaned.forEach(t => {
       const li = document.createElement('li');
       li.className = 'activity-expl__item';
-      li.textContent = t;
+      li.textContent = tr(t);
       ul.appendChild(li);
     });
 

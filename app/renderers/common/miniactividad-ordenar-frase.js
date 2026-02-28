@@ -1,6 +1,23 @@
 (() => {
   'use strict';
 
+  const tr = (text) => {
+    try {
+      if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(text);
+    } catch (_) {}
+    return text;
+  };
+  const lang = () => {
+    try {
+      if (window.I18N && typeof window.I18N.getLang === 'function') return window.I18N.getLang();
+    } catch (_) {}
+    try {
+      const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
+      if (stored.startsWith('en')) return 'en';
+    } catch (_) {}
+    return 'es';
+  };
+
   const STYLE_ID = 'mini-ordenar-frase-style';
 
   function ensureStyles() {
@@ -336,16 +353,20 @@
     ensureStyles();
     root.classList.add('tpl--miniact-ordenar-frase');
 
-    const phrases = normalizePhrases(s?.phrases ?? s?.frases ?? s?.frase);
+    const isEn = lang() === 'en';
+    const sourcePhrases = isEn
+      ? (s?.phrases_en ?? s?.frases_en ?? s?.phrasesEn ?? s?.frasesEn ?? s?.phrases ?? s?.frases ?? s?.frase)
+      : (s?.phrases ?? s?.frases ?? s?.frase);
+    const phrases = normalizePhrases(sourcePhrases).map((p) => tr(p));
     if (!phrases.length) {
-      root.innerHTML = '<div class="empty-state__text">No hay frases para ordenar.</div>';
+      root.innerHTML = `<div class="empty-state__text">${tr('No hay frases para ordenar.')}</div>`;
       return { suppressRootClick: true, noLock: true };
     }
 
-    const titleText = String(s?.title || s?.titulo || 'Miniactividad');
-    const introTitle = String(s?.introTitle || s?.intro?.title || 'Antes de empezar');
-    const introText = String(s?.introText || s?.intro?.text || 'Ordena la frase haciendo clic en las palabras en el orden correcto.');
-    const introButtonText = String(s?.introButtonText || s?.intro?.buttonText || 'Empezar');
+    const titleText = tr(String(s?.title || s?.titulo || 'Miniactividad'));
+    const introTitle = tr(String(s?.introTitle || s?.intro?.title || 'Antes de empezar'));
+    const introText = tr(String(s?.introText || s?.intro?.text || 'Ordena la frase haciendo clic en las palabras en el orden correcto.'));
+    const introButtonText = tr(String(s?.introButtonText || s?.intro?.buttonText || 'Empezar'));
     const autoAdvanceMs = Math.max(400, Number(s?.autoAdvanceMs ?? 1400));
 
     const head = document.createElement('div');
@@ -360,14 +381,14 @@
 
     const instructions = document.createElement('div');
     instructions.className = 'mini-instructions';
-    instructions.textContent = 'Pulsa las palabras para construir la frase. Pulsa una palabra ya colocada para devolverla.';
+    instructions.textContent = tr('Pulsa las palabras para construir la frase. Pulsa una palabra ya colocada para devolverla.');
 
     const answerPanel = document.createElement('div');
     answerPanel.className = 'mini-panel';
     const answerTitle = document.createElement('div');
     answerTitle.style.fontWeight = '700';
     answerTitle.style.marginBottom = '8px';
-    answerTitle.textContent = 'Tu frase';
+    answerTitle.textContent = tr('Tu frase');
     const answerZone = document.createElement('div');
     answerZone.className = 'mini-zone answer';
     answerPanel.appendChild(answerTitle);
@@ -378,7 +399,7 @@
     const bankTitle = document.createElement('div');
     bankTitle.style.fontWeight = '700';
     bankTitle.style.marginBottom = '8px';
-    bankTitle.textContent = 'Palabras';
+    bankTitle.textContent = tr('Palabras');
     const bankZone = document.createElement('div');
     bankZone.className = 'mini-zone bank';
     bankPanel.appendChild(bankTitle);
@@ -389,7 +410,7 @@
     const resetBtn = document.createElement('button');
     resetBtn.type = 'button';
     resetBtn.className = 'mini-btn secondary';
-    resetBtn.textContent = 'Reiniciar';
+    resetBtn.textContent = tr('Reiniciar');
     const feedback = document.createElement('div');
     feedback.className = 'mini-feedback';
     actions.appendChild(resetBtn);
@@ -414,7 +435,7 @@
     const skipBtn = document.createElement('button');
     skipBtn.type = 'button';
     skipBtn.className = 'mini-skip';
-    skipBtn.textContent = 'Saltar frase';
+    skipBtn.textContent = tr('Saltar frase');
     skipBtn.addEventListener('click', () => {
       if (locked) return;
       wrongAttempts = 0;
@@ -487,7 +508,7 @@
         markPlacement(ids);
         answerZone.classList.remove('is-wrong');
         answerZone.classList.add('is-correct');
-        setFeedback('ok', 'Correcto. Muy bien.');
+        setFeedback('ok', tr('Correcto. Muy bien.'));
         locked = true;
         wrongAttempts = 0;
         hideSkip();
@@ -506,7 +527,7 @@
         markPlacement(ids);
         answerZone.classList.remove('is-correct');
         answerZone.classList.add('is-wrong');
-        setFeedback('err', 'Orden incorrecto. Intentalo de nuevo.');
+        setFeedback('err', tr('Orden incorrecto. Intentalo de nuevo.'));
         setTimeout(() => answerZone.classList.remove('is-wrong'), 400);
         wrongAttempts += 1;
         if (wrongAttempts >= 3) showSkip();
@@ -576,7 +597,7 @@
         bankZone.appendChild(makeBankBtn(token));
       });
 
-      progress.textContent = `Frase ${idx + 1} de ${phrases.length}`;
+      progress.textContent = tr(`Frase ${idx + 1} de ${phrases.length}`);
     }
 
     resetBtn.addEventListener('click', () => {

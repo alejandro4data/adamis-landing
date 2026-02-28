@@ -5818,3 +5818,23 @@ html.has-topbar .fit-stage{ height: calc(100vh - var(--topbar-h, 64px)); } */
   }
   .tienda-card__actions{ justify-content: flex-start; }
 }
+
+/* i18n runtime overrides for pseudo-element labels */
+html[lang="en"] .impatience-cap::after{
+  content: "THRESHOLD";
+}
+html[lang="en"] .od-stage-card.is-paused::before{
+  content: "PAUSE";
+}
+
+.settings-gear-btn{
+  transition: transform .9s ease;
+  transform-origin: center;
+  transform: scale(1) rotate(0deg);
+}
+.settings-gear-btn:hover{
+  transform: scale(1.2) rotate(360deg);
+}
+.settings-gear-btn:focus-visible{
+  transform: scale(1.1);
+}

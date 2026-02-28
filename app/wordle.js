@@ -5,6 +5,26 @@
 const ROWS = 6; // número de intentos
 const FLIP_MS = 280;   // duración del giro de UNA letra (ms)
 const STAGGER_MS = 200; // escalonado entre letras (ms)
+const tr = (text) => {
+  try {
+    if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(text);
+  } catch (_) {}
+  return text;
+};
+const currentLang = () => {
+  try {
+    if (window.I18N && typeof window.I18N.getLang === 'function') return window.I18N.getLang();
+  } catch (_) {}
+  try {
+    const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
+    if (stored.startsWith('en')) return 'en';
+  } catch (_) {}
+  try {
+    const htmlLang = String(document.documentElement.lang || '').toLowerCase();
+    if (htmlLang.startsWith('en')) return 'en';
+  } catch (_) {}
+  return 'es';
+};
 
 // Normaliza acentos para comparar (Ñ se mantiene como letra distinta)
 const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
@@ -51,8 +71,8 @@ function openResultModal({ win, word, def }){
   modal.classList.remove("is-win", "is-lose");
   modal.classList.add(win ? "is-win" : "is-lose");
 
-  titleEl.textContent = win ? "¡Bien hecho!" : "Se acabaron los intentos";
-  badgeEl.textContent = win ? "¡Correcto!" : "La palabra era";
+  titleEl.textContent = win ? tr('¡Bien hecho!') : tr('Se acabaron los intentos');
+  badgeEl.textContent = win ? tr('¡Correcto!') : tr('La palabra era');
   wordEl.textContent  = word;
   defEl.textContent   = def;
 
@@ -134,10 +154,16 @@ function prevPlayable(i){
 
 /* ===================== Carga de palabras ===================== */
 async function loadWordList(){
+  const lang = currentLang() === 'en' ? 'en' : 'es';
+  const wordsByLang = window.PALABRAS_BY_LANG && Array.isArray(window.PALABRAS_BY_LANG[lang])
+    ? window.PALABRAS_BY_LANG[lang]
+    : null;
+  const runtimeWords = wordsByLang || (Array.isArray(window.PALABRAS) ? window.PALABRAS : []);
+
   // 1) SIN servidor: array global en data/palabras.js
-  if (Array.isArray(window.PALABRAS) && window.PALABRAS.length){
+  if (runtimeWords.length){
     const entries = [];
-    for (const item of window.PALABRAS){
+    for (const item of runtimeWords){
       const word = String(item[0] || "").trim().toUpperCase();
       const def  = String(item[1] || "").trim();
       const clean = norm(word).replace(/\s+/g,"");
@@ -145,7 +171,7 @@ async function loadWordList(){
         entries.push({ word, def });
       }
     }
-    if (!entries.length){ showToast("Diccionario vacío"); return; }
+    if (!entries.length){ showToast(tr('Diccionario vacío')); return; }
 
     const pick = entries[Math.floor(Math.random() * entries.length)];
     targetRaw     = pick.word;                     // p.ej. "FLUJO DE CAJA"
@@ -157,7 +183,7 @@ async function loadWordList(){
     createBoard();
     initState();
     ready = true;
-    showToast("¡Listo!");
+    showToast(tr('¡Listo!'));
     return;
   }
 
@@ -181,7 +207,7 @@ async function loadWordList(){
         entries.push({ word, def });
       }
     }
-    if (!entries.length){ showToast("Diccionario vacío"); return; }
+    if (!entries.length){ showToast(tr('Diccionario vacío')); return; }
 
     const pick = entries[Math.floor(Math.random() * entries.length)];
     targetRaw     = pick.word;
@@ -193,12 +219,18 @@ async function loadWordList(){
     createBoard();
     initState();
     ready = true;
-    showToast("¡Listo!");
+    showToast(tr('¡Listo!'));
   }catch{
-    showToast("No se pudo cargar 'palabras'");
+    showToast(tr("No se pudo cargar 'palabras'"));
   }
 }
 loadWordList();
+document.addEventListener('i18n:change', () => {
+  ready = false;
+  busy = false;
+  closeResultModal();
+  loadWordList();
+});
 
 /* ===================== Escritura / borrado ===================== */
 function setTile(r,c,letter){
@@ -309,7 +341,7 @@ function submit(){
 
   // ¿están todas las letras (no espacios) rellenas?
   for (const idx of playableIdx){
-    if (!rowArr[idx]){ showToast("Palabra incompleta"); return; }
+    if (!rowArr[idx]){ showToast(tr('Palabra incompleta')); return; }
   }
 
   // Intento SIN espacios para comparar
@@ -378,7 +410,7 @@ window.addEventListener("keydown", (e)=>{
 });
 
 function handleKey(k){
-  if (!ready){ showToast("Cargando…"); return; }
+  if (!ready){ showToast(tr('Cargando...')); return; }
   if (state.ended || busy) return;
   if (k === "ENTER"){ submit(); return; }
   if (k === "BACKSPACE"){ backspace(); return; }

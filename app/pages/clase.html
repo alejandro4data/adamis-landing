@@ -6,6 +6,7 @@
   <title>Clase</title>
   <link rel="stylesheet" href="../style.css" />
   <link rel="preload" as="image" href="../assets/instrucciones.avif">
+  <script defer src="../i18n.js"></script>
   <style>
     /* Oculta flecha de atrás y botón de salir solo cuando una clase está cargada */
     html.class-loaded .back-integrated,
@@ -104,18 +105,37 @@
         document.querySelectorAll('script[data-slide-set]').forEach(s => s.remove());
         document.querySelectorAll('#slide-root .empty-state').forEach(n => n.remove());
 
-        const s = document.createElement('script');
-        s.src = `../slides/slides_${kind}.js`;
-        s.dataset.slideSet = kind;
-        s.onload = () => {
-          // Actualiza la URL para recargar directo a esa clase
-          const url = new URL(location.href);
-          url.searchParams.set('clase', kind);
-          history.replaceState({}, '', url);
-          window.__slidesAPI__ && window.__slidesAPI__.reload();
+        const lang = String(window.I18N?.getLang?.() || document.documentElement.lang || 'es').toLowerCase();
+        const candidates = lang.startsWith('en')
+          ? [`../slides/slides_${kind}_en.js`, `../slides/slides_${kind}.js`]
+          : [`../slides/slides_${kind}.js`];
+
+        const tryLoad = (idx) => {
+          if (idx >= candidates.length) {
+            const msgEs = `No pude cargar ${candidates[0]} (revisa la ruta o el nombre).`;
+            const msg = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en')
+              ? `I could not load ${candidates[0]} (check path or filename).`
+              : msgEs;
+            alert(msg);
+            return;
+          }
+          const s = document.createElement('script');
+          s.src = candidates[idx];
+          s.dataset.slideSet = kind;
+          s.onload = () => {
+            const url = new URL(location.href);
+            url.searchParams.set('clase', kind);
+            history.replaceState({}, '', url);
+            window.__slidesAPI__ && window.__slidesAPI__.reload();
+          };
+          s.onerror = () => {
+            s.remove();
+            tryLoad(idx + 1);
+          };
+          document.body.appendChild(s);
         };
-        s.onerror = () => { alert(`No pude cargar ../slides/slides_${kind}.js (revisa la ruta o el nombre).`); };
-        document.body.appendChild(s);
+
+        tryLoad(0);
       }
 
       window.addEventListener('DOMContentLoaded', async () => {

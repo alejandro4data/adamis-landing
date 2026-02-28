@@ -4,6 +4,31 @@
 
   const root = document.getElementById('od-game');
   if (!root) return;
+  const tr = (text) => {
+    try {
+      if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(text);
+    } catch (_) {}
+    return text;
+  };
+  const currentLang = () => {
+    try {
+      if (window.I18N && typeof window.I18N.getLang === 'function') return window.I18N.getLang();
+    } catch (_) {}
+    try {
+      const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
+      if (stored.startsWith('en')) return 'en';
+    } catch (_) {}
+    try {
+      const htmlLang = String(document.documentElement.lang || '').toLowerCase();
+      if (htmlLang.startsWith('en')) return 'en';
+    } catch (_) {}
+    return 'es';
+  };
+  const byLang = (obj, fallback = '') => {
+    if (!obj || typeof obj !== 'object') return fallback;
+    const lang = currentLang() === 'en' ? 'en' : 'es';
+    return obj[lang] || obj.es || fallback;
+  };
 
   const CONFIG = {
     initialMoney: 50,
@@ -61,18 +86,27 @@
 
   const PROFILE_INFO = {
     impulsive: {
-      name: 'Naranja · Impulsivo',
-      desc: 'Compra por impulso hasta $3.50. Si el precio es moderado y la fila fluye, decide rápido.',
+      name: { es: 'Naranja · Impulsivo', en: 'Orange · Impulsive' },
+      desc: {
+        es: 'Compra por impulso hasta $3.50. Si el precio es moderado y la fila fluye, decide rapido.',
+        en: 'Buys impulsively up to $3.50. If the price is moderate and queue flows, decides fast.'
+      },
       swatch: 'is-impulsive'
     },
     saver: {
-      name: 'Azul · Ahorrador',
-      desc: 'Caza precios bajos (tope $2.00). Subas bruscas o poco stock lo espantan al instante.',
+      name: { es: 'Azul · Ahorrador', en: 'Blue · Saver' },
+      desc: {
+        es: 'Busca precios bajos (tope $2.00). Subidas bruscas o poco stock lo ahuyentan.',
+        en: 'Looks for low prices (cap $2.00). Sudden increases or low stock scare them away.'
+      },
       swatch: 'is-saver'
     },
     vip: {
-      name: 'Púrpura · VIP',
-      desc: 'Valora comodidad y calor: paga hasta $5.00 y compra más cuando hace buen tiempo.',
+      name: { es: 'Purpura · VIP', en: 'Purple · VIP' },
+      desc: {
+        es: 'Valora comodidad y calor: paga hasta $5.00 y compra mas cuando hace buen tiempo.',
+        en: 'Values comfort and warm weather: pays up to $5.00 and buys more on warm days.'
+      },
       swatch: 'is-vip'
     }
   };
@@ -484,7 +518,7 @@
     if (!target || !target.isConnected) return;
     const bubble = document.createElement('div');
     bubble.className = `od-bubble od-bubble--${outcome}`;
-    bubble.textContent = outcome === 'buy' ? 'Compra' : outcome === 'price' ? 'Muy caro' : 'Sin stock';
+    bubble.textContent = outcome === 'buy' ? tr('Compra') : outcome === 'price' ? tr('Muy caro') : tr('Sin stock');
     target.appendChild(bubble);
     setTimeout(() => bubble.remove(), 1200);
   }
@@ -1280,8 +1314,8 @@
   function openLegendModal(profile = 'impulsive'){
     if (!el.legendModal) return;
     const info = PROFILE_INFO[profile] || PROFILE_INFO.impulsive;
-    if (el.legendModalName) el.legendModalName.textContent = info.name;
-    if (el.legendModalDesc) el.legendModalDesc.textContent = info.desc;
+    if (el.legendModalName) el.legendModalName.textContent = byLang(info.name, '');
+    if (el.legendModalDesc) el.legendModalDesc.textContent = byLang(info.desc, '');
     if (el.legendModalSwatch){
       el.legendModalSwatch.className = 'od-legend-swatch';
       if (info.swatch) el.legendModalSwatch.classList.add(info.swatch);
