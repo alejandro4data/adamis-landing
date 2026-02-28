@@ -17,6 +17,12 @@
   };
 
   var noticeTimer = null;
+  var tr = function (text) {
+    if (window.I18N && typeof window.I18N.tr === 'function') {
+      return window.I18N.tr(String(text || ''));
+    }
+    return String(text || '');
+  };
 
   function showNotice(message, tone) {
     if (!notice) return;
@@ -176,17 +182,17 @@
     media.className = 'tienda-card__media';
     var img = document.createElement('img');
     img.src = item.imagen || '../assets/icons/coin_ranking.png';
-    img.alt = item.nombre;
+    img.alt = tr(item.nombre);
     media.appendChild(img);
 
     var body = document.createElement('div');
     body.className = 'tienda-card__body';
     var title = document.createElement('h3');
     title.className = 'tienda-card__title';
-    title.textContent = item.nombre;
+    title.textContent = tr(item.nombre);
     var desc = document.createElement('p');
     desc.className = 'tienda-card__desc';
-    desc.textContent = item.descripcion || 'Sin descripcion.';
+    desc.textContent = tr(item.descripcion || 'Sin descripcion.');
     body.appendChild(title);
     body.appendChild(desc);
 
@@ -202,10 +208,10 @@
     price.appendChild(priceIcon);
     price.appendChild(priceText);
 
-    var stockText = createChip('Stock: ' + availability.stock);
+    var stockText = createChip(tr('Stock:') + ' ' + availability.stock);
     var maxText = Number.isFinite(availability.max)
-      ? ('Comprado: ' + availability.purchased + '/' + availability.max)
-      : 'Sin limite';
+      ? (tr('Comprado:') + ' ' + availability.purchased + '/' + availability.max)
+      : tr('Sin limite');
     var limitChip = createChip(maxText, 'tienda-chip--limit');
 
     meta.appendChild(price);
@@ -218,13 +224,13 @@
     var wrap = document.createElement('div');
     wrap.className = 'tienda-buy-wrap';
     if (availability.reason) {
-      wrap.setAttribute('data-tooltip', availability.reason);
+      wrap.setAttribute('data-tooltip', tr(availability.reason));
     }
 
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'btn btn--primary tienda-buy-btn';
-    btn.textContent = 'Comprar';
+    btn.textContent = tr('Comprar');
     btn.dataset.id = item.id;
     if (!availability.canBuy) btn.disabled = true;
 
@@ -246,7 +252,7 @@
       empty.className = 'empty-state';
       var text = document.createElement('div');
       text.className = 'empty-state__text';
-      text.textContent = 'No hay articulos disponibles.';
+      text.textContent = tr('No hay articulos disponibles.');
       empty.appendChild(text);
       grid.appendChild(empty);
       return;
@@ -261,7 +267,7 @@
   function attemptPurchase(item) {
     var availability = getAvailability(item);
     if (!availability.canBuy) {
-      showNotice(availability.reason || 'No se puede comprar ahora.', 'warn');
+      showNotice(tr(availability.reason || 'No se puede comprar ahora.'), 'warn');
       return;
     }
 
@@ -281,7 +287,8 @@
       window.CoinsUI.updateAll();
     }
 
-    showNotice('Compra realizada: ' + item.nombre + '.', 'success');
+    var msg = tr('Compra realizada: {name}.').replace('{name}', tr(item.nombre));
+    showNotice(msg, 'success');
     render();
   }
 
@@ -304,6 +311,10 @@
     });
   }
 
+  document.addEventListener('i18n:change', function () {
+    render();
+  });
+
   function applyData(data) {
     state.items = normalizeItems(data);
     state.itemsById = {};
@@ -323,13 +334,13 @@
         applyData(data);
       })
       .catch(function () {
-        showNotice('No se pudo cargar la tienda.', 'error');
+        showNotice(tr('No se pudo cargar la tienda.'), 'error');
         grid.innerHTML = '';
         var empty = document.createElement('div');
         empty.className = 'empty-state';
         var text = document.createElement('div');
         text.className = 'empty-state__text';
-        text.textContent = 'No se pudo cargar el listado de articulos.';
+        text.textContent = tr('No se pudo cargar el listado de articulos.');
         empty.appendChild(text);
         grid.appendChild(empty);
       });

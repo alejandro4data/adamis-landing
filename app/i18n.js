@@ -104,6 +104,31 @@
     ['Sin descripcion.', 'No description.'],
     ['Sin limite', 'No limit'],
     ['Stock', 'Stock'],
+    ['Stock:', 'Stock:'],
+    ['Comprado:', 'Purchased:'],
+    ['Peluche Adamis', 'Adamis plush'],
+    ['Un peluche del personaje Adamis.', 'A plush of the Adamis character.'],
+    ['Entrada de cine', 'Movie ticket'],
+    ['Una entrada para disfrutar una pelicula.', 'A ticket to enjoy a movie.'],
+    ['Una entrada para disfrutar una película.', 'A ticket to enjoy a movie.'],
+    ['Balon de volleyball', 'Volleyball'],
+    ['Balón de volleyball', 'Volleyball'],
+    ['BalÃ³n de volleyball', 'Volleyball'],
+    ['Un balon de volleyball oficial.', 'An official volleyball.'],
+    ['Un balón de volleyball oficial.', 'An official volleyball.'],
+    ['Un balÃ³n de volleyball oficial.', 'An official volleyball.'],
+    ['Balon de futbol', 'Soccer ball'],
+    ['Balón de futbol', 'Soccer ball'],
+    ['BalÃ³n de futbol', 'Soccer ball'],
+    ['Un balon de futbol de La Liga.', 'A La Liga soccer ball.'],
+    ['Un balón de futbol de La Liga.', 'A La Liga soccer ball.'],
+    ['Un balÃ³n de futbol de La Liga.', 'A La Liga soccer ball.'],
+    ['Sesion de baloncesto', 'Basketball session'],
+    ['Una hora de juego en la cancha.', 'One hour of play on the court.'],
+    ['Salida a acampar', 'Camping trip'],
+    ['Equipo basico para una noche al aire libre.', 'Basic gear for a night outdoors.'],
+    ['Partido de futbol', 'Soccer match'],
+    ['Un partido amistoso con tus amigos.', 'A friendly match with your friends.'],
     ['Sin stock disponible', 'Out of stock'],
     ['Limite por usuario alcanzado', 'Per-user limit reached'],
     ['Precio invalido', 'Invalid price'],
@@ -618,6 +643,10 @@
     let m = null;
     m = normalized.match(/^Te faltan\s+(\d+)\s+monedas$/i);
     if (m) return `You need ${m[1]} more coins`;
+    m = normalized.match(/^Stock:\s*(\d+)$/i);
+    if (m) return `Stock: ${m[1]}`;
+    m = normalized.match(/^Comprado:\s*(\d+)\s*\/\s*(\d+)$/i);
+    if (m) return `Purchased: ${m[1]}/${m[2]}`;
     m = normalized.match(/^Compra realizada:\s+(.+)\.$/i);
     if (m) return `Purchase completed: ${m[1]}.`;
     m = normalized.match(/^Has terminado con\s+(\d+)\s+fallo(s?)\.$/i);
