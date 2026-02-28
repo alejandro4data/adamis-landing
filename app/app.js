@@ -8,6 +8,7 @@
    
 /* -------- Botón global de Logout (todas las páginas menos login) -------- */
 /* ===== Botón global de Logout + Modal de confirmación ===== */
+
 (() => {
   const PAGE = document.documentElement.getAttribute('data-page') || '';
   if (PAGE === 'login' || PAGE === 'splash') return;
