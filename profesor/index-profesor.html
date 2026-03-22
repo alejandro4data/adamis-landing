@@ -15,11 +15,11 @@
       <div>
         <p class="eyebrow">Panel docente</p>
         <h1>ADAMIS - Vista Profesorado</h1>
-        <p class="teacher-subtitle">Seguimiento del curso de Educación Financiera y progreso del alumnado.</p>
+        <p class="teacher-subtitle">Seguimiento del curso de Educacion Financiera y progreso del alumnado.</p>
       </div>
       <div class="header-actions">
-        <div class="status-chip">Curso activo: 6º Educación Primaria · Colegio Arcangel</div>
-        <button type="button" class="logout-button" id="logoutButton">Cerrar sesión</button>
+        <div class="status-chip">Curso activo: 6o Educacion Primaria · Colegio Arcangel</div>
+        <button type="button" class="logout-button" id="logoutButton">Cerrar sesion</button>
       </div>
     </header>
 
@@ -44,28 +44,28 @@
           <article class="main-card">
             <div class="card-meta">
               <span class="current-badge">Clase actual</span>
-              <span class="current-date">Semana 8</span>
+              <span class="current-date">Semana 10</span>
             </div>
-            <h2>Clase 8 · La Deuda</h2>
+            <h2>Clase 10 · Ahorro y presupuestos</h2>
 
             <section class="content-block">
               <h3>Resumen</h3>
               <p>
-                La sesión introduce qué es una deuda, cuándo puede ser útil y en qué momento se convierte en un riesgo.
-                Se trabaja la diferencia entre deuda buena y deuda mala, el coste de pedir dinero prestado y el impacto
-                de los intereses en las decisiones cotidianas.
+                La sesion trabaja como organizar un presupuesto sencillo y como convertir el ahorro en un habito
+                sostenible. Se conectan ingresos, gastos, objetivos y prioridades para que el alumnado aprenda a
+                planificar mejor el uso del dinero y a reservar una parte para metas futuras o imprevistos.
               </p>
             </section>
 
             <section class="content-block">
               <h3>Glosario</h3>
               <div class="glossary-list">
-                <span>Deuda buena</span>
-                <span>Deuda mala</span>
-                <span>Interes</span>
-                <span>Prestamo</span>
-                <span>Cuota</span>
-                <span>Morosidad</span>
+                <span>Ahorro</span>
+                <span>Presupuesto</span>
+                <span>Objetivo</span>
+                <span>Prioridad</span>
+                <span>Gasto fijo</span>
+                <span>Gasto variable</span>
               </div>
             </section>
 
@@ -95,9 +95,48 @@
       </section>
 
       <section class="panel" id="panel-contenidos" data-panel="contenidos">
-        <div class="placeholder-card">
-          <h2>Contenidos</h2>
-          <p>Esta pestaña queda preparada para la siguiente iteración del MVP.</p>
+        <div class="content-flow" id="contentsFlow">
+          <section class="content-screen is-active" id="contentsOverview">
+            <div class="content-grid" id="contentBlocksGrid"></div>
+          </section>
+
+          <section class="content-screen" id="contentsBlockDetail">
+            <div class="content-toolbar">
+              <button type="button" class="secondary-button" id="backToBlocks">Volver a bloques</button>
+              <div>
+                <p class="content-kicker">Bloque seleccionado</p>
+                <h2 id="contentBlockTitle">Bloque</h2>
+              </div>
+            </div>
+            <div class="class-list" id="contentClassesList"></div>
+          </section>
+
+          <section class="content-screen" id="contentsClassDetail">
+            <div class="content-toolbar">
+              <button type="button" class="secondary-button" id="backToBlock">Volver al bloque</button>
+              <div>
+                <p class="content-kicker">Clase seleccionada</p>
+                <h2 id="contentClassTitle">Clase</h2>
+              </div>
+            </div>
+
+            <div class="lesson-detail-layout">
+              <section class="lesson-detail-main">
+                <div class="lesson-section-tabs" id="lessonSectionTabs"></div>
+                <div class="lesson-info-card">
+                  <div class="lesson-info-grid" id="lessonInfoGrid"></div>
+                </div>
+              </section>
+
+              <aside class="lesson-preview-card">
+                <div class="lesson-preview-image" id="lessonPreviewImage">
+                  <div class="lesson-preview-label">Preview de la clase</div>
+                  <strong id="lessonPreviewTitle">Clase</strong>
+                </div>
+                <button type="button" class="primary-button lesson-start-button" id="lessonStartButton">Iniciar</button>
+              </aside>
+            </div>
+          </section>
         </div>
       </section>
 
@@ -127,7 +166,7 @@
   <div class="modal" id="historyModal" aria-hidden="true">
     <div class="modal-backdrop" data-close-modal></div>
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
-      <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">×</button>
+      <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">x</button>
       <h2 id="historyTitle">Historial de clases</h2>
       <div class="modal-list" id="historyList"></div>
     </div>
@@ -136,7 +175,7 @@
   <div class="modal" id="upcomingModal" aria-hidden="true">
     <div class="modal-backdrop" data-close-modal></div>
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="upcomingTitle">
-      <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">×</button>
+      <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">x</button>
       <h2 id="upcomingTitle">Clases siguientes</h2>
       <div class="modal-list" id="upcomingList"></div>
     </div>
@@ -145,7 +184,7 @@
   <div class="modal" id="studentsModal" aria-hidden="true">
     <div class="modal-backdrop" data-close-modal></div>
     <div class="modal-dialog modal-dialog--wide" role="dialog" aria-modal="true" aria-labelledby="studentsTitle">
-      <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">×</button>
+      <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">x</button>
       <h2 id="studentsTitle">Listado de alumnos</h2>
       <div class="students-summary">
         <div class="metric-card">

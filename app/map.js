@@ -5,13 +5,13 @@
    - Ajusta posiciones en 'POINTS' si quieres otra ruta
    ===================================================== */
 
-const LOCK_CLASS7 = (typeof window.MAP_LOCK_CLASS7 === 'boolean') ? window.MAP_LOCK_CLASS7 : true;
-const CLASS6_COMPLETED = (() => {
-  if (!LOCK_CLASS7) return true;
-  try { return localStorage.getItem('class_completed_6') === 'true'; }
+const LOCK_DEUDA = (typeof window.MAP_LOCK_DEUDA === 'boolean') ? window.MAP_LOCK_DEUDA : true;
+const CLASS10_COMPLETED = (() => {
+  if (!LOCK_DEUDA) return true;
+  try { return localStorage.getItem('class_completed_10') === 'true'; }
   catch (_) { return false; }
 })();
-const CURRENT_LEVEL = CLASS6_COMPLETED ? 7 : 6; // avatar en 6 hasta completar, luego en 7
+const CURRENT_LEVEL = CLASS10_COMPLETED ? 11 : 10; // avatar en 10 hasta completar, luego en 11
 
 (() => {
   'use strict';
@@ -166,7 +166,7 @@ const CURRENT_LEVEL = CLASS6_COMPLETED ? 7 : 6; // avatar en 6 hasta completar, 
 
     // Click: precarga y navega (salvo niveles bloqueados 1..5)
     g.addEventListener("click", (ev) => {
-      if (i <= LOCKED_MAX_LEVEL || (LOCK_CLASS7 && !CLASS6_COMPLETED && i === 7)) {
+      if (i <= LOCKED_MAX_LEVEL || (LOCK_DEUDA && !CLASS10_COMPLETED && i === 11)) {
         ev.preventDefault();
         ev.stopPropagation();
         return;
@@ -221,8 +221,8 @@ const CURRENT_LEVEL = CLASS6_COMPLETED ? 7 : 6; // avatar en 6 hasta completar, 
   // Estructura esperada de data/config_clases.json:
   // {
   //   "clases": [
-  //     { "id": "ahorro", "numero": 1, "activa": true },
-  //     { "id": "deuda",  "numero": 2, "activa": false }
+    //     { "id": "ahorro", "numero": 10, "activa": true },
+    //     { "id": "deuda",  "numero": 11, "activa": false }
   //   ]
   // }
   // === Sustituye en map.js ===
