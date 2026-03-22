@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADAMIS Profesorado</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="teacher-shell">
+    <header class="teacher-header">
+      <div>
+        <p class="eyebrow">Panel docente</p>
+        <h1>ADAMIS - Vista Profesorado</h1>
+        <p class="teacher-subtitle">Seguimiento del curso de Educación Financiera y progreso del alumnado.</p>
+      </div>
+      <div class="header-actions">
+        <div class="status-chip">Curso activo: 6º Educación Primaria · Colegio Arcangel</div>
+        <button type="button" class="logout-button" id="logoutButton">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <main class="teacher-app">
+      <nav class="tabs" aria-label="Secciones de profesorado">
+        <button class="tab is-active" type="button" data-tab="cronograma">Cronograma</button>
+        <button class="tab" type="button" data-tab="contenidos">Contenidos</button>
+        <button class="tab" type="button" data-tab="alumnado">Alumnado</button>
+        <button class="tab" type="button" data-tab="gestion">Gestion</button>
+        <button class="tab" type="button" data-tab="incidencias">Incidencias</button>
+      </nav>
+
+      <section class="panel is-active" id="panel-cronograma" data-panel="cronograma">
+        <div class="timeline-layout">
+          <aside class="side-column">
+            <button type="button" class="side-card trigger-card" data-modal-target="historyModal">
+              <span class="side-card__title">Historial</span>
+              <span class="side-card__copy">Consulta las clases ya impartidas.</span>
+            </button>
+          </aside>
+
+          <article class="main-card">
+            <div class="card-meta">
+              <span class="current-badge">Clase actual</span>
+              <span class="current-date">Semana 8</span>
+            </div>
+            <h2>Clase 8 · La Deuda</h2>
+
+            <section class="content-block">
+              <h3>Resumen</h3>
+              <p>
+                La sesión introduce qué es una deuda, cuándo puede ser útil y en qué momento se convierte en un riesgo.
+                Se trabaja la diferencia entre deuda buena y deuda mala, el coste de pedir dinero prestado y el impacto
+                de los intereses en las decisiones cotidianas.
+              </p>
+            </section>
+
+            <section class="content-block">
+              <h3>Glosario</h3>
+              <div class="glossary-list">
+                <span>Deuda buena</span>
+                <span>Deuda mala</span>
+                <span>Interes</span>
+                <span>Prestamo</span>
+                <span>Cuota</span>
+                <span>Morosidad</span>
+              </div>
+            </section>
+
+            <div class="summary-strip">
+              <div>
+                <strong>18 alumnos</strong>
+                <span>Grupo activo en esta clase</span>
+              </div>
+              <div>
+                <strong>12 completadas</strong>
+                <span>6 en progreso</span>
+              </div>
+            </div>
+
+            <div class="main-actions">
+              <button type="button" class="primary-button" data-modal-target="studentsModal">Listado de alumnos</button>
+            </div>
+          </article>
+
+          <aside class="side-column side-column--right">
+            <button type="button" class="side-card trigger-card" data-modal-target="upcomingModal">
+              <span class="side-card__title">Clases siguientes</span>
+              <span class="side-card__copy">Revisa el recorrido previsto del curso.</span>
+            </button>
+          </aside>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-contenidos" data-panel="contenidos">
+        <div class="placeholder-card">
+          <h2>Contenidos</h2>
+          <p>Esta pestaña queda preparada para la siguiente iteración del MVP.</p>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-alumnado" data-panel="alumnado">
+        <div class="placeholder-card">
+          <h2>Alumnado</h2>
+          <p>Aqui integraremos metricas individuales y seguimiento por estudiante.</p>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-gestion" data-panel="gestion">
+        <div class="placeholder-card">
+          <h2>Gestion</h2>
+          <p>Espacio reservado para configuracion de grupos, calendario y materiales.</p>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-incidencias" data-panel="incidencias">
+        <div class="placeholder-card">
+          <h2>Incidencias</h2>
+          <p>Seccion lista para registrar incidencias academicas o tecnicas.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="historyModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+      <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">×</button>
+      <h2 id="historyTitle">Historial de clases</h2>
+      <div class="modal-list" id="historyList"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="upcomingModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="upcomingTitle">
+      <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">×</button>
+      <h2 id="upcomingTitle">Clases siguientes</h2>
+      <div class="modal-list" id="upcomingList"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="studentsModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-dialog modal-dialog--wide" role="dialog" aria-modal="true" aria-labelledby="studentsTitle">
+      <button type="button" class="modal-close" data-close-modal aria-label="Cerrar">×</button>
+      <h2 id="studentsTitle">Listado de alumnos</h2>
+      <div class="students-summary">
+        <div class="metric-card">
+          <strong>18</strong>
+          <span>Total alumnado</span>
+        </div>
+        <div class="metric-card">
+          <strong>12</strong>
+          <span>Clase completada</span>
+        </div>
+        <div class="metric-card">
+          <strong>6</strong>
+          <span>En progreso</span>
+        </div>
+      </div>
+      <div class="students-table-wrap">
+        <table class="students-table">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>Estado</th>
+              <th>Ultima actividad</th>
+            </tr>
+          </thead>
+          <tbody id="studentsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

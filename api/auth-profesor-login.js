@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       "acceso_adamis_profesor=permitido; Path=/; Max-Age=3600; SameSite=Lax; HttpOnly; Secure"
     );
     res.statusCode = 302;
-    res.setHeader("Location", "/profesor/index.html");
+    res.setHeader("Location", "/profesor/index-profesor.html");
     return res.end();
   }
 
