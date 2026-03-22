@@ -3,9 +3,9 @@ export default async function handler(req, res) {
     return res.status(405).send("Método no permitido");
   }
 
-  const passwordReal = process.env.PASSWORD_PROTOTYPE;
+  const passwordReal = process.env.PASSWORD_PROTOTYPE_TEACHER;
   if (!passwordReal) {
-    return res.status(500).send("PASSWORD_PROTOTYPE no está configurada");
+    return res.status(500).send("PASSWORD_PROTOTYPE_TEACHER no está configurada");
   }
 
   const passwordInput = req.body?.password;
@@ -13,14 +13,14 @@ export default async function handler(req, res) {
   if (passwordInput === passwordReal) {
     res.setHeader(
       "Set-Cookie",
-      "acceso_adamis_alumno=permitido; Path=/; Max-Age=3600; SameSite=Lax; HttpOnly; Secure"
+      "acceso_adamis_profesor=permitido; Path=/; Max-Age=3600; SameSite=Lax; HttpOnly; Secure"
     );
     res.statusCode = 302;
-    res.setHeader("Location", "/app/index.html");
+    res.setHeader("Location", "/profesor/index.html");
     return res.end();
   }
 
   res.statusCode = 302;
-  res.setHeader("Location", "/splash.html?error=student");
+  res.setHeader("Location", "/splash.html?error=teacher");
   return res.end();
 }

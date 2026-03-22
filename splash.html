@@ -7,90 +7,199 @@
     <script defer src="./app/i18n.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* (Tus mismos estilos CSS bonitos de siempre) */
-        body { 
-            margin: 0; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, #F9F1D0, #E6C874); font-family: 'Outfit', sans-serif;
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background:
+                radial-gradient(circle at top, rgba(255, 255, 255, 0.65), transparent 35%),
+                linear-gradient(135deg, #F9F1D0, #E6C874);
+            font-family: 'Outfit', sans-serif;
+        }
+        .shell {
+            width: min(980px, 100%);
+        }
+        .hero {
+            text-align: center;
+            margin-bottom: 28px;
+            color: #5C4B25;
+        }
+        .hero h1 {
+            margin: 0 0 8px;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            letter-spacing: 0.08em;
+        }
+        .hero p {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #7A632F;
+        }
+        .access-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
         }
         .container {
-            background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(92, 75, 37, 0.15); text-align: center; width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 32px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(92, 75, 37, 0.15);
+            text-align: center;
+        }
+        .container h2 {
+            margin: 0 0 10px;
+            color: #5C4B25;
+        }
+        .container p.helper {
+            margin: 0 0 20px;
+            color: #7A632F;
+            font-size: 0.96rem;
         }
         input, select {
-            width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #E6C874;
-            border-radius: 8px; font-size: 1.2rem; text-align: center; color: #5C4B25; outline: none; box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #E6C874;
+            border-radius: 10px;
+            font-size: 1rem;
+            text-align: center;
+            color: #5C4B25;
+            outline: none;
+            box-sizing: border-box;
+            background: #fffdf6;
         }
         button {
-            background: #5C4B25; color: #F9F1D0; border: none; padding: 12px; border-radius: 50px;
-            font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; transition: 0.2s;
+            background: #5C4B25;
+            color: #F9F1D0;
+            border: none;
+            padding: 12px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
         }
-        button:hover { background: #3e2b08; transform: scale(1.02); }
-        .error { 
-            color: #d32f2f; margin-top: 15px; font-weight: bold; 
-            display: none; /* Oculto por defecto */
+        button:hover {
+            background: #3e2b08;
+            transform: scale(1.02);
+        }
+        .teacher-button {
+            background: linear-gradient(135deg, #B38A2C, #8B6B20);
+        }
+        .teacher-button:hover {
+            background: linear-gradient(135deg, #9E7920, #6E5317);
+        }
+        .error {
+            color: #d32f2f;
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+        }
+        @media (max-width: 780px) {
+            .access-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 24px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Acceso Estudiantes</h2>
-        
-        <form action="/api/auth-login" method="POST">
-            <select name="centro" id="centro" required>
-                <option value="" disabled selected>Selecciona tu centro</option>
-                <option value="Colegio">Colegio Arcangel</option>
-                <!--<option value="centro_b">Centro B</option> -->
-                <!--<option value="centro_c">Centro C</option> -->
-            </select>
+    <div class="shell">
+        <div class="hero">
+            <h1>ADAMIS</h1>
+            <p>Selecciona el acceso adecuado para entrar en la plataforma.</p>
+        </div>
 
-            <input type="password" name="password" placeholder="Contraseña de la Clase" required>
-            <button type="submit">Entrar</button>
-        </form>
+        <div class="access-grid">
+            <div class="container">
+                <h2>Acceso Estudiantes</h2>
+                <p class="helper">Entrada al aula para el alumnado.</p>
 
-        <p class="error" id="errorMsg">🚫 Contraseña incorrecta</p>
+                <form action="/api/auth-login" method="POST" data-role="student">
+                    <select name="centro" id="centro" required>
+                        <option value="" disabled selected>Selecciona tu centro</option>
+                        <option value="Colegio">Colegio Arcangel</option>
+                    </select>
+
+                    <input type="password" name="password" placeholder="Contraseña de la clase" required>
+                    <button type="submit">Entrar como alumno</button>
+                </form>
+
+                <p class="error" id="studentError">Contraseña incorrecta</p>
+            </div>
+
+            <div class="container">
+                <h2>Acceso Profesorado</h2>
+                <p class="helper">Vista de seguimiento y monitorización del alumnado.</p>
+
+                <form action="/api/auth-profesor-login" method="POST" data-role="teacher">
+                    <input type="text" name="centro" value="Colegio Arcangel" readonly>
+                    <input type="password" name="password" placeholder="Contraseña de profesorado" required>
+                    <button type="submit" class="teacher-button">Entrar como profesor</button>
+                </form>
+
+                <p class="error" id="teacherError">Contraseña de profesorado incorrecta</p>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Pequeño script solo para mostrar el mensaje de error si la URL trae ?error=true
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('error')) {
-            document.getElementById('errorMsg').style.display = 'block';
-            // Vibración para feedback móvil
-            if(navigator.vibrate) navigator.vibrate(200);
+        const error = urlParams.get('error');
+
+        if (error === 'student' || error === 'true') {
+            document.getElementById('studentError').style.display = 'block';
+            if (navigator.vibrate) navigator.vibrate(200);
+        }
+
+        if (error === 'teacher') {
+            document.getElementById('teacherError').style.display = 'block';
+            if (navigator.vibrate) navigator.vibrate(200);
         }
     </script>
     <script>
         (function () {
-        const form = document.querySelector("form");
-        const centroSelect = document.getElementById("centro");
+            const forms = document.querySelectorAll("form");
+            const centroSelect = document.getElementById("centro");
 
-        function uuid() {
-            if (crypto?.randomUUID) return crypto.randomUUID();
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-            const r = Math.random()*16|0, v = c==='x'?r:(r&0x3|0x8);
-            return v.toString(16);
-            });
-        }
-
-        function clearLegacyLocalStorage() {
-            try {
-            for (let i = localStorage.length - 1; i >= 0; i--) {
-                const k = localStorage.key(i);
-                if (k && k.startsWith("poll:")) localStorage.removeItem(k);
+            function uuid() {
+                if (crypto?.randomUUID) return crypto.randomUUID();
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
             }
-            } catch {}
-        }
 
-        form.addEventListener("submit", () => {
-            try {
-            sessionStorage.clear();
-            clearLegacyLocalStorage();
+            function clearLegacyLocalStorage() {
+                try {
+                    for (let i = localStorage.length - 1; i >= 0; i--) {
+                        const k = localStorage.key(i);
+                        if (k && k.startsWith("poll:")) localStorage.removeItem(k);
+                    }
+                } catch {}
+            }
 
-            sessionStorage.setItem("session_uuid", uuid());
-            sessionStorage.setItem("centro", centroSelect.value);
-            } catch {}
-        });
+            forms.forEach((form) => {
+                form.addEventListener("submit", () => {
+                    try {
+                        sessionStorage.clear();
+                        clearLegacyLocalStorage();
+
+                        sessionStorage.setItem("session_uuid", uuid());
+                        sessionStorage.setItem("centro", form.dataset.role === "teacher" ? "Colegio" : centroSelect.value);
+                        sessionStorage.setItem("access_role", form.dataset.role || "student");
+                    } catch {}
+                });
+            });
         })();
     </script>
 </body>
