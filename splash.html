@@ -141,7 +141,10 @@
                 <p class="helper">Vista de seguimiento y monitorización del alumnado.</p>
 
                 <form action="/api/auth-profesor-login" method="POST" data-role="teacher">
-                    <input type="text" name="centro" value="Colegio Arcangel" readonly>
+                    <select name="centro" id="centro-profesor" required>
+                        <option value="" disabled selected>Selecciona tu centro</option>
+                        <option value="Colegio">Colegio Arcangel</option>
+                    </select>
                     <input type="password" name="password" placeholder="Contraseña de profesorado" required>
                     <button type="submit" class="teacher-button">Entrar como profesor</button>
                 </form>
@@ -168,7 +171,6 @@
     <script>
         (function () {
             const forms = document.querySelectorAll("form");
-            const centroSelect = document.getElementById("centro");
 
             function uuid() {
                 if (crypto?.randomUUID) return crypto.randomUUID();
@@ -194,8 +196,9 @@
                         sessionStorage.clear();
                         clearLegacyLocalStorage();
 
+                        const centroField = form.querySelector('[name="centro"]');
                         sessionStorage.setItem("session_uuid", uuid());
-                        sessionStorage.setItem("centro", form.dataset.role === "teacher" ? "Colegio" : centroSelect.value);
+                        sessionStorage.setItem("centro", centroField?.value || "");
                         sessionStorage.setItem("access_role", form.dataset.role || "student");
                     } catch {}
                 });

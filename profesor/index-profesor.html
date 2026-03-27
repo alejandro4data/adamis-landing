@@ -273,16 +273,106 @@
       </div>
 
       <section class="panel" id="panel-gestion" data-panel="gestion">
-        <div class="placeholder-card">
-          <h2>Gestion</h2>
-          <p>Espacio reservado para configuracion de grupos, calendario y materiales.</p>
+        <div class="management-shell">
+          <section class="management-workspace">
+            <aside class="management-sidebar" aria-label="Modulos de gestion">
+              <div class="management-sidebar-header">
+                <span class="management-sidebar-eyebrow">Modulos</span>
+                <strong>Trabajo operativo</strong>
+              </div>
+              <div class="management-nav" id="managementModuleNav"></div>
+            </aside>
+
+            <div class="management-content-shell">
+              <div class="management-content" id="managementModuleContent"></div>
+            </div>
+          </section>
+
+          <aside class="management-drawer" id="managementAccessDrawer" aria-hidden="true">
+            <div class="management-drawer-backdrop" data-management-drawer-close></div>
+            <div class="management-drawer-panel">
+              <button type="button" class="modal-close management-drawer-close" data-management-drawer-close aria-label="Cerrar">x</button>
+              <div class="management-drawer-body" id="managementAccessDrawerBody"></div>
+            </div>
+          </aside>
         </div>
       </section>
 
       <section class="panel" id="panel-incidencias" data-panel="incidencias">
-        <div class="placeholder-card">
-          <h2>Incidencias</h2>
-          <p>Seccion lista para registrar incidencias academicas o tecnicas.</p>
+        <div class="support-shell">
+          <section class="support-hero-card">
+            <div class="support-hero-main">
+              <div>
+                <p class="content-kicker">Centro de ayuda docente</p>
+                <h2>Incidencias y ayuda</h2>
+                <p class="support-hero-copy">
+                  Resuelve dudas sobre la plataforma o solicita soporte tecnico cuando el caso requiera intervencion humana.
+                </p>
+              </div>
+              <div class="support-hero-actions">
+                <button type="button" class="secondary-button" id="supportViewTicketsButton">Ver tickets</button>
+                <button type="button" class="primary-button" id="supportNewTicketButton">Nuevo ticket</button>
+              </div>
+            </div>
+            <div class="support-summary-grid" id="supportSummaryGrid"></div>
+          </section>
+
+          <section class="support-workspace">
+            <aside class="support-sidebar">
+              <div class="support-search-card">
+                <label class="support-search-field">
+                  <span>Buscar ayuda</span>
+                  <input type="search" id="supportSearchInput" placeholder="Buscar incidencias o consultas frecuentes">
+                </label>
+              </div>
+              <div class="support-sidebar-sections">
+                <section class="support-side-card">
+                  <div class="support-side-head">
+                    <h3>Consultas rápidas</h3>
+                  </div>
+                  <div class="support-quick-list" id="supportQuickPrompts"></div>
+                </section>
+
+                <section class="support-side-card">
+                  <div class="support-side-head">
+                    <h3>Conversaciones recientes</h3>
+                  </div>
+                  <div class="support-thread-list" id="supportRecentThreads"></div>
+                </section>
+
+                <section class="support-side-card">
+                  <div class="support-side-head">
+                    <h3>Tickets abiertos</h3>
+                  </div>
+                  <div class="support-ticket-list" id="supportOpenTickets"></div>
+                </section>
+
+                <section class="support-side-card">
+                  <div class="support-side-head">
+                    <h3>Acciones del caso</h3>
+                  </div>
+                  <div class="support-quick-list" id="supportCaseActions"></div>
+                </section>
+
+                <section class="support-side-card">
+                  <div class="support-side-head">
+                    <h3>Ayuda frecuente</h3>
+                  </div>
+                  <div class="support-quick-list" id="supportQuickCategories"></div>
+                </section>
+              </div>
+            </aside>
+
+            <section class="support-main" id="supportMainContent"></section>
+          </section>
+
+          <aside class="support-ticket-drawer" id="supportTicketDrawer" aria-hidden="true">
+            <div class="support-ticket-backdrop" data-support-ticket-close></div>
+            <div class="support-ticket-panel">
+              <button type="button" class="modal-close support-ticket-close" data-support-ticket-close aria-label="Cerrar">x</button>
+              <div class="support-ticket-panel-body" id="supportTicketPanelBody"></div>
+            </div>
+          </aside>
         </div>
       </section>
     </main>
