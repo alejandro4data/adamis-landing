@@ -11,7 +11,6 @@ window.slides.push( SlideTituloClase({ mode:'imagen', img:'../assets/ahorro/esce
 
 window.slides.push( SlideTituloClase({ titulo: 'Introducción' }) );
 
-
 // Texto abajo, imagen ~80%, efecto y narrador
 window.slides.push( Slide({
   text: '¡Holaa! Mi nombre es Adamis.',
@@ -984,6 +983,24 @@ window.slides.push( SlideCuadroReflexion({
     };
   }
 }) );
+
+window.slides.push(
+  SlideSabiasQue({
+    img: '../assets/ahorro/escenas/sabiasque.png', // opcional
+    fact: '¿Sabías que en Japón existe una palabra especial: KAKEBO?. Significa "libreta de cuentas para la economía del hogar". Muchas familias japonesas la usan desde hace más de 100 años para apuntar lo que ganan, lo que gastan y cuánto logran ahorrar cada mes...',
+    placeholder: 'Espacio reservado para imagen',
+    continueText: 'Continuar'
+  })
+);
+
+window.slides.push(
+  SlideMoraleja({
+    img: '../assets/moraleja.png',
+    text: 'Si llevas la cuenta de lo que ahorras y gastas, como hacen millones de personas en Japón  con el KAKEBO, te será mucho más fácil cumplir tus metas y controlar tu dinero. ¡Tu propio cuaderno de ahorro puede ser el secreto para conseguir lo que quieras!',
+    buttonText: 'Fin de la clase'
+  })
+);
+
 
 window.slides.push( Slide({
   text: '¡Pues aquí ha terminado la clase de hoy!',

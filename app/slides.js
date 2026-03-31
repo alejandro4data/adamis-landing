@@ -254,6 +254,52 @@ function SlideTerminoIntro({
   };
 }
 
+function SlideSabiasQue({
+  img = '', image, imagen, alt = '',
+  title, titulo,
+  fact = '', texto, text, contenido, content,
+  placeholder,
+  continueText, backText, flipHint,
+  showContinueButton = true
+} = {}) {
+  const normalizedImg = img || image || imagen || '';
+  return {
+    tipo: 'sabias-que',
+    img: normalizedImg
+      ? (typeof normalizedImg === 'string'
+        ? { src: normalizedImg, alt: alt || '' }
+        : { src: normalizedImg.src || '', alt: normalizedImg.alt || alt || '' })
+      : null,
+    title: String(title ?? titulo ?? '¿Sabías que...?').trim(),
+    fact: String(fact ?? texto ?? text ?? contenido ?? content ?? '').trim(),
+    placeholder: String(placeholder ?? 'Espacio reservado para imagen').trim(),
+    continueText,
+    backText,
+    flipHint,
+    showContinueButton: showContinueButton !== false
+  };
+}
+
+function SlideMoraleja({
+  text = '', texto, moraleja, content, contenido,
+  introText, encabezado, titlePrefix,
+  buttonText, ctaText, continueText,
+  parchmentImg, pergaminoImg, img, image, alt = ''
+} = {}) {
+  const parchmentSrc = parchmentImg ?? pergaminoImg ?? img ?? image ?? '';
+  return {
+    tipo: 'moraleja',
+    text: String(text ?? texto ?? moraleja ?? content ?? contenido ?? '').trim(),
+    introText: String(introText ?? encabezado ?? titlePrefix ?? 'La moraleja de esta clase es...').trim(),
+    buttonText: String(buttonText ?? ctaText ?? continueText ?? 'Fin de la clase').trim(),
+    parchmentImg: parchmentSrc
+      ? (typeof parchmentSrc === 'string'
+        ? { src: parchmentSrc, alt: alt || 'Pergamino' }
+        : { src: parchmentSrc.src || '', alt: parchmentSrc.alt || alt || 'Pergamino' })
+      : null
+  };
+}
+
 
 // ---------- NUEVA: Encuesta (genérica) ----------
 function SlideEncuesta({
