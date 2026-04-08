@@ -908,4 +908,53 @@
     const loadBtn = document.getElementById('classLoadBtn');
     if (loadBtn) loadBtn.textContent = 'Load';
   });
+
+  registerPageTranslator('splash', () => {
+    if (currentLang !== 'en') return;
+
+    document.title = 'Classroom Access - ADAMIS';
+    setText('.hero p', 'Select the appropriate access to enter the platform.');
+
+    const containers = document.querySelectorAll('.access-grid .container');
+    const studentCard = containers[0];
+    const teacherCard = containers[1];
+
+    if (studentCard) {
+      const title = studentCard.querySelector('h2');
+      const helper = studentCard.querySelector('.helper');
+      const password = studentCard.querySelector('input[name="password"]');
+      const submit = studentCard.querySelector('button[type="submit"]');
+      const error = studentCard.querySelector('#studentError');
+      const schoolSelect = studentCard.querySelector('select[name="centro"]');
+      const schoolPlaceholder = studentCard.querySelector('select[name="centro"] option[value=""]');
+      const schoolNote = studentCard.querySelector('[data-school-note]');
+
+      if (title) title.textContent = 'Student Access';
+      if (helper) helper.textContent = 'Student classroom access.';
+      if (password) password.setAttribute('placeholder', 'Class password');
+      if (submit) submit.textContent = 'Enter as student';
+      if (error) error.textContent = 'Incorrect password';
+      if (schoolPlaceholder) schoolPlaceholder.textContent = schoolSelect?.disabled ? 'No schools configured' : 'Select your school';
+      if (schoolNote) schoolNote.textContent = 'Add names to the SCHOOL_OPTIONS constant in splash.html to populate this dropdown.';
+    }
+
+    if (teacherCard) {
+      const title = teacherCard.querySelector('h2');
+      const helper = teacherCard.querySelector('.helper');
+      const password = teacherCard.querySelector('input[name="password"]');
+      const submit = teacherCard.querySelector('button[type="submit"]');
+      const error = teacherCard.querySelector('#teacherError');
+      const schoolSelect = teacherCard.querySelector('select[name="centro"]');
+      const schoolPlaceholder = teacherCard.querySelector('select[name="centro"] option[value=""]');
+      const schoolNote = teacherCard.querySelector('[data-school-note]');
+
+      if (title) title.textContent = 'Teacher Access';
+      if (helper) helper.textContent = 'Student monitoring and progress view.';
+      if (password) password.setAttribute('placeholder', 'Teacher password');
+      if (submit) submit.textContent = 'Enter as teacher';
+      if (error) error.textContent = 'Incorrect teacher password';
+      if (schoolPlaceholder) schoolPlaceholder.textContent = schoolSelect?.disabled ? 'No schools configured' : 'Select your school';
+      if (schoolNote) schoolNote.textContent = 'Add names to the SCHOOL_OPTIONS constant in splash.html to populate this dropdown.';
+    }
+  });
 })();

@@ -172,52 +172,68 @@ function createClassItem(number, title, intro, term, resumen, explicacion, activ
 const contentBlocks = [
   {
     id: "bloque-1",
-    title: "Bloque I",
-    subtitle: "El dinero y su funcion en la vida cotidiana",
-    rangeLabel: "Clases 1, 2 y 3",
+    title: "Bloque 1",
+    subtitle: "Por que importa la educacion financiera",
+    rangeLabel: "Clase 1",
     classes: [
-      createClassItem(1, "¿Que es Educacion Financiera? Motivaciones.", "Introduccion al sentido de la educacion financiera", "Educacion financiera", "La clase introduce por que la educacion financiera es util desde edades tempranas.", "Se presentan sus objetivos, su impacto cotidiano y las motivaciones para aprenderla.", "Dinamica inicial para detectar situaciones reales donde usamos decisiones financieras.", "Reflexion sobre por que aprender finanzas mejora la autonomia personal.", "/app/pages/clase.html?clase=ahorro"),
-      createClassItem(2, "Historia del dinero: El dinero en la antiguedad", "Origen historico del dinero y primeras formas de intercambio", "Dinero", "La clase explora como surge el dinero en contextos antiguos y por que facilita la vida cotidiana.", "Comparacion entre trueque, moneda primitiva y primeras formas de valor compartido.", "Linea temporal interactiva sobre la evolucion del dinero en la antiguedad.", "Preguntas guiadas sobre el valor social del dinero a lo largo del tiempo.", "/app/pages/clase.html?clase=ahorro"),
-      createClassItem(3, "Historia del dinero: El dinero en la Actualidad", "Del efectivo a los pagos digitales", "Pago", "Se presentan las formas actuales del dinero y su impacto en la gestion diaria.", "Ventajas y limites de efectivo, tarjeta, banca digital y pago movil.", "Mini dinamica para elegir el medio de pago adecuado segun el contexto.", "Reflexion sobre seguridad y control al pagar hoy.", "/app/pages/clase.html?clase=ahorro")
+      createClassItem(1, "Que es la educacion financiera y por que importa?", "Introduccion al sentido de la educacion financiera", "Educacion financiera", "La clase introduce por que la educacion financiera es util desde edades tempranas.", "Se presentan sus objetivos, su impacto cotidiano y las motivaciones para aprenderla.", "Dinamica inicial para detectar situaciones reales donde usamos decisiones financieras.", "Reflexion sobre por que aprender finanzas mejora la autonomia personal.", "/app/pages/clase.html?clase=ahorro")
     ]
   },
   {
     id: "bloque-2",
-    title: "Bloque II",
-    subtitle: "Necesidades, deseos y consumo responsable",
-    rangeLabel: "Clases 4, 5, 6 y 7",
+    title: "Bloque 2",
+    subtitle: "Que es el dinero y como ha evolucionado",
+    rangeLabel: "Clases 2 y 3",
     classes: [
-      createClassItem(4, "¿Como diferenciar necesidades y deseos?", "Distinguir prioridades de consumo", "Consumo", "La clase ayuda a distinguir entre necesidades reales y deseos impulsivos.", "Ejemplos cotidianos para priorizar decisiones de compra y ordenar prioridades.", "Actividad para seleccionar compras prioritarias en distintos contextos.", "Reflexion sobre decisiones de consumo en casa y en el entorno cercano.", "/app/pages/clase.html?clase=ahorro"),
-      createClassItem(5, "¿Que es el precio?", "Comprender que expresa el precio de un bien o servicio", "Precio", "Se introduce el concepto de precio como referencia economica basica.", "Se explica que informacion aporta el precio y como orienta las decisiones de compra.", "Analisis de precios de productos cotidianos y comparacion entre alternativas.", "Reflexion sobre como interpretamos el precio al comprar.", "/app/pages/clase.html?clase=ahorro"),
-      createClassItem(6, "¿Que factores influyen en el precio?", "Elementos que modifican el valor de mercado", "Mercado", "Se analizan los factores que hacen subir o bajar un precio.", "Oferta, demanda, escasez, costes y contexto en la formacion de precios.", "Actividad para relacionar situaciones del mercado con cambios de precio.", "Reflexion sobre por que un mismo producto no siempre cuesta lo mismo.", "/app/pages/clase.html?clase=ahorro"),
-      createClassItem(7, "¿Que derechos y responsabilidades tiene el consumidor?", "Consumo responsable y proteccion del consumidor", "Consumidor", "Se presentan derechos y responsabilidades basicas del consumidor.", "Informacion, reclamacion, comparacion y compra responsable.", "Actividad de resolucion de situaciones de compra con derechos del consumidor.", "Reflexion sobre comprar con criterio y responsabilidad.", "/app/pages/clase.html?clase=ahorro")
+      createClassItem(2, "Historia del dinero I: de los intercambios al dinero", "Origen historico del dinero y primeras formas de intercambio", "Dinero", "La clase explora como surge el dinero en contextos antiguos y por que facilita la vida cotidiana.", "Comparacion entre trueque, moneda primitiva y primeras formas de valor compartido.", "Linea temporal interactiva sobre la evolucion del dinero en la antiguedad.", "Preguntas guiadas sobre el valor social del dinero a lo largo del tiempo.", "/app/pages/clase.html?clase=ahorro"),
+      createClassItem(3, "Historia del dinero II: el dinero en la actualidad", "Del efectivo a los pagos digitales", "Pago", "Se presentan las formas actuales del dinero y su impacto en la gestion diaria.", "Ventajas y limites de efectivo, tarjeta, banca digital y pago movil.", "Mini dinamica para elegir el medio de pago adecuado segun el contexto.", "Reflexion sobre seguridad y control al pagar hoy.", "/app/pages/clase.html?clase=ahorro")
     ]
   },
   {
     id: "bloque-3",
-    title: "Bloque III",
-    subtitle: "Ingresos, gastos y ahorro",
-    rangeLabel: "Clases 8, 9 y 10",
+    title: "Bloque 3",
+    subtitle: "Necesidades, deseos y precio",
+    rangeLabel: "Clases 4, 5 y 6",
     classes: [
-      createClassItem(8, "¿Que son y como se obtienen ingresos?", "Origen y tipos de ingresos", "Ingresos", "La clase presenta que son los ingresos y de donde proceden.", "Se explican distintas formas de obtener ingresos y su relacion con el esfuerzo, el trabajo y el valor aportado.", "Actividad practica para clasificar distintas fuentes de ingresos.", "Reflexion sobre la importancia de generar ingresos de forma responsable.", "/app/pages/clase.html?clase=deuda"),
-      createClassItem(9, "¿Que son los gastos?", "Identificar salidas de dinero y su impacto", "Gastos", "La clase define que son los gastos y como afectan al equilibrio financiero.", "Clasificacion de gastos fijos, variables y pequenos gastos cotidianos.", "Actividad practica para ordenar gastos y reconocer cuales pesan mas.", "Reflexion sobre como controlar mejor el dinero que sale.", "/app/pages/clase.html?clase=ahorro"),
-      createClassItem(10, "Ahorro y presupuestos", "Planificar el uso del dinero con objetivos", "Ahorro", "Se construye un plan basico de ahorro a partir de un presupuesto sencillo.", "Objetivos, plazos, prioridades y seguimiento del ahorro personal.", "Dinamica para crear un presupuesto y fijar metas realistas.", "Reflexion sobre constancia, previsibilidad y decisiones utiles.", "/app/pages/clase.html?clase=ahorro", "../app/assets/ahorro/escenas/titulo-ahorro2.avif")
+      createClassItem(4, "Necesidades, deseos y decisiones de compra", "Distinguir prioridades de consumo", "Consumo", "La clase ayuda a distinguir entre necesidades reales y deseos impulsivos.", "Ejemplos cotidianos para priorizar decisiones de compra y ordenar prioridades.", "Actividad para seleccionar compras prioritarias en distintos contextos.", "Reflexion sobre decisiones de consumo en casa y en el entorno cercano.", "/app/pages/clase.html?clase=ahorro"),
+      createClassItem(5, "Que es el precio y por que no siempre coincide con el valor", "Comprender que expresa el precio de un bien o servicio", "Precio", "Se introduce el concepto de precio como referencia economica basica.", "Se explica que informacion aporta el precio y como orienta las decisiones de compra.", "Analisis de precios de productos cotidianos y comparacion entre alternativas.", "Reflexion sobre como interpretamos el precio al comprar.", "/app/pages/clase.html?clase=ahorro"),
+      createClassItem(6, "Que factores influyen en el precio", "Elementos que modifican el valor de mercado", "Mercado", "Se analizan los factores que hacen subir o bajar un precio.", "Oferta, demanda, escasez, costes y contexto en la formacion de precios.", "Actividad para relacionar situaciones del mercado con cambios de precio.", "Reflexion sobre por que un mismo producto no siempre cuesta lo mismo.", "/app/pages/clase.html?clase=ahorro")
     ]
   },
   {
     id: "bloque-4",
-    title: "Bloque IV",
-    subtitle: "Deuda e interes",
-    rangeLabel: "Clases 11 y 12",
+    title: "Bloque 4",
+    subtitle: "Consumir con criterio y conocer tus derechos",
+    rangeLabel: "Clase 7",
     classes: [
-      createClassItem(11, "¿Que es la deuda?", "Cuando pedir dinero prestado puede ayudar o complicar", "Deuda", "Se analiza que es una deuda y en que contextos aparece.", "Coste, necesidad y sostenibilidad de una deuda en decisiones cotidianas.", "Comparacion entre casos de endeudamiento responsable e irresponsable.", "Reflexion sobre pedir dinero prestado y asumir compromisos.", "/app/pages/clase.html?clase=deuda"),
-      createClassItem(12, "¿Que es el interes?", "El precio del dinero prestado", "Interes", "La clase explica de forma sencilla que es el interes y por que existe.", "Interes, cuota y coste total de un prestamo o de una deuda.", "Simulacion de cuotas con distintos intereses y plazos.", "Reflexion sobre el tiempo y el coste real de endeudarse.", "/app/pages/clase.html?clase=deuda")
+      createClassItem(7, "Derechos y responsabilidades del consumidor", "Consumo responsable y proteccion del consumidor", "Consumidor", "Se presentan derechos y responsabilidades basicas del consumidor.", "Informacion, reclamacion, comparacion y compra responsable.", "Actividad de resolucion de situaciones de compra con derechos del consumidor.", "Reflexion sobre comprar con criterio y responsabilidad.", "/app/pages/clase.html?clase=ahorro")
     ]
   },
   {
     id: "bloque-5",
-    title: "Bloque V",
-    subtitle: "Inversion y gestion del riesgo",
+    title: "Bloque 5",
+    subtitle: "Ingresos, gastos, ahorro y presupuesto",
+    rangeLabel: "Clases 8, 9 y 10",
+    classes: [
+      createClassItem(8, "Que son los ingresos y como se obtienen", "Origen y tipos de ingresos", "Ingresos", "La clase presenta que son los ingresos y de donde proceden.", "Se explican distintas formas de obtener ingresos y su relacion con el esfuerzo, el trabajo y el valor aportado.", "Actividad practica para clasificar distintas fuentes de ingresos.", "Reflexion sobre la importancia de generar ingresos de forma responsable.", "/app/pages/clase.html?clase=deuda"),
+      createClassItem(9, "Que son los gastos y como priorizarlos", "Identificar salidas de dinero y su impacto", "Gastos", "La clase define que son los gastos y como afectan al equilibrio financiero.", "Clasificacion de gastos fijos, variables y pequenos gastos cotidianos.", "Actividad practica para ordenar gastos y reconocer cuales pesan mas.", "Reflexion sobre como controlar mejor el dinero que sale.", "/app/pages/clase.html?clase=ahorro"),
+      createClassItem(10, "Ahorro y presupuestos", "Planificar el uso del dinero con objetivos", "Ahorro", "Se construye un plan basico de ahorro a partir de un presupuesto sencillo.", "Objetivos, plazos, prioridades y seguimiento del ahorro personal.", "Dinamica para crear un presupuesto y fijar metas realistas.", "Reflexion sobre constancia, previsibilidad y decisiones utiles.", "/app/pages/clase.html?clase=ahorro", "../app/assets/ahorro/escenas/titulo-ahorro2.avif")
+    ]
+  },
+  {
+    id: "bloque-6",
+    title: "Bloque 6",
+    subtitle: "Deuda e interes: cuando el dinero tiene un coste",
+    rangeLabel: "Clases 11 y 12",
+    classes: [
+      createClassItem(11, "Que es la deuda", "Cuando pedir dinero prestado puede ayudar o complicar", "Deuda", "Se analiza que es una deuda y en que contextos aparece.", "Coste, necesidad y sostenibilidad de una deuda en decisiones cotidianas.", "Comparacion entre casos de endeudamiento responsable e irresponsable.", "Reflexion sobre pedir dinero prestado y asumir compromisos.", "/app/pages/clase.html?clase=deuda"),
+      createClassItem(12, "Que es el interes", "El precio del dinero prestado", "Interes", "La clase explica de forma sencilla que es el interes y por que existe.", "Interes, cuota y coste total de un prestamo o de una deuda.", "Simulacion de cuotas con distintos intereses y plazos.", "Reflexion sobre el tiempo y el coste real de endeudarse.", "/app/pages/clase.html?clase=deuda")
+    ]
+  },
+  {
+    id: "bloque-7",
+    title: "Bloque 7",
+    subtitle: "Primeros pasos en inversion",
     rangeLabel: "Clases 13 y 14",
     classes: [
       createClassItem(13, "Introduccion a la inversion", "Primeras ideas sobre invertir y hacer crecer el dinero", "Inversion", "Se introduce la idea de invertir para hacer crecer el dinero con criterio.", "Rentabilidad, plazo y objetivos financieros como base de la inversion.", "Actividad para vincular objetivos con horizontes de inversion.", "Reflexion sobre riesgo, paciencia y vision de largo plazo.", "/app/pages/clase.html?clase=ahorro"),
@@ -225,40 +241,25 @@ const contentBlocks = [
     ]
   },
   {
-    id: "bloque-6",
-    title: "Bloque VI",
-    subtitle: "Formas de invertir y emprendimiento",
-    rangeLabel: "Clases 15 y 16",
-    classes: [
-      createClassItem(15, "Formas de invertir I", "Primer bloque de alternativas de inversion", "Opciones", "Se presentan distintas alternativas de inversion de forma introductoria.", "Ahorro, productos sencillos y primeras categorias de inversion.", "Actividad de comparacion entre alternativas segun objetivo y plazo.", "Reflexion sobre elegir segun perfil y necesidad.", "/app/pages/clase.html?clase=ahorro"),
-      createClassItem(16, "Formas de invertir II - Inversion en Empresas", "Como funciona invertir en empresas", "Empresas", "Se introduce la idea de invertir en empresas y participar en su crecimiento.", "Valor, participacion, riesgo y expectativas al invertir en empresas.", "Mini reto para comparar distintas empresas ficticias y decidir.", "Reflexion sobre iniciativa, analisis y responsabilidad.", "/app/pages/clase.html?clase=ahorro")
-    ]
-  },
-  {
-    id: "bloque-7",
-    title: "Bloque VII",
-    subtitle: "Psicologia economica y toma de decisiones",
-    rangeLabel: "Clase 17",
-    classes: [
-      createClassItem(17, "Factores que influyen en las decisiones financieras", "Emociones, contexto y sesgos al decidir", "Psicologia", "La clase relaciona emociones, sesgos y decisiones economicas.", "Impulso, miedo, confianza y factores sociales que alteran una decision financiera.", "Casos practicos para detectar sesgos y factores externos.", "Reflexion sobre como decidir con calma y criterio.", "/app/pages/clase.html?clase=ahorro")
-    ]
-  },
-  {
     id: "bloque-8",
-    title: "Bloque VIII",
-    subtitle: "Riesgos, estafas y proteccion de la informacion financiera",
-    rangeLabel: "Clase 18",
+    title: "Bloque 8",
+    subtitle: "Formas de invertir y emprendimiento",
+    rangeLabel: "Clases 15, 16 y 17",
     classes: [
-      createClassItem(18, "Informacion financiera: Estafas y proteccion de datos financieros", "Fraudes, estafas y seguridad digital", "Seguridad", "Se presentan riesgos digitales frecuentes y habitos de prevencion.", "Phishing, contraseñas, datos sensibles y proteccion de la informacion financiera.", "Simulacion de deteccion de mensajes fraudulentos y decisiones de seguridad.", "Reflexion sobre seguridad en internet y cuidado de los datos.", "/app/pages/clase.html?clase=ahorro")
+      createClassItem(15, "Formas de invertir I: ahorro remunerado y activos fisicos", "Primer bloque de alternativas de inversion", "Opciones", "Se presentan distintas alternativas de inversion de forma introductoria.", "Ahorro, productos sencillos y primeras categorias de inversion.", "Actividad de comparacion entre alternativas segun objetivo y plazo.", "Reflexion sobre elegir segun perfil y necesidad.", "/app/pages/clase.html?clase=ahorro"),
+      createClassItem(16, "Formas de invertir II: emprendimiento", "Como funciona invertir en empresas", "Empresas", "Se introduce la idea de invertir en empresas y participar en su crecimiento.", "Valor, participacion, riesgo y expectativas al invertir en empresas.", "Mini reto para comparar distintas empresas ficticias y decidir.", "Reflexion sobre iniciativa, analisis y responsabilidad.", "/app/pages/clase.html?clase=ahorro"),
+      createClassItem(17, "Formas de invertir III: inversion en empresas y como puede invertir un menor", "Como funciona invertir en empresas", "Empresas", "Se introduce la idea de invertir en empresas y participar en su crecimiento.", "Valor, participacion, riesgo y expectativas al invertir en empresas.", "Mini reto para comparar distintas empresas ficticias y decidir.", "Reflexion sobre iniciativa, analisis y responsabilidad.", "/app/pages/clase.html?clase=ahorro")
     ]
   },
   {
     id: "bloque-9",
-    title: "Bloque IX",
-    subtitle: "Cierre y consolidacion de aprendizajes",
-    rangeLabel: "Clase 19",
+    title: "Bloque 9",
+    subtitle: "Decisiones financieras y proteccion del dinero",
+    rangeLabel: "Clases 18, 19 y 20",
     classes: [
-      createClassItem(19, "Clase de cierre", "Sintesis y aplicacion del recorrido", "Cierre", "La clase final integra todo lo aprendido en un caso practico global.", "Repaso de ideas clave y transferencia a la vida cotidiana.", "Actividad final de aplicacion integral de todo el curso.", "Reflexion final sobre progreso personal y aprendizajes consolidados.", "/app/pages/clase.html?clase=ahorro")
+      createClassItem(18, "Factores que influyen en las decisiones financieras", "Emociones, contexto y sesgos al decidir", "Psicologia", "La clase relaciona emociones, sesgos y decisiones economicas.", "Impulso, miedo, confianza y factores sociales que alteran una decision financiera.", "Casos practicos para detectar sesgos y factores externos.", "Reflexion sobre como decidir con calma y criterio.", "/app/pages/clase.html?clase=ahorro"),
+      createClassItem(19, "Estafas, proteccion de datos y seguridad financiera", "Fraudes, estafas y seguridad digital", "Seguridad", "Se presentan riesgos digitales frecuentes y habitos de prevencion.", "Phishing, contraseñas, datos sensibles y proteccion de la informacion financiera.", "Simulacion de deteccion de mensajes fraudulentos y decisiones de seguridad.", "Reflexion sobre seguridad en internet y cuidado de los datos.", "/app/pages/clase.html?clase=ahorro"),
+      createClassItem(20, "Simulacion final integradora", "Sintesis y aplicacion del recorrido", "Cierre", "La clase final integra todo lo aprendido en un caso practico global.", "Repaso de ideas clave y transferencia a la vida cotidiana.", "Actividad final de aplicacion integral de todo el curso.", "Reflexion final sobre progreso personal y aprendizajes consolidados.", "/app/pages/clase.html?clase=ahorro")
     ]
   }
 ];
@@ -2045,7 +2046,26 @@ function renderContentClassDetail() {
   };
 }
 
+function syncActiveCourseChip() {
+  const activeCourseChip = document.getElementById("activeCourseChip");
+  if (!activeCourseChip) return;
+
+  const baseLabel = "Curso activo: 6o Educacion Primaria";
+  let schoolName = "";
+
+  try {
+    schoolName = (sessionStorage.getItem("centro") || "").trim();
+  } catch (_) {
+    schoolName = "";
+  }
+
+  activeCourseChip.textContent = schoolName
+    ? `${baseLabel} - ${schoolName}`
+    : baseLabel;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  syncActiveCourseChip();
   renderList("historyList", historyData);
   renderList("upcomingList", upcomingData);
   renderStudents();

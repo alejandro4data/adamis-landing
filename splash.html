@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-page="splash">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -100,6 +100,16 @@
             font-weight: bold;
             display: none;
         }
+        .config-note {
+            margin: 0 0 15px;
+            color: #7A632F;
+            font-size: 0.9rem;
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
         @media (max-width: 780px) {
             .access-grid {
                 grid-template-columns: 1fr;
@@ -124,11 +134,9 @@
                 <p class="helper">Entrada al aula para el alumnado.</p>
 
                 <form action="/api/auth-login" method="POST" data-role="student">
-                    <select name="centro" id="centro" required>
+                    <select name="centro" id="centro" data-school-select required>
                         <option value="" disabled selected>Selecciona tu centro</option>
-                        <option value="Colegio">Colegio Arcangel</option>
                     </select>
-
                     <input type="password" name="password" placeholder="Contraseña de la clase" required>
                     <button type="submit">Entrar como alumno</button>
                 </form>
@@ -141,9 +149,8 @@
                 <p class="helper">Vista de seguimiento y monitorización del alumnado.</p>
 
                 <form action="/api/auth-profesor-login" method="POST" data-role="teacher">
-                    <select name="centro" id="centro-profesor" required>
+                    <select name="centro" id="centro-profesor" data-school-select required>
                         <option value="" disabled selected>Selecciona tu centro</option>
-                        <option value="Colegio">Colegio Arcangel</option>
                     </select>
                     <input type="password" name="password" placeholder="Contraseña de profesorado" required>
                     <button type="submit" class="teacher-button">Entrar como profesor</button>
@@ -171,6 +178,41 @@
     <script>
         (function () {
             const forms = document.querySelectorAll("form");
+            const schoolSelects = document.querySelectorAll("[data-school-select]");
+            const SCHOOL_OPTIONS = [
+                "Colegio Educare Torrevilano",
+            ];
+
+            function populateSchoolSelects() {
+                schoolSelects.forEach((select) => {
+                    const placeholder = select.querySelector('option[value=""]');
+                    const form = select.closest("form");
+                    const submitButton = form?.querySelector('button[type="submit"]');
+                    const note = form?.querySelector("[data-school-note]");
+
+                    SCHOOL_OPTIONS.forEach((schoolName) => {
+                        const option = document.createElement("option");
+                        option.value = schoolName;
+                        option.textContent = schoolName;
+                        select.appendChild(option);
+                    });
+
+                    const hasSchools = SCHOOL_OPTIONS.length > 0;
+
+                    if (placeholder) {
+                        placeholder.textContent = hasSchools
+                            ? "Selecciona tu centro"
+                            : "No hay centros configurados";
+                    }
+
+                    select.disabled = !hasSchools;
+                    if (submitButton) submitButton.disabled = !hasSchools;
+                    if (note) {
+                        note.hidden = hasSchools;
+                        note.textContent = "Agrega nombres en la constante SCHOOL_OPTIONS de splash.html para cargar este desplegable.";
+                    }
+                });
+            }
 
             function uuid() {
                 if (crypto?.randomUUID) return crypto.randomUUID();
@@ -189,6 +231,8 @@
                     }
                 } catch {}
             }
+
+            populateSchoolSelects();
 
             forms.forEach((form) => {
                 form.addEventListener("submit", () => {
