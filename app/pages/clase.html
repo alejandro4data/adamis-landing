@@ -8,109 +8,176 @@
   <link rel="preload" as="image" href="../assets/instrucciones.avif">
   <script defer src="../i18n.js"></script>
   <style>
-    /* Oculta flecha de atrás y botón de salir solo cuando una clase está cargada */
+    /* Oculta la flecha de atras y el boton de salir cuando la clase esta cargada */
     html.class-loaded .back-integrated,
     html.class-loaded .logout-integrated {
       display: none !important;
     }
   </style>
 
-
   <!-- Core y motor -->
   <script defer src="../slides.js"></script>
   <script defer src="../app.js"></script>
   <script src="../collect.js"></script>
-
+  <script src="../data/config_clases.js"></script>
 
   <!-- Loader de clase -->
   <script>
     (function () {
       const params = new URLSearchParams(location.search);
       let choice = (params.get('clase') || '').toLowerCase();
+      let manifestSets = [];
 
-      // Lee el manifest de sets y normaliza {id,label}
+      function labelize(s) {
+        return String(s || '')
+          .replace(/[_-]+/g, ' ')
+          .replace(/\b\p{L}/gu, function (m) { return m.toUpperCase(); });
+      }
+
+      function normalizeSets(data) {
+        const seen = new Set();
+        const boolMap = new Map();
+
+        if (data && typeof data === 'object' && !Array.isArray(data)) {
+          Object.entries(data).forEach(function ([key, value]) {
+            if (!String(key).startsWith('bool_')) return;
+            boolMap.set(String(key).slice(5).trim().toLowerCase(), !!value);
+          });
+        }
+
+        const raw = Array.isArray(data) ? data
+          : Array.isArray(data && data.sets) ? data.sets
+          : (data && typeof data === 'object')
+            ? Object.entries(data)
+                .filter(function ([key]) { return !String(key).startsWith('bool_'); })
+                .map(function ([key, value]) { return { id: key, label: value }; })
+            : [];
+
+        return raw.map(function (x) {
+          if (typeof x === 'string') {
+            const id = x.trim().toLowerCase();
+            return id ? { id: id, label: labelize(id), active: boolMap.get(id) !== false } : null;
+          }
+
+          const id = String(x && (x.id ?? x.name ?? x.key) || '').trim().toLowerCase();
+          const label = String((x && x.label) || labelize(id));
+          const active = typeof (x && x.active) === 'boolean'
+            ? x.active
+            : (boolMap.get(id) !== false);
+
+          return id ? { id: id, label: label, active: !!active } : null;
+        }).filter(Boolean).filter(function (x) {
+          if (seen.has(x.id)) return false;
+          seen.add(x.id);
+          return true;
+        });
+      }
+
+      function isSetEnabled(kind) {
+        const target = String(kind || '').toLowerCase();
+        return manifestSets.some(function (set) {
+          return set.id === target && set.active;
+        });
+      }
+
+      function getWindowFallbackSets() {
+        if (!window.CONFIG_CLASES || !Array.isArray(window.CONFIG_CLASES.clases)) {
+          return [];
+        }
+
+        const seen = new Set();
+        return window.CONFIG_CLASES.clases.map(function (item) {
+          const id = String(item && item.id || '').trim().toLowerCase();
+          if (!id || seen.has(id)) return null;
+          seen.add(id);
+          return {
+            id: id,
+            label: labelize(id),
+            active: true
+          };
+        }).filter(Boolean);
+      }
+
       async function fetchSets() {
+        if (window.location.protocol === 'file:') {
+          const localSets = getWindowFallbackSets();
+          if (localSets.length) return localSets;
+        }
+
         try {
           const res = await fetch('../slides/sets.json', { cache: 'no-store' });
           if (!res.ok) throw new Error('no manifest');
           const data = await res.json();
-          const raw = Array.isArray(data) ? data
-                    : Array.isArray(data.sets) ? data.sets
-                    : (data && typeof data === 'object') ? Object.entries(data).map(([k, v]) => ({ id: k, label: v }))
-                    : [];
-          const seen = new Set();
-          const labelize = (s) => String(s || '')
-            .replace(/[_-]+/g, ' ')
-            .replace(/\b\p{L}/gu, m => m.toUpperCase());
-          const norm = raw.map(x => {
-            if (typeof x === 'string') return { id: x.trim().toLowerCase(), label: labelize(x) };
-            const id = String(x?.id ?? x?.name ?? x?.key ?? '').trim().toLowerCase();
-            const label = String(x?.label ?? labelize(id));
-            return id ? { id, label } : null;
-          }).filter(Boolean).filter(x => !seen.has(x.id) && seen.add(x.id));
-          return norm;
+          return normalizeSets(data);
         } catch {
-          // Fallback mínimo por si aún no creaste sets.json (funciona con tu estado actual)
-          // Añade aquí más si quieres defaults provisionales.
-          return [{ id: 'ahorro', label: 'Ahorro' }, { id: 'deuda', label: 'Deuda' }];
+          const localSets = getWindowFallbackSets();
+          if (localSets.length) return localSets;
+          return [
+            { id: 'ahorro', label: 'Ahorro', active: true },
+            { id: 'deuda', label: 'Deuda', active: true },
+            { id: 'emprendimiento', label: 'Emprendimiento', active: true }
+          ];
         }
       }
 
       function buildUI(sets) {
-        // Al volver al selector, vuelve a mostrar los botones globales
         document.documentElement.classList.remove('class-loaded');
         const root = document.getElementById('slide-root');
-        // Limpia cualquier placeholder anterior
-        root.querySelectorAll('.slide').forEach(n => n.remove());
+        root.querySelectorAll('.slide').forEach(function (n) { n.remove(); });
 
-        // Pintamos selector vacío; lo rellenamos abajo
         const box = document.createElement('article');
         box.className = 'slide empty-state';
         box.innerHTML = `
           <div class="empty-state__text">
-            Elige una clase:
-            <select id="classSelector" style="margin-left:8px"></select>
-            <button id="classLoadBtn" class="btn btn--primary" style="margin-left:8px">Cargar</button>
+            ${sets.length
+              ? 'Elige una clase: <select id="classSelector" style="margin-left:8px"></select><button id="classLoadBtn" class="btn btn--primary" style="margin-left:8px">Cargar</button>'
+              : 'No hay clases disponibles en este momento.'}
           </div>`;
         root.appendChild(box);
+
+        if (!sets.length) return;
 
         const sel = document.getElementById('classSelector');
         const btn = document.getElementById('classLoadBtn');
 
-        // Rellena opciones
         sel.innerHTML = '';
-        for (const s of sets) {
+        sets.forEach(function (s) {
           const opt = document.createElement('option');
           opt.value = s.id;
           opt.textContent = s.label || s.id;
           sel.appendChild(opt);
-        }
+        });
 
-        // Si viene ?clase= y existe, selecciónalo; si no, deja el primero
-        if (choice && sets.some(s => s.id === choice)) {
+        if (choice && sets.some(function (s) { return s.id === choice; })) {
           sel.value = choice;
         } else {
           choice = sel.value;
         }
 
-        // Eventos
-        btn.addEventListener('click', () => loadSet(sel.value));
-        sel.addEventListener('change', e => loadSet(e.target.value));
+        btn.addEventListener('click', function () { loadSet(sel.value); });
+        sel.addEventListener('change', function (e) { loadSet(e.target.value); });
       }
 
       function loadSet(kind) {
-        // Marca que ya estamos dentro de una clase cargada
+        if (!isSetEnabled(kind)) {
+          const msg = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en')
+            ? 'This class is not available right now.'
+            : 'Esta clase no esta disponible ahora mismo.';
+          alert(msg);
+          return;
+        }
+
         document.documentElement.classList.add('class-loaded');
         window.slides = [];
-        document.querySelectorAll('script[data-slide-set]').forEach(s => s.remove());
-        document.querySelectorAll('#slide-root .empty-state').forEach(n => n.remove());
+        document.querySelectorAll('script[data-slide-set]').forEach(function (s) { s.remove(); });
+        document.querySelectorAll('#slide-root .empty-state').forEach(function (n) { n.remove(); });
 
         const lang = String(window.I18N?.getLang?.() || document.documentElement.lang || 'es').toLowerCase();
         const candidates = lang.startsWith('en')
           ? [`../slides/slides_${kind}_en.js`, `../slides/slides_${kind}.js`]
           : [`../slides/slides_${kind}.js`];
 
-        const tryLoad = (idx) => {
+        const tryLoad = function (idx) {
           if (idx >= candidates.length) {
             const msgEs = `No pude cargar ${candidates[0]} (revisa la ruta o el nombre).`;
             const msg = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en')
@@ -122,13 +189,13 @@
           const s = document.createElement('script');
           s.src = candidates[idx];
           s.dataset.slideSet = kind;
-          s.onload = () => {
+          s.onload = function () {
             const url = new URL(location.href);
             url.searchParams.set('clase', kind);
             history.replaceState({}, '', url);
             window.__slidesAPI__ && window.__slidesAPI__.reload();
           };
-          s.onerror = () => {
+          s.onerror = function () {
             s.remove();
             tryLoad(idx + 1);
           };
@@ -138,34 +205,28 @@
         tryLoad(0);
       }
 
-      window.addEventListener('DOMContentLoaded', async () => {
-        const sets = await fetchSets();
-        // Si venía ?clase= y existe, carga directo; si no, muestra selector
-        if (choice) {
-          loadSet(choice); // intenta cargar directo aunque no esté en sets.json
+      window.addEventListener('DOMContentLoaded', async function () {
+        manifestSets = await fetchSets();
+        const sets = manifestSets.filter(function (set) { return set.active; });
+        if (choice && isSetEnabled(choice)) {
+          loadSet(choice);
         } else {
           buildUI(sets);
         }
       });
     })();
   </script>
-
-
 </head>
 <body>
   <main>
     <section id="clase" class="section section--clase is-active" aria-label="Clase">
-      <!-- Botón de volver con estética unificada, fuera de #slide-root -->
-      <a class="btn back-integrated" href="./mapa.html" aria-label="Atrás" title="Atrás"></a>
+      <a class="btn back-integrated" href="./mapa.html" aria-label="Atras" title="Atras"></a>
 
       <div id="slide-root" class="slide-stage" data-role="slide-root">
-        <!-- OJO: aquí ya no metemos el botón -->
-        <!-- Eliminado el botón de atrás de diapositivas -->
         <button id="btn-next" class="btn btn--primary nav-btn nav-btn--next" aria-label="Siguiente" title="Siguiente" disabled></button>
         <div class="progress"><div class="progress__bar"></div></div>
       </div>
     </section>
-
   </main>
 </body>
 </html>

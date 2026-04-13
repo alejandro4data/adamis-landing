@@ -315,7 +315,7 @@ function ensureRendererLoaded(tipo){
   const CONT_LABEL = IS_TOUCH
     ? tCommon('common.touchContinue', 'Toca para continuar')
     : tCommon('common.clickContinue', 'Haz clic para continuar');
-  const CLASS_LEVEL_BY_ID = { ahorro: 10, deuda: 11 };
+  const CLASS_LEVEL_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
   const classIdFromUrl = () => {
     try { return new URLSearchParams(window.location.search).get('clase') || ''; }
     catch (_) { return ''; }

@@ -1,4 +1,8 @@
 {
   "ahorro": "Ahorro",
-  "deuda": "Deuda"
+  "deuda": "Deuda",
+  "emprendimiento": "Emprendimiento",
+  "bool_ahorro":true,
+  "bool_deuda":true,
+  "bool_emprendimiento":false
 }

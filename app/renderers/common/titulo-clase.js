@@ -64,18 +64,35 @@
       h1.className = 'titulo-clase__text';
 
       const frag = document.createDocumentFragment();
-      [...text].forEach((ch, idx) => {
-        if (ch === '\n') { frag.appendChild(document.createElement('br')); return; }
-        const span = document.createElement('span');
-        span.className = 'char';
-        span.style.setProperty('--i', String(idx));
-        if (ch === ' ') {
-          span.classList.add('space');
-          span.textContent = '\u00A0';
-        } else {
-          span.textContent = ch;
+      let idx = 0;
+      const lines = text.split('\n');
+
+      lines.forEach((line, lineIndex) => {
+        const tokens = line.match(/\S+|\s+/g) || [];
+
+        tokens.forEach((token) => {
+          if (/^\s+$/.test(token)) {
+            frag.appendChild(document.createTextNode(' '));
+            return;
+          }
+
+          const word = document.createElement('span');
+          word.className = 'titulo-clase__word';
+
+          [...token].forEach((ch) => {
+            const span = document.createElement('span');
+            span.className = 'char';
+            span.style.setProperty('--i', String(idx++));
+            span.textContent = ch;
+            word.appendChild(span);
+          });
+
+          frag.appendChild(word);
+        });
+
+        if (lineIndex < lines.length - 1) {
+          frag.appendChild(document.createElement('br'));
         }
-        frag.appendChild(span);
       });
 
       h1.appendChild(frag);
