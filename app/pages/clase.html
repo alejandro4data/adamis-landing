@@ -105,7 +105,7 @@
         }
 
         try {
-          const res = await fetch('../slides/sets.json', { cache: 'no-store' });
+          const res = await fetch('../clases/sets.json', { cache: 'no-store' });
           if (!res.ok) throw new Error('no manifest');
           const data = await res.json();
           return normalizeSets(data);
@@ -174,8 +174,8 @@
 
         const lang = String(window.I18N?.getLang?.() || document.documentElement.lang || 'es').toLowerCase();
         const candidates = lang.startsWith('en')
-          ? [`../slides/slides_${kind}_en.js`, `../slides/slides_${kind}.js`]
-          : [`../slides/slides_${kind}.js`];
+          ? [`../clases/slides_${kind}_en.js`, `../clases/slides_${kind}.js`]
+          : [`../clases/slides_${kind}.js`];
 
         const tryLoad = function (idx) {
           if (idx >= candidates.length) {

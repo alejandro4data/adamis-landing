@@ -1,4 +1,4 @@
-// ==================== SLIDES DE LA CLASE DE EMPRENDIMIENTO ====================
+﻿// ==================== SLIDES DE LA CLASE DE EMPRENDIMIENTO ====================
 
 window.CURRENT_CLASS = 'emprendimiento';
 
@@ -53,7 +53,13 @@ const EMP_IMG = {
   carteles: '',
   correos: '',
   mejor_cartel: '',
+  cartel_saturado: '',
+  cartel_falta_info: '',
+  cartel_simple: '',
+  cartel_perfecto: '',
   esperar_clientes: '',
+  icono_telefono_clientes: '',
+  icono_correo_clientes: '',
   exito: '',
   volver_participar: '',
   devolver_y_disfrutar: '',
@@ -135,6 +141,23 @@ pushEmpScene(
 // Empresa de videojuegos – Crear videojuegos para que las personas jueguen y los compren.
 // Empresa de reparto de paquetes – Llevar paquetes y pedidos de un lugar a otro.
 // Empresa de telefonía - Ofrecer llamadas, mensajes e internet a los clientes.
+window.slides.push(
+  SlideMiniactividadUnirConceptos({
+    title: 'Une cada empresa con su objetivo',
+    introTitle: 'Miniactividad',
+    introText: 'Relaciona cada tipo de empresa con el objetivo que mejor describe lo que hace.',
+    introButtonText: 'Empezar',
+    pairs: [
+      { id: 'panaderia', left: { text: 'Panaderia' }, right: { text: 'Hacer pan y venderlo.' } },
+      { id: 'peluqueria', left: { text: 'Peluqueria' }, right: { text: 'Cortar el pelo y cuidar el peinado de las personas.' } },
+      { id: 'supermercado', left: { text: 'Supermercado' }, right: { text: 'Vender comida y productos del dia a dia.' } },
+      { id: 'videojuegos', left: { text: 'Empresa de videojuegos' }, right: { text: 'Crear videojuegos para que las personas jueguen y los compren.' } },
+      { id: 'reparto', left: { text: 'Empresa de reparto de paquetes' }, right: { text: 'Llevar paquetes y pedidos de un lugar a otro.' } },
+      { id: 'telefonia', left: { text: 'Empresa de telefonia' }, right: { text: 'Ofrecer llamadas, mensajes e internet a los clientes.' } }
+    ]
+  })
+);
+
 
 // (Aparece Adamis delante de varias personas con necesidades distintas: una necesita pan, otra un corte de pelo y otra enviar un paquete)
 pushEmpScene(
@@ -249,6 +272,22 @@ pushEmpScene(
   'elige_premios'
 );
 
+window.slides.push(
+  SlideMiniactividadSeleccionarCards({
+    title: 'Elige los premios adecuados',
+    introTitle: 'Miniactividad',
+    introText: 'Pulsa cada premio para descubrir si es realista y adecuado para el torneo.',
+    introButtonText: 'Empezar',
+    cards: [
+      { id: 'coche', text: 'Coche', correct: false, feedbackIncorrect: 'No es realista y no es acorde a su edad.' },
+      { id: 'raqueta', text: 'Una raqueta de tenis o padel o pin pon', correct: true, feedbackCorrect: 'Si, puede ser un buen premio para el torneo respectivo.' },
+      { id: 'tablet', text: 'Una tablet', correct: true, feedbackCorrect: 'Si, podria ser el premio estrella del torneo.' },
+      { id: 'tarjeta-regalo', text: 'Una tarjeta de regalo', correct: true, feedbackCorrect: 'Si, es una opcion muy buena porque cada uno puede comprarse lo que quiera.' },
+      { id: 'trofeos', text: 'Trofeos', correct: true, feedbackCorrect: 'Si, se pueden dar junto al resto de premios.' }
+    ]
+  })
+);
+
 // Mini Actividad – Elige los premios
 // Aparecen una serie de premios y el alumno debe elegir cuáles son acordes a sus edades y cuáles son realistas.
 // Coche → No es realista y no es acorde a su edad
@@ -262,6 +301,8 @@ pushEmpScene(
   '“Entonces para que cualquier niño o niña pueda participar en el torneo, pagará una o dos monedas.”',
   'pagar_monedas'
 );
+
+
 
 // (Adamis sale con cara de pillín imaginando muchas monedas)
 pushEmpScene(
@@ -303,6 +344,20 @@ pushEmpScene(
 pushEmpScene(
   '“Ese dinero lo tenéis que usar para poner la empresa en marcha, no para caprichos vuestros.”',
   'no_caprichos'
+);
+
+window.slides.push(
+  SlideMiniactividadSeleccionarFrases({
+    title: '¿Que le dirias a los inversores?',
+    introTitle: 'Miniactividad',
+    introText: 'Pulsa cada propuesta y descubre cual transmite mejor confianza a los inversores.',
+    introButtonText: 'Empezar',
+    phrases: [
+      { text: 'Si inviertes en nosotros, te daremos 10 veces lo que nos has dado.', correct: false, feedbackIncorrect: 'Incorrecto, es poco realista prometer tanto dinero.' },
+      { text: 'Invierte en nosotros y si por algun casual ganamos dinero te lo devolveremos.', correct: false, feedbackIncorrect: 'Incorrecto, no genera confianza ni transmite seguridad.' },
+      { text: 'Si inviertes en nosotros, te lo devolveremos con un pequeno extra por confiar en nosotros.', correct: true, feedbackCorrect: 'Correcto, genera confianza y ofrece un extra realista.' }
+    ]
+  })
 );
 
 // Mini Actividad – ¿Qué le dirías a los inversores?
@@ -354,6 +409,45 @@ pushEmpScene(
   'mejor_cartel'
 );
 
+window.slides.push(
+  SlideMiniactividadArrastrarEtiquetas({
+    title: 'Clasifica cada cartel',
+    introTitle: 'Miniactividad',
+    introText: 'Arrastra cada etiqueta al cartel que mejor encaja con su descripcion.',
+    introButtonText: 'Empezar',
+    items: [
+      {
+        id: 'demasiada-informacion',
+        text: 'Demasiada informacion.',
+        image: EMP_IMG.cartel_saturado || '',
+        feedbackCorrect: 'Correcto, este cartel tiene demasiados elementos, demasiada informacion y resulta agresivo visualmente.',
+        feedbackIncorrect: 'Incorrecto, este cartel esta demasiado cargado. La etiqueta correcta es "Demasiada informacion."'
+      },
+      {
+        id: 'falta-informacion',
+        text: 'Falta informacion.',
+        image: EMP_IMG.cartel_falta_info || '',
+        feedbackCorrect: 'Correcto, a este cartel le faltan datos importantes como el precio o cuando sera el torneo.',
+        feedbackIncorrect: 'Incorrecto, a este cartel le faltan datos importantes. La etiqueta correcta es "Falta informacion."'
+      },
+      {
+        id: 'no-es-llamativo',
+        text: 'No es llamativo.',
+        image: EMP_IMG.cartel_simple || '',
+        feedbackCorrect: 'Correcto, este cartel es demasiado simple y no llama la atencion.',
+        feedbackIncorrect: 'Incorrecto, este cartel no destaca lo suficiente. La etiqueta correcta es "No es llamativo."'
+      },
+      {
+        id: 'cartel-perfecto',
+        text: 'El cartel perfecto.',
+        image: EMP_IMG.cartel_perfecto || '',
+        feedbackCorrect: 'Correcto, este cartel esta bien equilibrado y comunica lo importante de forma atractiva.',
+        feedbackIncorrect: 'Incorrecto, este es el cartel mejor resuelto. La etiqueta correcta es "El cartel perfecto."'
+      }
+    ]
+  })
+);
+
 // Mini actividad – Elige el mejor cartel
 // Aparecen 4 carteles y tienen que decidir cuál es el mejor.
 // 1 cartel demasiado saturado, demasiada información y muy agresivo
@@ -370,6 +464,79 @@ pushEmpScene(
 pushEmpScene(
   '“Una vez hecho todo el trabajo, hay que esperar a que empiecen a llegar los clientes…”',
   'esperar_clientes'
+);
+
+window.slides.push(
+  SlideMiniactividadAtenderClientes({
+    title: 'Responde a los clientes',
+    introTitle: 'Miniactividad',
+    introText: 'Abre el telefono o el correo, entra en cada notificacion y envia la respuesta preparada para atender bien a los clientes.',
+    introButtonText: 'Empezar',
+    channels: [
+      {
+        id: 'telefono',
+        label: 'Telefono',
+        image: EMP_IMG.icono_telefono_clientes || '',
+        notifications: [
+          {
+            id: 'tel-futbol',
+            from: 'Mario',
+            subject: 'Horario del torneo de futbol',
+            body: 'Hola. Queria saber a que hora empieza el torneo de futbol porque quiero avisar a mi equipo.',
+            replyText: 'Hola, Mario. El torneo de futbol empieza manana en el recreo grande. Si quieres, puedes venir unos minutos antes para confirmar a tu equipo. Gracias por preguntar.',
+            sentText: 'Has respondido la duda sobre el horario del torneo.'
+          },
+          {
+            id: 'tel-precio',
+            from: 'Lucia',
+            subject: 'Cuanto cuesta apuntarse',
+            body: 'Hola. Me gustaria participar, pero antes queria saber cuanto cuesta apuntarse al torneo.',
+            replyText: 'Hola, Lucia. Apuntarse cuesta una o dos monedas, segun el torneo. Puedes pasar por nuestra mesa y te contamos cual corresponde en tu caso.',
+            sentText: 'Has explicado el precio de participacion.'
+          },
+          {
+            id: 'tel-plazas',
+            from: 'Sergio',
+            subject: 'Quedan plazas',
+            body: 'Hola. Queria saber si todavia quedan plazas para apuntarse al torneo de tenis.',
+            replyText: 'Hola, Sergio. Si, todavia quedan plazas para el torneo de tenis. Si quieres apuntarte, pasa hoy por nuestra mesa y te reservamos sitio.',
+            sentText: 'Has confirmado que todavia quedan plazas.'
+          }
+        ]
+      },
+      {
+        id: 'correo',
+        label: 'Correo',
+        image: EMP_IMG.icono_correo_clientes || '',
+        notifications: [
+          {
+            id: 'mail-equipo',
+            from: 'Equipo Voley Azul',
+            subject: 'Queremos apuntarnos juntos',
+            body: 'Hola. Somos cuatro companeros y queremos jugar el torneo de voley juntos. Queremos saber como podemos apuntarnos como equipo.',
+            replyText: 'Hola, equipo Voley Azul. Podeis apuntaros juntos pasando por nuestra mesa y diciendo el nombre de vuestro equipo. Os ayudaremos a quedar registrados correctamente.',
+            sentText: 'Has explicado como apuntarse como equipo.'
+          },
+          {
+            id: 'mail-premios',
+            from: 'Paula',
+            subject: 'Habra premios',
+            body: 'Hola. Me hace ilusion participar, pero queria saber si habra premios para los ganadores.',
+            replyText: 'Hola, Paula. Si, habra premios para los equipos o jugadores ganadores. Ademas del trofeo, tambien estamos preparando otros premios para los primeros puestos.',
+            sentText: 'Has informado sobre los premios del torneo.'
+          },
+          {
+            id: 'mail-pago',
+            from: 'Diego',
+            subject: 'No se donde se paga',
+            body: 'Hola. Quiero participar, pero no entiendo donde hay que pagar las monedas para apuntarse.',
+            replyText: 'Hola, Diego. El pago se hace en nuestra mesa de inscripciones del patio. Alli recogemos las monedas y te apuntamos en el torneo que elijas.',
+            sentText: 'Has aclarado donde se realiza el pago.'
+          }
+        ]
+      }
+    ]
+  })
 );
 
 // Mini Actividad – Atiende a los clientes
@@ -476,6 +643,25 @@ pushEmpScene(
 // Pistas infinitas → Cada pista pone correctamente una sección que no está correcta
 
 window.slides.push(
+  SlideMiniactividadOrdenarSecuencia({
+    title: 'Ordena los pasos para crear una empresa',
+    introTitle: 'Miniactividad',
+    introText: 'Ordena estos pasos de forma secuencial. Puedes usar pistas infinitas si las necesitas.',
+    introButtonText: 'Empezar',
+    steps: [
+      'Detectar un problema y pensar en una solución.',
+      'Conocer quién va a comprar tu solución.',
+      'Decidir cómo vas a ganar dinero con tu solución.',
+      'Conseguir dinero (ahorro o inversores).',
+      'Crear la solución.',
+      'Colgar carteles o enviar correos para que la gente conozca la solución.',
+      'Conseguir clientes.',
+      'Pagar a los inversores.'
+    ]
+  })
+);
+
+window.slides.push(
   SlideTituloClase({ titulo: 'Conclusión de la clase 16 – Formas de invertir II – Emprendimiento' })
 );
 
@@ -508,3 +694,4 @@ pushEmpScene(
   '“¡Vamos allá!”',
   'vamos_alla'
 );
+

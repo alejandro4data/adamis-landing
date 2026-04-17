@@ -14,7 +14,7 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
 
   const XLINK = 'http://www.w3.org/1999/xlink';
   const SVG_NS = 'http://www.w3.org/2000/svg';
-  const INSTRUCCIONES_URL = '/app/assets/images/instrucciones.avif';
+  const INSTRUCCIONES_URL = '/app/assets/instrucciones.avif';
   const IS_LOCAL_STATIC = window.location.protocol === 'file:';
   const LOCKED_MAX_LEVEL = 5;
   const DEFAULT_CURRENT_LEVEL = 10;
@@ -232,7 +232,7 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
     }
 
     try {
-      const res = await fetch('../slides/sets.json', { cache: 'no-store' });
+      const res = await fetch('../clases/sets.json', { cache: 'no-store' });
       if (!res.ok) throw new Error('No se pudo leer sets.json');
 
       const cfg = await res.json();

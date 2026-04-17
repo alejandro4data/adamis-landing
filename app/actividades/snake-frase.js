@@ -2,7 +2,7 @@
 // - Lógica de movimiento intacta + microcola de 2 para combos
 // - Letras como monedas doradas
 // - Rejilla/fondo moderno
-// - Cinemática centrada con "Continuar" que pausa/reanuda el juego
+// - Cinemática centrada con "Continuar" que reinicia una nueva partida
 (() => {
   const $ = (s, r=document) => r.querySelector(s);
   const tr = (text) => {
@@ -159,17 +159,13 @@
       setTimeout(()=> cinBtn?.focus(), 0);
     }
   }
-  function hideCinematic(){
+  function closeCinematic(){
     if (cin){
       cin.classList.add('is-hidden');
       cin.setAttribute('aria-hidden','true');
     }
     isCinematic = false;
-    // Al cerrar la cinemática: pasamos a modo monedas y generamos el primer target
-    inCoins = true;
-    spawnTarget();
   }
-  cinBtn?.addEventListener('click', hideCinematic);
 
   // ---------- Canvas / DPI ----------
   function resizeCanvas(){
@@ -572,13 +568,17 @@
   }
   function closeLoseModal(){ modal?.setAttribute('hidden',''); }
   function hardRestart(){
+    closeCinematic();
+    isCinematic = false;
+    target.idx = -1;
+    target.char = '';
+    target.coin = false;
     coins=0; scoreEl && (scoreEl.textContent='0');
     eyeDirX = 1; eyeDirY = 0;
     stepMs=STEP_MS; dead=false; running=true;
     loadPhrases();
     pickPhrase(); placeSnake(); spawnTarget();
     acc=0; lastTs=0; dirQueue.length = 0; closeLoseModal();
-    isCinematic = false;  // por si acaso
   }
 
   // ---------- Inputs ----------
@@ -616,6 +616,7 @@
 
   btnRestart?.addEventListener('click', hardRestart);
   modalRestart?.addEventListener('click', hardRestart);
+  cinBtn?.addEventListener('click', hardRestart);
 
   // ---------- Loop ----------
   function loop(ts){

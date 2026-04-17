@@ -227,6 +227,172 @@ function SlideMiniactividadOrdenarFrase({
   };
 }
 
+function SlideMiniactividadUnirConceptos({
+  title, titulo,
+  introTitle, introText, introButtonText,
+  intro,
+  pairs, parejas,
+  pairs_en, parejas_en,
+  autoAdvanceMs,
+  shuffleRight = true
+} = {}){
+  const list = Array.isArray(pairs) ? pairs
+    : Array.isArray(parejas) ? parejas
+    : [];
+  const listEn = Array.isArray(pairs_en) ? pairs_en
+    : Array.isArray(parejas_en) ? parejas_en
+    : null;
+  return {
+    tipo: 'miniactividad-unir-conceptos',
+    title: title ?? titulo,
+    introTitle: introTitle ?? intro?.title,
+    introText: introText ?? intro?.text,
+    introButtonText: introButtonText ?? intro?.buttonText,
+    pairs: list,
+    pairs_en: listEn,
+    shuffleRight: shuffleRight !== false,
+    autoAdvanceMs
+  };
+}
+
+function SlideMiniactividadSeleccionarCards({
+  title, titulo,
+  introTitle, introText, introButtonText,
+  intro,
+  cards, tarjetas,
+  cards_en, tarjetas_en,
+  autoAdvanceMs
+} = {}){
+  const list = Array.isArray(cards) ? cards
+    : Array.isArray(tarjetas) ? tarjetas
+    : [];
+  const listEn = Array.isArray(cards_en) ? cards_en
+    : Array.isArray(tarjetas_en) ? tarjetas_en
+    : null;
+  return {
+    tipo: 'miniactividad-seleccionar-cards',
+    title: title ?? titulo,
+    introTitle: introTitle ?? intro?.title,
+    introText: introText ?? intro?.text,
+    introButtonText: introButtonText ?? intro?.buttonText,
+    cards: list,
+    cards_en: listEn,
+    autoAdvanceMs
+  };
+}
+
+function SlideMiniactividadSeleccionarFrases({
+  title, titulo,
+  introTitle, introText, introButtonText,
+  intro,
+  phrases, frases,
+  phrases_en, frases_en,
+  autoAdvanceMs
+} = {}){
+  const list = Array.isArray(phrases) ? phrases
+    : Array.isArray(frases) ? frases
+    : [];
+  const listEn = Array.isArray(phrases_en) ? phrases_en
+    : Array.isArray(frases_en) ? frases_en
+    : null;
+  return {
+    tipo: 'miniactividad-seleccionar-frases',
+    title: title ?? titulo,
+    introTitle: introTitle ?? intro?.title,
+    introText: introText ?? intro?.text,
+    introButtonText: introButtonText ?? intro?.buttonText,
+    phrases: list,
+    phrases_en: listEn,
+    autoAdvanceMs
+  };
+}
+
+function SlideMiniactividadArrastrarEtiquetas({
+  title, titulo,
+  introTitle, introText, introButtonText,
+  intro,
+  items, elementos, matches,
+  items_en, elementos_en, matches_en,
+  autoAdvanceMs,
+  shuffleLabels = true
+} = {}){
+  const list = Array.isArray(items) ? items
+    : Array.isArray(elementos) ? elementos
+    : Array.isArray(matches) ? matches
+    : [];
+  const listEn = Array.isArray(items_en) ? items_en
+    : Array.isArray(elementos_en) ? elementos_en
+    : Array.isArray(matches_en) ? matches_en
+    : null;
+  return {
+    tipo: 'miniactividad-arrastrar-etiquetas',
+    title: title ?? titulo,
+    introTitle: introTitle ?? intro?.title,
+    introText: introText ?? intro?.text,
+    introButtonText: introButtonText ?? intro?.buttonText,
+    items: list,
+    items_en: listEn,
+    shuffleLabels: shuffleLabels !== false,
+    autoAdvanceMs
+  };
+}
+
+function SlideMiniactividadOrdenarSecuencia({
+  title, titulo,
+  introTitle, introText, introButtonText,
+  intro,
+  steps, pasos, items, frases,
+  steps_en, pasos_en, items_en, frases_en,
+  autoAdvanceMs
+} = {}){
+  const list = Array.isArray(steps) ? steps
+    : Array.isArray(pasos) ? pasos
+    : Array.isArray(items) ? items
+    : Array.isArray(frases) ? frases
+    : [];
+  const listEn = Array.isArray(steps_en) ? steps_en
+    : Array.isArray(pasos_en) ? pasos_en
+    : Array.isArray(items_en) ? items_en
+    : Array.isArray(frases_en) ? frases_en
+    : null;
+  return {
+    tipo: 'miniactividad-ordenar-secuencia',
+    title: title ?? titulo,
+    introTitle: introTitle ?? intro?.title,
+    introText: introText ?? intro?.text,
+    introButtonText: introButtonText ?? intro?.buttonText,
+    steps: list,
+    steps_en: listEn,
+    autoAdvanceMs
+  };
+}
+
+function SlideMiniactividadAtenderClientes({
+  title, titulo,
+  introTitle, introText, introButtonText,
+  intro,
+  channels, canales,
+  channels_en, canales_en,
+  autoAdvanceMs
+} = {}){
+  const list = Array.isArray(channels) ? channels
+    : Array.isArray(canales) ? canales
+    : [];
+  const listEn = Array.isArray(channels_en) ? channels_en
+    : Array.isArray(canales_en) ? canales_en
+    : null;
+  return {
+    tipo: 'miniactividad-atender-clientes',
+    title: title ?? titulo,
+    introTitle: introTitle ?? intro?.title,
+    introText: introText ?? intro?.text,
+    introButtonText: introButtonText ?? intro?.buttonText,
+    channels: list,
+    channels_en: listEn,
+    autoAdvanceMs
+  };
+}
+
 function SlideActividadDeuda11TutorialV2({ text, image, alt, event, tutorial } = {}) {
   return {
     tipo: 'actividad-deuda-1-1-tutorial-v2',

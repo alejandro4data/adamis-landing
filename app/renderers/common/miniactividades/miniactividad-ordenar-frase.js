@@ -19,6 +19,14 @@
   };
 
   const STYLE_ID = 'mini-ordenar-frase-style';
+  const HINT_DELAY_MS = 60000;
+
+  function formatHintTime(ms) {
+    const total = Math.max(0, Math.ceil(ms / 1000));
+    const m = Math.floor(total / 60);
+    const s = String(total % 60).padStart(2, '0');
+    return `${m}:${s}`;
+  }
 
   function ensureStyles() {
     if (document.getElementById(STYLE_ID)) return;
@@ -158,6 +166,7 @@
       }
       .mini-feedback.ok{ color:#16a34a; }
       .mini-feedback.err{ color:#dc2626; }
+      .mini-feedback.info{ color:#2563eb; }
       .mini-skip{
         position:fixed;
         top:24px;
@@ -407,12 +416,16 @@
 
     const actions = document.createElement('div');
     actions.className = 'mini-actions';
+    const hintBtn = document.createElement('button');
+    hintBtn.type = 'button';
+    hintBtn.className = 'mini-btn secondary';
     const resetBtn = document.createElement('button');
     resetBtn.type = 'button';
     resetBtn.className = 'mini-btn secondary';
     resetBtn.textContent = tr('Reiniciar');
     const feedback = document.createElement('div');
     feedback.className = 'mini-feedback';
+    actions.appendChild(hintBtn);
     actions.appendChild(resetBtn);
     actions.appendChild(feedback);
 
@@ -431,6 +444,24 @@
     let advanced = false;
     let currentTokens = [];
     let wrongAttempts = 0;
+    let hintInterval = null;
+    const hintReadyAt = Date.now() + HINT_DELAY_MS;
+    const fixedTokenIdsByPhrase = new Map();
+
+    function updateHintButton() {
+      const remaining = hintReadyAt - Date.now();
+      if (remaining <= 0) {
+        hintBtn.disabled = false;
+        hintBtn.textContent = tr('Pista');
+        if (hintInterval) {
+          clearInterval(hintInterval);
+          hintInterval = null;
+        }
+        return;
+      }
+      hintBtn.disabled = true;
+      hintBtn.textContent = `${tr('Pista')} (${formatHintTime(remaining)})`;
+    }
 
     const skipBtn = document.createElement('button');
     skipBtn.type = 'button';
@@ -568,6 +599,7 @@
         color: palette[i % palette.length]
       }));
       const shuffled = shuffleAvoidSame(currentTokens);
+      const fixedIds = fixedTokenIdsByPhrase.get(idx) || [];
 
       function makeBankBtn(token) {
         const btn = makeTokenBtn(token, false);
@@ -584,7 +616,7 @@
       function makeAnswerBtn(token) {
         const btn = makeTokenBtn(token, true);
         btn.addEventListener('click', () => {
-          if (locked) return;
+          if (locked || btn.disabled) return;
           const backBtn = makeBankBtn(token);
           bankZone.appendChild(backBtn);
           btn.remove();
@@ -593,7 +625,17 @@
         return btn;
       }
 
+      fixedIds.forEach((tokenId) => {
+        const token = currentTokens.find((entry) => entry.id === tokenId);
+        if (!token) return;
+        const fixedBtn = makeAnswerBtn(token);
+        fixedBtn.disabled = true;
+        fixedBtn.classList.add('is-correct');
+        answerZone.appendChild(fixedBtn);
+      });
+
       shuffled.forEach(token => {
+        if (fixedIds.includes(token.id)) return;
         bankZone.appendChild(makeBankBtn(token));
       });
 
@@ -603,6 +645,19 @@
     resetBtn.addEventListener('click', () => {
       if (locked) return;
       renderPhrase({ preserveAttempts: true });
+    });
+
+    updateHintButton();
+    hintInterval = setInterval(updateHintButton, 1000);
+
+    hintBtn.addEventListener('click', () => {
+      if (hintBtn.disabled || locked) return;
+      const fixedIds = fixedTokenIdsByPhrase.get(idx) || [];
+      const nextId = currentTokens.find((token) => !fixedIds.includes(token.id))?.id;
+      if (nextId == null) return;
+      fixedTokenIdsByPhrase.set(idx, fixedIds.concat(nextId));
+      renderPhrase({ preserveAttempts: true });
+      setFeedback('info', tr('Se ha colocado correctamente una palabra.'));
     });
 
     // Intro modal

@@ -203,6 +203,23 @@ const __RENDERER_BASE_SCRIPTS__ = [
   '../renderers/common/base/renderer-utils.js'
 ];
 let __RENDERER_BASE_PROMISE__ = null;
+const __COMMON_BLOCK_RENDERERS__ = new Set([
+  'cuadro-reflexion',
+  'dinamica-actividad',
+  'explicacion-actividad',
+  'explicacion-bocadillo',
+  'moraleja',
+  'sabias-que',
+  'termino-intro',
+  'titulo-actividad',
+  'titulo-clase'
+]);
+const __COMMON_ROOT_RENDERERS__ = new Set([
+  'encuesta',
+  'encuesta-multiple',
+  'encuesta-texto',
+  'encuesta-escala'
+]);
 
 function loadSequential(urls, idx = 0) {
   if (!Array.isArray(urls) || idx >= urls.length) return Promise.resolve(false);
@@ -235,8 +252,17 @@ function ensureRendererLoaded(tipo){
       urls.push(`../renderers/ahorro/actividad-1/${key}.js`);
     }
 
-    // Comunes
-    urls.push(`../renderers/common/${key}.js`);
+    // Comunes reorganizados por tipo
+    if (key.startsWith('miniactividad-')) {
+      urls.push(`../renderers/common/miniactividades/${key}.js`);
+    } else if (__COMMON_BLOCK_RENDERERS__.has(key)) {
+      urls.push(`../renderers/common/bloques/${key}.js`);
+    }
+
+    // Comunes en raiz (p.ej. encuesta)
+    if (__COMMON_ROOT_RENDERERS__.has(key)) {
+      urls.push(`../renderers/common/${key}.js`);
+    }
 
     // Legacy raíz (compatibilidad)
     urls.push(`../renderers/${key}.js`);
