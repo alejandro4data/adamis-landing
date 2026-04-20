@@ -13,71 +13,38 @@
 </head>
 <body>
 
-    <header class="split-hero">
-                
-        <!-- IZQUIERDA: Marca + Boton Explorar -->
-        <div class="hero-left fade-in">
-            <div class="brand-wrapper">
+    <header class="hero-shell">
+        <nav class="topbar">
+            <div class="topbar-inner">
+                <button type="button" class="topbar-access" data-platform-access>
+                    Acceso a la plataforma
+                    <i class="ph ph-arrow-up-right"></i>
+                </button>
+            </div>
+        </nav>
+
+        <div class="hero-center fade-in">
+            <div class="brand-wrapper brand-wrapper-centered">
                 <div class="brand-hero">
                     <img src="assets/logo.png" alt="ADAMIS Logo" class="hero-logo-img">
                     <div class="brand-wordmark">
                         <h1 class="metallic-title">DAMIS</h1>
                     </div>
                 </div>
-                <p class="hero-slogan">Tu futuro financiero empieza aqu&iacute;.</p>
-                
-                <div class="hero-actions">
+                <p class="hero-slogan">Educaci&oacute;n Financiera para colegios</p>
+
+                <div class="hero-actions hero-actions-centered">
                     <a href="#impact" class="btn-explore">
-                        Descubrir la realidad
+                        Saber m&aacute;s
                         <i class="ph ph-arrow-down"></i>
+                    </a>
+                    <a href="#productos" class="btn-contact btn-contact-solid">
+                        Consultar productos
+                        <i class="ph ph-caret-right"></i>
                     </a>
                 </div>
             </div>
         </div>
-
-        <!-- DERECHA: Zona Interactiva -->
-        <div class="hero-right fade-in delay-100" id="heroRight">
-            <!-- Capa para el efecto dorado suave -->
-            <div class="gold-overlay"></div>
-
-            <div class="login-trigger">
-                <span class="trigger-text">Acceso Plataforma</span>
-                
-                <!-- COIN ASSEMBLY -->
-                <div class="trigger-icon scene">
-                    <div class="coin">
-                        <!-- Cara Frontal (Flecha) -->
-                        <div class="coin-face front">
-                            <i class="ph-light ph-arrow-right"></i>
-                            <div class="shine"></div>
-                        </div>
-                        <!-- Cara Trasera (IMAGEN ADAMIS) -->
-                        <div class="coin-face back">
-                            <img src="assets/adamis_login.png" alt="Adamis Login" class="coin-img">
-                            <div class="shine"></div>
-                        </div>
-                    </div>
-                    <!-- Sombra dinamica -->
-                    <div class="coin-shadow"></div>
-                </div>
-
-            </div>
-
-            <div class="access-panel">
-                <h2 class="access-title">Bienvenido</h2>
-                <form class="minimal-form">
-                    <div class="input-group">
-                        <input type="email" placeholder="Usuario / Email" required>
-                    </div>
-                    <div class="input-group">
-                        <input type="password" placeholder="Contrase&ntilde;a" required>
-                    </div>
-                    <button type="submit" class="btn-access">Iniciar Sesi&oacute;n</button>
-                </form>
-                <div class="close-login" id="closeLogin"><i class="ph ph-x"></i></div>
-            </div>
-        </div>
-
     </header>
 
     <section id="impact" class="impact-section">
@@ -170,7 +137,7 @@
         </div>
     </section>
 
-    <section class="audiences-section">
+    <section id="productos" class="audiences-section">
         <div class="container">
             <div class="section-intro scroll-reveal">
                 <div>

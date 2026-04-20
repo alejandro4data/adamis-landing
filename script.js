@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const heroRight = document.getElementById('heroRight');
+    const platformAccessButtons = document.querySelectorAll('[data-platform-access]');
     const counters = document.querySelectorAll('.stat-number');
     const openInfoButtons = document.querySelectorAll('[data-open-info-modal]');
     const infoModal = document.getElementById('infoModal');
@@ -9,21 +9,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const infoFormSubmit = document.getElementById('infoFormSubmit');
     const audienceField = infoRequestForm?.querySelector('[name="audience"]');
 
-    if (heroRight) {
-        heroRight.addEventListener('click', (e) => {
-            e.preventDefault();
+    const launchPlatformAccess = () => {
+        if (document.querySelector('.transition-curtain')) return;
 
-            const curtain = document.createElement('div');
-            curtain.classList.add('transition-curtain');
-            document.body.appendChild(curtain);
+        const heroShell = document.querySelector('.hero-shell');
+        const legacyHero = document.querySelector('.split-hero');
+        const curtain = document.createElement('div');
+        curtain.classList.add('transition-curtain');
+        document.body.appendChild(curtain);
 
-            document.querySelector('.split-hero')?.classList.add('fade-out-content');
+        heroShell?.classList.add('fade-out-content');
+        legacyHero?.classList.add('fade-out-content');
 
-            setTimeout(() => {
-                window.location.href = 'splash.html';
-            }, 800);
+        setTimeout(() => {
+            window.location.href = 'splash.html';
+        }, 800);
+    };
+
+    platformAccessButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            launchPlatformAccess();
         });
-    }
+    });
 
     const speed = 100;
 
