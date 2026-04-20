@@ -126,6 +126,11 @@
         filter:drop-shadow(0 6px 14px rgba(15,23,42,.18));
         transition:stroke .16s ease, opacity .16s ease;
       }
+      .match-path.is-preview{
+        stroke:#2563eb;
+        stroke-width:5;
+        opacity:.92;
+      }
       .match-path.is-correct{ stroke:#16a34a; }
       .match-path.is-wrong{ stroke:#dc2626; }
       .match-card{
@@ -143,6 +148,13 @@
         cursor:pointer;
         transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
       }
+      .match-card--left{
+        cursor:grab;
+        touch-action:none;
+      }
+      .match-card--left:active{
+        cursor:grabbing;
+      }
       .match-card:hover{
         transform:translateY(-1px);
         box-shadow:0 18px 36px rgba(15,23,42,.12);
@@ -157,6 +169,15 @@
       }
       .match-card.is-linked{
         border-color:#94a3b8;
+      }
+      .match-card.is-drag-source{
+        border-color:#2563eb;
+        box-shadow:0 0 0 4px rgba(37,99,235,.12), 0 18px 36px rgba(15,23,42,.14);
+      }
+      .match-card.is-drop-target{
+        border-color:#2563eb;
+        box-shadow:0 0 0 4px rgba(37,99,235,.1), 0 18px 36px rgba(15,23,42,.14);
+        transform:translateY(-1px);
       }
       .match-card.is-correct{
         border-color:#16a34a;
@@ -219,6 +240,11 @@
         justify-self:center;
       }
       .match-card.is-selected .match-dot{
+        border-color:#2563eb;
+        box-shadow:0 0 0 6px rgba(37,99,235,.14);
+      }
+      .match-card.is-drag-source .match-dot,
+      .match-card.is-drop-target .match-dot{
         border-color:#2563eb;
         box-shadow:0 0 0 6px rgba(37,99,235,.14);
       }
@@ -483,7 +509,7 @@
 
     const instructions = document.createElement('p');
     instructions.className = 'match-instructions';
-    instructions.textContent = tr('Selecciona un elemento de cada lado para crear una union.');
+    instructions.textContent = tr('Arrastra desde un elemento de la izquierda hasta su pareja correcta de la derecha.');
 
     const stage = document.createElement('div');
     stage.className = 'match-stage';
@@ -536,13 +562,14 @@
     root.appendChild(shell);
 
     const itemNodes = new Map();
+    const nodeItems = new Map();
     const connections = new Map();
-    let selected = null;
     let locked = false;
     let advanced = false;
     let advanceTimer = null;
     let hintInterval = null;
     const hintReadyAt = Date.now() + HINT_DELAY_MS;
+    let activeDrag = null;
 
     function updateHintButton() {
       const remaining = hintReadyAt - Date.now();
@@ -572,10 +599,6 @@
       progress.textContent = tr(`Conexiones`) + ` ${getConnectionCount()} / ${pairs.length}`;
     }
 
-    function clearSelection() {
-      selected = null;
-    }
-
     function removeConnectionByRight(rightPairId) {
       for (const [leftPairId, value] of connections.entries()) {
         if (value === rightPairId) {
@@ -600,11 +623,27 @@
       itemNodes.forEach((btn, key) => {
         const item = key;
         const state = cardState(item);
-        btn.classList.toggle('is-selected', !!selected && selected.side === item.side && selected.pairId === item.pairId);
         btn.classList.toggle('is-linked', state.isLinked && !state.full);
         btn.classList.toggle('is-correct', state.full && state.correct);
         btn.classList.toggle('is-wrong', state.full && state.isLinked && !state.correct);
+        btn.classList.toggle('is-drag-source', !!activeDrag && activeDrag.source.pairId === item.pairId && item.side === 'left');
+        btn.classList.toggle('is-drop-target', !!activeDrag?.target && activeDrag.target.pairId === item.pairId && item.side === 'right');
       });
+    }
+
+    function getDotCenter(btn) {
+      const dot = btn?.querySelector('.match-dot');
+      if (!dot) return null;
+      const rect = dot.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+      };
+    }
+
+    function buildPath(x1, y1, x2, y2) {
+      const mid = Math.max(72, Math.abs(x2 - x1) * 0.38);
+      return `M ${x1} ${y1} C ${x1 + mid} ${y1}, ${x2 - mid} ${y2}, ${x2} ${y2}`;
     }
 
     function drawConnections() {
@@ -630,15 +669,38 @@
         const y1 = l.top + l.height / 2 - stageRect.top;
         const x2 = r.left + r.width / 2 - stageRect.left;
         const y2 = r.top + r.height / 2 - stageRect.top;
-        const mid = (x2 - x1) * 0.38;
 
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('class', 'match-path');
-        path.setAttribute('d', `M ${x1} ${y1} C ${x1 + mid} ${y1}, ${x2 - mid} ${y2}, ${x2} ${y2}`);
+        path.setAttribute('d', buildPath(x1, y1, x2, y2));
         if (full) {
           path.classList.add(leftPairId === rightPairId ? 'is-correct' : 'is-wrong');
         }
         svg.appendChild(path);
+      }
+
+      if (activeDrag) {
+        const sourceBtn = itemNodes.get(activeDrag.source);
+        const sourceCenter = getDotCenter(sourceBtn);
+        if (sourceCenter) {
+          const targetCenter = activeDrag.target
+            ? getDotCenter(itemNodes.get(activeDrag.target))
+            : { x: activeDrag.clientX, y: activeDrag.clientY };
+          if (targetCenter) {
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('class', 'match-path is-preview');
+            path.setAttribute(
+              'd',
+              buildPath(
+                sourceCenter.x - stageRect.left,
+                sourceCenter.y - stageRect.top,
+                targetCenter.x - stageRect.left,
+                targetCenter.y - stageRect.top
+              )
+            );
+            svg.appendChild(path);
+          }
+        }
       }
     }
 
@@ -686,7 +748,6 @@
       connections.delete(left.pairId);
       removeConnectionByRight(right.pairId);
       connections.set(left.pairId, right.pairId);
-      clearSelection();
       checkSolved();
     }
 
@@ -696,9 +757,71 @@
       connections.delete(targetLeft.pairId);
       removeConnectionByRight(targetLeft.pairId);
       connections.set(targetLeft.pairId, targetLeft.pairId);
-      clearSelection();
       setFeedback('info', tr('Se ha conectado correctamente una pareja.'));
       checkSolved();
+    }
+
+    function getHoveredRightItem(clientX, clientY) {
+      const hovered = document.elementFromPoint(clientX, clientY);
+      const card = hovered?.closest?.('.match-card--right');
+      return card ? nodeItems.get(card) || null : null;
+    }
+
+    function updateDrag(clientX, clientY) {
+      if (!activeDrag) return;
+      activeDrag.clientX = clientX;
+      activeDrag.clientY = clientY;
+      activeDrag.target = getHoveredRightItem(clientX, clientY);
+      syncVisuals();
+    }
+
+    function finishDrag(shouldCommit) {
+      if (!activeDrag) return;
+      const source = activeDrag.source;
+      const target = shouldCommit ? activeDrag.target : null;
+      activeDrag = null;
+      syncVisuals();
+      if (shouldCommit && source && target) {
+        connect(source, target);
+      }
+    }
+
+    function onPointerMove(ev) {
+      updateDrag(ev.clientX, ev.clientY);
+    }
+
+    function onPointerUp(ev) {
+      updateDrag(ev.clientX, ev.clientY);
+      finishDrag(true);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointercancel', onPointerCancel);
+    }
+
+    function onPointerCancel(ev) {
+      if (typeof ev?.clientX === 'number' && typeof ev?.clientY === 'number') {
+        updateDrag(ev.clientX, ev.clientY);
+      }
+      finishDrag(false);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointercancel', onPointerCancel);
+    }
+
+    function startDrag(item, ev) {
+      if (locked || item.side !== 'left') return;
+      ev.preventDefault();
+      setFeedback('', '');
+      activeDrag = {
+        source: item,
+        clientX: ev.clientX,
+        clientY: ev.clientY,
+        target: null
+      };
+      syncVisuals();
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointercancel', onPointerCancel);
     }
 
     function makeMedia(content) {
@@ -717,7 +840,7 @@
     function makeCard(item) {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'match-card' + (item.side === 'right' ? ' match-card--right' : '');
+      btn.className = 'match-card ' + (item.side === 'right' ? 'match-card--right' : 'match-card--left');
 
       const media = makeMedia(item.content);
       const copy = document.createElement('div');
@@ -744,23 +867,12 @@
         btn.appendChild(media);
       }
 
-      btn.addEventListener('click', () => {
-        if (locked) return;
-        if (!selected) {
-          selected = item;
-          setFeedback('', '');
-          syncVisuals();
-          return;
-        }
-        if (selected.side === item.side) {
-          selected = selected.pairId === item.pairId ? null : item;
-          syncVisuals();
-          return;
-        }
-        connect(selected, item);
-      });
+      if (item.side === 'left') {
+        btn.addEventListener('pointerdown', (ev) => startDrag(item, ev));
+      }
 
       itemNodes.set(item, btn);
+      nodeItems.set(btn, item);
       return btn;
     }
 
@@ -777,7 +889,7 @@
     resetBtn.addEventListener('click', () => {
       if (locked) return;
       connections.clear();
-      clearSelection();
+      activeDrag = null;
       setFeedback('', '');
       syncVisuals();
     });
