@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const platformAccessButtons = document.querySelectorAll('[data-platform-access]');
     const counters = document.querySelectorAll('.stat-number');
     const openInfoButtons = document.querySelectorAll('[data-open-info-modal]');
+    const courseTabs = document.querySelectorAll('[data-course-tab]');
+    const coursePanels = document.querySelectorAll('[data-course-panel]');
     const infoModal = document.getElementById('infoModal');
     const closeInfoModalBtn = document.getElementById('closeInfoModal');
     const infoRequestForm = document.getElementById('infoRequestForm');
@@ -85,6 +87,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.scroll-reveal').forEach((el) => {
         revealObserver.observe(el);
+    });
+
+    courseTabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+            const target = tab.dataset.courseTab;
+
+            courseTabs.forEach((item) => {
+                const isActive = item === tab;
+                item.classList.toggle('is-active', isActive);
+                item.setAttribute('aria-selected', String(isActive));
+            });
+
+            coursePanels.forEach((panel) => {
+                const isActive = panel.dataset.coursePanel === target;
+                panel.classList.toggle('is-active', isActive);
+                panel.hidden = !isActive;
+            });
+        });
     });
 
     const openInfoModal = (audience = '') => {

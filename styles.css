@@ -218,7 +218,7 @@ body {
     padding: 108px 0;
 }
 
-.audiences-section {
+.products-section {
     background: linear-gradient(180deg, #FFF8EA 0%, #FFFCF4 100%);
     padding: 108px 0;
 }
@@ -606,143 +606,261 @@ body {
     line-height: 1.75;
 }
 
-.offer-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px;
-}
-
-.offer-card {
-    background: #FFFFFF;
-    border: 1px solid rgba(198, 156, 58, 0.16);
-    border-radius: 28px;
-    padding: 36px;
-    box-shadow: 0 18px 40px rgba(92, 75, 37, 0.05);
-}
-
-.offer-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-}
-
-.offer-tag {
+.panel-kicker,
+.summary-chip,
+.course-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 16px;
+    width: fit-content;
+    padding: 8px 14px;
     border-radius: 999px;
     background: rgba(198, 156, 58, 0.12);
     color: var(--brand-dark-gold);
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-}
-
-.offer-avatar {
-    width: 62px;
-    height: 62px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-    background: linear-gradient(145deg, rgba(250, 217, 97, 0.22), rgba(198, 156, 58, 0.08));
-    border: 1px solid rgba(198, 156, 58, 0.18);
-    color: var(--brand-main);
-    font-size: 1.8rem;
-    box-shadow: 0 14px 28px rgba(92, 75, 37, 0.06);
-}
-
-.offer-audience-icons {
-    display: flex;
-    gap: 10px;
-    margin: 18px 0 4px;
-}
-
-.offer-audience-icons span {
-    width: 42px;
-    height: 42px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 14px;
-    background: #FFFCF2;
-    border: 1px solid rgba(198, 156, 58, 0.14);
-    color: var(--brand-dark-gold);
-    font-size: 1.15rem;
-}
-
-.offer-signals {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 8px 0 18px;
-}
-
-.offer-signals span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 9px 14px;
-    border-radius: 999px;
-    background: rgba(198, 156, 58, 0.1);
-    color: var(--brand-dark-gold);
-    font-size: 0.76rem;
+    font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 
-.offer-card h3 {
-    margin: 18px 0 14px;
+.panel-kicker {
+    margin-bottom: 12px;
+}
+
+.product-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.summary-card,
+.product-console,
+.ui-panel {
+    border-radius: 30px;
+    border: 1px solid rgba(198, 156, 58, 0.16);
+    box-shadow: 0 18px 40px rgba(92, 75, 37, 0.05);
+}
+
+.summary-card {
+    padding: 28px;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.summary-card-solid {
+    background: linear-gradient(145deg, #FFF5D8 0%, #FFEFC4 50%, #FFF8E5 100%);
+}
+
+.summary-card h3,
+.console-head h3,
+.panel-head h3,
+.course-panel-main h3 {
+    margin: 14px 0 8px;
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: 1.8rem;
     line-height: 1.05;
     color: var(--brand-text);
 }
 
-.offer-lead {
+.summary-card p,
+.course-panel-main p,
+.products-note p {
     color: #6B5D41;
-    line-height: 1.8;
+    line-height: 1.72;
 }
 
-.offer-list {
-    list-style: none;
+.product-console {
+    padding: 24px;
+    margin-bottom: 22px;
+    background:
+        radial-gradient(circle at top right, rgba(250, 217, 97, 0.22), transparent 30%),
+        rgba(255, 255, 255, 0.94);
+}
+
+.console-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.course-tabs {
+    display: inline-flex;
+    gap: 10px;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgba(198, 156, 58, 0.1);
+}
+
+.course-tab {
+    border: none;
+    border-radius: 999px;
+    padding: 12px 18px;
+    background: transparent;
+    color: #7A6843;
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.course-tab:hover {
+    color: var(--brand-text);
+}
+
+.course-tab.is-active {
+    background: #FFFFFF;
+    color: var(--brand-text);
+    box-shadow: 0 10px 24px rgba(92, 75, 37, 0.1);
+}
+
+.course-stage {
+    position: relative;
+}
+
+.course-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px;
+    border-radius: 26px;
+    background: linear-gradient(145deg, #FFFCF3 0%, #FFF5E1 100%);
+    border: 1px solid rgba(198, 156, 58, 0.16);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.course-panel[hidden] {
+    display: none;
+}
+
+.course-panel-main {
+    max-width: 48ch;
+}
+
+.course-panel-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.course-panel-pills span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 15px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(198, 156, 58, 0.14);
+    color: var(--brand-dark-gold);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.products-ui-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 20px;
+}
+
+.ui-panel {
+    padding: 28px;
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.panel-head {
+    margin-bottom: 18px;
+}
+
+.panel-head-tight h3 {
+    margin-top: 10px;
+    font-size: 1.6rem;
+}
+
+.format-chip-grid,
+.pack-pill-grid {
     display: grid;
     gap: 14px;
-    margin: 28px 0 0;
 }
 
-.offer-list li {
-    display: grid;
-    grid-template-columns: 22px 1fr;
-    gap: 12px;
-    align-items: start;
-    color: var(--brand-text);
-    font-weight: 500;
-    line-height: 1.7;
+.format-chip-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.offer-list i {
-    color: var(--brand-main);
-    font-size: 1rem;
-    margin-top: 4px;
+.format-chip,
+.pack-pill {
+    padding: 18px 18px;
+    border-radius: 22px;
+    border: 1px solid rgba(198, 156, 58, 0.14);
+    background: #FFFCF2;
 }
 
-.offer-note {
-    margin-top: 28px;
-    padding-top: 22px;
-    border-top: 1px solid rgba(92, 75, 37, 0.08);
-    color: #6B5D41;
-    line-height: 1.75;
+.format-chip {
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
-.offer-cta {
-    margin-top: 22px;
-    width: 100%;
+.format-chip i {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
+    border-radius: 15px;
+    background: rgba(198, 156, 58, 0.12);
+    color: var(--brand-main);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.format-chip span,
+.pack-pill strong {
+    color: var(--brand-text);
+    font-family: var(--font-display);
+    font-size: 1.06rem;
+}
+
+.pack-pill-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pack-pill {
+    display: grid;
+    gap: 8px;
+    background: linear-gradient(145deg, #FFFCF3 0%, #FFF4DE 100%);
+}
+
+.pack-pill span {
+    color: #6B5D41;
+    line-height: 1.55;
+    font-size: 0.95rem;
+}
+
+.products-note {
+    margin-top: 24px;
+    padding: 28px 30px;
+    border-radius: 28px;
+    border: 1px solid rgba(198, 156, 58, 0.16);
+    background: linear-gradient(145deg, #FFFCF4 0%, #FFF5DF 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    box-shadow: 0 18px 38px rgba(92, 75, 37, 0.05);
+}
+
+.products-note p {
+    max-width: 70ch;
+}
+
+.products-cta {
+    flex-shrink: 0;
 }
 
 .modal-backdrop {
@@ -1002,13 +1120,16 @@ footer {
     .hero-logo-img { height: clamp(148px, 33vw, 186px); }
     .impact-section,
     .learning-section,
-    .audiences-section,
+    .products-section,
     .features-section { padding: 88px 0; }
     .impact-grid,
     .character-callout,
     .learning-showcase,
     .topic-grid,
-    .offer-grid,
+    .product-summary-grid,
+    .products-ui-grid,
+    .format-chip-grid,
+    .pack-pill-grid,
     .form-grid,
     .grid-3,
     .section-intro,
@@ -1029,7 +1150,6 @@ footer {
         font-size: 1.02rem;
     }
     .impact-card,
-    .offer-card,
     .topic-card,
     .card,
     .closing-note { padding: 28px; }
@@ -1039,6 +1159,32 @@ footer {
     .character-visual { min-height: 128px; }
     .showcase-summary { padding: 28px; }
     .showcase-summary-grid { grid-template-columns: 1fr; }
+    .summary-card,
+    .product-console,
+    .ui-panel,
+    .products-note { padding: 24px; }
+    .console-head,
+    .course-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .course-tabs {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        border-radius: 24px;
+    }
+    .course-panel-pills {
+        justify-content: flex-start;
+    }
+    .products-note {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .products-cta {
+        width: 100%;
+        justify-content: center;
+    }
     .modal-shell { padding: 30px 22px; }
 }
 
