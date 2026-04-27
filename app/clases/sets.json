@@ -4,5 +4,5 @@
   "emprendimiento": "Emprendimiento",
   "bool_ahorro":true,
   "bool_deuda":true,
-  "bool_emprendimiento":false
+  "bool_emprendimiento":true
 }

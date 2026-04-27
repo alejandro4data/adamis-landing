@@ -114,7 +114,7 @@ function pushEmpScene(text, imageKey, extra = {}) {
 }
 
 window.slides.push(
-  SlideTituloClase({ titulo: 'Clase 16 - Formas de invertir II – Emprendimiento - DEMO' })
+  SlideTituloClase({ titulo: 'Clase 16 - Formas de invertir II – Emprendimiento' })
 );
 
 window.slides.push(
@@ -695,3 +695,15 @@ pushEmpScene(
   'vamos_alla'
 );
 
+pushEmpScene(
+  '“Ahora contesta 3 preguntas ¡Queremos saber tu opinión de esta clase!”',
+  'vamos_alla'
+);
+
+
+window.slides.push(
+  SlideBotonUnico({
+    texto: 'Volver al menú',
+    action: 'menu'
+  })
+);
