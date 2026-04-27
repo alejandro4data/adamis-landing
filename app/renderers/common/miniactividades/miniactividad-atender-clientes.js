@@ -20,7 +20,7 @@
   };
 
   const STYLE_ID = 'mini-atender-clientes-style';
-  const HINT_DELAY_MS = 60000;
+  const HINT_DELAY_MS = 30000;
 
   function formatHintTime(ms) {
     const total = Math.max(0, Math.ceil(ms / 1000));
@@ -594,7 +594,7 @@
     let advanced = false;
     let advanceTimer = null;
     let hintInterval = null;
-    const hintReadyAt = Date.now() + HINT_DELAY_MS;
+    let hintReadyAt = Date.now() + HINT_DELAY_MS;
     const channelButtons = new Map();
 
     function setFeedback(type, text) {
@@ -615,6 +615,12 @@
       }
       hintBtn.disabled = true;
       hintBtn.textContent = `${tr('Pista')} (${formatHintTime(remaining)})`;
+    }
+
+    function startHintCooldown() {
+      hintReadyAt = Date.now() + HINT_DELAY_MS;
+      if (!hintInterval) hintInterval = setInterval(updateHintButton, 1000);
+      updateHintButton();
     }
 
     function totalNotifications() {
@@ -875,7 +881,7 @@
     function applyHint() {
       if (modal && activeChannelId) {
         setFeedback('info', tr('La respuesta ya esta preparada. Solo tienes que pulsar enviar.'));
-        return;
+        return true;
       }
       const pendingChannel = channels
         .map((channel) => ({ channel, pending: unresolvedCount(channel) }))
@@ -883,9 +889,10 @@
         .sort((a, b) => b.pending - a.pending)[0];
       if (!pendingChannel) {
         setFeedback('ok', tr('Ya has respondido a todos los clientes.'));
-        return;
+        return false;
       }
       setFeedback('info', `${tr('Todavia tienes mensajes sin responder en ')}${pendingChannel.channel.label}.`);
+      return true;
     }
 
     function resetState() {
@@ -895,16 +902,16 @@
       channels = cloneState(channelDefs);
       setFeedback('', '');
       renderChannels();
+      startHintCooldown();
     }
 
     renderChannels();
     setFeedback('err', tr('Aun quedan clientes por atender.'));
-    updateHintButton();
-    hintInterval = setInterval(updateHintButton, 1000);
+    startHintCooldown();
 
     hintBtn.addEventListener('click', () => {
       if (hintBtn.disabled) return;
-      applyHint();
+      if (applyHint()) startHintCooldown();
     });
     resetBtn.addEventListener('click', resetState);
 

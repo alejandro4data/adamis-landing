@@ -20,7 +20,7 @@
   };
 
   const STYLE_ID = 'mini-unir-conceptos-style';
-  const HINT_DELAY_MS = 60000;
+  const HINT_DELAY_MS = 30000;
 
   function formatHintTime(ms) {
     const total = Math.max(0, Math.ceil(ms / 1000));
@@ -708,7 +708,7 @@
     let advanced = false;
     let advanceTimer = null;
     let hintInterval = null;
-    const hintReadyAt = Date.now() + HINT_DELAY_MS;
+    let hintReadyAt = Date.now() + HINT_DELAY_MS;
     let activeDrag = null;
 
     function updateHintButton() {
@@ -724,6 +724,12 @@
       }
       hintBtn.disabled = true;
       hintBtn.textContent = `${tr('Pista')} (${formatHintTime(remaining)})`;
+    }
+
+    function startHintCooldown() {
+      hintReadyAt = Date.now() + HINT_DELAY_MS;
+      if (!hintInterval) hintInterval = setInterval(updateHintButton, 1000);
+      updateHintButton();
     }
 
     function setFeedback(type, text) {
@@ -893,12 +899,13 @@
 
     function applyHint() {
       const targetLeft = leftItems.find((item) => connections.get(item.pairId) !== item.pairId);
-      if (!targetLeft) return;
+      if (!targetLeft) return false;
       connections.delete(targetLeft.pairId);
       removeConnectionByRight(targetLeft.pairId);
       connections.set(targetLeft.pairId, targetLeft.pairId);
       setFeedback('info', tr('Se ha conectado correctamente una pareja.'));
       checkSolved();
+      return true;
     }
 
     function getHoveredRightItem(clientX, clientY) {
@@ -1024,12 +1031,11 @@
 
     leftItems.forEach((item) => leftCol.appendChild(makeCard(item)));
     rightItems.forEach((item) => rightCol.appendChild(makeCard(item)));
-    updateHintButton();
-    hintInterval = setInterval(updateHintButton, 1000);
+    startHintCooldown();
 
     hintBtn.addEventListener('click', () => {
       if (hintBtn.disabled || locked) return;
-      applyHint();
+      if (applyHint()) startHintCooldown();
     });
 
     resetBtn.addEventListener('click', () => {
@@ -1038,6 +1044,7 @@
       activeDrag = null;
       setFeedback('', '');
       syncVisuals();
+      startHintCooldown();
     });
 
     const redraw = () => {

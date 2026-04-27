@@ -20,7 +20,7 @@
   };
 
   const STYLE_ID = 'mini-seleccionar-frases-style';
-  const HINT_DELAY_MS = 60000;
+  const HINT_DELAY_MS = 30000;
 
   function formatHintTime(ms) {
     const total = Math.max(0, Math.ceil(ms / 1000));
@@ -469,7 +469,7 @@
     let advanced = false;
     let advanceTimer = null;
     let hintInterval = null;
-    const hintReadyAt = Date.now() + HINT_DELAY_MS;
+    let hintReadyAt = Date.now() + HINT_DELAY_MS;
     const phraseButtons = [];
     let selectedId = null;
     let checked = false;
@@ -487,6 +487,12 @@
       }
       hintBtn.disabled = true;
       hintBtn.textContent = `${tr('Pista')} (${formatHintTime(remaining)})`;
+    }
+
+    function startHintCooldown() {
+      hintReadyAt = Date.now() + HINT_DELAY_MS;
+      if (!hintInterval) hintInterval = setInterval(updateHintButton, 1000);
+      updateHintButton();
     }
 
     function setFeedback(type, text) {
@@ -615,17 +621,18 @@
 
     phrases.forEach((item) => list.appendChild(makeRow(item)));
     updateProgress();
-    updateHintButton();
-    hintInterval = setInterval(updateHintButton, 1000);
+    startHintCooldown();
 
     hintBtn.addEventListener('click', () => {
       if (hintBtn.disabled || locked) return;
+      let usedHint = false;
       if (checkMode) {
         if (checked) return;
         const correct = phraseButtons.find((entry) => entry.item.correct);
         if (!correct) return;
         selectPhrase(correct.row, correct.btn, correct.item);
         setFeedback('info', tr('Se ha seleccionado una frase adecuada.'));
+        usedHint = true;
       } else {
         const preferred = phraseButtons.find((entry) => entry.item.correct && !entry.row.classList.contains('is-revealed'))
           || phraseButtons.find((entry) => !entry.row.classList.contains('is-revealed'));
@@ -636,7 +643,9 @@
             ? preferred.item.feedbackCorrect
             : preferred.item.feedbackIncorrect);
         }
+        usedHint = true;
       }
+      if (usedHint) startHintCooldown();
     });
 
     checkBtn.addEventListener('click', () => {
@@ -668,7 +677,7 @@
       checkBtn.classList.remove('is-hidden');
       continueBtn.classList.add('is-hidden');
       updateProgress();
-      updateHintButton();
+      startHintCooldown();
     });
 
     const intro = document.createElement('div');

@@ -20,7 +20,7 @@
   };
 
   const STYLE_ID = 'mini-ordenar-secuencia-style';
-  const HINT_DELAY_MS = 60000;
+  const HINT_DELAY_MS = 30000;
 
   function formatHintTime(ms) {
     const total = Math.max(0, Math.ceil(ms / 1000));
@@ -426,7 +426,7 @@
     let advanceTimer = null;
     let advanced = false;
     let hintInterval = null;
-    const hintReadyAt = Date.now() + HINT_DELAY_MS;
+    let hintReadyAt = Date.now() + HINT_DELAY_MS;
 
     function updateHintButton() {
       const remaining = hintReadyAt - Date.now();
@@ -441,6 +441,12 @@
       }
       hintBtn.disabled = true;
       hintBtn.textContent = `${tr('Pista')} (${formatHintTime(remaining)})`;
+    }
+
+    function startHintCooldown() {
+      hintReadyAt = Date.now() + HINT_DELAY_MS;
+      if (!hintInterval) hintInterval = setInterval(updateHintButton, 1000);
+      updateHintButton();
     }
 
     function setFeedback(type, text) {
@@ -503,7 +509,7 @@
       const wrongIndex = currentSteps.findIndex((item, idx) => item.id !== correctSteps[idx].id);
       if (wrongIndex < 0) {
         setFeedback('ok', tr('Secuencia completada correctamente.'));
-        return;
+        return false;
       }
       const neededId = correctSteps[wrongIndex].id;
       const fromIndex = currentSteps.findIndex((item) => item.id === neededId);
@@ -512,6 +518,7 @@
       render();
       setFeedback('info', tr('Paso fijado por pista.'));
       checkDone();
+      return true;
     }
 
     function render() {
@@ -590,12 +597,11 @@
       updateProgress();
     }
 
-    updateHintButton();
-    hintInterval = setInterval(updateHintButton, 1000);
+    startHintCooldown();
 
     hintBtn.addEventListener('click', () => {
       if (hintBtn.disabled) return;
-      applyHint();
+      if (applyHint()) startHintCooldown();
     });
     resetBtn.addEventListener('click', () => {
       if (advanceTimer) clearTimeout(advanceTimer);
@@ -606,6 +612,7 @@
       currentSteps = shuffleAllWrong(correctSteps);
       setFeedback('', '');
       render();
+      startHintCooldown();
       checkDone();
     });
 

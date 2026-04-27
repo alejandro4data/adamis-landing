@@ -19,7 +19,7 @@
   };
 
   const STYLE_ID = 'mini-ordenar-frase-style';
-  const HINT_DELAY_MS = 60000;
+  const HINT_DELAY_MS = 30000;
 
   function formatHintTime(ms) {
     const total = Math.max(0, Math.ceil(ms / 1000));
@@ -445,7 +445,7 @@
     let currentTokens = [];
     let wrongAttempts = 0;
     let hintInterval = null;
-    const hintReadyAt = Date.now() + HINT_DELAY_MS;
+    let hintReadyAt = Date.now() + HINT_DELAY_MS;
     const fixedTokenIdsByPhrase = new Map();
 
     function updateHintButton() {
@@ -461,6 +461,12 @@
       }
       hintBtn.disabled = true;
       hintBtn.textContent = `${tr('Pista')} (${formatHintTime(remaining)})`;
+    }
+
+    function startHintCooldown() {
+      hintReadyAt = Date.now() + HINT_DELAY_MS;
+      if (!hintInterval) hintInterval = setInterval(updateHintButton, 1000);
+      updateHintButton();
     }
 
     const skipBtn = document.createElement('button');
@@ -645,10 +651,10 @@
     resetBtn.addEventListener('click', () => {
       if (locked) return;
       renderPhrase({ preserveAttempts: true });
+      startHintCooldown();
     });
 
-    updateHintButton();
-    hintInterval = setInterval(updateHintButton, 1000);
+    startHintCooldown();
 
     hintBtn.addEventListener('click', () => {
       if (hintBtn.disabled || locked) return;
@@ -658,6 +664,7 @@
       fixedTokenIdsByPhrase.set(idx, fixedIds.concat(nextId));
       renderPhrase({ preserveAttempts: true });
       setFeedback('info', tr('Se ha colocado correctamente una palabra.'));
+      startHintCooldown();
     });
 
     // Intro modal

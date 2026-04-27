@@ -20,7 +20,7 @@
   };
 
   const STYLE_ID = 'mini-arrastrar-etiquetas-style';
-  const HINT_DELAY_MS = 60000;
+  const HINT_DELAY_MS = 30000;
 
   function formatHintTime(ms) {
     const total = Math.max(0, Math.ceil(ms / 1000));
@@ -748,7 +748,7 @@
     let activeDrag = null;
     let htmlDragLabelId = null;
     let hintInterval = null;
-    const hintReadyAt = Date.now() + HINT_DELAY_MS;
+    let hintReadyAt = Date.now() + HINT_DELAY_MS;
 
     function updateHintButton() {
       const remaining = hintReadyAt - Date.now();
@@ -763,6 +763,12 @@
       }
       hintBtn.disabled = true;
       hintBtn.textContent = `${tr('Pista')} (${formatHintTime(remaining)})`;
+    }
+
+    function startHintCooldown() {
+      hintReadyAt = Date.now() + HINT_DELAY_MS;
+      if (!hintInterval) hintInterval = setInterval(updateHintButton, 1000);
+      updateHintButton();
     }
 
     const shell = document.createElement('div');
@@ -1024,7 +1030,7 @@
         setFeedback('info', tr('Primero haz clic en un cartel para verlo grande. Despues podras usar una pista o arrastrar una etiqueta.'));
         const firstPending = items.find((item) => !placedTargets.has(item.id));
         if (firstPending) markNeedsInspection(firstPending.id);
-        return;
+        return !!firstPending;
       }
       const btn = labelRefs.get(targetItem.id);
       placedTargets.set(targetItem.id, targetItem.id);
@@ -1036,6 +1042,7 @@
       updateBankEmptyState();
       setFeedback('info', targetItem.feedbackCorrect);
       maybeComplete();
+      return true;
     }
 
     function updateBankEmptyState() {
@@ -1313,18 +1320,18 @@
       buildLabels();
       updateBankEmptyState();
       updateProgress();
+      startHintCooldown();
     }
 
     items.forEach(createTarget);
     buildLabels();
     updateBankEmptyState();
     updateProgress();
-    updateHintButton();
-    hintInterval = setInterval(updateHintButton, 1000);
+    startHintCooldown();
 
     hintBtn.addEventListener('click', () => {
       if (hintBtn.disabled || completed || modalState || inspectModalState) return;
-      applyHintPlacement();
+      if (applyHintPlacement()) startHintCooldown();
     });
 
     resetBtn.addEventListener('click', resetBoard);
