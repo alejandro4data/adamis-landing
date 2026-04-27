@@ -12,75 +12,94 @@ const EMP_BASE_SCENE = {
   narratorColor: EMP_NARRATOR_COLOR
 };
 
-// Rellena aquí las rutas de imagen cuando las tengas listas.
-const EMP_IMG = {
-  emprender_palabra: '',
-  empresa_pregunta: '',
-  empresa_personas: '',
-  empresa_objetivos: '',
-  empresa_actividad: '',
-  empresa_resuelve_problema: '',
-  vender_productos: '',
-  vender_servicios: '',
+const EMP_SCENES_DIR = '../assets/emprendimiento/escenas';
+const EMP_MINI_DIR = '../assets/emprendimiento/miniactividades';
 
-  crear_empresa: '',
-  ensenar_crearla: '',
-  pensar_problema: '',
-  mejorar_solucion: '',
-  patios_caos: '',
+const EMP_IMG = {
+  emprender_palabra: `${EMP_SCENES_DIR}/escena1.avif`,
+  empresa_pregunta: `${EMP_SCENES_DIR}/escena2.avif`,
+  empresa_personas: `${EMP_SCENES_DIR}/escena3.avif`,
+  empresa_objetivos: `${EMP_SCENES_DIR}/escena4.avif`,
+  empresa_actividad: `${EMP_SCENES_DIR}/escena5.avif`,
+  empresa_resuelve_problema: `${EMP_SCENES_DIR}/escena6.avif`,
+  vender_productos: `${EMP_SCENES_DIR}/escena7.avif`,
+  vender_servicios: `${EMP_SCENES_DIR}/escena8.avif`,
+
+  crear_empresa: `${EMP_SCENES_DIR}/escena9.avif`,
+  ensenar_crearla: `${EMP_SCENES_DIR}/escena10.avif`,
+  pensar_problema: `${EMP_SCENES_DIR}/escena11.avif`,
+  mejorar_solucion: `${EMP_SCENES_DIR}/escena12.avif`,
+  patios_caos: `${EMP_SCENES_DIR}/escena13.avif`,
   patio_caos_general: '',
-  idea_torneos: '',
-  servicio_torneos: '',
-  publico_objetivo_termino: '',
-  publico_objetivo_clientes: '',
-  publico_objetivo_pregunta: '',
-  publico_objetivo_respuesta: '',
-  por_que_pagarian: '',
-  ofrecer_premios: '',
-  elige_premios: '',
-  pagar_monedas: '',
-  materiales_necesarios: '',
-  ahorros_no_suficiente: '',
-  inversores: '',
+  idea_torneos: `${EMP_SCENES_DIR}/escena14.avif`,
+  servicio_torneos: `${EMP_SCENES_DIR}/escena15.avif`,
+  publico_objetivo_termino: `${EMP_SCENES_DIR}/escena16.avif`,
+  publico_objetivo_clientes: `${EMP_SCENES_DIR}/escena17.avif`,
+  publico_objetivo_pregunta: `${EMP_SCENES_DIR}/escena18.avif`,
+  publico_objetivo_respuesta: `${EMP_SCENES_DIR}/escena19.avif`,
+  por_que_pagarian: `${EMP_SCENES_DIR}/escena20.avif`,
+  ofrecer_premios: `${EMP_SCENES_DIR}/escena21.avif`,
+  elige_premios: `${EMP_SCENES_DIR}/escena22.avif`,
+  pagar_monedas: `${EMP_SCENES_DIR}/escena23.avif`,
+  materiales_necesarios: `${EMP_SCENES_DIR}/escena24.avif`,
+  ahorros_no_suficiente: `${EMP_SCENES_DIR}/escena25.avif`,
+  inversores: `${EMP_SCENES_DIR}/escena26.avif`,  
   posibles_inversores: '',
   manos_a_la_obra: '',
   dinero_inversores: '',
-  no_caprichos: '',
-  materiales_buenos: '',
-  enterarse_torneo: '',
-  mas_gente_mas_dinero: '',
-  publicidad: '',
-  carteles: '',
-  correos: '',
-  mejor_cartel: '',
-  cartel_saturado: '',
-  cartel_falta_info: '',
-  cartel_simple: '',
-  cartel_perfecto: '',
-  esperar_clientes: '',
-  icono_telefono_clientes: '',
-  icono_correo_clientes: '',
-  exito: '',
-  volver_participar: '',
-  devolver_y_disfrutar: '',
-  cosas_positivas: '',
-  libertad: '',
-  independiente: '',
-  pasion_empresa: '',
-  vender_cuadros: '',
-  por_que_no_intentarlo: '',
+  no_caprichos: `${EMP_SCENES_DIR}/escena28.avif`,
+  materiales_buenos: `${EMP_SCENES_DIR}/escena29.avif`,
+  enterarse_torneo: `${EMP_SCENES_DIR}/escena30.avif`,
+  mas_gente_mas_dinero: `${EMP_SCENES_DIR}/escena31.avif`,
+  publicidad: `${EMP_SCENES_DIR}/escena32.avif`,
+  carteles: `${EMP_SCENES_DIR}/escena33.avif`,
+  correos: `${EMP_SCENES_DIR}/escena34.avif`,
+  mejor_cartel: `${EMP_SCENES_DIR}/escena35.avif`,
+  cartel_saturado: `${EMP_MINI_DIR}/miniactividad-4-saturado.avif`,
+  cartel_falta_info: `${EMP_MINI_DIR}/miniactividad-4-no-informacion.avif`,
+  cartel_simple: `${EMP_MINI_DIR}/miniactividad-4-simple.avif`,
+  cartel_perfecto: `${EMP_MINI_DIR}/miniactividad-4-equilibrado.avif`,
+  esperar_clientes: `${EMP_SCENES_DIR}/escena36.avif`,
+  icono_telefono_clientes: `${EMP_MINI_DIR}/miniactividad-5-telefono.avif`,
+  icono_correo_clientes: `${EMP_MINI_DIR}/miniactividad-5-correo.avif`,
+  exito: `${EMP_SCENES_DIR}/escena37.avif`,
+  volver_participar: `${EMP_SCENES_DIR}/escena38.avif`,
+  devolver_y_disfrutar: `${EMP_SCENES_DIR}/escena39.avif`,
+  cosas_positivas: `${EMP_SCENES_DIR}/escena40.avif`,
+  libertad: `${EMP_SCENES_DIR}/escena41.avif`,
+  independiente: `${EMP_SCENES_DIR}/escena42.avif`,
+  pasion_empresa: `${EMP_SCENES_DIR}/escena43.avif`,
+  vender_cuadros: `${EMP_SCENES_DIR}/escena44.avif`,
+  por_que_no_intentarlo: `${EMP_SCENES_DIR}/escena45.avif`,
 
-  pasos_1: '',
-  pasos_2: '',
-  pasos_3: '',
-  pasos_4: '',
-  pasos_5: '',
+  mini_panaderia: `${EMP_MINI_DIR}/miniactividad-1-panaderia.avif`,
+  mini_peluqueria: `${EMP_MINI_DIR}/miniactivdad-1-peluqueria.avif`,
+  mini_supermercado: `${EMP_MINI_DIR}/miniactividad-1-supermercado.avif`,
+  mini_videojuegos: `${EMP_MINI_DIR}/miniactividad-1-empresa-videojuegos.avif`,
+  mini_reparto: `${EMP_MINI_DIR}/miniactividad-1-empresa-reparto.avif`,
+  mini_telefonia: `${EMP_MINI_DIR}/miniactividad-1-empresa-telefonia.avif`,
+  mini_objetivo_pan: `${EMP_MINI_DIR}/miniactividad-1-pan.avif`,
+  mini_objetivo_tijeras: `${EMP_MINI_DIR}/miniactividad-1-tijeras.avif`,
+  mini_objetivo_cesta: `${EMP_MINI_DIR}/miniactividad-1-cesta.avif`,
+  mini_objetivo_consola: `${EMP_MINI_DIR}/miniactividad-1-consola.avif`,
+  mini_objetivo_paquete: `${EMP_MINI_DIR}/miniactividad-1-paquete.avif`,
+  mini_objetivo_movil: `${EMP_MINI_DIR}/miniactividad-1-movil.avif`,
+  mini_premio_coche: `${EMP_MINI_DIR}/miniactividad-2-coche.avif`,
+  mini_premio_raqueta: `${EMP_MINI_DIR}/miniactividad-2-raqueta.avif`,
+  mini_premio_tablet: `${EMP_MINI_DIR}/miniactividad-2-tablet.avif`,
+  mini_premio_tarjeta: `${EMP_MINI_DIR}/miniactividad-2-tarjeta.avif`,
+  mini_premio_trofeo: `${EMP_MINI_DIR}/miniactividad-2-trofeo.avif`,
 
-  muy_bien: '',
-  algo_especial: '',
-  dividir_grupos: '',
-  primera_empresa: '',
-  vamos_alla: ''
+  pasos_1: `${EMP_SCENES_DIR}/escena46.avif`,
+  pasos_2: `${EMP_SCENES_DIR}/escena47.avif`,
+  pasos_3: `${EMP_SCENES_DIR}/escena48.avif`,
+  pasos_4: `${EMP_SCENES_DIR}/escena49.avif`,
+
+  muy_bien: `${EMP_SCENES_DIR}/escena50.avif`,
+  algo_especial: `${EMP_SCENES_DIR}/escena51.avif`,
+  dividir_grupos: `${EMP_SCENES_DIR}/escena52.avif`,
+  primera_empresa: `${EMP_SCENES_DIR}/escena53.avif`,
+  vamos_alla: `${EMP_SCENES_DIR}/escena54.avif`
 };
 
 function pushEmpScene(text, imageKey, extra = {}) {
@@ -147,13 +166,19 @@ window.slides.push(
     introTitle: 'Miniactividad',
     introText: 'Relaciona cada tipo de empresa con el objetivo que mejor describe lo que hace.',
     introButtonText: 'Empezar',
+    showTutorial: true,
+    tutorial: {
+      left: 'Panaderia',
+      right: 'Hacer pan y venderlo',
+      caption: 'Mantén pulsada una empresa y arrastra hasta su objetivo.'
+    },
     pairs: [
-      { id: 'panaderia', left: { text: 'Panaderia' }, right: { text: 'Hacer pan y venderlo.' } },
-      { id: 'peluqueria', left: { text: 'Peluqueria' }, right: { text: 'Cortar el pelo y cuidar el peinado de las personas.' } },
-      { id: 'supermercado', left: { text: 'Supermercado' }, right: { text: 'Vender comida y productos del dia a dia.' } },
-      { id: 'videojuegos', left: { text: 'Empresa de videojuegos' }, right: { text: 'Crear videojuegos para que las personas jueguen y los compren.' } },
-      { id: 'reparto', left: { text: 'Empresa de reparto de paquetes' }, right: { text: 'Llevar paquetes y pedidos de un lugar a otro.' } },
-      { id: 'telefonia', left: { text: 'Empresa de telefonia' }, right: { text: 'Ofrecer llamadas, mensajes e internet a los clientes.' } }
+      { id: 'panaderia', left: { text: 'Panaderia', image: EMP_IMG.mini_panaderia, alt: 'Panaderia' }, right: { text: 'Hacer pan y venderlo.', image: EMP_IMG.mini_objetivo_pan, alt: 'Pan' } },
+      { id: 'peluqueria', left: { text: 'Peluqueria', image: EMP_IMG.mini_peluqueria, alt: 'Peluqueria' }, right: { text: 'Cortar el pelo y cuidar el peinado de las personas.', image: EMP_IMG.mini_objetivo_tijeras, alt: 'Peluqueria' } },
+      { id: 'supermercado', left: { text: 'Supermercado', image: EMP_IMG.mini_supermercado, alt: 'Supermercado' }, right: { text: 'Vender comida y productos del dia a dia.', image: EMP_IMG.mini_objetivo_cesta, alt: 'Cesta de la compra' } },
+      { id: 'videojuegos', left: { text: 'Empresa de videojuegos', image: EMP_IMG.mini_videojuegos, alt: 'Empresa de videojuegos' }, right: { text: 'Crear videojuegos para que las personas jueguen y los compren.', image: EMP_IMG.mini_objetivo_consola, alt: 'Consola' } },
+      { id: 'reparto', left: { text: 'Empresa de reparto de paquetes', image: EMP_IMG.mini_reparto, alt: 'Empresa de reparto de paquetes' }, right: { text: 'Llevar paquetes y pedidos de un lugar a otro.', image: EMP_IMG.mini_objetivo_paquete, alt: 'Paquete' } },
+      { id: 'telefonia', left: { text: 'Empresa de telefonia', image: EMP_IMG.mini_telefonia, alt: 'Empresa de telefonia' }, right: { text: 'Ofrecer llamadas, mensajes e internet a los clientes.', image: EMP_IMG.mini_objetivo_movil, alt: 'Telefono movil' } }
     ]
   })
 );
@@ -209,12 +234,6 @@ pushEmpScene(
 pushEmpScene(
   '“Por ejemplo, un grupo de compañeros  y compañeras y tú detectáis que en tu cole los patios son un caos…”',
   'patios_caos'
-);
-
-// (Se ve el patio desde arriba, con niños corriendo en distintas direcciones y actividades mezcladas sin orden)
-pushEmpScene(
-  '“Cada grupo en el patio hace cosas diferentes y se vuelve un caos…”',
-  'patio_caos_general'
 );
 
 // (Aparece un grupo de niños reunido con Adamis, señalando una pizarra donde pone “Torneos”, con iconos de fútbol, baloncesto y tenis)
@@ -276,14 +295,17 @@ window.slides.push(
   SlideMiniactividadSeleccionarCards({
     title: 'Elige los premios adecuados',
     introTitle: 'Miniactividad',
-    introText: 'Pulsa cada premio para descubrir si es realista y adecuado para el torneo.',
+    introText: 'Marca los premios que sean realistas y adecuados para el torneo. Cuando termines, pulsa Comprobar.',
     introButtonText: 'Empezar',
+    checkMode: true,
+    submitText: 'Comprobar',
+    shuffleCards: true,
     cards: [
-      { id: 'coche', text: 'Coche', correct: false, feedbackIncorrect: 'No es realista y no es acorde a su edad.' },
-      { id: 'raqueta', text: 'Una raqueta de tenis o padel o pin pon', correct: true, feedbackCorrect: 'Si, puede ser un buen premio para el torneo respectivo.' },
-      { id: 'tablet', text: 'Una tablet', correct: true, feedbackCorrect: 'Si, podria ser el premio estrella del torneo.' },
-      { id: 'tarjeta-regalo', text: 'Una tarjeta de regalo', correct: true, feedbackCorrect: 'Si, es una opcion muy buena porque cada uno puede comprarse lo que quiera.' },
-      { id: 'trofeos', text: 'Trofeos', correct: true, feedbackCorrect: 'Si, se pueden dar junto al resto de premios.' }
+      { id: 'coche', text: 'Coche', image: EMP_IMG.mini_premio_coche, alt: 'Coche', correct: false, feedbackIncorrect: 'No es realista y no es acorde a su edad.' },
+      { id: 'raqueta', text: 'Una raqueta de tenis o padel o pin pon', image: EMP_IMG.mini_premio_raqueta, alt: 'Raqueta', correct: true, feedbackCorrect: 'Si, puede ser un buen premio para el torneo respectivo.' },
+      { id: 'tablet', text: 'Una tablet', image: EMP_IMG.mini_premio_tablet, alt: 'Tablet', correct: true, feedbackCorrect: 'Si, podria ser el premio estrella del torneo.' },
+      { id: 'tarjeta-regalo', text: 'Una tarjeta de regalo', image: EMP_IMG.mini_premio_tarjeta, alt: 'Tarjeta de regalo', correct: true, feedbackCorrect: 'Si, es una opcion muy buena porque cada uno puede comprarse lo que quiera.' },
+      { id: 'trofeos', text: 'Trofeos', image: EMP_IMG.mini_premio_trofeo, alt: 'Trofeos', correct: true, feedbackCorrect: 'Si, se pueden dar junto al resto de premios.' }
     ]
   })
 );
@@ -322,24 +344,6 @@ pushEmpScene(
   'inversores'
 );
 
-// (Se ve a una madre, un profesor y la directora del colegio escuchando la idea del torneo mientras Adamis los presenta)
-pushEmpScene(
-  '“Podría ser vuestra familia, el profesorado o el director o directora del colegio.”',
-  'posibles_inversores'
-);
-
-// (Aparece el grupo de amigos dándose ánimos)
-pushEmpScene(
-  '“Una vez tengáis el dinero de los inversores, os toca poneros manos a la obra.”',
-  'manos_a_la_obra'
-);
-
-// (Aparece Adamis serio, con un cartel de advertencia, mientras protege una caja con monedas etiquetada “Dinero de la empresa”)
-pushEmpScene(
-  '“¡Pero cuidado! El dinero de los inversores, NO es vuestro dinero.”',
-  'dinero_inversores'
-);
-
 // (Se ve una comparación: en un lado materiales del torneo aprobados y en el otro caprichos como chuches o juguetes tachados)
 pushEmpScene(
   '“Ese dinero lo tenéis que usar para poner la empresa en marcha, no para caprichos vuestros.”',
@@ -350,8 +354,10 @@ window.slides.push(
   SlideMiniactividadSeleccionarFrases({
     title: '¿Que le dirias a los inversores?',
     introTitle: 'Miniactividad',
-    introText: 'Pulsa cada propuesta y descubre cual transmite mejor confianza a los inversores.',
+    introText: 'Selecciona la propuesta que transmite mejor confianza a los inversores. Cuando termines, pulsa Comprobar.',
     introButtonText: 'Empezar',
+    checkMode: true,
+    submitText: 'Comprobar',
     phrases: [
       { text: 'Si inviertes en nosotros, te daremos 10 veces lo que nos has dado.', correct: false, feedbackIncorrect: 'Incorrecto, es poco realista prometer tanto dinero.' },
       { text: 'Invierte en nosotros y si por algun casual ganamos dinero te lo devolveremos.', correct: false, feedbackIncorrect: 'Incorrecto, no genera confianza ni transmite seguridad.' },
@@ -413,7 +419,7 @@ window.slides.push(
   SlideMiniactividadArrastrarEtiquetas({
     title: 'Clasifica cada cartel',
     introTitle: 'Miniactividad',
-    introText: 'Arrastra cada etiqueta al cartel que mejor encaja con su descripcion.',
+    introText: 'Primero haz clic en cada cartel para verlo grande. Despues arrastra cada etiqueta al cartel que mejor encaja con su descripcion.',
     introButtonText: 'Empezar',
     items: [
       {
@@ -600,34 +606,28 @@ pushEmpScene(
   'por_que_no_intentarlo'
 );
 
-// (Aparece Adamis junto a varias tarjetas con pasos escritos, preparadas para ordenarse)
-pushEmpScene(
-  '“Ahora que has entendido qué es lo que tienes que hacer para crear una empresa…”',
-  'pasos_1'
-);
-
 // (Aparece Adamis sonriendo y señalando un tablero tipo puzle con huecos para colocar pasos)
 pushEmpScene(
-  '“Te propongo un minijuego.”',
-  'pasos_2'
+  '“Ahora que has entendido qué es lo que tienes que hacer para crear una empresa… Te propongo un minijuego.”',
+  'pasos_1'
 );
 
 // (Se ven todas las tarjetas de pasos desordenadas sobre una mesa o panel)
 pushEmpScene(
   '“Te voy a plantear los pasos que hay que seguir para crear una empresa.”',
-  'pasos_3'
+  'pasos_2'
 );
 
 // (Aparecen las tarjetas mezcladas y Adamis llevándose las manos a la cabeza con gesto divertido)
 pushEmpScene(
   '“¡Pero están desordenadas!”',
-  'pasos_4'
+  'pasos_3'
 );
 
 // (Aparece Adamis señalando el primer hueco vacío del tablero, animando al alumno a empezar)
 pushEmpScene(
   '“Necesito que me ayudes a ordenarlas…”',
-  'pasos_5'
+  'pasos_4'
 );
 
 // Mini Actividad - Pasos para crear una empresa
@@ -667,7 +667,7 @@ window.slides.push(
 
 // (Aparece Adamis felicitando al alumno con gesto orgulloso y una pequeña estrella o sello de “superado”)
 pushEmpScene(
-  '“¡Muy bien [Nombre]! Ya has visto los pasos que seguir para crear una empresa.”',
+  '“¡Muy bien! Ya has visto los pasos que seguir para crear una empresa.”',
   'muy_bien'
 );
 

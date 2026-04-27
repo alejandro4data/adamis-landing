@@ -234,7 +234,9 @@ function SlideMiniactividadUnirConceptos({
   pairs, parejas,
   pairs_en, parejas_en,
   autoAdvanceMs,
-  shuffleRight = true
+  shuffleRight = true,
+  showTutorial,
+  tutorial
 } = {}){
   const list = Array.isArray(pairs) ? pairs
     : Array.isArray(parejas) ? parejas
@@ -248,6 +250,8 @@ function SlideMiniactividadUnirConceptos({
     introTitle: introTitle ?? intro?.title,
     introText: introText ?? intro?.text,
     introButtonText: introButtonText ?? intro?.buttonText,
+    showTutorial: !!showTutorial,
+    tutorial,
     pairs: list,
     pairs_en: listEn,
     shuffleRight: shuffleRight !== false,
@@ -261,7 +265,11 @@ function SlideMiniactividadSeleccionarCards({
   intro,
   cards, tarjetas,
   cards_en, tarjetas_en,
-  autoAdvanceMs
+  autoAdvanceMs,
+  checkMode,
+  requireCheck,
+  submitText,
+  shuffleCards
 } = {}){
   const list = Array.isArray(cards) ? cards
     : Array.isArray(tarjetas) ? tarjetas
@@ -277,6 +285,9 @@ function SlideMiniactividadSeleccionarCards({
     introButtonText: introButtonText ?? intro?.buttonText,
     cards: list,
     cards_en: listEn,
+    checkMode: !!(checkMode || requireCheck),
+    submitText,
+    shuffleCards: !!shuffleCards,
     autoAdvanceMs
   };
 }
@@ -287,7 +298,10 @@ function SlideMiniactividadSeleccionarFrases({
   intro,
   phrases, frases,
   phrases_en, frases_en,
-  autoAdvanceMs
+  autoAdvanceMs,
+  checkMode,
+  requireCheck,
+  submitText
 } = {}){
   const list = Array.isArray(phrases) ? phrases
     : Array.isArray(frases) ? frases
@@ -303,6 +317,8 @@ function SlideMiniactividadSeleccionarFrases({
     introButtonText: introButtonText ?? intro?.buttonText,
     phrases: list,
     phrases_en: listEn,
+    checkMode: !!(checkMode || requireCheck),
+    submitText,
     autoAdvanceMs
   };
 }

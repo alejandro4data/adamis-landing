@@ -45,7 +45,7 @@
         min-height:70vh;
       }
       .match-shell{
-        width:min(1120px, 96vw);
+        width:min(1040px, calc(100vw - 40px));
         background:
           radial-gradient(circle at top, rgba(251,191,36,.18), transparent 34%),
           linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
@@ -82,8 +82,8 @@
       .match-stage{
         position:relative;
         display:grid;
-        grid-template-columns:minmax(240px, 1fr) minmax(160px, 260px) minmax(240px, 1fr);
-        gap:22px;
+        grid-template-columns:minmax(320px, 1.08fr) minmax(88px, 108px) minmax(280px, .92fr);
+        gap:16px;
         min-height:440px;
         align-items:stretch;
       }
@@ -135,12 +135,12 @@
       .match-path.is-wrong{ stroke:#dc2626; }
       .match-card{
         position:relative;
-        min-height:96px;
+        min-height:108px;
         display:grid;
-        grid-template-columns:90px minmax(0, 1fr) 24px;
+        grid-template-columns:104px minmax(0, 1fr) 22px;
         gap:14px;
         align-items:center;
-        padding:12px;
+        padding:12px 14px;
         border-radius:20px;
         border:1px solid #e2e8f0;
         background:linear-gradient(180deg,#ffffff 0%, #f8fafc 100%);
@@ -161,7 +161,7 @@
         border-color:#cbd5e1;
       }
       .match-card--right{
-        grid-template-columns:24px minmax(0, 1fr) 90px;
+        grid-template-columns:20px minmax(0, 1fr) 76px;
       }
       .match-card.is-selected{
         border-color:#2563eb;
@@ -188,13 +188,11 @@
         background:linear-gradient(180deg,#fef2f2 0%, #ffffff 100%);
       }
       .match-media{
-        width:90px;
-        height:90px;
+        width:104px;
+        height:78px;
         border-radius:18px;
         border:1px dashed #cbd5e1;
-        background:#e2e8f0;
-        background-size:cover;
-        background-position:center;
+        background:linear-gradient(180deg, #eef2ff 0%, #e2e8f0 100%);
         display:flex;
         align-items:center;
         justify-content:center;
@@ -205,16 +203,42 @@
         letter-spacing:.06em;
         overflow:hidden;
       }
+      .match-card--right .match-media{
+        width:76px;
+        height:76px;
+        border-radius:18px;
+        border-color:#e2e8f0;
+        background:linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%);
+      }
       .match-media.has-image{
         border-style:solid;
         border-color:#dbeafe;
         background-color:#ffffff;
+      }
+      .match-media__img{
+        width:100%;
+        height:100%;
+        display:block;
+        object-fit:contain;
+        object-position:center;
+        padding:4px;
+      }
+      .match-card--left .match-media__img{
+        padding:0;
+        transform:scale(1.12);
+      }
+      .match-card--right .match-media__img{
+        padding:8px;
+        transform:scale(1.02);
       }
       .match-copy{
         min-width:0;
         display:flex;
         flex-direction:column;
         gap:6px;
+      }
+      .match-card--right .match-copy{
+        gap:5px;
       }
       .match-copy__eyebrow{
         font-size:11px;
@@ -229,6 +253,11 @@
         color:#0f172a;
         line-height:1.2;
         word-break:break-word;
+      }
+      .match-card--right .match-copy__text{
+        font-size:15px;
+        line-height:1.16;
+        max-width:28ch;
       }
       .match-dot{
         width:18px;
@@ -310,6 +339,70 @@
         font-size:14px;
         color:#334155;
       }
+      .match-tutorial{
+        position:relative;
+        display:grid;
+        grid-template-columns:minmax(0, 1fr) 82px minmax(0, 1fr);
+        align-items:center;
+        gap:10px;
+        margin:0 0 16px 0;
+        padding:14px;
+        border:1px solid #dbeafe;
+        border-radius:16px;
+        background:#eff6ff;
+      }
+      .match-tutorial-card{
+        min-height:58px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        text-align:center;
+        border:2px solid #cbd5e1;
+        border-radius:14px;
+        background:#ffffff;
+        color:#0f172a;
+        padding:10px;
+        font-size:13px;
+        font-weight:900;
+        line-height:1.2;
+      }
+      .match-tutorial-card--left{
+        border-color:#2563eb;
+      }
+      .match-tutorial-card--right{
+        border-color:#16a34a;
+      }
+      .match-tutorial-line{
+        width:82px;
+        height:46px;
+        overflow:visible;
+      }
+      .match-tutorial-line path{
+        fill:none;
+        stroke:#2563eb;
+        stroke-width:5;
+        stroke-linecap:round;
+        stroke-dasharray:120;
+        stroke-dashoffset:120;
+        animation:matchTutorialDraw 1.65s ease-in-out infinite;
+        filter:drop-shadow(0 5px 10px rgba(37,99,235,.18));
+      }
+      .match-tutorial-line circle{
+        fill:#2563eb;
+      }
+      .match-tutorial-caption{
+        grid-column:1 / -1;
+        margin:0;
+        color:#1d4ed8;
+        font-size:12px;
+        font-weight:900;
+        line-height:1.3;
+      }
+      @keyframes matchTutorialDraw{
+        0%{ stroke-dashoffset:120; opacity:.35; }
+        45%,72%{ stroke-dashoffset:0; opacity:1; }
+        100%{ stroke-dashoffset:0; opacity:.35; }
+      }
       .match-btn.primary{
         background:#111827;
         color:#ffffff;
@@ -321,23 +414,57 @@
         pointer-events:none;
         z-index:3;
       }
-      @media (max-width: 980px){
+      @media (max-width: 1240px){
+        .match-shell{
+          width:min(980px, calc(100vw - 32px));
+        }
         .match-stage{
-          grid-template-columns:minmax(220px, 1fr) 120px minmax(220px, 1fr);
-          gap:14px;
+          grid-template-columns:minmax(280px, 1fr) 84px minmax(250px, .88fr);
+          gap:12px;
         }
         .match-card{
-          grid-template-columns:74px minmax(0, 1fr) 20px;
+          min-height:102px;
         }
         .match-card--right{
-          grid-template-columns:20px minmax(0, 1fr) 74px;
+          grid-template-columns:20px minmax(0, 1fr) 72px;
+        }
+        .match-card--right .match-media{
+          width:72px;
+          height:72px;
+        }
+        .match-card--right .match-copy__text{
+          font-size:14px;
+          max-width:23ch;
+        }
+      }
+      @media (max-width: 980px){
+        .match-shell{
+          width:min(980px, calc(100vw - 28px));
+        }
+        .match-stage{
+          grid-template-columns:minmax(240px, 1fr) 84px minmax(220px, .92fr);
+          gap:12px;
+        }
+        .match-card{
+          grid-template-columns:92px minmax(0, 1fr) 20px;
+        }
+        .match-card--right{
+          grid-template-columns:20px minmax(0, 1fr) 68px;
         }
         .match-media{
-          width:74px;
-          height:74px;
+          width:92px;
+          height:72px;
+        }
+        .match-card--right .match-media{
+          width:68px;
+          height:68px;
         }
         .match-copy__text{
           font-size:15px;
+        }
+        .match-card--right .match-copy__text{
+          font-size:14px;
+          max-width:24ch;
         }
       }
       @media (max-width: 760px){
@@ -351,6 +478,14 @@
         }
         .match-lane{
           min-height:120px;
+        }
+        .match-tutorial{
+          grid-template-columns:1fr;
+        }
+        .match-tutorial-line{
+          justify-self:center;
+          transform:rotate(90deg);
+          margin:-6px 0;
         }
       }
     `;
@@ -480,6 +615,11 @@
     const introTitle = tr(String(s?.introTitle || s?.intro?.title || 'Antes de empezar'));
     const introText = tr(String(s?.introText || s?.intro?.text || 'Une cada concepto con su pareja correcta.'));
     const introButtonText = tr(String(s?.introButtonText || s?.intro?.buttonText || 'Empezar'));
+    const tutorial = s?.tutorial && typeof s.tutorial === 'object' ? s.tutorial : {};
+    const showTutorial = s?.showTutorial === true || s?.tutorial === true || tutorial.enabled === true;
+    const tutorialLeftText = tr(String(tutorial.left || 'Negocio'));
+    const tutorialRightText = tr(String(tutorial.right || 'Producto'));
+    const tutorialCaptionText = tr(String(tutorial.caption || 'Mantén pulsada una caja de la izquierda y arrastra hasta su pareja de la derecha.'));
     const autoAdvanceMs = Math.max(500, Number(s?.autoAdvanceMs ?? 1600));
     const shuffleRight = s?.shuffleRight !== false;
 
@@ -824,12 +964,18 @@
       window.addEventListener('pointercancel', onPointerCancel);
     }
 
-    function makeMedia(content) {
+    function makeMedia(content, side) {
       const media = document.createElement('div');
       media.className = 'match-media';
       if (content.image) {
         media.classList.add('has-image');
-        media.style.backgroundImage = `url("${content.image.replace(/"/g, '&quot;')}")`;
+        const img = document.createElement('img');
+        img.className = 'match-media__img';
+        img.src = content.image;
+        img.alt = content.alt || content.text || tr('Imagen');
+        img.draggable = false;
+        img.decoding = 'async';
+        media.appendChild(img);
         media.setAttribute('aria-label', content.alt || content.text || tr('Imagen'));
       } else {
         media.textContent = tr('Imagen');
@@ -842,7 +988,7 @@
       btn.type = 'button';
       btn.className = 'match-card ' + (item.side === 'right' ? 'match-card--right' : 'match-card--left');
 
-      const media = makeMedia(item.content);
+      const media = makeMedia(item.content, item.side);
       const copy = document.createElement('div');
       copy.className = 'match-copy';
       const eyebrow = document.createElement('div');
@@ -916,6 +1062,47 @@
     const introP = document.createElement('p');
     introP.className = 'match-intro-text';
     introP.textContent = introText;
+    let tutorialBox = null;
+    if (showTutorial) {
+      tutorialBox = document.createElement('div');
+      tutorialBox.className = 'match-tutorial';
+      tutorialBox.setAttribute('aria-label', tutorialCaptionText);
+
+      const leftDemo = document.createElement('div');
+      leftDemo.className = 'match-tutorial-card match-tutorial-card--left';
+      leftDemo.textContent = tutorialLeftText;
+
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      line.setAttribute('class', 'match-tutorial-line');
+      line.setAttribute('viewBox', '0 0 82 46');
+      line.setAttribute('aria-hidden', 'true');
+      const startDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      startDot.setAttribute('cx', '8');
+      startDot.setAttribute('cy', '23');
+      startDot.setAttribute('r', '5');
+      const endDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      endDot.setAttribute('cx', '74');
+      endDot.setAttribute('cy', '23');
+      endDot.setAttribute('r', '5');
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', 'M 8 23 C 28 6, 54 40, 74 23');
+      line.appendChild(startDot);
+      line.appendChild(endDot);
+      line.appendChild(path);
+
+      const rightDemo = document.createElement('div');
+      rightDemo.className = 'match-tutorial-card match-tutorial-card--right';
+      rightDemo.textContent = tutorialRightText;
+
+      const caption = document.createElement('p');
+      caption.className = 'match-tutorial-caption';
+      caption.textContent = tutorialCaptionText;
+
+      tutorialBox.appendChild(leftDemo);
+      tutorialBox.appendChild(line);
+      tutorialBox.appendChild(rightDemo);
+      tutorialBox.appendChild(caption);
+    }
     const introBtn = document.createElement('button');
     introBtn.type = 'button';
     introBtn.className = 'match-btn primary';
@@ -926,6 +1113,7 @@
     });
     introCard.appendChild(introH);
     introCard.appendChild(introP);
+    if (tutorialBox) introCard.appendChild(tutorialBox);
     introCard.appendChild(introBtn);
     intro.appendChild(introCard);
     root.appendChild(intro);

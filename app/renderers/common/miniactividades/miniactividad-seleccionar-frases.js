@@ -113,6 +113,12 @@
       .phrasepick-button:disabled{
         cursor:default;
       }
+      .phrasepick-row.is-selected .phrasepick-button{
+        border-color:#2563eb;
+        background:#eff6ff;
+        color:#1d4ed8;
+        box-shadow:0 0 0 5px rgba(37,99,235,.14), 0 18px 34px rgba(15,23,42,.11);
+      }
       .phrasepick-row.is-correct .phrasepick-button{
         background:linear-gradient(180deg,#dcfce7 0%, #bbf7d0 100%);
         border-color:#16a34a;
@@ -213,6 +219,20 @@
         background:#111827;
         color:#ffffff;
         box-shadow:0 12px 26px rgba(17,24,39,.25);
+      }
+      .phrasepick-btn.continue{
+        background:linear-gradient(180deg,#22c55e 0%, #15803d 100%);
+        color:#ffffff;
+        box-shadow:0 14px 30px rgba(21,128,61,.28);
+        transform:translateY(0);
+        transition:transform .18s ease, box-shadow .18s ease;
+      }
+      .phrasepick-btn.continue:hover{
+        transform:translateY(-1px);
+        box-shadow:0 18px 36px rgba(21,128,61,.34);
+      }
+      .phrasepick-btn.is-hidden{
+        display:none;
       }
       .phrasepick-feedback{
         min-height:20px;
@@ -385,6 +405,8 @@
     const introTitle = tr(String(s?.introTitle || s?.intro?.title || 'Antes de empezar'));
     const introText = tr(String(s?.introText || s?.intro?.text || 'Selecciona las frases adecuadas y revisa por que cada una es correcta o incorrecta.'));
     const introButtonText = tr(String(s?.introButtonText || s?.intro?.buttonText || 'Empezar'));
+    const checkMode = s?.checkMode === true || s?.requireCheck === true;
+    const submitText = tr(String(s?.submitText || s?.checkText || 'Comprobar'));
     const autoAdvanceMs = Math.max(500, Number(s?.autoAdvanceMs ?? 1600));
     const totalCorrect = phrases.filter((item) => item.correct).length;
 
@@ -403,7 +425,9 @@
 
     const instructions = document.createElement('p');
     instructions.className = 'phrasepick-instructions';
-    instructions.textContent = tr('Pulsa cada frase para descubrir si es una opcion correcta o incorrecta.');
+    instructions.textContent = checkMode
+      ? tr('Selecciona la frase que elegirias. Cuando termines, pulsa Comprobar para ver el feedback.')
+      : tr('Pulsa cada frase para descubrir si es una opcion correcta o incorrecta.');
 
     const list = document.createElement('div');
     list.className = 'phrasepick-list';
@@ -413,6 +437,14 @@
     const hintBtn = document.createElement('button');
     hintBtn.type = 'button';
     hintBtn.className = 'phrasepick-btn secondary';
+    const checkBtn = document.createElement('button');
+    checkBtn.type = 'button';
+    checkBtn.className = 'phrasepick-btn primary';
+    checkBtn.textContent = submitText;
+    const continueBtn = document.createElement('button');
+    continueBtn.type = 'button';
+    continueBtn.className = 'phrasepick-btn continue is-hidden';
+    continueBtn.textContent = tr('Continuar');
     const resetBtn = document.createElement('button');
     resetBtn.type = 'button';
     resetBtn.className = 'phrasepick-btn secondary';
@@ -420,6 +452,8 @@
     const feedback = document.createElement('div');
     feedback.className = 'phrasepick-feedback';
     actions.appendChild(hintBtn);
+    if (checkMode) actions.appendChild(checkBtn);
+    if (checkMode) actions.appendChild(continueBtn);
     actions.appendChild(resetBtn);
     actions.appendChild(feedback);
 
@@ -437,6 +471,8 @@
     let hintInterval = null;
     const hintReadyAt = Date.now() + HINT_DELAY_MS;
     const phraseButtons = [];
+    let selectedId = null;
+    let checked = false;
 
     function updateHintButton() {
       const remaining = hintReadyAt - Date.now();
@@ -459,7 +495,9 @@
     }
 
     function updateProgress() {
-      progress.textContent = `${tr('Frases')} ${revealedCount} / ${phrases.length}`;
+      progress.textContent = checkMode
+        ? (selectedId ? tr('Frase seleccionada') : tr('Elige una frase'))
+        : `${tr('Frases')} ${revealedCount} / ${phrases.length}`;
     }
 
     function goNextSlide() {
@@ -498,6 +536,45 @@
       return true;
     }
 
+    function selectPhrase(row, btn, item) {
+      if (!checkMode || locked || checked) return;
+      selectedId = item.id;
+      phraseButtons.forEach((entry) => {
+        entry.row.classList.toggle('is-selected', entry.item.id === item.id);
+        entry.btn.setAttribute('aria-pressed', entry.item.id === item.id ? 'true' : 'false');
+      });
+      setFeedback('', '');
+      updateProgress();
+    }
+
+    function revealAllAfterCheck() {
+      if (!checkMode || checked || locked) return;
+      const selected = phraseButtons.find((entry) => entry.item.id === selectedId);
+      if (!selected) {
+        setFeedback('info', tr('Selecciona una frase antes de comprobar.'));
+        return;
+      }
+
+      checked = true;
+      locked = true;
+      phraseButtons.forEach((entry) => {
+        entry.row.classList.remove('is-selected', 'is-revealed', 'is-correct', 'is-wrong');
+        entry.row.classList.add('is-revealed', entry.item.correct ? 'is-correct' : 'is-wrong');
+        entry.btn.disabled = true;
+        entry.btn.setAttribute('aria-pressed', entry.item.id === selectedId ? 'true' : 'false');
+      });
+      revealedCount = phrases.length;
+      foundCorrect = selected.item.correct ? 1 : 0;
+      setFeedback(selected.item.correct ? 'ok' : 'err', selected.item.correct ? selected.item.feedbackCorrect : selected.item.feedbackIncorrect);
+      if (selected.item.correct) launchConfetti(root);
+      hintBtn.disabled = true;
+      checkBtn.disabled = true;
+      checkBtn.classList.add('is-hidden');
+      continueBtn.classList.remove('is-hidden');
+      continueBtn.focus();
+      updateProgress();
+    }
+
     function makeRow(item) {
       const row = document.createElement('div');
       row.className = 'phrasepick-row';
@@ -505,7 +582,8 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'phrasepick-button';
-      btn.setAttribute('aria-label', `${item.text}. ${tr('Pulsa para revisar')}`);
+      btn.setAttribute('aria-label', `${item.text}. ${tr(checkMode ? 'Pulsa para seleccionar' : 'Pulsa para revisar')}`);
+      if (checkMode) btn.setAttribute('aria-pressed', 'false');
       btn.textContent = item.text;
 
       const arrow = document.createElement('div');
@@ -524,7 +602,8 @@
       explanation.appendChild(explanationText);
 
       btn.addEventListener('click', () => {
-        revealRow(row, btn, item);
+        if (checkMode) selectPhrase(row, btn, item);
+        else revealRow(row, btn, item);
       });
 
       row.appendChild(btn);
@@ -541,31 +620,55 @@
 
     hintBtn.addEventListener('click', () => {
       if (hintBtn.disabled || locked) return;
-      const preferred = phraseButtons.find((entry) => entry.item.correct && !entry.row.classList.contains('is-revealed'))
-        || phraseButtons.find((entry) => !entry.row.classList.contains('is-revealed'));
-      if (!preferred) return;
-      revealRow(preferred.row, preferred.btn, preferred.item);
-      if (!locked) {
-        setFeedback('info', preferred.item.correct
-          ? preferred.item.feedbackCorrect
-          : preferred.item.feedbackIncorrect);
+      if (checkMode) {
+        if (checked) return;
+        const correct = phraseButtons.find((entry) => entry.item.correct);
+        if (!correct) return;
+        selectPhrase(correct.row, correct.btn, correct.item);
+        setFeedback('info', tr('Se ha seleccionado una frase adecuada.'));
+      } else {
+        const preferred = phraseButtons.find((entry) => entry.item.correct && !entry.row.classList.contains('is-revealed'))
+          || phraseButtons.find((entry) => !entry.row.classList.contains('is-revealed'));
+        if (!preferred) return;
+        revealRow(preferred.row, preferred.btn, preferred.item);
+        if (!locked) {
+          setFeedback('info', preferred.item.correct
+            ? preferred.item.feedbackCorrect
+            : preferred.item.feedbackIncorrect);
+        }
       }
+    });
+
+    checkBtn.addEventListener('click', () => {
+      revealAllAfterCheck();
+    });
+
+    continueBtn.addEventListener('click', () => {
+      if (!checkMode || !checked) return;
+      goNextSlide();
     });
 
     resetBtn.addEventListener('click', () => {
       if (advanceTimer) clearTimeout(advanceTimer);
       locked = false;
       advanced = false;
+      checked = false;
+      selectedId = null;
       revealedCount = 0;
       foundCorrect = 0;
       setFeedback('', '');
       list.querySelectorAll('.phrasepick-row').forEach((row) => {
-        row.classList.remove('is-revealed', 'is-correct', 'is-wrong');
+        row.classList.remove('is-revealed', 'is-correct', 'is-wrong', 'is-selected');
       });
       phraseButtons.forEach((entry) => {
         entry.btn.disabled = false;
+        if (checkMode) entry.btn.setAttribute('aria-pressed', 'false');
       });
+      checkBtn.disabled = false;
+      checkBtn.classList.remove('is-hidden');
+      continueBtn.classList.add('is-hidden');
       updateProgress();
+      updateHintButton();
     });
 
     const intro = document.createElement('div');

@@ -113,6 +113,13 @@
       .pick-card.is-revealed .pick-card__inner{
         transform:rotateY(180deg);
       }
+      .pick-card.is-selected .pick-face--front{
+        border-color:#2563eb;
+        box-shadow:0 0 0 5px rgba(37,99,235,.15), 0 18px 38px rgba(15,23,42,.14);
+      }
+      .pick-card.is-selected .pick-front-hint{
+        color:#2563eb;
+      }
       .pick-face{
         position:absolute;
         inset:0;
@@ -227,6 +234,25 @@
         background:#e2e8f0;
         color:#0f172a;
       }
+      .pick-btn.primary-action{
+        background:#111827;
+        color:#ffffff;
+        box-shadow:0 12px 26px rgba(17,24,39,.25);
+      }
+      .pick-btn.continue{
+        background:linear-gradient(180deg,#22c55e 0%, #15803d 100%);
+        color:#ffffff;
+        box-shadow:0 14px 30px rgba(21,128,61,.28);
+        transform:translateY(0);
+        transition:transform .18s ease, box-shadow .18s ease;
+      }
+      .pick-btn.continue:hover{
+        transform:translateY(-1px);
+        box-shadow:0 18px 36px rgba(21,128,61,.34);
+      }
+      .pick-btn.is-hidden{
+        display:none;
+      }
       .pick-feedback{
         min-height:20px;
         font-size:14px;
@@ -293,6 +319,17 @@
         feedbackIncorrect: String(raw?.feedbackIncorrect ?? raw?.explanationIncorrect ?? raw?.porqueNo ?? 'Incorrecta.').trim()
       };
     }).filter(Boolean);
+  }
+
+  function shuffleCardsList(input) {
+    const out = input.slice();
+    for (let i = out.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = out[i];
+      out[i] = out[j];
+      out[j] = tmp;
+    }
+    return out;
   }
 
   function launchConfetti(root) {
@@ -369,7 +406,8 @@
     const sourceCards = isEn
       ? (s?.cards_en ?? s?.tarjetas_en ?? s?.cards ?? s?.tarjetas)
       : (s?.cards ?? s?.tarjetas);
-    const cards = normalizeCards(sourceCards);
+    const normalizedCards = normalizeCards(sourceCards);
+    const cards = s?.shuffleCards === true ? shuffleCardsList(normalizedCards) : normalizedCards;
 
     if (!cards.length) {
       root.innerHTML = `<div class="empty-state__text">${tr('No hay tarjetas para seleccionar.')}</div>`;
@@ -380,6 +418,8 @@
     const introTitle = tr(String(s?.introTitle || s?.intro?.title || 'Antes de empezar'));
     const introText = tr(String(s?.introText || s?.intro?.text || 'Selecciona las opciones adecuadas y revisa por que cada una es correcta o incorrecta.'));
     const introButtonText = tr(String(s?.introButtonText || s?.intro?.buttonText || 'Empezar'));
+    const checkMode = s?.checkMode === true || s?.requireCheck === true;
+    const submitText = tr(String(s?.submitText || s?.checkText || 'Comprobar'));
     const autoAdvanceMs = Math.max(500, Number(s?.autoAdvanceMs ?? 1600));
     const totalCorrect = cards.filter((card) => card.correct).length;
 
@@ -395,7 +435,9 @@
 
     const instructions = document.createElement('p');
     instructions.className = 'pick-instructions';
-    instructions.textContent = tr('Pulsa cada tarjeta para descubrir si es una opcion correcta o incorrecta.');
+    instructions.textContent = checkMode
+      ? tr('Marca los premios adecuados. Cuando termines, pulsa Comprobar para ver la solucion.')
+      : tr('Pulsa cada tarjeta para descubrir si es una opcion correcta o incorrecta.');
 
     const grid = document.createElement('div');
     grid.className = 'pick-grid';
@@ -405,6 +447,14 @@
     const hintBtn = document.createElement('button');
     hintBtn.type = 'button';
     hintBtn.className = 'pick-btn secondary';
+    const checkBtn = document.createElement('button');
+    checkBtn.type = 'button';
+    checkBtn.className = 'pick-btn primary-action';
+    checkBtn.textContent = submitText;
+    const continueBtn = document.createElement('button');
+    continueBtn.type = 'button';
+    continueBtn.className = 'pick-btn continue is-hidden';
+    continueBtn.textContent = tr('Continuar');
     const resetBtn = document.createElement('button');
     resetBtn.type = 'button';
     resetBtn.className = 'pick-btn secondary';
@@ -412,6 +462,8 @@
     const feedback = document.createElement('div');
     feedback.className = 'pick-feedback';
     actions.appendChild(hintBtn);
+    if (checkMode) actions.appendChild(checkBtn);
+    if (checkMode) actions.appendChild(continueBtn);
     actions.appendChild(resetBtn);
     actions.appendChild(feedback);
 
@@ -431,6 +483,8 @@
     let hintInterval = null;
     const hintReadyAt = Date.now() + HINT_DELAY_MS;
     const cardButtons = [];
+    const selectedIds = new Set();
+    let checked = false;
 
     function updateHintButton() {
       const remaining = hintReadyAt - Date.now();
@@ -453,7 +507,9 @@
     }
 
     function updateProgress() {
-      progress.textContent = `${tr('Tarjetas')} ${revealedCount} / ${cards.length}`;
+      progress.textContent = checkMode
+        ? `${tr('Seleccionadas')} ${selectedIds.size}`
+        : `${tr('Tarjetas')} ${revealedCount} / ${cards.length}`;
     }
 
     function goNextSlide() {
@@ -482,6 +538,52 @@
       }, autoAdvanceMs);
     }
 
+    function isSelectionCorrect() {
+      return cards.every((card) => selectedIds.has(card.id) === card.correct);
+    }
+
+    function revealAllAfterCheck() {
+      if (checked || locked) return;
+
+      checked = true;
+      locked = true;
+      revealedCount = cards.length;
+      foundCorrect = cards.filter((card) => card.correct).length;
+      cardButtons.forEach((entry) => {
+        entry.btn.classList.add('is-revealed');
+        entry.btn.disabled = true;
+      });
+      const correct = isSelectionCorrect();
+      updateProgress();
+
+      if (correct) {
+        setFeedback('ok', tr('Correcto. Has marcado todos los premios adecuados.'));
+        launchConfetti(root);
+      } else {
+        setFeedback('err', tr('No era la seleccion exacta, pero no pasa nada. Revisa la solucion y continua.'));
+      }
+      hintBtn.disabled = true;
+      checkBtn.disabled = true;
+      checkBtn.classList.add('is-hidden');
+      continueBtn.classList.remove('is-hidden');
+      continueBtn.focus();
+    }
+
+    function toggleSelected(btn, card) {
+      if (locked || checked || !btn) return;
+      if (selectedIds.has(card.id)) {
+        selectedIds.delete(card.id);
+        btn.classList.remove('is-selected');
+        btn.setAttribute('aria-pressed', 'false');
+      } else {
+        selectedIds.add(card.id);
+        btn.classList.add('is-selected');
+        btn.setAttribute('aria-pressed', 'true');
+      }
+      setFeedback('', '');
+      updateProgress();
+    }
+
     function revealCard(btn, card) {
       if (locked || !btn || btn.classList.contains('is-revealed')) return false;
       btn.classList.add('is-revealed');
@@ -499,7 +601,8 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'pick-card';
-      btn.setAttribute('aria-label', `${card.text}. ${tr('Pulsa para girar')}`);
+      btn.setAttribute('aria-label', `${card.text}. ${tr(checkMode ? 'Pulsa para seleccionar' : 'Pulsa para girar')}`);
+      if (checkMode) btn.setAttribute('aria-pressed', 'false');
 
       const inner = document.createElement('div');
       inner.className = 'pick-card__inner';
@@ -518,7 +621,7 @@
       frontCaption.className = 'pick-front-caption';
       const frontHint = document.createElement('div');
       frontHint.className = 'pick-front-hint';
-      frontHint.textContent = tr('Concepto');
+      frontHint.textContent = tr(checkMode ? 'Pulsa para marcar' : 'Concepto');
       const frontText = document.createElement('div');
       frontText.className = 'pick-concept';
       frontText.textContent = card.text;
@@ -551,7 +654,11 @@
       wrap.appendChild(btn);
 
       btn.addEventListener('click', () => {
-        revealCard(btn, card);
+        if (checkMode) {
+          toggleSelected(btn, card);
+        } else {
+          revealCard(btn, card);
+        }
       });
 
       cardButtons.push({ btn, card });
@@ -565,29 +672,57 @@
 
     hintBtn.addEventListener('click', () => {
       if (hintBtn.disabled || locked) return;
-      const preferred = cardButtons.find((entry) => entry.card.correct && !entry.btn.classList.contains('is-revealed'))
-        || cardButtons.find((entry) => !entry.btn.classList.contains('is-revealed'));
-      if (!preferred) return;
-      revealCard(preferred.btn, preferred.card);
-      if (!locked) {
-        setFeedback('info', preferred.card.correct
-          ? preferred.card.feedbackCorrect
-          : preferred.card.feedbackIncorrect);
+      if (checkMode) {
+        if (checked) return;
+        const missing = cardButtons.find((entry) => entry.card.correct && !selectedIds.has(entry.card.id));
+        if (!missing) return;
+        selectedIds.add(missing.card.id);
+        missing.btn.classList.add('is-selected');
+        missing.btn.setAttribute('aria-pressed', 'true');
+        setFeedback('info', tr('Se ha marcado un premio adecuado.'));
+        updateProgress();
+      } else {
+        const preferred = cardButtons.find((entry) => entry.card.correct && !entry.btn.classList.contains('is-revealed'))
+          || cardButtons.find((entry) => !entry.btn.classList.contains('is-revealed'));
+        if (!preferred) return;
+        revealCard(preferred.btn, preferred.card);
+        if (!locked) {
+          setFeedback('info', preferred.card.correct
+            ? preferred.card.feedbackCorrect
+            : preferred.card.feedbackIncorrect);
+        }
       }
+    });
+
+    checkBtn.addEventListener('click', () => {
+      if (!checkMode || locked) return;
+      revealAllAfterCheck();
+    });
+
+    continueBtn.addEventListener('click', () => {
+      if (!checkMode || !checked) return;
+      goNextSlide();
     });
 
     resetBtn.addEventListener('click', () => {
       if (advanceTimer) clearTimeout(advanceTimer);
       locked = false;
       advanced = false;
+      checked = false;
       revealedCount = 0;
       foundCorrect = 0;
+      selectedIds.clear();
       setFeedback('', '');
+      checkBtn.disabled = false;
+      checkBtn.classList.remove('is-hidden');
+      continueBtn.classList.add('is-hidden');
       cardButtons.forEach((entry) => {
-        entry.btn.classList.remove('is-revealed');
+        entry.btn.classList.remove('is-revealed', 'is-selected');
         entry.btn.disabled = false;
+        if (checkMode) entry.btn.setAttribute('aria-pressed', 'false');
       });
       updateProgress();
+      updateHintButton();
     });
 
     const intro = document.createElement('div');

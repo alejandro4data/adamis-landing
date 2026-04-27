@@ -36,24 +36,24 @@
     css.textContent = `
       .tpl--miniact-arrastrar-etiquetas{
         position:relative;
-        padding:28px 20px 90px;
+        padding:14px 16px 76px;
         display:flex;
         flex-direction:column;
-        gap:16px;
+        gap:12px;
         align-items:center;
         justify-content:center;
-        min-height:70vh;
+        min-height:calc(100vh - 120px);
       }
       .matchdrop-shell{
-        width:min(1320px, calc(100vw - 24px));
+        width:min(1280px, calc(100vw - 40px));
         max-width:100%;
         box-sizing:border-box;
         background:
           radial-gradient(circle at top, rgba(59,130,246,.14), transparent 34%),
           linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
         border:1px solid #e5e7eb;
-        border-radius:26px;
-        padding:24px 24px 22px;
+        border-radius:20px;
+        padding:18px 18px 16px;
         box-shadow:0 26px 60px rgba(15,23,42,.12);
       }
       .matchdrop-head{
@@ -61,11 +61,11 @@
         align-items:flex-end;
         justify-content:space-between;
         gap:16px;
-        margin-bottom:10px;
+        margin-bottom:6px;
       }
       .matchdrop-title{
         margin:0;
-        font-size:28px;
+        font-size:24px;
         font-weight:900;
         color:#0f172a;
       }
@@ -77,20 +77,44 @@
         color:#475569;
       }
       .matchdrop-instructions{
-        margin:0 0 18px 0;
+        margin:0 0 10px 0;
         font-size:14px;
         color:#334155;
       }
+      .matchdrop-inspection-note{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        margin:0 0 12px 0;
+        border:2px solid #bfdbfe;
+        border-radius:14px;
+        background:#eff6ff;
+        color:#1d4ed8;
+        padding:8px 11px;
+        font-size:12px;
+        font-weight:900;
+        line-height:1.25;
+      }
+      .matchdrop-inspection-note::before{
+        content:"";
+        width:18px;
+        height:18px;
+        flex:0 0 auto;
+        border-radius:50%;
+        border:2px solid currentColor;
+        background:radial-gradient(circle at 50% 50%, currentColor 0 3px, transparent 4px);
+        box-sizing:border-box;
+      }
       .matchdrop-board{
         display:grid;
-        grid-template-columns:minmax(0, 1fr) minmax(240px, 300px);
-        gap:26px;
+        grid-template-columns:minmax(0, 1fr) minmax(230px, 280px);
+        gap:18px;
         align-items:start;
       }
       .matchdrop-column{
         display:flex;
         flex-direction:column;
-        gap:14px;
+        gap:10px;
       }
       .matchdrop-column--targets{
         min-width:0;
@@ -101,7 +125,7 @@
       .matchdrop-targets-grid{
         display:grid;
         grid-template-columns:repeat(2, minmax(0, 1fr));
-        gap:16px;
+        gap:12px;
       }
       .matchdrop-column-title{
         font-size:12px;
@@ -112,10 +136,10 @@
       }
       .matchdrop-target{
         border:2px solid #dbe3ee;
-        border-radius:24px;
+        border-radius:16px;
         background:#ffffff;
-        padding:14px;
-        box-shadow:0 16px 34px rgba(15,23,42,.08);
+        padding:10px;
+        box-shadow:0 12px 28px rgba(15,23,42,.08);
         transition:border-color .22s ease, box-shadow .22s ease, transform .22s ease, background-color .22s ease;
       }
       .matchdrop-target.is-hover{
@@ -131,12 +155,30 @@
         border-color:#dc2626;
         background:#fef2f2;
       }
+      .matchdrop-target.is-inspected{
+        border-color:#2563eb;
+      }
+      .matchdrop-target.needs-inspection{
+        animation:matchdrop-nudge .34s ease;
+        border-color:#dc2626;
+      }
+      @keyframes matchdrop-nudge{
+        0%,100%{ transform:translateX(0); }
+        25%{ transform:translateX(-4px); }
+        75%{ transform:translateX(4px); }
+      }
       .matchdrop-dropzone{
-        border-radius:18px;
+        position:relative;
+        border-radius:14px;
         overflow:hidden;
         border:2px dashed #cbd5e1;
         background:#eef2f7;
         transition:border-color .22s ease, background-color .22s ease;
+        cursor:pointer;
+      }
+      .matchdrop-dropzone:focus-visible{
+        outline:4px solid rgba(37,99,235,.28);
+        outline-offset:4px;
       }
       .matchdrop-target.is-hover .matchdrop-dropzone{
         border-color:#2563eb;
@@ -150,12 +192,73 @@
         border-color:#dc2626;
         background:#fee2e2;
       }
+      .matchdrop-inspect-badge{
+        position:absolute;
+        left:8px;
+        top:8px;
+        z-index:2;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        max-width:calc(100% - 20px);
+        border-radius:999px;
+        background:rgba(15,23,42,.88);
+        color:#ffffff;
+        padding:6px 9px;
+        font-size:10px;
+        font-weight:900;
+        line-height:1;
+        letter-spacing:.04em;
+        text-transform:uppercase;
+        box-shadow:0 10px 22px rgba(15,23,42,.2);
+        pointer-events:none;
+      }
+      .matchdrop-target.is-inspected .matchdrop-inspect-badge{
+        background:#16a34a;
+      }
+      .matchdrop-zoom-cue{
+        position:absolute;
+        right:8px;
+        bottom:8px;
+        z-index:2;
+        width:34px;
+        height:34px;
+        border-radius:50%;
+        background:#ffffff;
+        border:2px solid #2563eb;
+        box-shadow:0 10px 22px rgba(15,23,42,.18);
+        pointer-events:none;
+      }
+      .matchdrop-zoom-cue::before{
+        content:"";
+        position:absolute;
+        left:9px;
+        top:8px;
+        width:11px;
+        height:11px;
+        border:3px solid #2563eb;
+        border-radius:50%;
+        box-sizing:border-box;
+      }
+      .matchdrop-zoom-cue::after{
+        content:"";
+        position:absolute;
+        left:20px;
+        top:20px;
+        width:10px;
+        height:3px;
+        border-radius:999px;
+        background:#2563eb;
+        transform:rotate(45deg);
+        transform-origin:left center;
+      }
       .matchdrop-image{
         width:100%;
-        aspect-ratio:1.6;
+        height:clamp(126px, 16vh, 188px);
         background:#e2e8f0;
-        background-size:cover;
+        background-size:contain;
         background-position:center;
+        background-repeat:no-repeat;
         display:flex;
         align-items:center;
         justify-content:center;
@@ -169,7 +272,7 @@
         background-color:#f8fafc;
       }
       .matchdrop-meta{
-        padding:12px 12px 0;
+        padding:8px 8px 0;
       }
       .matchdrop-caption{
         font-size:14px;
@@ -178,12 +281,12 @@
         color:#0f172a;
       }
       .matchdrop-slot{
-        margin-top:12px;
-        min-height:56px;
+        margin-top:8px;
+        min-height:42px;
         border:2px dashed #cbd5e1;
-        border-radius:16px;
+        border-radius:12px;
         background:#ffffff;
-        padding:10px 12px;
+        padding:8px 10px;
         display:flex;
         align-items:center;
         justify-content:center;
@@ -214,17 +317,17 @@
         justify-content:center;
         min-height:34px;
         border-radius:999px;
-        padding:8px 14px;
+        padding:7px 12px;
         border:2px solid currentColor;
         background:#ffffff;
-        font-size:13px;
+        font-size:12px;
         font-weight:900;
         line-height:1.25;
       }
       .matchdrop-bank{
         display:flex;
         flex-direction:column;
-        gap:12px;
+        gap:10px;
         position:sticky;
         top:12px;
         width:100%;
@@ -233,12 +336,12 @@
         appearance:none;
         width:100%;
         border:2px solid #0f172a;
-        border-radius:16px;
+        border-radius:14px;
         background:#ffffff;
         color:#0f172a;
-        padding:14px 16px;
+        padding:12px 14px;
         text-align:left;
-        font-size:15px;
+        font-size:14px;
         font-weight:800;
         line-height:1.3;
         cursor:grab;
@@ -278,9 +381,10 @@
       }
       .matchdrop-actions{
         display:flex;
+        flex-wrap:wrap;
         gap:12px;
         align-items:center;
-        margin-top:18px;
+        margin-top:12px;
       }
       .matchdrop-btn{
         appearance:none;
@@ -325,7 +429,8 @@
         box-shadow:0 24px 50px rgba(15,23,42,.22);
       }
       .matchdrop-modal,
-      .matchdrop-intro{
+      .matchdrop-intro,
+      .matchdrop-inspect-modal{
         position:fixed;
         inset:0;
         background:rgba(15,23,42,.45);
@@ -334,6 +439,10 @@
         justify-content:center;
         z-index:6;
         padding:24px;
+      }
+      .matchdrop-inspect-modal{
+        z-index:7;
+        background:rgba(15,23,42,.68);
       }
       .matchdrop-modal-card,
       .matchdrop-intro-card{
@@ -364,26 +473,131 @@
         line-height:1.45;
         color:#334155;
       }
+      .matchdrop-inspect-card{
+        position:relative;
+        width:min(980px, 94vw);
+        max-height:92vh;
+        background:#ffffff;
+        border-radius:20px;
+        padding:18px;
+        box-shadow:0 30px 80px rgba(0,0,0,.35);
+        border:2px solid #e5e7eb;
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+      }
+      .matchdrop-inspect-close{
+        position:absolute;
+        top:-16px;
+        right:-16px;
+        width:44px;
+        height:44px;
+        border-radius:50%;
+        border:3px solid #ffffff;
+        background:#dc2626;
+        color:#ffffff;
+        font-size:24px;
+        font-weight:900;
+        line-height:1;
+        cursor:pointer;
+        box-shadow:0 16px 32px rgba(127,29,29,.35);
+      }
+      .matchdrop-inspect-close:focus-visible{
+        outline:4px solid rgba(220,38,38,.3);
+        outline-offset:3px;
+      }
+      .matchdrop-inspect-title{
+        margin:0;
+        padding-right:28px;
+        font-size:20px;
+        font-weight:900;
+        color:#0f172a;
+      }
+      .matchdrop-inspect-image-wrap{
+        overflow:auto;
+        border-radius:14px;
+        background:#e2e8f0;
+        border:1px solid #cbd5e1;
+      }
+      .matchdrop-inspect-img{
+        display:block;
+        width:100%;
+        height:auto;
+        max-height:72vh;
+        object-fit:contain;
+        background:#f8fafc;
+      }
+      .matchdrop-inspect-empty{
+        min-height:320px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:#475569;
+        font-size:14px;
+        font-weight:900;
+        letter-spacing:.08em;
+        text-transform:uppercase;
+      }
+      .matchdrop-inspect-help{
+        margin:0;
+        font-size:12px;
+        font-weight:800;
+        color:#2563eb;
+      }
       .matchdrop-confetti{
         position:absolute;
         inset:0;
         pointer-events:none;
         z-index:3;
       }
-      @media (max-width: 980px){
+      @media (max-width: 1100px){
         .matchdrop-board{
-          grid-template-columns:minmax(0, 1fr) minmax(220px, 260px);
+          grid-template-columns:1fr;
+        }
+        .matchdrop-column--labels{
+          order:-1;
+        }
+        .matchdrop-bank{
+          position:static;
+          display:grid;
+          grid-template-columns:repeat(2, minmax(0, 1fr));
+          gap:10px;
+        }
+        .matchdrop-targets-grid{
+          grid-template-columns:repeat(2, minmax(0, 1fr));
+        }
+        .matchdrop-image{
+          height:clamp(118px, 17vh, 164px);
+        }
+        .matchdrop-label-hint{
+          display:none;
+        }
+      }
+      @media (max-width: 760px){
+        .matchdrop-shell{
+          width:calc(100vw - 20px);
+          padding:14px;
+        }
+        .matchdrop-bank{
+          grid-template-columns:1fr;
         }
         .matchdrop-targets-grid{
           grid-template-columns:1fr;
         }
-      }
-      @media (max-width: 760px){
-        .matchdrop-board{
-          grid-template-columns:1fr;
+        .matchdrop-image{
+          height:150px;
         }
-        .matchdrop-bank{
-          position:static;
+        .matchdrop-inspect-card{
+          padding:14px;
+        }
+        .matchdrop-inspect-close{
+          top:8px;
+          right:8px;
+          width:40px;
+          height:40px;
+        }
+        .matchdrop-inspect-title{
+          padding-right:44px;
         }
       }
     `;
@@ -525,10 +739,12 @@
     const targetRefs = new Map();
     const labelRefs = new Map();
     const placedTargets = new Map();
+    const inspectedTargets = new Set();
 
     let completed = false;
     let advanceTimer = null;
     let modalState = null;
+    let inspectModalState = null;
     let activeDrag = null;
     let htmlDragLabelId = null;
     let hintInterval = null;
@@ -564,7 +780,11 @@
 
     const instructions = document.createElement('p');
     instructions.className = 'matchdrop-instructions';
-    instructions.textContent = tr('Arrastra cada etiqueta hasta la imagen correcta.');
+    instructions.textContent = tr('Primero haz clic en cada cartel para verlo grande. Despues arrastra la etiqueta correcta hasta ese cartel.');
+
+    const inspectionNote = document.createElement('div');
+    inspectionNote.className = 'matchdrop-inspection-note';
+    inspectionNote.textContent = tr('Haz clic en un cartel para ampliarlo. Solo podras ponerle etiqueta cuando lo hayas inspeccionado.');
 
     const board = document.createElement('div');
     board.className = 'matchdrop-board';
@@ -613,6 +833,7 @@
 
     shell.appendChild(head);
     shell.appendChild(instructions);
+    shell.appendChild(inspectionNote);
     shell.appendChild(board);
     shell.appendChild(actions);
     root.appendChild(shell);
@@ -651,7 +872,9 @@
         pill.textContent = labelText;
         refs.slot.appendChild(pill);
       } else {
-        refs.slot.textContent = tr('Suelta aqui');
+        refs.slot.textContent = inspectedTargets.has(targetId)
+          ? tr('Suelta aqui')
+          : tr('Haz clic para inspeccionar');
       }
     }
 
@@ -661,6 +884,98 @@
       modalState = null;
       state.wrap.remove();
       if (typeof state.onClose === 'function') state.onClose();
+    }
+
+    function updateInspectionState(targetId) {
+      const refs = targetRefs.get(targetId);
+      if (!refs) return;
+      const inspected = inspectedTargets.has(targetId);
+      refs.card.classList.toggle('is-inspected', inspected);
+      if (refs.badge) {
+        refs.badge.textContent = inspected ? tr('Inspeccionado') : tr('Haz clic para ampliar');
+      }
+      if (!placedTargets.has(targetId) && refs.slot && !refs.slot.querySelector('.matchdrop-slot-pill')) {
+        refs.slot.textContent = inspected ? tr('Suelta aqui') : tr('Haz clic para inspeccionar');
+      }
+    }
+
+    function clearInspectModal() {
+      if (!inspectModalState) return;
+      const state = inspectModalState;
+      inspectModalState = null;
+      document.removeEventListener('keydown', state.onKeydown);
+      state.wrap.remove();
+      if (state.focusTarget && typeof state.focusTarget.focus === 'function') {
+        state.focusTarget.focus();
+      }
+    }
+
+    function openInspectModal(item, focusTarget) {
+      if (!item) return;
+      clearInspectModal();
+      inspectedTargets.add(item.id);
+      updateInspectionState(item.id);
+      setFeedback('info', tr('Cartel inspeccionado. Ahora puedes arrastrar una etiqueta hasta este cartel.'));
+
+      const wrap = document.createElement('div');
+      wrap.className = 'matchdrop-inspect-modal';
+      wrap.setAttribute('role', 'dialog');
+      wrap.setAttribute('aria-modal', 'true');
+
+      const card = document.createElement('div');
+      card.className = 'matchdrop-inspect-card';
+
+      const closeBtn = document.createElement('button');
+      closeBtn.type = 'button';
+      closeBtn.className = 'matchdrop-inspect-close';
+      closeBtn.setAttribute('aria-label', tr('Cerrar'));
+      closeBtn.title = tr('Cerrar');
+      closeBtn.textContent = 'X';
+
+      const title = document.createElement('h3');
+      title.className = 'matchdrop-inspect-title';
+      title.textContent = item.caption || tr('Cartel en detalle');
+
+      const imageWrap = document.createElement('div');
+      imageWrap.className = 'matchdrop-inspect-image-wrap';
+      if (item.image) {
+        const img = document.createElement('img');
+        img.className = 'matchdrop-inspect-img';
+        img.src = item.image;
+        img.alt = item.alt || item.caption || item.text || tr('Cartel');
+        imageWrap.appendChild(img);
+      } else {
+        const empty = document.createElement('div');
+        empty.className = 'matchdrop-inspect-empty';
+        empty.textContent = tr('Imagen');
+        imageWrap.appendChild(empty);
+      }
+
+      const help = document.createElement('p');
+      help.className = 'matchdrop-inspect-help';
+      help.textContent = tr('Cuando termines de observarlo, cierra con la X roja y coloca su etiqueta.');
+
+      const onKeydown = (ev) => {
+        if (ev.key === 'Escape') {
+          ev.preventDefault();
+          clearInspectModal();
+        }
+      };
+
+      closeBtn.addEventListener('click', clearInspectModal);
+      wrap.addEventListener('click', (ev) => {
+        if (ev.target === wrap) clearInspectModal();
+      });
+      document.addEventListener('keydown', onKeydown);
+
+      card.appendChild(closeBtn);
+      card.appendChild(title);
+      card.appendChild(imageWrap);
+      card.appendChild(help);
+      wrap.appendChild(card);
+      root.appendChild(wrap);
+      inspectModalState = { wrap, onKeydown, focusTarget };
+      closeBtn.focus();
     }
 
     function openModal(isCorrect, text, onClose) {
@@ -704,8 +1019,13 @@
     }
 
     function applyHintPlacement() {
-      const targetItem = items.find((item) => !placedTargets.has(item.id));
-      if (!targetItem) return;
+      const targetItem = items.find((item) => !placedTargets.has(item.id) && inspectedTargets.has(item.id));
+      if (!targetItem) {
+        setFeedback('info', tr('Primero haz clic en un cartel para verlo grande. Despues podras usar una pista o arrastrar una etiqueta.'));
+        const firstPending = items.find((item) => !placedTargets.has(item.id));
+        if (firstPending) markNeedsInspection(firstPending.id);
+        return;
+      }
       const btn = labelRefs.get(targetItem.id);
       placedTargets.set(targetItem.id, targetItem.id);
       if (btn) {
@@ -740,6 +1060,17 @@
       const targetId = zone.dataset.targetId;
       if (!targetId || placedTargets.has(targetId)) return null;
       return targetId;
+    }
+
+    function markNeedsInspection(targetId) {
+      const refs = targetRefs.get(targetId);
+      if (!refs) return;
+      refs.card.classList.remove('needs-inspection');
+      void refs.card.offsetWidth;
+      refs.card.classList.add('needs-inspection');
+      window.setTimeout(() => {
+        if (refs.card.isConnected) refs.card.classList.remove('needs-inspection');
+      }, 420);
     }
 
     function clearDrag() {
@@ -785,6 +1116,11 @@
       const targetItem = byId.get(targetId);
       const labelItem = byId.get(labelId);
       if (!targetItem || !labelItem || placedTargets.has(targetId)) return;
+      if (!inspectedTargets.has(targetId)) {
+        markNeedsInspection(targetId);
+        setFeedback('info', tr('Antes de poner una etiqueta, haz clic en ese cartel para verlo en grande.'));
+        return;
+      }
 
       const isCorrect = labelId === targetId;
       if (isCorrect) {
@@ -846,13 +1182,26 @@
       const dropzone = document.createElement('div');
       dropzone.className = 'matchdrop-dropzone';
       dropzone.dataset.targetId = item.id;
+      dropzone.tabIndex = 0;
+      dropzone.setAttribute('role', 'button');
+      dropzone.setAttribute('aria-label', `${item.alt || item.caption || tr('Cartel')}. ${tr('Haz clic para ampliar')}`);
+      dropzone.addEventListener('click', () => {
+        if (completed || modalState || inspectModalState) return;
+        openInspectModal(item, dropzone);
+      });
+      dropzone.addEventListener('keydown', (ev) => {
+        if (ev.key !== 'Enter' && ev.key !== ' ') return;
+        if (completed || modalState || inspectModalState) return;
+        ev.preventDefault();
+        openInspectModal(item, dropzone);
+      });
       dropzone.addEventListener('dragover', (ev) => {
-        if (completed || modalState || placedTargets.has(item.id)) return;
+        if (completed || modalState || inspectModalState || placedTargets.has(item.id)) return;
         ev.preventDefault();
         card.classList.add('is-hover');
       });
       dropzone.addEventListener('dragenter', (ev) => {
-        if (completed || modalState || placedTargets.has(item.id)) return;
+        if (completed || modalState || inspectModalState || placedTargets.has(item.id)) return;
         ev.preventDefault();
         card.classList.add('is-hover');
       });
@@ -862,7 +1211,7 @@
         }
       });
       dropzone.addEventListener('drop', (ev) => {
-        if (completed || modalState || placedTargets.has(item.id)) return;
+        if (completed || modalState || inspectModalState || placedTargets.has(item.id)) return;
         ev.preventDefault();
         const droppedId = htmlDragLabelId || String(ev.dataTransfer?.getData('text/plain') || '').trim();
         clearHtmlDrag();
@@ -878,11 +1227,18 @@
         image.textContent = 'Imagen';
       }
 
+      const inspectBadge = document.createElement('div');
+      inspectBadge.className = 'matchdrop-inspect-badge';
+      inspectBadge.textContent = tr('Haz clic para ampliar');
+
+      const zoomCue = document.createElement('div');
+      zoomCue.className = 'matchdrop-zoom-cue';
+
       const meta = document.createElement('div');
       meta.className = 'matchdrop-meta';
       const slot = document.createElement('div');
       slot.className = 'matchdrop-slot';
-      slot.textContent = tr('Suelta aqui');
+      slot.textContent = tr('Haz clic para inspeccionar');
 
       if (item.caption) {
         const caption = document.createElement('div');
@@ -892,10 +1248,13 @@
       }
       meta.appendChild(slot);
       dropzone.appendChild(image);
+      dropzone.appendChild(inspectBadge);
+      dropzone.appendChild(zoomCue);
       dropzone.appendChild(meta);
       card.appendChild(dropzone);
 
-      targetRefs.set(item.id, { card, dropzone, slot });
+      targetRefs.set(item.id, { card, dropzone, slot, badge: inspectBadge });
+      updateInspectionState(item.id);
       targetsGrid.appendChild(card);
     }
 
@@ -912,12 +1271,12 @@
         btn.setAttribute('aria-label', `${item.text}. ${tr('Arrastra para seleccionar')}`);
         btn.textContent = item.text;
         btn.addEventListener('pointerdown', (ev) => {
-          if (completed || modalState || btn.classList.contains('is-placed')) return;
+          if (completed || modalState || inspectModalState || btn.classList.contains('is-placed')) return;
           ev.preventDefault();
           startDrag(item.id, btn, ev);
         });
         btn.addEventListener('dragstart', (ev) => {
-          if (completed || modalState || btn.classList.contains('is-placed')) {
+          if (completed || modalState || inspectModalState || btn.classList.contains('is-placed')) {
             ev.preventDefault();
             return;
           }
@@ -943,9 +1302,12 @@
       clearDrag();
       clearHtmlDrag();
       clearModal();
+      clearInspectModal();
       placedTargets.clear();
+      inspectedTargets.clear();
       targetRefs.forEach((refs, targetId) => {
-        refs.card.classList.remove('is-correct', 'is-wrong', 'is-hover');
+        refs.card.classList.remove('is-correct', 'is-wrong', 'is-hover', 'is-inspected', 'needs-inspection');
+        updateInspectionState(targetId);
         renderTargetState(targetId, '', '');
       });
       buildLabels();
@@ -961,7 +1323,7 @@
     hintInterval = setInterval(updateHintButton, 1000);
 
     hintBtn.addEventListener('click', () => {
-      if (hintBtn.disabled || completed || modalState) return;
+      if (hintBtn.disabled || completed || modalState || inspectModalState) return;
       applyHintPlacement();
     });
 
