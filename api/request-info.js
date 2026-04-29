@@ -7,6 +7,11 @@ function escapeHtml(value = '') {
     .replace(/'/g, '&#39;');
 }
 
+const CONTACT_RECIPIENTS = [
+  'alejandro.jimenez@prospere.es',
+  'eduardo.alconada@prospere.es'
+];
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ ok: false, error: 'Metodo no permitido' });
@@ -34,17 +39,13 @@ export default async function handler(req, res) {
   const name = String(body?.name || '').trim();
   const email = String(body?.email || '').trim();
   const audience = String(body?.audience || '').trim();
+  const interest = String(body?.interest || '').trim();
   const organization = String(body?.organization || '').trim();
   const message = String(body?.message || '').trim();
 
   if (!name || !email || !audience || !message) {
     return res.status(400).json({ ok: false, error: 'Faltan campos obligatorios' });
   }
-
-  const recipients = [
-    'alejandro.jimenez@prospere.es',
-    'eduardo.alconada@prospere.es'
-  ];
 
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -54,15 +55,18 @@ export default async function handler(req, res) {
     },
     body: JSON.stringify({
       from,
-      to: recipients,
+      to: CONTACT_RECIPIENTS,
       reply_to: email,
-      subject: `Nueva solicitud de informacion ADAMIS - ${audience}`,
+      subject: interest
+        ? `Nueva solicitud de informacion ADAMIS - ${audience} - ${interest}`
+        : `Nueva solicitud de informacion ADAMIS - ${audience}`,
       html: `
         <div style="font-family: Arial, sans-serif; color: #2b2311; line-height: 1.6;">
           <h2>Nueva solicitud de informacion</h2>
           <p><strong>Nombre:</strong> ${escapeHtml(name)}</p>
           <p><strong>Email:</strong> ${escapeHtml(email)}</p>
           <p><strong>Perfil:</strong> ${escapeHtml(audience)}</p>
+          <p><strong>Producto:</strong> ${escapeHtml(interest || 'No indicado')}</p>
           <p><strong>Centro / organizacion:</strong> ${escapeHtml(organization || 'No indicado')}</p>
           <p><strong>Mensaje:</strong><br>${escapeHtml(message).replace(/\n/g, '<br>')}</p>
         </div>

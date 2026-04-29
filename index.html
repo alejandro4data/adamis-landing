@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@100;200;300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
@@ -31,7 +31,8 @@
                         <h1 class="metallic-title">DAMIS</h1>
                     </div>
                 </div>
-                <p class="hero-slogan">Educaci&oacute;n Financiera para colegios</p>
+                <p class="hero-slogan">Educaci&oacute;n financiera para colegios</p>
+                <p class="hero-note">Un recorrido claro y progresivo para 4&ordm;, 5&ordm; y 6&ordm; de Primaria.</p>
 
                 <div class="hero-actions hero-actions-centered">
                     <a href="#impact" class="btn-explore">
@@ -48,237 +49,519 @@
     </header>
 
     <section id="impact" class="impact-section">
-        <div class="container relative-z">
-            <div class="impact-header scroll-reveal">
-                <div class="alert-badge">
-                    <i class="ph-fill ph-warning-circle"></i> Conflictos reales
+        <div class="container">
+            <div class="impact-shell">
+                <div class="impact-intro scroll-reveal">
+                    <div class="alert-badge">
+                        <i class="ph-fill ph-warning-circle"></i> Conflictos reales
+                    </div>
+                    <h2 class="impact-title">Tres datos para entender<br><i>el problema</i>.</h2>
+                    <p class="impact-copy">
+                        Lo financiero ya est&aacute; influyendo en decisiones reales antes de que exista una comprensi&oacute;n clara. ADAMIS entra aqu&iacute;: antes de que el criterio llegue tarde.
+                    </p>
                 </div>
-                <h2 class="impact-title">
-                    Tres datos para entender <span class="glow-text">d&oacute;nde empieza el problema.</span>
-                </h2>
-            </div>
 
-            <div class="impact-grid">
-                <article class="impact-card scroll-reveal delay-100">
-                    <p class="impact-context">Adultos en Espa&ntilde;a</p>
-                    <div class="stat-number text-gradient" data-target="59">%</div>
-                    <h3 class="impact-statement">No sabe calcular c&oacute;mo crece el ahorro con intereses</h3>
-                    <p class="impact-detail">Una dificultad b&aacute;sica para entender ahorro y rentabilidad.</p>
-                    <p class="impact-source">Banco de Espa&ntilde;a &middot; ECF 2021</p>
-                </article>
+                <div class="impact-editorial">
+                    <article class="impact-card impact-card-lead scroll-reveal delay-100">
+                        <p class="impact-context">Adultos en Espa&ntilde;a</p>
+                        <div class="stat-number stat-number-lead text-gradient" data-target="59">%</div>
+                        <h3 class="impact-statement">No sabe calcular c&oacute;mo crece el ahorro con intereses.</h3>
+                        <p class="impact-detail">Una dificultad b&aacute;sica para entender rentabilidad, tiempo y construcci&oacute;n de ahorro.</p>
+                        <p class="impact-source">Banco de Espa&ntilde;a &middot; ECF 2021</p>
+                    </article>
 
-                <article class="impact-card scroll-reveal delay-200">
-                    <p class="impact-context">Estudiantes de 15 a&ntilde;os en Espa&ntilde;a</p>
-                    <div class="stat-number" data-target="53">%</div>
-                    <h3 class="impact-statement">Compr&oacute; algo porque sus amigos lo ten&iacute;an</h3>
-                    <p class="impact-detail">La presi&oacute;n social ya condiciona decisiones de consumo a esa edad.</p>
-                    <p class="impact-source">OCDE &middot; PISA 2022 &middot; Espa&ntilde;a</p>
-                </article>
+                    <div class="impact-support">
+                        <article class="impact-card impact-card-support scroll-reveal delay-100">
+                            <p class="impact-context">Estudiantes de 15 a&ntilde;os en Espa&ntilde;a</p>
+                            <div class="stat-number stat-number-side" data-target="53">%</div>
+                            <h3 class="impact-statement">Compr&oacute; algo porque sus amigos lo ten&iacute;an.</h3>
+                            <p class="impact-detail">La presi&oacute;n social ya est&aacute; condicionando decisiones de consumo.</p>
+                            <p class="impact-source">OCDE &middot; PISA 2022 &middot; Espa&ntilde;a</p>
+                        </article>
 
-                <article class="impact-card scroll-reveal delay-200">
-                    <p class="impact-context">Estudiantes de 15 a&ntilde;os en Espa&ntilde;a</p>
-                    <div class="stat-number" data-target="34">%</div>
-                    <h3 class="impact-statement">No entiende bien qu&eacute; implica pedir un pr&eacute;stamo</h3>
-                    <p class="impact-detail">Un concepto financiero b&aacute;sico sigue sin comprenderse con claridad.</p>
-                    <p class="impact-source">OCDE &middot; PISA 2022 &middot; Espa&ntilde;a</p>
-                </article>
+                        <article class="impact-card impact-card-support scroll-reveal delay-200">
+                            <p class="impact-context">Estudiantes de 15 a&ntilde;os en Espa&ntilde;a</p>
+                            <div class="stat-number stat-number-side" data-target="34">%</div>
+                            <h3 class="impact-statement">No entiende bien qu&eacute; implica pedir un pr&eacute;stamo.</h3>
+                            <p class="impact-detail">Un concepto financiero b&aacute;sico sigue sin comprenderse con claridad.</p>
+                            <p class="impact-source">OCDE &middot; PISA 2022 &middot; Espa&ntilde;a</p>
+                        </article>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="learning-section">
         <div class="container">
-            <div class="section-intro scroll-reveal">
-                <div>
-                    <p class="section-kicker">Programa completo</p>
-                    <h2 class="section-title">El recorrido se organiza en cuatro grandes bloques.</h2>
+            <div class="learning-shell">
+                <div class="section-intro learning-intro scroll-reveal">
+                    <div>
+                        <p class="section-kicker">Programa completo</p>
+                        <h2 class="section-title">El recorrido se entiende mejor cuando cada bloque ocupa su lugar.</h2>
+                    </div>
+                    <p class="section-copy">
+                        Desde el dinero y el consumo hasta la inversi&oacute;n, la seguridad y la toma de decisiones, ADAMIS avanza por una progresi&oacute;n clara y acumulativa.
+                    </p>
                 </div>
-                <p class="section-copy">
-                    Desde el dinero y el consumo hasta la inversi&oacute;n, la seguridad y la toma de decisiones, la app avanza por una progresi&oacute;n clara y acumulativa.
-                </p>
-            </div>
 
-            <div class="character-callout scroll-reveal">
-                <div class="character-visual">
-                    <img src="assets/adamis_login.png" alt="Personaje Adamis" class="character-image" loading="lazy" decoding="async">
-                </div>
-                <div class="character-copy">
-                    <p class="character-label">El personaje ADAMIS</p>
-                    <p class="character-title">Acompa&ntilde;a el recorrido para que el aprendizaje tenga una referencia visual reconocible.</p>
-                </div>
-            </div>
+                <div class="learning-editorial">
+                    <aside class="learning-anchor scroll-reveal">
+                        <div class="learning-anchor-visual">
+                            <img src="assets/adamis_login.png" alt="Personaje Adamis" class="character-image" loading="lazy" decoding="async">
+                        </div>
+                        <div class="learning-anchor-copy">
+                            <p class="character-label">El personaje ADAMIS</p>
+                            <p class="character-title">Acompa&ntilde;a el recorrido del alumno</p>
+                        </div>
+                    </aside>
 
-            <div class="topic-grid">
-                <article class="topic-card scroll-reveal">
-                    <div class="topic-icon"><i class="ph ph-coins"></i></div>
-                    <span class="topic-step">Bloques I-II</span>
-                    <h3>Dinero, valor y consumo cotidiano</h3>
-                    <p>Introduce la educaci&oacute;n financiera, la historia y funci&oacute;n del dinero, y la base del consumo: necesidades, deseos, precio, mercado y responsabilidad como consumidor.</p>
-                </article>
-                <article class="topic-card scroll-reveal delay-100">
-                    <div class="topic-icon"><i class="ph ph-wallet"></i></div>
-                    <span class="topic-step">Bloque III</span>
-                    <h3>Ingresos, gastos y ahorro</h3>
-                    <p>Trabaja c&oacute;mo entra y sale el dinero, c&oacute;mo ordenar gastos y c&oacute;mo construir presupuestos y objetivos de ahorro con criterio y continuidad.</p>
-                </article>
-                <article class="topic-card scroll-reveal">
-                    <div class="topic-icon"><i class="ph ph-chart-line-up"></i></div>
-                    <span class="topic-step">Bloques IV-VI</span>
-                    <h3>Deuda, inter&eacute;s, inversi&oacute;n y riesgo</h3>
-                    <p>Explica qu&eacute; implica pedir prestado, c&oacute;mo funciona el inter&eacute;s y c&oacute;mo empezar a entender inversi&oacute;n, rentabilidad, riesgo y distintas formas de invertir.</p>
-                </article>
-                <article class="topic-card scroll-reveal delay-100">
-                    <div class="topic-icon"><i class="ph ph-shield-warning"></i></div>
-                    <span class="topic-step">Bloques VII-IX</span>
-                    <h3>Decisiones, seguridad y consolidaci&oacute;n</h3>
-                    <p>Aborda emociones y sesgos al decidir, riesgos y estafas financieras, protecci&oacute;n de datos y un cierre final para integrar todo el aprendizaje.</p>
-                </article>
+                    <div class="learning-path">
+                        <article class="learning-step learning-step-start scroll-reveal">
+                            <span class="learning-step-index">I-II</span>
+                            <div>
+                                <p class="topic-step">Inicio</p>
+                                <h3>Dinero, valor y consumo cotidiano</h3>
+                                <p>Se introduce la educaci&oacute;n financiera, la historia y funci&oacute;n del dinero, y la base del consumo: necesidades, deseos, precio y mercado.</p>
+                            </div>
+                        </article>
+
+                        <article class="learning-step learning-step-slim scroll-reveal delay-100">
+                            <span class="learning-step-index">III</span>
+                            <div>
+                                <p class="topic-step">Orden</p>
+                                <h3>Ingresos, gastos y ahorro</h3>
+                                <p>Se trabaja c&oacute;mo entra y sale el dinero y c&oacute;mo construir objetivos de ahorro con criterio y continuidad.</p>
+                            </div>
+                        </article>
+
+                        <article class="learning-step learning-step-wide scroll-reveal">
+                            <span class="learning-step-index">IV-VI</span>
+                            <div>
+                                <p class="topic-step">Profundidad</p>
+                                <h3>Deuda, inter&eacute;s, inversi&oacute;n y riesgo</h3>
+                                <p>Se explica qu&eacute; implica pedir prestado, c&oacute;mo funciona el inter&eacute;s y c&oacute;mo empezar a entender rentabilidad, riesgo y distintas formas de invertir.</p>
+                            </div>
+                        </article>
+
+                        <article class="learning-step learning-step-end scroll-reveal delay-100">
+                            <span class="learning-step-index">VII-IX</span>
+                            <div>
+                                <p class="topic-step">Cierre</p>
+                                <h3>Decisiones, seguridad y consolidaci&oacute;n</h3>
+                                <p>Se integran emociones, sesgos, estafas, protecci&oacute;n de datos y un cierre final para unir todo el aprendizaje.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="productos" class="products-section">
         <div class="container">
-            <div class="section-intro scroll-reveal">
+            <div class="section-intro products-intro scroll-reveal">
                 <div>
                     <p class="section-kicker">Implantaci&oacute;n flexible</p>
-                    <h2 class="section-title">Una forma clara de ver todo lo que puede implantar un colegio.</h2>
+                    <h2 class="section-title">Tres productos. Un escenario mucho m&aacute;s decidido.</h2>
                 </div>
                 <p class="section-copy">
-                    ADAMIS se puede desplegar completo, por curso o en formatos modulares. La idea aqu&iacute; es que se entienda r&aacute;pido, sin entrar en precios ni en detalle comercial.
+                    ADAMIS no se presenta aqu&iacute; como un cat&aacute;logo plano. Cada v&iacute;a de implantaci&oacute;n entra con una presencia distinta, y al activarla despliega un detalle que se siente conectado a su propia identidad.
                 </p>
             </div>
 
-            <div class="product-summary-grid scroll-reveal">
-                <article class="summary-card summary-card-solid">
-                    <span class="summary-chip">Modelo completo</span>
-                    <h3>Plataforma + din&aacute;micas</h3>
-                    <p>Para centros que quieren un despliegue directo y coherente de principio a fin.</p>
-                </article>
-                <article class="summary-card">
-                    <span class="summary-chip">Configuraci&oacute;n flexible</span>
-                    <h3>Clases, din&aacute;micas y packs</h3>
-                    <p>Para construir una implantaci&oacute;n propia seg&uacute;n curso, objetivos y ritmo del centro.</p>
-                </article>
-            </div>
+            <div class="product-stack">
+                <div class="product-experience scroll-reveal" data-active-product="program">
+                    <div class="product-stage" role="tablist" aria-label="Soluciones ADAMIS">
+                        <button
+                            type="button"
+                            class="product-trigger product-trigger-program is-active"
+                            id="product-tab-program"
+                            role="tab"
+                            tabindex="0"
+                            aria-selected="true"
+                            aria-controls="product-detail-program"
+                            data-mobile-label="Cursos completos"
+                            data-product-tab="program">
+                            <span class="product-trigger-no" aria-hidden="true">01</span>
+                            <span class="product-trigger-copy">
+                                <span class="product-trigger-meta">Programa integral</span>
+                                <span class="product-trigger-title">Programas completos</span>
+                                <span class="product-trigger-subtitle">De 4&ordm; a 6&ordm; de Primaria</span>
+                                <span class="product-trigger-note">Recorrido completo por curso.</span>
+                            </span>
+                        </button>
 
-            <div class="product-console scroll-reveal">
-                <div class="console-head">
-                    <div>
-                        <p class="panel-kicker">Recorrido por curso</p>
-                        <h3>Selecciona un curso</h3>
+                        <button
+                            type="button"
+                            class="product-trigger product-trigger-packs"
+                            id="product-tab-packs"
+                            role="tab"
+                            tabindex="-1"
+                            aria-selected="false"
+                            aria-controls="product-detail-packs"
+                            data-mobile-label="Packs tem&aacute;ticos"
+                            data-product-tab="packs">
+                            <span class="product-trigger-no" aria-hidden="true">02</span>
+                            <span class="product-trigger-copy">
+                                <span class="product-trigger-meta">Secuencia tem&aacute;tica</span>
+                                <span class="product-trigger-title">Packs Tem&aacute;ticos</span>
+                                <span class="product-trigger-subtitle">Bloques listos para activar criterio</span>
+                                <span class="product-trigger-note">Progresi&oacute;n cerrada por objetivos.</span>
+                            </span>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="product-trigger product-trigger-flex"
+                            id="product-tab-flex"
+                            role="tab"
+                            tabindex="-1"
+                            aria-selected="false"
+                            aria-controls="product-detail-flex"
+                            data-mobile-label="Flexible"
+                            data-product-tab="flex">
+                            <span class="product-trigger-no" aria-hidden="true">03</span>
+                            <span class="product-trigger-copy">
+                                <span class="product-trigger-meta">Sistema modular</span>
+                                <span class="product-trigger-title">Configuraci&oacute;n Flexible</span>
+                                <span class="product-trigger-subtitle">Clases y din&aacute;micas seg&uacute;n tu centro</span>
+                                <span class="product-trigger-note">Montaje propio con ritmo real.</span>
+                            </span>
+                        </button>
                     </div>
-                    <div class="course-tabs" role="tablist" aria-label="Cursos disponibles">
-                        <button type="button" class="course-tab is-active" data-course-tab="course-4" aria-selected="true">4&ordm; Primaria</button>
-                        <button type="button" class="course-tab" data-course-tab="course-5" aria-selected="false">5&ordm; Primaria</button>
-                        <button type="button" class="course-tab" data-course-tab="course-6" aria-selected="false">6&ordm; Primaria</button>
+
+                    <div class="product-dock" data-product-dock>
+                        <article
+                            class="product-dock-panel product-dock-panel-program is-active"
+                            id="product-detail-program"
+                            role="tabpanel"
+                            aria-labelledby="product-tab-program"
+                            data-product-detail="program">
+                            <div class="program-layout program-layout-single">
+                                <div class="program-detail">
+                                    <div class="course-tabs" role="tablist" aria-label="Cursos disponibles">
+                                        <button type="button" class="course-tab is-active" data-course-tab="course-6" aria-selected="true">6&ordm; Primaria</button>
+                                        <button type="button" class="course-tab" data-course-tab="course-5" aria-selected="false">5&ordm; Primaria</button>
+                                        <button type="button" class="course-tab" data-course-tab="course-4" aria-selected="false">4&ordm; Primaria</button>
+                                    </div>
+
+                                    <div class="course-stage">
+                                        <article class="course-panel course-panel-6 is-active" data-course-panel="course-6">
+                                            <div class="course-panel-main">
+                                                <span class="course-badge">6&ordm; Primaria</span>
+                                                <h4>La opci&oacute;n m&aacute;s completa para cerrar Primaria</h4>
+                                            </div>
+                                            <div class="course-panel-facts">
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>M&aacute;s de 20 clases progresivas listas para usar</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Actividades pr&aacute;cticas y evaluaci&oacute;n integrada</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Dashboard para seguir el progreso de cada alumno</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Ranking con premios para reforzar la participaci&oacute;n</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Formaci&oacute;n gratuita para profesores e implantaci&oacute;n sencilla</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Complementos disponibles: din&aacute;micas y diplomas de finalizaci&oacute;n</span>
+                                                </article>
+                                            </div>
+                                        </article>
+
+                                        <article class="course-panel course-panel-5" data-course-panel="course-5" hidden>
+                                            <div class="course-panel-main">
+                                                <span class="course-badge">5&ordm; Primaria</span>
+                                                <h4>Un recorrido amplio para avanzar con criterio</h4>
+                                            </div>
+                                            <div class="course-panel-facts">
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>16 clases progresivas listas para usar</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Actividades pr&aacute;cticas y evaluaci&oacute;n integrada</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Dashboard para seguir el progreso de cada alumno</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Ranking con premios para reforzar la participaci&oacute;n</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Formaci&oacute;n gratuita para profesores e implantaci&oacute;n sencilla</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Complementos disponibles: din&aacute;micas y diplomas de finalizaci&oacute;n</span>
+                                                </article>
+                                            </div>
+                                        </article>
+
+                                        <article class="course-panel course-panel-4" data-course-panel="course-4" hidden>
+                                            <div class="course-panel-main">
+                                                <span class="course-badge">4&ordm; Primaria</span>
+                                                <h4>La entrada m&aacute;s sencilla a la educaci&oacute;n financiera</h4>
+                                            </div>
+                                            <div class="course-panel-facts">
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>14 clases progresivas listas para usar</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Actividades pr&aacute;cticas y evaluaci&oacute;n integrada</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Dashboard para seguir el progreso de cada alumno</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Ranking con premios para reforzar la participaci&oacute;n</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Formaci&oacute;n gratuita para profesores e implantaci&oacute;n sencilla</span>
+                                                </article>
+                                                <article class="course-fact">
+                                                    <i class="ph-fill ph-check-circle" aria-hidden="true"></i>
+                                                    <span>Complementos disponibles: din&aacute;micas y diplomas de finalizaci&oacute;n</span>
+                                                </article>
+                                            </div>
+                                        </article>
+                                    </div>
+
+                                    <div class="product-panel-actions">
+                                        <button
+                                            type="button"
+                                            class="btn-contact btn-contact-solid product-panel-cta"
+                                            data-open-info-modal
+                                            data-audience="Colegio"
+                                            data-product-interest="Programas completos">
+                                            Solicitar informaci&oacute;n
+                                            <i class="ph ph-paper-plane-tilt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </article>
+
+                        <article
+                            class="product-dock-panel product-dock-panel-packs"
+                            id="product-detail-packs"
+                            role="tabpanel"
+                            aria-labelledby="product-tab-packs"
+                            data-product-detail="packs"
+                            hidden>
+                            <div class="pack-sequence">
+                                <article class="pack-step">
+                                    <div class="pack-marker">
+                                        <span class="pack-index">01</span>
+                                        <i class="ph ph-coins pack-icon" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="pack-copy">
+                                        <strong>Money Start</strong>
+                                        <ul class="pack-bullets">
+                                            <li>Bloques 1 y 2</li>
+                                            <li>Introducci&oacute;n a la educaci&oacute;n financiera</li>
+                                            <li>Origen y funci&oacute;n del dinero</li>
+                                        </ul>
+                                    </div>
+                                </article>
+                                <article class="pack-step">
+                                    <div class="pack-marker">
+                                        <span class="pack-index">02</span>
+                                        <i class="ph ph-shopping-cart-simple pack-icon" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="pack-copy">
+                                        <strong>Smart Buy</strong>
+                                        <ul class="pack-bullets">
+                                            <li>Bloques 3 y 4</li>
+                                            <li>Necesidades y decisiones de compra</li>
+                                            <li>Precio, valor y criterio financiero</li>
+                                        </ul>
+                                    </div>
+                                </article>
+                                <article class="pack-step">
+                                    <div class="pack-marker">
+                                        <span class="pack-index">03</span>
+                                        <i class="ph ph-wallet pack-icon" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="pack-copy">
+                                        <strong>Cash Control</strong>
+                                        <ul class="pack-bullets">
+                                            <li>Bloques 5 y 6</li>
+                                            <li>Ingresos, gastos y ahorro</li>
+                                            <li>Presupuesto, deuda e inter&eacute;s</li>
+                                        </ul>
+                                    </div>
+                                </article>
+                                <article class="pack-step">
+                                    <div class="pack-marker">
+                                        <span class="pack-index">04</span>
+                                        <i class="ph ph-chart-line-up pack-icon" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="pack-copy">
+                                        <strong>Invest Lab</strong>
+                                        <ul class="pack-bullets">
+                                            <li>Bloques 7 y 8</li>
+                                            <li>Inversi&oacute;n, riesgo y activos</li>
+                                            <li>Primeras ideas de emprendimiento</li>
+                                        </ul>
+                                    </div>
+                                </article>
+                                <article class="pack-step">
+                                    <div class="pack-marker">
+                                        <span class="pack-index">05</span>
+                                        <i class="ph ph-shield-check pack-icon" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="pack-copy">
+                                        <strong>Money Shield</strong>
+                                        <ul class="pack-bullets">
+                                            <li>Bloque 9</li>
+                                            <li>Decisiones financieras y protecci&oacute;n</li>
+                                            <li>Simulaci&oacute;n final del recorrido</li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </div>
+
+                            <p class="product-footnote">Los packs avanzados parten de contenidos ya trabajados en fases anteriores, por lo que se aplican sobre el itinerario de 6&ordm; de Primaria.</p>
+
+                            <div class="product-panel-actions">
+                                <button
+                                    type="button"
+                                    class="btn-contact btn-contact-solid product-panel-cta"
+                                    data-open-info-modal
+                                    data-audience="Colegio"
+                                    data-product-interest="Packs Tem&aacute;ticos">
+                                    Solicitar informaci&oacute;n
+                                    <i class="ph ph-paper-plane-tilt"></i>
+                                </button>
+                            </div>
+                        </article>
+
+                        <article
+                            class="product-dock-panel product-dock-panel-flex"
+                            id="product-detail-flex"
+                            role="tabpanel"
+                            aria-labelledby="product-tab-flex"
+                            data-product-detail="flex"
+                            hidden>
+                            <article class="flex-config">
+                                <div class="flex-config-head">
+                                    <span class="family-label">Configuraci&oacute;n Flexible</span>
+                                    <h4>Dise&ntilde;a un bloque propio combinando clases y din&aacute;micas.</h4>
+                                </div>
+
+                                <div class="flex-layout">
+                                    <section class="flex-family">
+                                        <div class="flex-family-head">
+                                            <span class="family-label">Clases</span>
+                                        </div>
+                                        <div class="flex-option-list">
+                                            <article class="flex-option">
+                                                <i class="ph ph-squares-four"></i>
+                                                <div>
+                                                    <strong>Clases individuales</strong>
+                                                    <p>Sesiones concretas del itinerario.</p>
+                                                </div>
+                                            </article>
+                                            <article class="flex-option">
+                                                <i class="ph ph-layout"></i>
+                                                <div>
+                                                    <strong>Pack de clases</strong>
+                                                    <p>Bloque propio con varias sesiones.</p>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    </section>
+
+                                    <section class="flex-family flex-family-highlight">
+                                        <div class="flex-family-head">
+                                            <span class="family-label">Din&aacute;micas</span>
+                                            <span class="family-badge">Solo 6&ordm; Primaria</span>
+                                        </div>
+                                        <div class="flex-option-list">
+                                            <article class="flex-option">
+                                                <i class="ph ph-users-three"></i>
+                                                <div>
+                                                    <strong>Din&aacute;micas individuales</strong>
+                                                    <p>Experiencias sueltas por tem&aacute;tica.</p>
+                                                </div>
+                                            </article>
+                                            <article class="flex-option">
+                                                <i class="ph ph-sliders"></i>
+                                                <div>
+                                                    <strong>Pack de din&aacute;micas</strong>
+                                                    <p>Conjunto pr&aacute;ctico adaptado al centro.</p>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    </section>
+                                </div>
+
+                                <p class="product-footnote">Cada clase o din&aacute;mica dura aproximadamente entre 45 minutos y 1 hora.</p>
+                            </article>
+
+                            <div class="product-panel-actions">
+                                <button
+                                    type="button"
+                                    class="btn-contact btn-contact-solid product-panel-cta"
+                                    data-open-info-modal
+                                    data-audience="Colegio"
+                                    data-product-interest="Configuraci&oacute;n Flexible">
+                                    Solicitar informaci&oacute;n
+                                    <i class="ph ph-paper-plane-tilt"></i>
+                                </button>
+                            </div>
+
+                        </article>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="course-stage">
-                    <article class="course-panel is-active" data-course-panel="course-4">
-                        <div class="course-panel-main">
-                            <span class="course-badge">4&ordm; Primaria</span>
-                            <h3>Entrada progresiva</h3>
-                            <p>La forma m&aacute;s accesible de empezar el programa en el centro.</p>
-                        </div>
-                        <div class="course-panel-pills">
-                            <span>Plataforma</span>
-                            <span>Din&aacute;micas</span>
-                            <span>Programa por curso</span>
-                        </div>
-                    </article>
-
-                    <article class="course-panel" data-course-panel="course-5" hidden>
-                        <div class="course-panel-main">
-                            <span class="course-badge">5&ordm; Primaria</span>
-                            <h3>Equilibrio y amplitud</h3>
-                            <p>Una implantaci&oacute;n clara para trabajar m&aacute;s recorrido sin complicar el despliegue.</p>
-                        </div>
-                        <div class="course-panel-pills">
-                            <span>Programa por curso</span>
-                            <span>Recorrido amplio</span>
-                            <span>Implementaci&oacute;n clara</span>
-                        </div>
-                    </article>
-
-                    <article class="course-panel" data-course-panel="course-6" hidden>
-                        <div class="course-panel-main">
-                            <span class="course-badge">6&ordm; Primaria</span>
-                            <h3>Mayor profundidad y flexibilidad</h3>
-                            <p>El curso m&aacute;s completo y el que mejor admite formatos sueltos y packs avanzados.</p>
-                        </div>
-                        <div class="course-panel-pills">
-                            <span>Programa completo</span>
-                            <span>Din&aacute;micas sueltas</span>
-                            <span>Packs tem&aacute;ticos</span>
-                        </div>
-                    </article>
+    <section class="closing-section">
+        <div class="container">
+            <div class="closing-shell scroll-reveal">
+                <div class="closing-copy">
+                    <p class="section-kicker">Solicitud de propuesta</p>
+                    <h2 class="section-title">ADAMIS se ajusta a cada centro</h2>
+                    <p class="section-copy">
+                        La configuraci&oacute;n econ&oacute;mica se personaliza seg&uacute;n curso, combinaci&oacute;n de formatos, n&uacute;mero de alumnos y alcance real de la implantaci&oacute;n.
+                    </p>
                 </div>
-            </div>
 
-            <div class="products-ui-grid">
-                <article class="ui-panel scroll-reveal">
-                    <div class="panel-head panel-head-tight">
-                        <p class="panel-kicker">Formatos</p>
-                        <h3>Contrataci&oacute;n modular</h3>
+                <div class="closing-actions">
+                    <div class="closing-pills">
+                        <span>Por curso</span>
+                        <span>Modular</span>
+                        <span>Packs</span>
                     </div>
-                    <div class="format-chip-grid">
-                        <div class="format-chip">
-                            <i class="ph ph-squares-four"></i>
-                            <span>Clases individuales</span>
-                        </div>
-                        <div class="format-chip">
-                            <i class="ph ph-layout"></i>
-                            <span>Pack de clases</span>
-                        </div>
-                        <div class="format-chip">
-                            <i class="ph ph-users-three"></i>
-                            <span>Din&aacute;micas individuales</span>
-                        </div>
-                        <div class="format-chip">
-                            <i class="ph ph-sliders"></i>
-                            <span>Pack de din&aacute;micas</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="ui-panel scroll-reveal delay-100">
-                    <div class="panel-head panel-head-tight">
-                        <p class="panel-kicker">Packs tem&aacute;ticos</p>
-                        <h3>Bloques listos para implantar</h3>
-                    </div>
-                    <div class="pack-pill-grid">
-                        <article class="pack-pill">
-                            <strong>Money Start</strong>
-                            <span>Inicio y dinero</span>
-                        </article>
-                        <article class="pack-pill">
-                            <strong>Smart Buy</strong>
-                            <span>Consumo con criterio</span>
-                        </article>
-                        <article class="pack-pill">
-                            <strong>Cash Control</strong>
-                            <span>Ahorro y presupuesto</span>
-                        </article>
-                        <article class="pack-pill">
-                            <strong>Invest Lab</strong>
-                            <span>Inversi&oacute;n y riesgo</span>
-                        </article>
-                        <article class="pack-pill">
-                            <strong>Money Shield</strong>
-                            <span>Seguridad y cierre</span>
-                        </article>
-                    </div>
-                </article>
-            </div>
-
-            <div class="products-note scroll-reveal">
-                <p>La propuesta final se personaliza para cada centro seg&uacute;n curso, combinaci&oacute;n de formatos y alcance de la implantaci&oacute;n.</p>
-                <button type="button" class="btn-contact btn-contact-solid products-cta" data-open-info-modal data-audience="Colegio">
-                    Solicitar propuesta para mi centro
-                    <i class="ph ph-paper-plane-tilt"></i>
-                </button>
+                    <button type="button" class="btn-contact btn-contact-solid closing-cta" data-open-info-modal data-audience="Colegio">
+                        Solicitar propuesta para mi centro
+                        <i class="ph ph-paper-plane-tilt"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -291,6 +574,7 @@
             <p class="modal-kicker">Solicitud de informaci&oacute;n</p>
             <h2 class="modal-title" id="infoModalTitle">Cu&eacute;ntanos qu&eacute; necesitas</h2>
             <p class="modal-copy">Te responderemos en los correos del equipo de Prospere.</p>
+            <p class="modal-interest" id="infoModalInterest" hidden></p>
 
             <form class="info-form" id="infoRequestForm">
                 <div class="form-grid">
@@ -319,6 +603,16 @@
                         <input type="text" name="organization">
                     </label>
                 </div>
+
+                <label class="form-field">
+                    <span>Producto</span>
+                    <select name="interest" required>
+                        <option value="">Selecciona un producto</option>
+                        <option value="Programas completos">Programas completos</option>
+                        <option value="Packs Tem&aacute;ticos">Packs Tem&aacute;ticos</option>
+                        <option value="Configuraci&oacute;n Flexible">Configuraci&oacute;n Flexible</option>
+                    </select>
+                </label>
 
                 <label class="form-field">
                     <span>Mensaje</span>
