@@ -20,7 +20,7 @@
   };
 
   const STYLE_ID = 'mini-seleccionar-cards-style';
-  const HINT_DELAY_MS = 60000;
+  const HINT_DELAY_MS = 30000;
 
   function formatHintTime(ms) {
     const total = Math.max(0, Math.ceil(ms / 1000));
@@ -481,7 +481,7 @@
     let advanced = false;
     let advanceTimer = null;
     let hintInterval = null;
-    const hintReadyAt = Date.now() + HINT_DELAY_MS;
+    let hintReadyAt = Date.now() + HINT_DELAY_MS;
     const cardButtons = [];
     const selectedIds = new Set();
     let checked = false;
@@ -499,6 +499,12 @@
       }
       hintBtn.disabled = true;
       hintBtn.textContent = `${tr('Pista')} (${formatHintTime(remaining)})`;
+    }
+
+    function startHintCooldown() {
+      hintReadyAt = Date.now() + HINT_DELAY_MS;
+      if (!hintInterval) hintInterval = setInterval(updateHintButton, 1000);
+      updateHintButton();
     }
 
     function setFeedback(type, text) {
@@ -667,11 +673,11 @@
 
     cards.forEach((card) => grid.appendChild(makeCard(card)));
     updateProgress();
-    updateHintButton();
-    hintInterval = setInterval(updateHintButton, 1000);
+    startHintCooldown();
 
     hintBtn.addEventListener('click', () => {
       if (hintBtn.disabled || locked) return;
+      let usedHint = false;
       if (checkMode) {
         if (checked) return;
         const missing = cardButtons.find((entry) => entry.card.correct && !selectedIds.has(entry.card.id));
@@ -681,6 +687,7 @@
         missing.btn.setAttribute('aria-pressed', 'true');
         setFeedback('info', tr('Se ha marcado un premio adecuado.'));
         updateProgress();
+        usedHint = true;
       } else {
         const preferred = cardButtons.find((entry) => entry.card.correct && !entry.btn.classList.contains('is-revealed'))
           || cardButtons.find((entry) => !entry.btn.classList.contains('is-revealed'));
@@ -691,7 +698,9 @@
             ? preferred.card.feedbackCorrect
             : preferred.card.feedbackIncorrect);
         }
+        usedHint = true;
       }
+      if (usedHint) startHintCooldown();
     });
 
     checkBtn.addEventListener('click', () => {
@@ -722,7 +731,7 @@
         if (checkMode) entry.btn.setAttribute('aria-pressed', 'false');
       });
       updateProgress();
-      updateHintButton();
+      startHintCooldown();
     });
 
     const intro = document.createElement('div');
