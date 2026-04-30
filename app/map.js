@@ -16,8 +16,10 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const INSTRUCCIONES_URL = '/app/assets/instrucciones.avif';
   const IS_LOCAL_STATIC = window.location.protocol === 'file:';
-  const LOCKED_MAX_LEVEL = 5;
   const DEFAULT_CURRENT_LEVEL = 10;
+  const FIRST_OPEN_LEVEL = 10;
+  const LAST_OPEN_LEVEL = 11;
+  const OPEN_LEVELS = new Set([10, 11]);
   let instructionsPreloaded = false;
 
   const POINTS = [
@@ -204,9 +206,9 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
   }
 
   function getNodeState(level, currentLevel) {
-    if (level <= LOCKED_MAX_LEVEL) return 'state--locked';
-    if (level < currentLevel) return 'state--done';
-    if (level === currentLevel) return 'state--current';
+    if (level < FIRST_OPEN_LEVEL) return 'state--done';
+    if (OPEN_LEVELS.has(level)) return 'state--current';
+    if (level > LAST_OPEN_LEVEL) return 'state--upcoming';
     return 'state--locked';
   }
 
@@ -265,9 +267,7 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
   }
 
   function applyConfigToNodes(byNumero) {
-    const configuredLevels = getSortedConfiguredLevels(byNumero);
-    const localPreviewLevel = configuredLevels.find((level) => level > LOCKED_MAX_LEVEL) || DEFAULT_CURRENT_LEVEL;
-    const currentLevel = IS_LOCAL_STATIC ? localPreviewLevel : computeCurrentLevel(byNumero);
+    const currentLevel = DEFAULT_CURRENT_LEVEL;
     renderAvatar(currentLevel);
 
     for (let i = 1; i <= POINTS.length; i++) {
@@ -275,17 +275,13 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
       if (!g) continue;
 
       const info = byNumero.get(i) || null;
-      const stateClass = IS_LOCAL_STATIC
-        ? (info && info.id && i > LOCKED_MAX_LEVEL ? (i === currentLevel ? 'state--current' : 'state--done') : 'state--locked')
-        : getNodeState(i, currentLevel);
+      const stateClass = getNodeState(i, currentLevel);
       const isActiveSet = !!(info && info.activa);
-      const isAvailable = IS_LOCAL_STATIC
-        ? Boolean(info && info.id && i > LOCKED_MAX_LEVEL)
-        : Boolean(info && info.id && isActiveSet && stateClass !== 'state--locked' && i > LOCKED_MAX_LEVEL);
+      const isAvailable = Boolean(info && info.id && isActiveSet && OPEN_LEVELS.has(i));
 
       g.setAttribute('class', `node ${stateClass}`);
       g.setAttribute('data-clase-id', info?.id || '');
-      g.setAttribute('data-clase-active', isAvailable || (isActiveSet && stateClass !== 'state--locked') ? 'true' : 'false');
+      g.setAttribute('data-clase-active', isAvailable ? 'true' : 'false');
       g.setAttribute('data-node-available', isAvailable ? 'true' : 'false');
       g.setAttribute('aria-label', info?.id ? `Nivel ${i} - ${info.id}` : `Nivel ${i}`);
       g.setAttribute('tabindex', isAvailable ? '0' : '-1');
