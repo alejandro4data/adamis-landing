@@ -165,8 +165,8 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
     img.setAttribute('height', H);
     img.setAttribute('x', ax - W / 2 + OFFSET_X);
     img.setAttribute('y', ay - (HALO + GAP + H));
-    img.setAttribute('href', '../assets/images/adamis_explorador.png');
-    img.setAttributeNS(XLINK, 'xlink:href', '../assets/images/adamis_explorador.png');
+    img.setAttribute('href', '../assets/images/adamis_explorador.webp');
+    img.setAttributeNS(XLINK, 'xlink:href', '../assets/images/adamis_explorador.webp');
     avatarLayer.appendChild(img);
   }
 

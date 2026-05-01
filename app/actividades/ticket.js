@@ -554,6 +554,18 @@
       if (finished) return;
       finished = true;
       const score = mistakes === 0 ? 3 : mistakes === 1 ? 2 : mistakes === 2 ? 1 : 0;
+      if (window.AdamisRewards && typeof window.AdamisRewards.claim === 'function') {
+        window.AdamisRewards.claim({
+          activityId: 'ticket-semanal',
+          amount: 5,
+          frequency: 'weekly',
+          score: score,
+          meta: {
+            mistakes: mistakes,
+            total_errors: totalErrors
+          }
+        });
+      }
       document.querySelectorAll('.ticket-field').forEach((btn) => lockButton(btn));
       if (noErrorsBtn) noErrorsBtn.disabled = true;
       openModal(score, mistakes);

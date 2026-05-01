@@ -6,6 +6,7 @@
   <title>Tienda</title>
   <link rel="stylesheet" href="../style.css" />
   <script defer src="../i18n.js"></script>
+  <script src="../page_transition.js?v=white-sheen-1"></script>
 </head>
 <body>
   <main>
@@ -25,7 +26,7 @@
               <span class="coins-display__label">Monedas</span>
               <div class="coins-badge coins-badge--compact" data-coins-badge>
                 <span class="coins-badge__num">0</span>
-                <img src="../assets/icons/coin_ranking.png" alt="" class="coins-badge__icon" />
+                <img src="../assets/icons/coin_ranking.webp" alt="" class="coins-badge__icon" />
               </div>
             </div>
 
@@ -45,9 +46,10 @@
     </section>
   </main>
 
-  <script src="../data/user_state.js"></script>
-  <script src="../coins.js"></script>
-  <script src="../data/tienda.js"></script>
-  <script src="../tienda.js"></script>
+  <script defer src="../data/user_state.js"></script>
+  <script defer src="../events.js"></script>
+  <script defer src="../coins.js"></script>
+  <script defer src="../data/tienda.js"></script>
+  <script defer src="../tienda.js"></script>
 </body>
 </html>

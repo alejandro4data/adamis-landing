@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Menú</title>
+  <title>Men&uacute;</title>
   <link rel="stylesheet" href="../style.css" />
-  <link rel="preload" as="image" href="/app/assets/images/mapa_clases.png">
   <style>
     .general-survey-star{
       position: fixed;
-      top: 14px;
+      top: auto;
+      bottom: 18px;
       left: 14px;
       width: 46px;
       height: 46px;
       border-radius: 14px;
-      display: none; /* se activa por JS */
+      display: none;
       align-items: center;
       justify-content: center;
       text-decoration: none;
@@ -33,30 +33,84 @@
     }
   </style>
 
-   <script defer src="../i18n.js"></script>
-   <script defer src="../app.js"></script>
+  <script defer src="../i18n.js"></script>
+  <script src="../page_transition.js?v=white-sheen-1"></script>
+  <script defer src="../data/user_state.js"></script>
+  <script defer src="../coins.js"></script>
+  <script defer src="../app.js"></script>
 </head>
 <body>
   <a id="generalSurveyStar"
-   class="general-survey-star"
-   href="./clase.html?clase=encuesta_general"
-   aria-label="Encuesta general"
-   title="Encuesta general">⭐</a>
+    class="general-survey-star"
+    href="./clase.html?clase=encuesta_general"
+    aria-label="Encuesta general"
+    title="Encuesta general">&#11088;</a>
 
   <main>
-    <section id="menu" class="section section--menu is-active" aria-label="Menú principal">
+    <section id="menu" class="section section--menu is-active" aria-label="Men&uacute; principal">
       <div class="container" data-role="content">
-        <div class="menu-frame">
-          <div class="menu-grid">
-            <!-- Fondos por sección (azul / rojo-naranja / amarillo) -->
-            <a class="card card--menu card--clase" href="./mapa.html"><span>Clase</span></a>
-            <a class="card card--menu card--actividades" href="./actividades.html"><span>Actividades</span></a>
-            <a class="card card--menu card--ranking" href="./ranking.html"><span>Ranking</span></a>
+        <div class="menu-shell">
+          <header class="menu-topbar" aria-label="Estado">
+            <div class="menu-brand">
+              <span class="menu-brand__mark">ADAMIS</span>
+              <span class="menu-brand__sub">Panel de aventura</span>
+            </div>
+
+            <div class="menu-status">
+              <div class="menu-status__item menu-status__item--coins" aria-label="Monedas">
+                <span>Monedas</span>
+                <div class="coins-badge coins-badge--compact" data-coins-badge>
+                  <span class="coins-badge__num">0</span>
+                  <img src="../assets/icons/coin_ranking.webp" alt="" class="coins-badge__icon" />
+                </div>
+              </div>
+              <div class="menu-status__item" aria-label="Progreso">
+                <span>Progreso</span>
+                <strong>Clase 1/8</strong>
+              </div>
+            </div>
+          </header>
+
+          <div class="menu-dashboard">
+            <a class="card card--menu menu-card menu-card--primary card--clase" href="./mapa.html" aria-label="Clase">
+              <span class="menu-card__eyebrow">Clase</span>
+              <strong class="menu-card__title">Contin&uacute;a tu aventura</strong>
+              <span class="menu-card__copy">Siguiente parada: mapa de aprendizaje</span>
+              <span class="menu-card__action">Ver mapa</span>
+              <img class="menu-card__art menu-card__art--map" src="../assets/images/mapa_clases.webp" alt="" />
+            </a>
+
+            <div class="menu-secondary-grid">
+              <a class="card card--menu menu-card menu-card--secondary card--actividades" href="./actividades.html" aria-label="Actividades">
+                <span class="menu-card__eyebrow">Actividades</span>
+                <strong class="menu-card__title">Retos disponibles</strong>
+                <span class="menu-card__copy">Diarias, semanales y recompensa mensual</span>
+                <span class="menu-card__action">Entrar</span>
+              </a>
+
+              <a class="card card--menu menu-card menu-card--secondary card--ranking" href="./ranking.html" aria-label="Ranking">
+                <span class="menu-card__eyebrow">Ranking</span>
+                <strong class="menu-card__title">Tu posici&oacute;n</strong>
+                <span class="menu-card__copy">Compara monedas y progreso del aula</span>
+                <span class="menu-card__action">Ver ranking</span>
+                <img class="menu-card__art menu-card__art--ranking" src="../assets/images/adamis_ranking.webp" alt="" />
+              </a>
+            </div>
+
+            <aside class="menu-companion" aria-label="Adamis">
+              <div class="menu-companion__halo"></div>
+              <img src="../assets/images/adamis_explorador.webp" alt="" />
+              <div class="menu-companion__badge">
+                <span>Aventura activa</span>
+                <strong>Modo alumno</strong>
+              </div>
+            </aside>
           </div>
         </div>
       </div>
     </section>
   </main>
+
   <script>
     (function(){
       try{
@@ -66,6 +120,5 @@
       } catch(_e){}
     })();
   </script>
-
 </body>
 </html>

@@ -9,14 +9,17 @@ export default async function handler(req, res) {
   }
 
   const passwordInput = req.body?.password;
+  const secure = req.headers["x-forwarded-proto"] === "https" || process.env.VERCEL
+    ? "; Secure"
+    : "";
 
   if (passwordInput === passwordReal) {
     res.setHeader(
       "Set-Cookie",
-      "acceso_adamis_alumno=permitido; Path=/; Max-Age=3600; SameSite=Lax; HttpOnly; Secure"
+      `acceso_adamis_alumno=permitido; Path=/; Max-Age=3600; SameSite=Lax; HttpOnly${secure}`
     );
     res.statusCode = 302;
-    res.setHeader("Location", "/app/index.html");
+    res.setHeader("Location", "/app/pages/menu.html");
     return res.end();
   }
 

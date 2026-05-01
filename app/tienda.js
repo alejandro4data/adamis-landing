@@ -181,7 +181,7 @@
     var media = document.createElement('div');
     media.className = 'tienda-card__media';
     var img = document.createElement('img');
-    img.src = item.imagen || '../assets/icons/coin_ranking.png';
+    img.src = item.imagen || '../assets/icons/coin_ranking.webp';
     img.alt = tr(item.nombre);
     media.appendChild(img);
 
@@ -201,7 +201,7 @@
     var price = document.createElement('div');
     price.className = 'tienda-chip tienda-chip--price';
     var priceIcon = document.createElement('img');
-    priceIcon.src = '../assets/icons/coin_ranking.png';
+    priceIcon.src = '../assets/icons/coin_ranking.webp';
     priceIcon.alt = '';
     var priceText = document.createElement('span');
     priceText.textContent = String(item.precio);
@@ -285,6 +285,17 @@
 
     if (window.CoinsUI && window.CoinsUI.updateAll) {
       window.CoinsUI.updateAll();
+    }
+
+    if (window.AdamisEvents && typeof window.AdamisEvents.track === 'function') {
+      window.AdamisEvents.track('shop_purchase', {
+        item_id: item.id,
+        item_name: item.nombre,
+        price: availability.price,
+        balance_after: newCoins,
+        stock_after: availability.stock - 1,
+        purchased_after: availability.purchased + 1
+      });
     }
 
     var msg = tr('Compra realizada: {name}.').replace('{name}', tr(item.nombre));

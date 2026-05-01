@@ -136,7 +136,7 @@
   })();
 
   // ===== Helpers comunes =====
-  function makeSaldoWidget({ icon = '../assets/icons/coin_ranking.png' }={}){
+  function makeSaldoWidget({ icon = '../assets/icons/coin_ranking.webp' }={}){
     const elx=(t,p={},...c)=>{const n=document.createElement(t);for(const[k,v]of Object.entries(p||{})){if(k==='className')n.className=v; else if(k in n)n[k]=v; else n.setAttribute(k,v)}; for(const ch of c.flat()){ if(ch==null)continue; n.appendChild(ch.nodeType?ch:document.createTextNode(String(ch)))} return n };
     const coins=elx('div',{className:'coins-badge'}, elx('span',{className:'coins-badge__num'},'0'), elx('img',{className:'coins-badge__icon',alt:'Monedas',src:icon}));
     const wrap=elx('div',{className:'coins-wrap'}, coins); const valueEl = coins.querySelector('.coins-badge__num');
@@ -294,7 +294,7 @@
       );
       H.setImpatienceBar({ fillEl: impFill, capEl: impCap, valuePct: st.impatience || 0, capPct: CAP_PCT });
 
-      const saldoW = H.makeSaldoWidget({ icon:'../assets/icons/coin_ranking.png' });
+      const saldoW = H.makeSaldoWidget({ icon:'../assets/icons/coin_ranking.webp' });
       saldoW.set(st.saldo);
 
       const btnDar    = H.el('button',{className:'btn-option btn-pay',    dataset:{action:'dar'}},   H.txt('Dar Préstamo'));

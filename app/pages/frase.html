@@ -6,6 +6,7 @@
   <title>Frase del día</title>
   <link rel="stylesheet" href="../style.css" />
   <script defer src="../i18n.js"></script>
+  <script src="../page_transition.js?v=white-sheen-1"></script>
 </head>
 <body>
   <main>
@@ -16,7 +17,7 @@
         <header class="snake-header">
           <h1 class="wdl-title">Frase del día</h1>
           <div class="reward-badge" title="Monedas conseguidas jugando">
-            <img src="../assets/icons/coin_ranking.png" alt="" />
+            <img src="../assets/icons/coin_ranking.webp" alt="" />
             <span id="coin-score">0</span>
           </div>
         </header>
@@ -79,8 +80,11 @@
 
 
   <!-- Datos de frases (sin fetch) -->
-  <script src="../data/frases.js"></script>
+  <script defer src="../data/user_state.js"></script>
+  <script defer src="../events.js"></script>
+  <script defer src="../rewards.js"></script>
+  <script defer src="../data/frases.js"></script>
   <!-- Lógica del juego -->
-  <script src="../actividades/snake-frase.js"></script>
+  <script defer src="../actividades/snake-frase.js"></script>
 </body>
 </html>

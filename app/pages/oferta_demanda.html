@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es" data-page="actividades">
 <head>
   <meta charset="utf-8" />
@@ -6,6 +6,7 @@
   <title>Oferta y demanda</title>
   <link rel="stylesheet" href="../style.css" />
   <script defer src="../i18n.js"></script>
+  <script src="../page_transition.js?v=white-sheen-1"></script>
 </head>
 <body>
   <main>
@@ -19,7 +20,7 @@
             <p class="od-subtitle">Simulador educativo de una heladeria: ajusta stock y precios segun el clima.</p>
           </div>
           <div class="reward-badge">
-            <img src="../assets/icons/coin_ranking.png" alt="" />
+            <img src="../assets/icons/coin_ranking.webp" alt="" />
             <span>5</span>
           </div>
         </header>
@@ -343,7 +344,10 @@
     </section>
   </main>
 
-  <script src="../actividades/oferta_demanda.js"></script>
+  <script defer src="../data/user_state.js"></script>
+  <script defer src="../events.js"></script>
+  <script defer src="../rewards.js"></script>
+  <script defer src="../actividades/oferta_demanda.js"></script>
 </body>
 </html>
 

@@ -11,13 +11,25 @@
   }
 
   function getSessionData() {
+    if (window.AdamisEvents && typeof window.AdamisEvents.getSessionData === "function") {
+      const data = window.AdamisEvents.getSessionData();
+      return {
+        session_uuid: data.session_uuid || null,
+        student_uuid: data.student_uuid || null,
+        current_user: data.current_user || null,
+        centro: data.centro || null
+      };
+    }
+
     try {
       return {
         session_uuid: sessionStorage.getItem("session_uuid") || null,
+        student_uuid: sessionStorage.getItem("student_uuid") || null,
+        current_user: localStorage.getItem("currentUser") || null,
         centro: sessionStorage.getItem("centro") || null
       };
     } catch {
-      return { session_uuid: null, centro: null };
+      return { session_uuid: null, student_uuid: null, current_user: null, centro: null };
     }
   }
 
@@ -29,6 +41,8 @@
       respuesta: detail?.respuesta ?? null,
       clase: classIdFromUrl(),
       session_uuid: session.session_uuid,
+      student_uuid: session.student_uuid,
+      current_user: session.current_user,
       centro: session.centro,
       fecha_gmt: new Date().toISOString()
     };

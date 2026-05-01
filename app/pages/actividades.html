@@ -6,6 +6,7 @@
   <title>Actividades</title>
   <link rel="stylesheet" href="../style.css" />
   <script defer src="../i18n.js"></script>
+  <script src="../page_transition.js?v=white-sheen-1"></script>
 </head>
 <body>
   <main>
@@ -18,30 +19,30 @@
           <header class="group-header">
             <h2>Diarias</h2>
             <div class="reward-badge">
-              <img src="../assets/icons/coin_ranking.png" alt="" />
+              <img src="../assets/icons/coin_ranking.webp" alt="" />
               <span>1</span>
             </div>
           </header>
 
           <div class="activities-grid">
-            <a class="activity-card" href="./crucigrama.html" aria-label="Crucigrama del día">
+            <a class="activity-card" href="./crucigrama.html" aria-label="Crucigrama del día" data-activity-id="crucigrama-dia" data-frequency="daily">
               <h3 class="activity-title">Crucigrama del día</h3>
               <div class="activity-meta">
-                <img src="../assets/icons/coin_ranking.png" alt="" class="coin"/><span>1</span>
+                <img src="../assets/icons/coin_ranking.webp" alt="" class="coin"/><span>1</span>
               </div>
             </a>
 
-            <a class="activity-card" href="./palabra.html" aria-label="Palabra del día">
+            <a class="activity-card" href="./palabra.html" aria-label="Palabra del día" data-activity-id="palabra-dia" data-frequency="daily">
               <h3 class="activity-title">Palabra del día</h3>
               <div class="activity-meta">
-                <img src="../assets/icons/coin_ranking.png" alt="" class="coin"/><span>1</span>
+                <img src="../assets/icons/coin_ranking.webp" alt="" class="coin"/><span>1</span>
               </div>
             </a>
 
-            <a class="activity-card" href="./frase.html" aria-label="Frase del día">
-              <h3 class="activity-title">Frassse del día</h3>
+            <a class="activity-card" href="./frase.html" aria-label="Frase del día" data-activity-id="frase-dia" data-frequency="daily">
+              <h3 class="activity-title">Frase del día</h3>
               <div class="activity-meta">
-                <img src="../assets/icons/coin_ranking.png" alt="" class="coin"/><span>1</span>
+                <img src="../assets/icons/coin_ranking.webp" alt="" class="coin"/><span>1</span>
               </div>
             </a>
           </div>
@@ -52,23 +53,23 @@
           <header class="group-header">
             <h2>Semanales</h2>
             <div class="reward-badge">
-              <img src="../assets/icons/coin_ranking.png" alt="" />
+              <img src="../assets/icons/coin_ranking.webp" alt="" />
               <span>5</span>
             </div>
           </header>
 
           <div class="activities-grid">
-            <a class="activity-card activity-card--wide" href="./oferta_demanda.html" aria-label="Oferta y demanda">
+            <a class="activity-card activity-card--wide" href="./oferta_demanda.html" aria-label="Oferta y demanda" data-activity-id="oferta-demanda-semanal" data-frequency="weekly">
               <h3 class="activity-title">Oferta y Demanda</h3>
               <div class="activity-meta">
-                <img src="../assets/icons/coin_ranking.png" alt="" class="coin"/><span>5</span>
+                <img src="../assets/icons/coin_ranking.webp" alt="" class="coin"/><span>5</span>
               </div>
             </a>
 
-            <a class="activity-card activity-card--wide" href="./ticket.html" aria-label="Error en el ticket">
+            <a class="activity-card activity-card--wide" href="./ticket.html" aria-label="Error en el ticket" data-activity-id="ticket-semanal" data-frequency="weekly">
               <h3 class="activity-title">Error en el ticket</h3>
               <div class="activity-meta">
-                <img src="../assets/icons/coin_ranking.png" alt="" class="coin"/><span>5</span>
+                <img src="../assets/icons/coin_ranking.webp" alt="" class="coin"/><span>5</span>
               </div>
             </a>
           </div>
@@ -79,16 +80,16 @@
           <header class="group-header">
             <h2>Mensual</h2>
             <div class="reward-badge">
-              <img src="../assets/icons/coin_ranking.png" alt="" />
+              <img src="../assets/icons/coin_ranking.webp" alt="" />
               <span>10</span>
             </div>
           </header>
 
           <div class="activities-grid">
-            <article class="activity-card activity-card--full">
+            <article class="activity-card activity-card--full" data-activity-id="proyecto-ahorro-mes" data-frequency="monthly">
               <h3 class="activity-title">Proyecto de ahorro del mes</h3>
               <div class="activity-meta">
-                <img src="../assets/icons/coin_ranking.png" alt="" class="coin"/><span>10</span>
+                <img src="../assets/icons/coin_ranking.webp" alt="" class="coin"/><span>10</span>
               </div>
             </article>
           </div>
@@ -96,5 +97,8 @@
       </div>
     </section>
   </main>
+  <script defer src="../data/user_state.js"></script>
+  <script defer src="../rewards.js"></script>
+  <script defer src="../activities_status.js"></script>
 </body>
 </html>

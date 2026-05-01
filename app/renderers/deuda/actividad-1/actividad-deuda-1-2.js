@@ -41,7 +41,7 @@
         tbody.appendChild(tr);
       }
     }
-    function makeSaldoWidget({ icon = '../assets/icons/coin_ranking.png' }={}){
+    function makeSaldoWidget({ icon = '../assets/icons/coin_ranking.webp' }={}){
       const elx=(t,p={},...c)=>{const n=document.createElement(t);for(const[k,v]of Object.entries(p||{})){if(k==='className')n.className=v; else if(k in n)n[k]=v; else n.setAttribute(k,v)}; for(const ch of c.flat()){if(ch==null)continue; n.appendChild(ch.nodeType?ch:document.createTextNode(String(ch)))}; return n};
       const coins=elx('div',{className:'coins-badge'}, elx('span',{className:'coins-badge__num'},'0'), elx('img',{className:'coins-badge__icon',alt:'Monedas',src:icon}));
       const wrap=elx('div',{className:'coins-wrap'}, coins); const valueEl=coins.querySelector('.coins-badge__num'); return { node:wrap, set:(v)=>{ valueEl.textContent=String(Number(v||0)); } };
@@ -314,10 +314,10 @@ SlideRendererRegistry.register('actividad-deuda-1-2', function (s, root) {
   // Izquierda: Impaciencia + Saldo + frases (centrado)
   function makeSaldo(){
     const e=(t,p={},...c)=>{const n=document.createElement(t);for(const[k,v]of Object.entries(p)){if(k==='className')n.className=v;else if(k in n)n[k]=v;else n.setAttribute(k,v)};c.flat().forEach(x=>n.appendChild(x.nodeType?x:document.createTextNode(String(x))));return n};
-    const coins=e('div',{className:'coins-badge'}, e('span',{className:'coins-badge__num'},'0'), e('img',{className:'coins-badge__icon',src:'../assets/icons/coin_ranking.png',alt:'🪙'}));
+    const coins=e('div',{className:'coins-badge'}, e('span',{className:'coins-badge__num'},'0'), e('img',{className:'coins-badge__icon',src:'../assets/icons/coin_ranking.webp',alt:'🪙'}));
     const wrap=e('div',{className:'coins-wrap'}, coins); const num=coins.querySelector('.coins-badge__num'); return { node:wrap, set:(v)=>num.textContent=String(Number(v||0)) };
   }
-  const saldoW = (H.makeSaldoWidget ? H.makeSaldoWidget({icon:'../assets/icons/coin_ranking.png'}) : makeSaldo());
+  const saldoW = (H.makeSaldoWidget ? H.makeSaldoWidget({icon:'../assets/icons/coin_ranking.webp'}) : makeSaldo());
   saldoW.set(prevSaldo);
 
   const impFill = H.el('div',{className:'impatience-fill'});

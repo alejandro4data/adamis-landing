@@ -349,9 +349,19 @@ function ensureRendererLoaded(tipo){
   const getActiveClassId = () => String(window.CURRENT_CLASS || classIdFromUrl()).toLowerCase();
   const markClassCompletedIfNeeded = (idx, total) => {
     if (total <= 0 || idx !== total - 1) return;
-    const level = CLASS_LEVEL_BY_ID[getActiveClassId()];
+    const classId = getActiveClassId();
+    const level = CLASS_LEVEL_BY_ID[classId];
     if (!level) return;
+    let wasCompleted = false;
+    try { wasCompleted = localStorage.getItem(`class_completed_${level}`) === 'true'; } catch (_) {}
     try { localStorage.setItem(`class_completed_${level}`, 'true'); } catch (_) {}
+    if (!wasCompleted && window.AdamisEvents && typeof window.AdamisEvents.track === 'function') {
+      window.AdamisEvents.track('class_completed', {
+        class_id: classId,
+        level: level,
+        total_slides: total
+      }, { idempotencyKey: `class_completed:${classId}:${level}` });
+    }
   };
 
   // ----- utils -----
@@ -444,7 +454,7 @@ function ensureRendererLoaded(tipo){
       const img = document.createElement('img');
       img.className = 'reward__coin';
       img.alt = 'moneda';
-      img.src = '../assets/icons/coin_ranking.png';
+      img.src = '../assets/icons/coin_ranking.webp';
       frag.appendChild(img);
       last = m.index + m[0].length;
     }

@@ -41,6 +41,14 @@
       var raw = localStorage.getItem(KEY_USER);
       if (raw && String(raw).trim()) return String(raw).trim();
     } catch (e) {}
+    try {
+      var sessionStudent = sessionStorage.getItem('student_uuid');
+      if (sessionStudent && String(sessionStudent).trim()) return String(sessionStudent).trim();
+    } catch (e) {}
+    try {
+      var storedStudent = localStorage.getItem('adamis_student_uuid');
+      if (storedStudent && String(storedStudent).trim()) return String(storedStudent).trim();
+    } catch (e) {}
     return 'invitado';
   }
 

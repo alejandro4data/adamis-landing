@@ -6,7 +6,7 @@
     coins: 0, happiness: 50,
     setpoints: { sp1: 30, sp2: 60, sp3: 100 },
     zoneIcons: { red:'', orange:'', green:'' },
-    coinIcon: '../assets/icons/coin_ranking.png'
+    coinIcon: '../assets/icons/coin_ranking.webp'
   };
   function getState(){
     const s = (window.ACT_AHORRO_STATE ||= {});
@@ -50,7 +50,7 @@
       goalRow.style.cssText = 'display:inline-flex;align-items:center;gap:.5rem;opacity:.6;margin-top:6px;font-weight:600;font-size:.95rem;';
       goalRow.innerHTML = `
         <span>Objetivo: ${Number(opts.goalAmount)}</span>
-        <img class="goal-target__icon" src="${opts.coinIcon || '../assets/icons/coin_ranking.png'}" alt="Monedas" style="width:18px;height:18px;object-fit:contain;transform:translateY(1px);">
+        <img class="goal-target__icon" src="${opts.coinIcon || '../assets/icons/coin_ranking.webp'}" alt="Monedas" style="width:18px;height:18px;object-fit:contain;transform:translateY(1px);">
       `;
       coinsWrap.appendChild(goalRow);
     }

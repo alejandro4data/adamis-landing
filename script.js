@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const openInfoButtons = document.querySelectorAll('[data-open-info-modal]');
     const productTabs = Array.from(document.querySelectorAll('[data-product-tab]'));
     const productPanels = Array.from(document.querySelectorAll('[data-product-detail]'));
+    const productTabById = new Map(productTabs.map((tab) => [tab.dataset.productTab, tab]));
+    const productPanelById = new Map(productPanels.map((panel) => [panel.dataset.productDetail, panel]));
     const productExperience = document.querySelector('[data-active-product]');
     const productDock = document.querySelector('[data-product-dock]');
     const courseTabs = document.querySelectorAll('[data-course-tab]');
@@ -20,6 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileProductQuery = window.matchMedia('(max-width: 720px)');
 
     let panelRevealAnimation = null;
+    let activeProduct = productTabs.find((tab) => tab.classList.contains('is-active'))?.dataset.productTab || productTabs[0]?.dataset.productTab || '';
+    let pendingProduct = '';
+    let productTransitionFrame = 0;
+    let productMeasureFrame = 0;
+    const productTriggerAnimations = new Map();
 
     const launchPlatformAccess = () => {
         if (document.querySelector('.transition-curtain')) return;
@@ -143,8 +150,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const animateProductPanelReveal = (panel) => {
+        if (!panel || reducedMotionQuery.matches) return;
+
+        panelRevealAnimation?.cancel();
+        panelRevealAnimation = panel.animate(
+            [
+                { opacity: 0.01, transform: 'translate3d(0, 14px, 0)' },
+                { opacity: 1, transform: 'translateY(0)' }
+            ],
+            {
+                duration: 440,
+                easing: 'cubic-bezier(.22,1,.36,1)',
+                fill: 'both'
+            }
+        );
+    };
+
+    const getProductRects = () => new Map(productTabs.map((tab) => [tab, tab.getBoundingClientRect()]));
+
     const animateProductTriggerFLIP = (firstRects) => {
-        if (!firstRects || reducedMotionQuery.matches) return;
+        if (!firstRects || reducedMotionQuery.matches || mobileProductQuery.matches) return;
 
         productTabs.forEach((tab) => {
             const first = firstRects.get(tab);
@@ -163,9 +189,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 Math.abs(scaleX - 1) > 0.015 ||
                 Math.abs(scaleY - 1) > 0.015;
 
+            productTriggerAnimations.get(tab)?.cancel();
+
             if (!changedEnough) return;
 
-            tab.animate(
+            const animation = tab.animate(
                 [
                     {
                         transformOrigin: 'top left',
@@ -182,80 +210,132 @@ document.addEventListener('DOMContentLoaded', () => {
                     fill: 'both'
                 }
             );
+
+            productTriggerAnimations.set(tab, animation);
+            animation.addEventListener('finish', () => {
+                if (productTriggerAnimations.get(tab) === animation) {
+                    productTriggerAnimations.delete(tab);
+                }
+            }, { once: true });
         });
     };
 
-    const animateProductPanelReveal = (panel) => {
-        if (!panel || reducedMotionQuery.matches) return;
+    const setProductTabState = (tab, isActive) => {
+        if (!tab) return;
 
-        panelRevealAnimation?.cancel();
-        panelRevealAnimation = panel.animate(
-            [
-                { opacity: 0.01, transform: 'translate3d(0, 14px, 0)' },
-                { opacity: 1, transform: 'translateY(0)' }
-            ],
-            {
-                duration: 440,
-                easing: 'cubic-bezier(.22,1,.36,1)',
-                fill: 'both'
-            }
-        );
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', String(isActive));
+        tab.tabIndex = isActive ? 0 : -1;
+    };
+
+    const setProductPanelState = (panel, isActive) => {
+        if (!panel) return;
+
+        panel.classList.toggle('is-active', isActive);
+        panel.hidden = !isActive;
+    };
+
+    const focusProductTab = (tab) => {
+        if (!tab) return;
+
+        try {
+            tab.focus({ preventScroll: true });
+        } catch {
+            tab.focus();
+        }
+    };
+
+    const revealProductDetailOnMobile = () => {
+        if (!productDock || !mobileProductQuery.matches) return;
+
+        const dockRect = productDock.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        const scrollMarginTop = Number.parseFloat(window.getComputedStyle(productDock).scrollMarginTop) || 0;
+        const isReadable = dockRect.top >= scrollMarginTop - 8 && dockRect.top <= viewportHeight * 0.78;
+
+        if (isReadable) return;
+
+        window.scrollTo({
+            top: Math.max(0, window.scrollY + dockRect.top - scrollMarginTop),
+            behavior: 'auto'
+        });
     };
 
     const setActiveProduct = (target, options = {}) => {
-        const { focus = false, revealDetail = false } = options;
-        const previousActive = productTabs.find((tab) => tab.classList.contains('is-active'))?.dataset.productTab;
-        if (previousActive === target && !options.immediate) return;
-        const shouldAnimate = !options.immediate && !reducedMotionQuery.matches && previousActive !== target;
-        const firstRects = shouldAnimate
-            ? new Map(productTabs.map((tab) => [tab, tab.getBoundingClientRect()]))
-            : null;
+        const { focus = false, revealDetail = false, immediate = false } = options;
+        const nextTab = productTabById.get(target);
+        const nextPanel = productPanelById.get(target);
 
-        if (productExperience) {
-            productExperience.dataset.activeProduct = target;
+        if (!nextTab || !nextPanel) return;
+
+        if ((pendingProduct || activeProduct) === target && !immediate) {
+            if (focus) {
+                focusProductTab(nextTab);
+            }
+
+            return;
         }
 
-        productTabs.forEach((tab) => {
-            const isActive = tab.dataset.productTab === target;
-            tab.classList.toggle('is-active', isActive);
-            tab.setAttribute('aria-selected', String(isActive));
-            tab.tabIndex = isActive ? 0 : -1;
-
-            if (focus && isActive) {
-                tab.focus();
-            }
-        });
-
-        let nextPanel = null;
-        productPanels.forEach((panel) => {
-            const isActive = panel.dataset.productDetail === target;
-            panel.classList.toggle('is-active', isActive);
-            panel.hidden = !isActive;
-
-            if (isActive) {
-                nextPanel = panel;
-            }
-        });
-
-        if (productDock) {
-            productDock.style.height = '';
+        if (productTransitionFrame) {
+            cancelAnimationFrame(productTransitionFrame);
         }
 
-        if (shouldAnimate) {
-            requestAnimationFrame(() => {
+        if (productMeasureFrame) {
+            cancelAnimationFrame(productMeasureFrame);
+        }
+
+        pendingProduct = '';
+
+        if (immediate) {
+            if (productExperience) {
+                productExperience.dataset.activeProduct = target;
+            }
+
+            productTabs.forEach((tab) => setProductTabState(tab, tab.dataset.productTab === target));
+            productPanels.forEach((panel) => setProductPanelState(panel, panel.dataset.productDetail === target));
+            activeProduct = target;
+            pendingProduct = '';
+            return;
+        }
+
+        pendingProduct = target;
+
+        if (focus) {
+            focusProductTab(nextTab);
+        }
+
+        productTransitionFrame = requestAnimationFrame(() => {
+            productTransitionFrame = 0;
+
+            const shouldAnimateTriggers = !reducedMotionQuery.matches && !mobileProductQuery.matches;
+            const firstRects = shouldAnimateTriggers ? getProductRects() : null;
+            const previousProduct = productTabs.find((tab) => tab.classList.contains('is-active'))?.dataset.productTab || activeProduct;
+            const previousTab = productTabById.get(previousProduct);
+            const previousPanel = productPanelById.get(previousProduct);
+
+            if (productExperience) {
+                productExperience.dataset.activeProduct = target;
+            }
+
+            setProductTabState(previousTab, false);
+            setProductTabState(nextTab, true);
+
+            productMeasureFrame = requestAnimationFrame(() => {
+                productMeasureFrame = 0;
+                if (pendingProduct !== target) return;
+
                 animateProductTriggerFLIP(firstRects);
+                setProductPanelState(previousPanel, false);
+                setProductPanelState(nextPanel, true);
                 animateProductPanelReveal(nextPanel);
-            });
-        }
+                activeProduct = target;
+                pendingProduct = '';
 
-        if (revealDetail && mobileProductQuery.matches && productDock) {
-            requestAnimationFrame(() => {
-                productDock.scrollIntoView({
-                    behavior: reducedMotionQuery.matches ? 'auto' : 'smooth',
-                    block: 'start'
-                });
+                if (revealDetail && mobileProductQuery.matches && productDock) {
+                    requestAnimationFrame(revealProductDetailOnMobile);
+                }
             });
-        }
+        });
     };
 
     productTabs.forEach((tab, index) => {
@@ -292,21 +372,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    if (productTabs.length > 0) {
-        const initialProduct = productTabs.find((tab) => tab.classList.contains('is-active'))?.dataset.productTab || productTabs[0].dataset.productTab;
-        setActiveProduct(initialProduct, { immediate: true });
+    if (activeProduct) {
+        setActiveProduct(activeProduct, { immediate: true });
     }
 
     window.addEventListener('resize', () => {
         if (productDock) {
             productDock.style.height = '';
         }
+
+        productTriggerAnimations.forEach((animation) => animation.cancel());
+        productTriggerAnimations.clear();
     });
 
     const handleReducedMotionChange = () => {
         if (productDock) {
             productDock.style.height = '';
         }
+
+        panelRevealAnimation?.cancel();
+        productTriggerAnimations.forEach((animation) => animation.cancel());
+        productTriggerAnimations.clear();
     };
 
     if (typeof reducedMotionQuery.addEventListener === 'function') {

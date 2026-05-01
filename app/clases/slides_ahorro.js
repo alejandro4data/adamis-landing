@@ -986,7 +986,7 @@ window.slides.push( SlideCuadroReflexion({
 
 window.slides.push(
   SlideSabiasQue({
-    img: '../assets/ahorro/escenas/sabiasque.png', // opcional
+    img: '../assets/ahorro/escenas/sabiasque.webp', // opcional
     fact: '¿Sabías que en Japón existe una palabra especial: KAKEBO?. Significa "libreta de cuentas para la economía del hogar". Muchas familias japonesas la usan desde hace más de 100 años para apuntar lo que ganan, lo que gastan y cuánto logran ahorrar cada mes...',
     placeholder: 'Espacio reservado para imagen',
     continueText: 'Continuar'
@@ -995,7 +995,7 @@ window.slides.push(
 
 window.slides.push(
   SlideMoraleja({
-    img: '../assets/moraleja.png',
+    img: '../assets/moraleja.webp',
     text: 'Si llevas la cuenta de lo que ahorras y gastas, como hacen millones de personas en Japón  con el KAKEBO, te será mucho más fácil cumplir tus metas y controlar tu dinero. ¡Tu propio cuaderno de ahorro puede ser el secreto para conseguir lo que quieras!',
     buttonText: 'Fin de la clase'
   })
@@ -1110,7 +1110,7 @@ window.slides.push( SlideDinamicaActividad({
 // Texto a la izquierda, SIN efecto, indicando textFraction (20%)
 window.slides.push( Slide({
   text: 'Recuerda: elegir es comparar. ¡Y comparar es súperpoder!',
-  img: '../assets/images/adamis_explorador.png',
+  img: '../assets/images/adamis_explorador.webp',
   textPosition: 'left',
   textFraction: 0.2,
   typewriter: false,

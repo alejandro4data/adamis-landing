@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso Aula - ADAMIS</title>
     <script defer src="./app/i18n.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
-    <style>
+    <script src="./app/page_transition.js?v=white-sheen-1"></script>
+<style>
         body {
             margin: 0;
             min-height: 100vh;
@@ -18,7 +18,7 @@
             background:
                 radial-gradient(circle at top, rgba(255, 255, 255, 0.65), transparent 35%),
                 linear-gradient(135deg, #F9F1D0, #E6C874);
-            font-family: 'Outfit', sans-serif;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", Arial, sans-serif;
         }
         .shell {
             width: min(980px, 100%);
@@ -223,6 +223,19 @@
                 });
             }
 
+            function getStudentUuid() {
+                try {
+                    let id = localStorage.getItem("adamis_student_uuid");
+                    if (!id) {
+                        id = uuid();
+                        localStorage.setItem("adamis_student_uuid", id);
+                    }
+                    return id;
+                } catch {
+                    return uuid();
+                }
+            }
+
             function clearLegacyLocalStorage() {
                 try {
                     for (let i = localStorage.length - 1; i >= 0; i--) {
@@ -242,6 +255,7 @@
 
                         const centroField = form.querySelector('[name="centro"]');
                         sessionStorage.setItem("session_uuid", uuid());
+                        sessionStorage.setItem("student_uuid", getStudentUuid());
                         sessionStorage.setItem("centro", centroField?.value || "");
                         sessionStorage.setItem("access_role", form.dataset.role || "student");
                     } catch {}

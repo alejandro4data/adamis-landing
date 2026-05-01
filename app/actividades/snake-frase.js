@@ -91,7 +91,7 @@
   let coins=0;
 
   // Assets
-  const coinImg = new Image(); coinImg.src = '../assets/icons/coin_ranking.png';
+  const coinImg = new Image(); coinImg.src = '../assets/icons/coin_ranking.webp';
 
   // Estética anim
   let shimmer = 0;
@@ -152,6 +152,15 @@
     isCinematic = true;
     acc = 0;                           // evita salto al reanudar
     target.idx = -1;                   // no dibujar objetivo durante overlay
+    if (window.AdamisRewards && typeof window.AdamisRewards.claim === 'function') {
+      window.AdamisRewards.claim({
+        activityId: 'frase-dia',
+        amount: 1,
+        frequency: 'daily',
+        score: phrase.length,
+        meta: { phrase: phrase }
+      });
+    }
     cinTxt && (cinTxt.textContent = phrase);
     if (cin){
       cin.classList.remove('is-hidden');

@@ -1180,6 +1180,21 @@
     const penalty = state.stock * 0.5;
     const finalMoney = state.dayStartMoney - expense + state.revenue - penalty;
     const profit = finalMoney - state.dayStartMoney;
+    if (window.AdamisRewards && typeof window.AdamisRewards.claim === 'function') {
+      window.AdamisRewards.claim({
+        activityId: 'oferta-demanda-semanal',
+        amount: 5,
+        frequency: 'weekly',
+        score: Math.round(profit * 100) / 100,
+        meta: {
+          final_money: Math.round(finalMoney * 100) / 100,
+          profit: Math.round(profit * 100) / 100,
+          sold: state.stats?.sold || 0,
+          lost_price: state.stats?.lostPrice || 0,
+          lost_stock: state.stats?.lostStock || 0
+        }
+      });
+    }
     const wtpByProfile = state.stats?.wtpByProfile || { saver: [], impulsive: [], vip: [] };
     let remaining = state.stockSelected;
     let maxRevenue = 0;

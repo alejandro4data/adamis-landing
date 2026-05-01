@@ -3,7 +3,7 @@
     "nombre": "Peluche Adamis",
     "precio": 8,
     "descripcion": "Un peluche del personaje Adamis.",
-    "imagen": "../assets/assets_tienda/peluche_adamis.png",
+    "imagen": "../assets/assets_tienda/peluche_adamis.webp",
     "stock": 12,
     "max": 2
   },

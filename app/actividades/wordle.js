@@ -371,6 +371,19 @@ function endGame(win){
   state.result = win ? "win" : "lose";
   save();
 
+  if (win && window.AdamisRewards && typeof window.AdamisRewards.claim === 'function') {
+    window.AdamisRewards.claim({
+      activityId: 'palabra-dia',
+      amount: 1,
+      frequency: 'daily',
+      score: ROWS - state.r,
+      meta: {
+        attempts: state.r + 1,
+        word: targetRaw
+      }
+    });
+  }
+
   setTimeout(() => {
     openResultModal({ win, word: targetRaw, def: DEF });
   }, 100);

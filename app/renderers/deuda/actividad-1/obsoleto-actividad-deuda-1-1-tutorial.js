@@ -259,11 +259,11 @@ SlideRendererRegistry.register('actividad-deuda-1-1-tutorial', function (s, root
 
   // Saldo (badge)
   const saldoW = H.makeSaldoWidget
-    ? H.makeSaldoWidget({ icon:'../assets/icons/coin_ranking.png' })
+    ? H.makeSaldoWidget({ icon:'../assets/icons/coin_ranking.webp' })
     : (function(){ const wrap=document.createElement('div'); wrap.className='coins-wrap';
         const badge=document.createElement('div'); badge.className='coins-badge';
         const num=document.createElement('span'); num.className='coins-badge__num'; num.textContent='0';
-        const ic=document.createElement('img'); ic.className='coins-badge__icon'; ic.src='../assets/icons/coin_ranking.png'; ic.alt='Monedas';
+        const ic=document.createElement('img'); ic.className='coins-badge__icon'; ic.src='../assets/icons/coin_ranking.webp'; ic.alt='Monedas';
         badge.appendChild(num); badge.appendChild(ic); wrap.appendChild(badge);
         return { node:wrap, set:(v)=>{ num.textContent=String(Number(v||0)); }, badge };
       })();

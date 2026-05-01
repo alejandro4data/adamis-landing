@@ -1,6 +1,31 @@
 (() => {
   'use strict';
 
+  function clearLegacyServiceWorker() {
+    try {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations()
+          .then(function (registrations) {
+            registrations.forEach(function (registration) {
+              registration.unregister();
+            });
+          })
+          .catch(function () {});
+      }
+      if (window.caches && typeof window.caches.keys === 'function') {
+        window.caches.keys()
+          .then(function (keys) {
+            keys
+              .filter(function (key) { return key.indexOf('adamis-shell-') === 0; })
+              .forEach(function (key) { window.caches.delete(key); });
+          })
+          .catch(function () {});
+      }
+    } catch (_) {}
+  }
+
+  clearLegacyServiceWorker();
+
   const STORAGE_KEY = 'adamis_lang';
   const SUPPORTED = ['es', 'en'];
   const FALLBACK = 'es';
@@ -86,7 +111,7 @@
     ['Usuario', 'Username'],
     ['Escribe tu usuario', 'Type your username'],
     ['Contraseña', 'Password'],
-    ['Inciar Sesión', 'Sign in'],
+    ['Iniciar Sesión', 'Sign in'],
     ['Iniciar Sesión', 'Sign in'],
     ['Tienda', 'Shop'],
     ['Ir a la tienda', 'Go to shop'],
@@ -143,7 +168,7 @@
     ['Crucigrama del día', 'Crossword of the day'],
     ['Palabra del día', 'Word of the day'],
     ['Frase del día', 'Sssssentence of the day'],
-    ['Frassse del día', 'Sssssentence of the day'],
+    ['Frase del día', 'Sentence of the day'],
     ['Frasssse del día', 'Sssssentence of the day'],
     ['Semanales', 'Weekly'],
     ['Actividades semanales (5 monedas)', 'Weekly activities (5 coins)'],

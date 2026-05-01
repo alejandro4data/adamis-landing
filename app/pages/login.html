@@ -8,11 +8,11 @@
 
   <!-- Hoja de estilos global (los estilos específicos del login van al final de style.css) -->
   <link rel="stylesheet" href="../style.css" />
-
-  <!-- Preload de la imagen de Adamis para el fondo -->
-  <link rel="preload" as="image" href="../assets/images/adamis_login.png" />
+<!-- Preload de la imagen de Adamis para el fondo -->
+  <link rel="preload" as="image" href="../assets/images/adamis_login.webp" />
 
   <script defer src="../i18n.js"></script>
+  <script src="../page_transition.js?v=white-sheen-1"></script>
   <script defer src="../app.js"></script>
 </head>
 <body>
@@ -47,7 +47,7 @@
           </div>
 
           <div class="actions">
-            <button id="loginBtn" type="submit" class="btn--coin">Inciar Sesión</button>
+            <button id="loginBtn" type="submit" class="btn--coin">Iniciar Sesión</button>
           </div>
         </form>
       </div>
@@ -62,7 +62,11 @@
       form.addEventListener('submit', (ev) => {
         ev.preventDefault();
         try { localStorage.setItem('currentUser', user.value || ''); } catch(e) {}
-        window.location.href = './menu.html';
+        if (window.AdamisPageTransition?.go) {
+          window.AdamisPageTransition.go('./menu.html');
+        } else {
+          window.location.href = './menu.html';
+        }
       }, false);
     })();
   </script>

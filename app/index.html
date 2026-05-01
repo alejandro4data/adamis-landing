@@ -85,6 +85,7 @@
       }
   </style>
   <script defer src="./i18n.js"></script>
+  <script src="./page_transition.js?v=white-sheen-1"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
@@ -99,7 +100,13 @@
     // Redirige al tocar/clicar/teclar en cualquier sitio
     (function () {
       // NOTA: Ajusta esta ruta si 'pages' está dentro de una carpeta 'app'
-      const go = () => { window.location.href = '/app/pages/menu.html'; };
+      const go = () => {
+        if (window.AdamisPageTransition?.go) {
+          window.AdamisPageTransition.go('/app/pages/menu.html');
+        } else {
+          window.location.href = '/app/pages/menu.html';
+        }
+      };
       
       // Usamos 'document' para asegurar que captura el clic en toda la pantalla
       document.addEventListener('click', go);

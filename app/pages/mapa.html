@@ -6,6 +6,7 @@
   <title>Mapa</title>
   <link rel="stylesheet" href="../style.css" />
   <script defer src="../i18n.js"></script>
+  <script src="../page_transition.js?v=white-sheen-1"></script>
   <script defer src="../app.js"></script>
 </head>
 <body>
@@ -36,7 +37,7 @@
             </defs>
 
             <g id="bg-layer" aria-hidden="true">
-              <image href="../assets/images/mapa_clases.png"
+              <image href="../assets/images/mapa_clases.webp"
                      x="0" y="0" width="1000" height="600"
                      preserveAspectRatio="xMidYMid slice"
                      opacity="0.85" pointer-events="none" />
@@ -49,7 +50,7 @@
           </svg>
         </div>
       </div>
-      <script src="../data/config_clases.js"></script>
+      <script defer src="../data/config_clases.js"></script>
       <script defer src="../map.js"></script>
     </section>
   </main>

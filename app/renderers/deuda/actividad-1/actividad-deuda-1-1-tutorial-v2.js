@@ -168,7 +168,7 @@
     };
   }
   if (!H.makeSaldoWidget){
-    H.makeSaldoWidget = ({ icon = '../assets/icons/coin_ranking.png' } = {}) => {
+    H.makeSaldoWidget = ({ icon = '../assets/icons/coin_ranking.webp' } = {}) => {
       const el = H.el;
       const coins = el('div',{className:'coins-badge'},
         el('span',{className:'coins-badge__num'}, '0'),
@@ -248,7 +248,7 @@ SlideRendererRegistry.register('actividad-deuda-1-1-tutorial-v2', function (s, r
   );
 
   // Saldo
-  const saldoW = H.makeSaldoWidget ? H.makeSaldoWidget({ icon:'../assets/icons/coin_ranking.png' }) : null;
+  const saldoW = H.makeSaldoWidget ? H.makeSaldoWidget({ icon:'../assets/icons/coin_ranking.webp' }) : null;
   const saldoNode = saldoW ? saldoW.node : el('div',{className:'coins-wrap'}, el('div',{className:'coins-badge'}, txt('0')));
   const saldoBadge = saldoNode.querySelector?.('.coins-badge') || saldoNode;
   if (saldoBadge) saldoBadge.style.position = 'relative';

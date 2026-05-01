@@ -5,7 +5,7 @@
       "nombre": "Peluche Adamis",
       "precio": 18,
       "descripcion": "Un peluche del personaje Adamis.",
-      "imagen": "../assets/assets_tienda/peluche_adamis.png",
+      "imagen": "../assets/assets_tienda/peluche_adamis.webp",
       "stock": 10,
       "max": 1,
       "imgSize": 120
@@ -30,7 +30,7 @@
       "nombre": "Balón de futbol",
       "precio": 6,
       "descripcion": "Un balón de futbol de La Liga.",
-      "imagen": "../assets/assets_tienda/balon_futbol.png",
+      "imagen": "../assets/assets_tienda/balon_futbol.webp",
       "stock": 20,
       "max": 3
     }

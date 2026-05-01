@@ -461,6 +461,15 @@
 
   function openModal(){
     if (!modal) return;
+    if (window.AdamisRewards && typeof window.AdamisRewards.claim === 'function') {
+      window.AdamisRewards.claim({
+        activityId: 'crucigrama-dia',
+        amount: 1,
+        frequency: 'daily',
+        score: placements.length,
+        meta: { words: placements.length }
+      });
+    }
     modal.removeAttribute('hidden');
     modal.classList.add('is-open');
     modalOk && modalOk.focus();
