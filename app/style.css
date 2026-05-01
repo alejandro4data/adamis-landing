@@ -369,9 +369,13 @@ main{ min-height: 100dvh; position: relative; }
 .node.state--done .label{ fill: var(--c3); }
 .node.state--current .dot{ fill: color-mix(in srgb, #fff 30%, var(--or1) 70%); stroke: var(--or2); stroke-width: 3; filter: url(#nodeShadow); }
 .node.state--current .label{ fill: var(--or2); }
+.node.state--upcoming{ opacity: .62; }
+.node.state--upcoming .dot{ fill: rgb(185 190 198 / 72%); stroke: #7b8490; filter: url(#nodeShadow); }
+.node.state--upcoming .label{ fill: #5f6874; }
 .node.state--locked .dot{ fill: rgb(200 200 200 / 55%); stroke: #aaa; }
 .node.state--locked .label{ fill: #666; }
 .node.state--locked{ pointer-events: none; opacity: .45; }
+.node[data-node-available="false"]{ cursor: default; }
 .node:focus-visible .dot, .node:hover .dot{ stroke-width: 3; filter: url(#nodeShadow); }
 
 /* Avatar anim */
