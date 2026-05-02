@@ -3,60 +3,86 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Crucigrama del día</title>
+  <title>Crucigrama del d&iacute;a</title>
   <link rel="stylesheet" href="../style.css" />
   <script defer src="../i18n.js"></script>
   <script src="../page_transition.js?v=white-sheen-1"></script>
 </head>
 <body>
   <main>
-    <section id="crucigrama" class="section section--actividades is-active" aria-label="Crucigrama del día">
+    <section id="crucigrama" class="section section--actividades is-active" aria-label="Crucigrama del d&iacute;a">
       <div class="container crx-wrap">
-        <a class="btn back-integrated" href="./actividades.html" aria-label="Atrás" title="Atrás"></a>
+        <a class="btn back-integrated" href="./actividades.html" aria-label="Atr&aacute;s" title="Atr&aacute;s"></a>
 
         <header class="crx-header">
-          <h1 class="wdl-title">Crucigrama del día</h1>
-          <div class="reward-badge">
+          <div class="crx-title-block">
+            <span class="crx-kicker">Actividad diaria</span>
+            <h1 class="crx-title">Crucigrama del d&iacute;a</h1>
+          </div>
+          <div class="reward-badge crx-reward">
             <img src="../assets/icons/coin_ranking.webp" alt="" />
             <span>1</span>
           </div>
         </header>
 
-        <section class="crx-body" aria-live="polite">
-          <div id="crx-grid" class="crx-grid" role="grid" aria-label="Tablero del crucigrama"></div>
-
-          <aside class="crx-clues" aria-label="Pistas">
-            <div class="crx-clue-group">
-              <h2>Horizontal</h2>
-              <ol id="crx-across" class="crx-clue-list"></ol>
+        <section class="crx-status" aria-label="Estado del crucigrama">
+          <div class="crx-status-card crx-status-card--progress">
+            <span>Progreso</span>
+            <strong id="crx-progress-text">0/0</strong>
+            <div class="crx-progress" aria-hidden="true">
+              <i id="crx-progress-fill"></i>
             </div>
-            <div class="crx-clue-group">
-              <h2>Vertical</h2>
-              <ol id="crx-down" class="crx-clue-list"></ol>
+          </div>
+          <div class="crx-status-card">
+            <span>Palabra</span>
+            <strong id="crx-active-label">-</strong>
+          </div>
+          <div class="crx-status-card">
+            <span>Errores</span>
+            <strong id="crx-mistakes">0</strong>
+          </div>
+        </section>
+
+        <section class="crx-body" aria-live="polite">
+          <div class="crx-board-shell">
+            <div id="crx-grid" class="crx-grid" role="grid" aria-label="Tablero del crucigrama"></div>
+          </div>
+
+          <aside class="crx-side" aria-label="Pistas y acciones">
+            <div class="crx-toolbar" aria-label="Acciones del crucigrama">
+              <button id="crx-check" class="crx-action crx-action--primary" type="button">Comprobar</button>
+              <button id="crx-hint" class="crx-action" type="button">Pista</button>
+              <button id="crx-clear" class="crx-action" type="button">Limpiar</button>
+              <button id="crx-reset" class="crx-action crx-action--ghost" type="button">Nuevo</button>
+            </div>
+
+            <div class="crx-clues" aria-label="Pistas">
+              <div class="crx-clue-group">
+                <h2>Horizontal</h2>
+                <ol id="crx-across" class="crx-clue-list"></ol>
+              </div>
+              <div class="crx-clue-group">
+                <h2>Vertical</h2>
+                <ol id="crx-down" class="crx-clue-list"></ol>
+              </div>
             </div>
           </aside>
         </section>
-
-        <footer class="crx-actions">
-          <button id="crx-check" class="wdl-btn">Comprobar</button>
-          <button id="crx-reset" class="wdl-btn">Nuevo</button>
-        </footer>
 
         <div id="crx-toast" class="wdl-toast crx-toast" aria-live="polite"></div>
       </div>
     </section>
   </main>
 
-  <!-- Modal resultado (estética compartida con Wordle) -->
   <div id="crx-result" class="wdl-modal" hidden>
     <div class="wdl-modal__backdrop"></div>
     <div class="wdl-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="crx-result-title">
       <header class="wdl-modal__header">
-        <h2 class="wdl-modal__title" id="crx-result-title">¡Crucigrama completado!</h2>
+        <h2 class="wdl-modal__title" id="crx-result-title">&iexcl;Crucigrama completado!</h2>
       </header>
       <div class="wdl-modal__body">
         <div class="wdl-result">
-          <div class="wdl-result-badge" id="crx-result-badge">¡Correcto!</div>
+          <div class="wdl-result-badge" id="crx-result-badge">&iexcl;Correcto!</div>
           <p class="wdl-result-def" id="crx-result-text">
             Has completado todas las palabras del crucigrama.
           </p>

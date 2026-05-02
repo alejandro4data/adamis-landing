@@ -3,19 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Frase del día</title>
+  <title>Frase del d&iacute;a</title>
   <link rel="stylesheet" href="../style.css" />
   <script defer src="../i18n.js"></script>
   <script src="../page_transition.js?v=white-sheen-1"></script>
 </head>
 <body>
   <main>
-    <section id="frase" class="section section--actividades is-active" aria-label="Frase del día">
+    <section id="frase" class="section section--actividades is-active" aria-label="Frase del d&iacute;a">
       <div class="container snake-wrap">
-        <a class="btn back-integrated" href="./actividades.html" aria-label="Atrás" title="Atrás"></a>
+        <a class="btn back-integrated" href="./actividades.html" aria-label="Atr&aacute;s" title="Atr&aacute;s"></a>
 
         <header class="snake-header">
-          <h1 class="wdl-title">Frase del día</h1>
+          <div class="snake-title-block">
+            <span class="snake-kicker">Actividad diaria</span>
+            <h1 class="wdl-title">Frase del d&iacute;a</h1>
+            <p>Come las letras en orden y completa la frase antes de chocarte.</p>
+          </div>
+
           <div class="reward-badge" title="Monedas conseguidas jugando">
             <img src="../assets/icons/coin_ranking.webp" alt="" />
             <span id="coin-score">0</span>
@@ -24,22 +29,54 @@
 
         <section class="snake-card" aria-live="polite">
           <div id="phrase-pill" class="phrase-pill" aria-label="Progreso de la frase"></div>
-          <!-- Tablero más pequeño: se calcula por JS, pero mantenemos el canvas -->
-          <canvas id="snake-canvas" width="480" height="480" aria-label="Tablero del juego"></canvas>
+
+          <div class="snake-stage">
+            <div class="snake-board-shell">
+              <canvas id="snake-canvas" width="520" height="520" aria-label="Tablero del juego"></canvas>
+            </div>
+
+            <aside class="snake-panel" aria-label="Estado del juego">
+              <div class="snake-stat-grid">
+                <div class="snake-stat snake-stat--target">
+                  <span>Siguiente letra</span>
+                  <strong id="snake-next-letter">-</strong>
+                </div>
+                <div class="snake-stat">
+                  <span>Progreso</span>
+                  <strong id="snake-progress">0/0</strong>
+                </div>
+                <div class="snake-stat">
+                  <span>Ritmo</span>
+                  <strong id="snake-speed">1.0x</strong>
+                </div>
+              </div>
+
+              <div class="snake-progressbar" aria-hidden="true">
+                <span id="snake-progress-fill"></span>
+              </div>
+
+              <div class="snake-controls" aria-label="Controles t&aacute;ctiles">
+                <button type="button" data-snake-dir="up" aria-label="Arriba">&uarr;</button>
+                <button type="button" data-snake-dir="left" aria-label="Izquierda">&larr;</button>
+                <button type="button" data-snake-dir="down" aria-label="Abajo">&darr;</button>
+                <button type="button" data-snake-dir="right" aria-label="Derecha">&rarr;</button>
+              </div>
+            </aside>
+          </div>
 
           <div class="snake-cta">
-            <button id="btn-restart" class="wdl-btn">Reiniciar</button>
+            <button id="btn-pause" class="wdl-btn snake-btn-secondary" type="button" aria-pressed="false">Pausar</button>
+            <button id="btn-restart" class="wdl-btn" type="button">Reiniciar</button>
           </div>
         </section>
 
         <p class="snake-help">
-          Usa las flechas (o desliza en móvil) para moverte. Come las letras en orden para completar la frase.
+          Usa flechas, WASD o desliza en m&oacute;vil. Tambi&eacute;n puedes pausar con Espacio o P.
         </p>
       </div>
     </section>
   </main>
 
-  <!-- Modal de Game Over (estética compartida con Wordle) -->
   <div id="snake-result" class="wdl-modal" hidden>
     <div class="wdl-modal__backdrop"></div>
     <div class="wdl-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="snake-result-title">
@@ -50,7 +87,7 @@
         <div class="wdl-result">
           <div class="wdl-result-badge" id="snake-result-badge">Game Over</div>
           <p class="wdl-result-def" id="snake-result-text">
-            Te chocaste con la pared o contigo mismo. ¿Quieres reiniciar?
+            Te chocaste con la pared o contigo mismo. &iquest;Quieres reiniciar?
           </p>
         </div>
       </div>
@@ -61,30 +98,26 @@
     </div>
   </div>
 
-  <!-- Cinemática de frase completada -->
   <div id="cinematic" class="cinematic is-hidden" aria-hidden="true">
     <div class="cinematic__backdrop"></div>
     <div class="cinematic__dialog" role="dialog" aria-modal="true" aria-labelledby="cin-title">
       <header class="cinematic__header">
-        <h2 id="cin-title" class="cinematic__title">¡Frase completada!</h2>
+        <h2 id="cin-title" class="cinematic__title">&iexcl;Frase completada!</h2>
       </header>
       <div class="cinematic__body">
         <p id="cin-phrase" class="cinematic__phrase"></p>
       </div>
       <footer class="cinematic__footer">
-        <button id="cin-continue" class="wdl-btn">Continuar</button>
+        <button id="cin-continue" class="wdl-btn" type="button">Continuar</button>
         <a class="wdl-btn" href="./actividades.html">Salir</a>
       </footer>
     </div>
   </div>
 
-
-  <!-- Datos de frases (sin fetch) -->
   <script defer src="../data/user_state.js"></script>
   <script defer src="../events.js"></script>
   <script defer src="../rewards.js"></script>
   <script defer src="../data/frases.js"></script>
-  <!-- Lógica del juego -->
   <script defer src="../actividades/snake-frase.js"></script>
 </body>
 </html>
