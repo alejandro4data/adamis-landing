@@ -21,6 +21,7 @@
     );
   };
 
+  
   window.addEventListener('DOMContentLoaded', () => {
     // 1) Botón fijo arriba-derecha (rueda de ajustes)
     const btn = document.createElement('button');

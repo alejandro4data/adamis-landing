@@ -14,3 +14,4 @@ whereami.php
 index.html
 .env
 .vercel
+.env*.local
