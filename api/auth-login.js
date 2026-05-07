@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       `acceso_adamis_alumno=permitido; Path=/; Max-Age=3600; SameSite=Lax; HttpOnly${secure}`
     );
     res.statusCode = 302;
-    res.setHeader("Location", "/app/pages/menu.html");
+    res.setHeader("Location", "/app/pages/alumno-splash.html");
     return res.end();
   }
 

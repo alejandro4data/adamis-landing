@@ -18,10 +18,26 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     try {
       const htmlLang = String(document.documentElement.lang || '').toLowerCase();
       if (htmlLang.startsWith('en')) return 'en';
+      if (htmlLang.startsWith('fr')) return 'fr';
+      if (htmlLang.startsWith('de')) return 'de';
+      if (htmlLang.startsWith('it')) return 'it';
+      if (htmlLang.startsWith('pt')) return 'pt';
+      if (htmlLang.startsWith('ca-es-valencia') || htmlLang.startsWith('ca-valencia') || htmlLang.startsWith('val') || htmlLang.startsWith('va')) return 'va';
+      if (htmlLang.startsWith('ca')) return 'ca';
+      if (htmlLang.startsWith('gl')) return 'gl';
+      if (htmlLang.startsWith('eu') || htmlLang.startsWith('baq') || htmlLang.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
@@ -130,14 +146,15 @@
     if (progressFillEl) progressFillEl.style.width = total ? Math.round((done / total) * 100) + '%' : '0%';
     if (speedEl) speedEl.textContent = (STEP_MS / stepMs).toFixed(1) + 'x';
     if (btnPause) {
-      btnPause.textContent = paused ? 'Continuar' : 'Pausar';
+      btnPause.textContent = paused ? tr('Continuar') : tr('Pausar');
       btnPause.setAttribute('aria-pressed', paused ? 'true' : 'false');
     }
   }
 
   // ---------- Frases ----------
   function loadPhrases(){
-    const lang = currentLang() === 'en' ? 'en' : 'es';
+    const requestedLang = currentLang();
+    const lang = window.FRASES_BY_LANG && Array.isArray(window.FRASES_BY_LANG[requestedLang]) ? requestedLang : 'es';
     const fromByLang = window.FRASES_BY_LANG && Array.isArray(window.FRASES_BY_LANG[lang])
       ? window.FRASES_BY_LANG[lang]
       : null;
@@ -149,11 +166,27 @@
     } else {
       phrases = lang === 'en'
         ? ['SAVE FIRST SPEND LATER', 'AVOID EXPENSIVE DEBT', 'EVERY COIN COUNTS']
-        : ['AHORRA PRIMERO GASTA DESPUES', 'EVITA LAS DEUDAS CARAS', 'CADA MONEDA CUENTA'];
+        : lang === 'fr'
+          ? ['EPARGNE D ABORD DEPENSE ENSUITE', 'EVITE LES DETTES COUTEUSES', 'CHAQUE PIECE COMPTE']
+          : lang === 'de'
+            ? ['SPARE ZUERST GIB DANACH AUS', 'VERMEIDE TEURE SCHULDEN', 'JEDE MUENZE ZAEHLT']
+            : lang === 'it'
+              ? ['RISPARMIA PRIMA SPENDI DOPO', 'EVITA I DEBITI COSTOSI', 'OGNI MONETA CONTA']
+              : lang === 'pt'
+                ? ['POUPA PRIMEIRO GASTA DEPOIS', 'EVITA DIVIDAS CARAS', 'CADA MOEDA CONTA']
+          : ['AHORRA PRIMERO GASTA DESPUES', 'EVITA LAS DEUDAS CARAS', 'CADA MONEDA CUENTA'];
     }
   }
   function pickPhrase(){
-    phrase = phrases[(Math.random()*phrases.length)|0] || (currentLang() === 'en' ? 'SAVE FIRST' : 'AHORRA PRIMERO');
+    const lang = currentLang();
+    phrase = phrases[(Math.random()*phrases.length)|0] || (
+      lang === 'en' ? 'SAVE FIRST' :
+      lang === 'fr' ? 'EPARGNE D ABORD' :
+      lang === 'de' ? 'SPARE ZUERST' :
+      lang === 'it' ? 'RISPARMIA PRIMA' :
+      lang === 'pt' ? 'POUPA PRIMEIRO' :
+      'AHORRA PRIMERO'
+    );
     pIndex=0; inCoins=false; while (pIndex<phrase.length && phrase[pIndex]===' ') pIndex++;
     renderPill();
   }
@@ -717,8 +750,8 @@
   function openLoseModal(){
     if (!modal) return;
     modal.classList.remove('is-win'); modal.classList.add('is-lose');
-    modalTitle && (modalTitle.textContent='Has perdido');
-    modalText  && (modalText.textContent='Te chocaste con la pared o contigo mismo. ¿Quieres reiniciar?');
+    modalTitle && (modalTitle.textContent=tr('Has perdido'));
+    modalText  && (modalText.textContent=tr('Te chocaste con la pared o contigo mismo. ¿Quieres reiniciar?'));
     modal.removeAttribute('hidden');
   }
   function closeLoseModal(){ modal?.setAttribute('hidden',''); }

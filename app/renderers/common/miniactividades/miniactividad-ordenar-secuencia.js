@@ -15,6 +15,14 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
@@ -360,9 +368,17 @@
     ensureStyles();
     root.classList.add('tpl--miniact-ordenar-secuencia');
 
-    const isEn = lang() === 'en';
-    const sourceSteps = isEn
+    const activeLang = lang();
+    const sourceSteps = activeLang === 'en'
       ? (s?.steps_en ?? s?.pasos_en ?? s?.items_en ?? s?.frases_en ?? s?.steps ?? s?.pasos ?? s?.items ?? s?.frases)
+      : activeLang === 'fr'
+        ? (s?.steps_fr ?? s?.pasos_fr ?? s?.items_fr ?? s?.frases_fr ?? s?.steps ?? s?.pasos ?? s?.items ?? s?.frases)
+        : activeLang === 'de'
+          ? (s?.steps_de ?? s?.pasos_de ?? s?.items_de ?? s?.frases_de ?? s?.steps ?? s?.pasos ?? s?.items ?? s?.frases)
+          : activeLang === 'it'
+            ? (s?.steps_it ?? s?.pasos_it ?? s?.items_it ?? s?.frases_it ?? s?.steps ?? s?.pasos ?? s?.items ?? s?.frases)
+            : activeLang === 'pt'
+              ? (s?.steps_pt ?? s?.pasos_pt ?? s?.items_pt ?? s?.frases_pt ?? s?.steps ?? s?.pasos ?? s?.items ?? s?.frases)
       : (s?.steps ?? s?.pasos ?? s?.items ?? s?.frases);
     const correctSteps = normalizeSteps(sourceSteps);
 

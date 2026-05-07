@@ -15,10 +15,26 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     try {
       const htmlLang = String(document.documentElement.lang || '').toLowerCase();
       if (htmlLang.startsWith('en')) return 'en';
+      if (htmlLang.startsWith('fr')) return 'fr';
+      if (htmlLang.startsWith('de')) return 'de';
+      if (htmlLang.startsWith('it')) return 'it';
+      if (htmlLang.startsWith('pt')) return 'pt';
+      if (htmlLang.startsWith('ca-es-valencia') || htmlLang.startsWith('ca-valencia') || htmlLang.startsWith('val') || htmlLang.startsWith('va')) return 'va';
+      if (htmlLang.startsWith('ca')) return 'ca';
+      if (htmlLang.startsWith('gl')) return 'gl';
+      if (htmlLang.startsWith('eu') || htmlLang.startsWith('baq') || htmlLang.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
@@ -41,15 +57,15 @@
   const ALLOWED_EXTS = ['.png', '.jpg', '.jpeg', '.webp', '.avif'];
   const CAN_FETCH_LISTING = window.location.protocol === 'http:' || window.location.protocol === 'https:';
   const PRODUCT_NAME_MAP = {
-    'botella de agua': { en: 'Water bottle' },
-    'gafas de sol': { en: 'Sunglasses' },
-    'gorra': { en: 'Cap' },
-    'libro': { en: 'Book' },
-    'lapiz': { en: 'Pencil' },
-    'osito': { en: 'Teddy bear' },
-    'pan': { en: 'Bread' },
-    'patata': { en: 'Potato' },
-    'tomate': { en: 'Tomato' }
+    'botella de agua': { en: 'Water bottle', fr: "Bouteille d'eau", de: 'Wasserflasche', it: "Bottiglia d'acqua", pt: 'Garrafa de agua', ca: 'Ampolla d aigua', va: 'Botella d aigua', gl: 'Botella de auga', eu: 'Ur botila' },
+    'gafas de sol': { en: 'Sunglasses', fr: 'Lunettes de soleil', de: 'Sonnenbrille', it: 'Occhiali da sole', pt: 'Oculos de sol', ca: 'Ulleres de sol', va: 'Ulleres de sol', gl: 'Gafas de sol', eu: 'Eguzkitako betaurrekoak' },
+    'gorra': { en: 'Cap', fr: 'Casquette', de: 'Kappe', it: 'Cappellino', pt: 'Bone', ca: 'Gorra', va: 'Gorra', gl: 'Gorra', eu: 'Txanoa' },
+    'libro': { en: 'Book', fr: 'Livre', de: 'Buch', it: 'Libro', pt: 'Livro', ca: 'Llibre', va: 'Llibre', gl: 'Libro', eu: 'Liburua' },
+    'lapiz': { en: 'Pencil', fr: 'Crayon', de: 'Bleistift', it: 'Matita', pt: 'Lapis', ca: 'Llapis', va: 'Llapis', gl: 'Lapis', eu: 'Arkatza' },
+    'osito': { en: 'Teddy bear', fr: 'Ours en peluche', de: 'Teddybaer', it: 'Orsetto', pt: 'Ursinho', ca: 'Osset', va: 'Osset', gl: 'Osiño', eu: 'Hartzatxoa' },
+    'pan': { en: 'Bread', fr: 'Pain', de: 'Brot', it: 'Pane', pt: 'Pao', ca: 'Pa', va: 'Pa', gl: 'Pan', eu: 'Ogia' },
+    'patata': { en: 'Potato', fr: 'Pomme de terre', de: 'Kartoffel', it: 'Patata', pt: 'Batata', ca: 'Patata', va: 'Creilla', gl: 'Pataca', eu: 'Patata' },
+    'tomate': { en: 'Tomato', fr: 'Tomate', de: 'Tomate', it: 'Pomodoro', pt: 'Tomate', ca: 'Tomàquet', va: 'Tomaca', gl: 'Tomate', eu: 'Tomatea' }
   };
 
   const isAllowedExt = (name) => {
@@ -148,8 +164,9 @@
     const base = String(fileName || '').replace(/\.[^/.]+$/, '');
     const raw = base.replace(/_/g, ' ').trim();
     const key = raw.toLowerCase();
-    if (currentLang() === 'en' && PRODUCT_NAME_MAP[key] && PRODUCT_NAME_MAP[key].en) {
-      return PRODUCT_NAME_MAP[key].en;
+    const lang = currentLang();
+    if (PRODUCT_NAME_MAP[key] && PRODUCT_NAME_MAP[key][lang]) {
+      return PRODUCT_NAME_MAP[key][lang];
     }
     return raw;
   }

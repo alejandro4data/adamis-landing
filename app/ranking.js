@@ -28,11 +28,18 @@
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ''));
   }
 
+  function tr(value) {
+    if (window.I18N && typeof window.I18N.tr === 'function') {
+      return window.I18N.tr(String(value || ''));
+    }
+    return String(value || '');
+  }
+
   function displayName(userId, currentUser) {
     var id = String(userId || 'invitado');
-    if (id === currentUser) return 'Tu progreso';
-    if (id === 'invitado') return 'Invitado';
-    if (isUuid(id)) return 'Alumno ' + id.slice(0, 4).toUpperCase();
+    if (id === currentUser) return tr('Tu progreso');
+    if (id === 'invitado') return tr('Invitado');
+    if (isUuid(id)) return tr('Alumno') + ' ' + id.slice(0, 4).toUpperCase();
     return id;
   }
 
@@ -115,6 +122,7 @@
     if (ev && ev.key === 'userCoins') render();
   });
   window.addEventListener('adamis:reward-claimed', render);
+  document.addEventListener('i18n:change', render);
   window.addEventListener('DOMContentLoaded', render);
   render();
 })();

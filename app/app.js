@@ -23,6 +23,18 @@
 
   
   window.addEventListener('DOMContentLoaded', () => {
+    const supportedLangs = window.I18N?.getSupportedLangs?.() || ['es', 'en', 'fr', 'de', 'it', 'pt', 'ca', 'va', 'gl', 'eu'];
+    const activeLang = window.I18N?.getLang?.() || 'es';
+    const langLabel = (lang) => window.I18N?.getLangLabel?.(lang) || String(lang || '').toUpperCase();
+    const langButtonsHtml = supportedLangs.map((lang) => {
+      const code = String(lang || '').toUpperCase();
+      const active = lang === activeLang;
+      return `<button class="adamis-lang-option${active ? ' is-active' : ''}" data-lang="${lang}" aria-pressed="${active ? 'true' : 'false'}" aria-label="${langLabel(lang)} ${code}" title="${langLabel(lang)}">
+        <span class="adamis-lang-option__flag adamis-lang-option__flag--${lang}" aria-hidden="true"></span>
+        <span class="adamis-lang-option__code">${code}</span>
+      </button>`;
+    }).join('');
+
     // 1) Botón fijo arriba-derecha (rueda de ajustes)
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -45,9 +57,18 @@
     menu.style.justifyContent = 'flex-end';
     menu.style.padding = '68px 16px 0 0';
     menu.innerHTML = `
-      <div class="logout-dialog" style="max-width:260px;width:min(260px,92vw);padding:10px;">
+      <div class="logout-dialog settings-popover">
         <div class="logout-actions" style="display:flex;flex-direction:column;gap:8px;">
-          <button class="btn btn-cancel" data-action="lang">${tr('Idioma')}: ${(window.I18N?.getLang?.() || 'es').toUpperCase()}</button>
+          <div class="adamis-lang-picker adamis-lang-picker--menu" role="group" aria-label="${tr('Idioma')}">
+            <div class="adamis-lang-picker__head">
+              <span class="adamis-lang-picker__label">${tr('Idioma')}</span>
+              <span class="adamis-lang-picker__current">
+                <span class="adamis-lang-option__flag adamis-lang-option__flag--${activeLang}" aria-hidden="true"></span>
+                <span>${String(activeLang || '').toUpperCase()}</span>
+              </span>
+            </div>
+            <div class="adamis-lang-picker__grid">${langButtonsHtml}</div>
+          </div>
           <button class="btn btn-primary" data-action="logout">${tr('Salir')}</button>
         </div>
       </div>`;
@@ -78,7 +99,7 @@
     const closeBtn = modal.querySelector('.logout-close');
     const cancelBtn = modal.querySelector('[data-action="cancel"]');
     const confirmBtn = modal.querySelector('[data-action="confirm"]');
-    const langBtn = menu.querySelector('[data-action="lang"]');
+    const langBtns = Array.from(menu.querySelectorAll('[data-lang]'));
     const logoutBtn = menu.querySelector('[data-action="logout"]');
     const focusablesSelector =
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -97,7 +118,7 @@
 
     function openMenu() {
       menu.classList.add('is-open');
-      langBtn?.focus();
+      (menu.querySelector('[data-lang][aria-pressed="true"]') || langBtns[0] || logoutBtn)?.focus();
       document.addEventListener('keydown', onMenuKeydown);
       menu.addEventListener('click', onMenuBackdrop);
     }
@@ -147,11 +168,17 @@
       else openMenu();
     });
     logoutBtn?.addEventListener('click', openModal);
-    langBtn?.addEventListener('click', () => {
-      if (!window.I18N || typeof window.I18N.toggleLang !== 'function') return;
-      window.I18N.toggleLang();
-      window.location.reload();
-    });
+    langBtns.forEach((langBtn) => langBtn.addEventListener('click', () => {
+      if (!window.I18N || typeof window.I18N.setLang !== 'function') return;
+      window.I18N.setLang(langBtn.dataset.lang);
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', langBtn.dataset.lang);
+        window.location.href = url.toString();
+      } catch (_e) {
+        window.location.reload();
+      }
+    }));
     closeBtn.addEventListener('click', closeModal);
     cancelBtn.addEventListener('click', closeModal);
 

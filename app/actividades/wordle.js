@@ -18,10 +18,26 @@ const currentLang = () => {
   try {
     const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
     if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
   } catch (_) {}
   try {
     const htmlLang = String(document.documentElement.lang || '').toLowerCase();
     if (htmlLang.startsWith('en')) return 'en';
+      if (htmlLang.startsWith('fr')) return 'fr';
+      if (htmlLang.startsWith('de')) return 'de';
+      if (htmlLang.startsWith('it')) return 'it';
+      if (htmlLang.startsWith('pt')) return 'pt';
+      if (htmlLang.startsWith('ca-es-valencia') || htmlLang.startsWith('ca-valencia') || htmlLang.startsWith('val') || htmlLang.startsWith('va')) return 'va';
+      if (htmlLang.startsWith('ca')) return 'ca';
+      if (htmlLang.startsWith('gl')) return 'gl';
+      if (htmlLang.startsWith('eu') || htmlLang.startsWith('baq') || htmlLang.startsWith('eus')) return 'eu';
   } catch (_) {}
   return 'es';
 };
@@ -154,7 +170,8 @@ function prevPlayable(i){
 
 /* ===================== Carga de palabras ===================== */
 async function loadWordList(){
-  const lang = currentLang() === 'en' ? 'en' : 'es';
+  const requestedLang = currentLang();
+  const lang = window.PALABRAS_BY_LANG && Array.isArray(window.PALABRAS_BY_LANG[requestedLang]) ? requestedLang : 'es';
   const wordsByLang = window.PALABRAS_BY_LANG && Array.isArray(window.PALABRAS_BY_LANG[lang])
     ? window.PALABRAS_BY_LANG[lang]
     : null;

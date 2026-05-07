@@ -14,6 +14,14 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
@@ -83,9 +91,29 @@
     // Tecleo opcional (igual que en explicacion-bocadillo)
     const wantsTW = (s.typewriter === undefined) ? true : Boolean(s.typewriter);
     const speed = (typeof s.typeSpeed === 'number') ? s.typeSpeed : 22;
-    const isEn = getLang() === 'en';
-    const termText = isEn ? (s.term_en ?? s.termEn ?? s.term) : s.term;
-    const meaningText = isEn ? (s.meaning_en ?? s.meaningEn ?? s.meaning) : s.meaning;
+    const activeLang = getLang();
+    const termText = activeLang === 'en'
+      ? (s.term_en ?? s.termEn ?? s.term)
+      : activeLang === 'fr'
+        ? (s.term_fr ?? s.termFr ?? s.term)
+        : activeLang === 'de'
+          ? (s.term_de ?? s.termDe ?? s.term)
+          : activeLang === 'it'
+            ? (s.term_it ?? s.termIt ?? s.term)
+            : activeLang === 'pt'
+              ? (s.term_pt ?? s.termPt ?? s.term)
+        : s.term;
+    const meaningText = activeLang === 'en'
+      ? (s.meaning_en ?? s.meaningEn ?? s.meaning)
+      : activeLang === 'fr'
+        ? (s.meaning_fr ?? s.meaningFr ?? s.meaning)
+        : activeLang === 'de'
+          ? (s.meaning_de ?? s.meaningDe ?? s.meaning)
+          : activeLang === 'it'
+            ? (s.meaning_it ?? s.meaningIt ?? s.meaning)
+            : activeLang === 'pt'
+              ? (s.meaning_pt ?? s.meaningPt ?? s.meaning)
+        : s.meaning;
     function bindTyping() {
       if (wantsTW && s.text) {
         const t = typeIn(textNode, tr(String(s.text)), speed);

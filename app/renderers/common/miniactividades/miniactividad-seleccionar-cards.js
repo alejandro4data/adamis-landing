@@ -15,6 +15,14 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
@@ -402,9 +410,17 @@
     ensureStyles();
     root.classList.add('tpl--miniact-seleccionar-cards');
 
-    const isEn = lang() === 'en';
-    const sourceCards = isEn
+    const activeLang = lang();
+    const sourceCards = activeLang === 'en'
       ? (s?.cards_en ?? s?.tarjetas_en ?? s?.cards ?? s?.tarjetas)
+      : activeLang === 'fr'
+        ? (s?.cards_fr ?? s?.tarjetas_fr ?? s?.cards ?? s?.tarjetas)
+        : activeLang === 'de'
+          ? (s?.cards_de ?? s?.tarjetas_de ?? s?.cards ?? s?.tarjetas)
+          : activeLang === 'it'
+            ? (s?.cards_it ?? s?.tarjetas_it ?? s?.cards ?? s?.tarjetas)
+            : activeLang === 'pt'
+              ? (s?.cards_pt ?? s?.tarjetas_pt ?? s?.cards ?? s?.tarjetas)
       : (s?.cards ?? s?.tarjetas);
     const normalizedCards = normalizeCards(sourceCards);
     const cards = s?.shuffleCards === true ? shuffleCardsList(normalizedCards) : normalizedCards;

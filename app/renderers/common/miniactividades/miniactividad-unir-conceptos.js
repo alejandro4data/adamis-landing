@@ -15,6 +15,14 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
@@ -600,9 +608,17 @@
     ensureStyles();
     root.classList.add('tpl--miniact-unir-conceptos');
 
-    const isEn = lang() === 'en';
-    const sourcePairs = isEn
+    const activeLang = lang();
+    const sourcePairs = activeLang === 'en'
       ? (s?.pairs_en ?? s?.parejas_en ?? s?.pairs ?? s?.parejas)
+      : activeLang === 'fr'
+        ? (s?.pairs_fr ?? s?.parejas_fr ?? s?.pairs ?? s?.parejas)
+        : activeLang === 'de'
+          ? (s?.pairs_de ?? s?.parejas_de ?? s?.pairs ?? s?.parejas)
+          : activeLang === 'it'
+            ? (s?.pairs_it ?? s?.parejas_it ?? s?.pairs ?? s?.parejas)
+            : activeLang === 'pt'
+              ? (s?.pairs_pt ?? s?.parejas_pt ?? s?.pairs ?? s?.parejas)
       : (s?.pairs ?? s?.parejas);
     const pairs = normalizePairs(sourcePairs);
 

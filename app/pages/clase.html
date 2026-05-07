@@ -162,9 +162,7 @@
 
       function loadSet(kind) {
         if (!isSetEnabled(kind)) {
-          const msg = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en')
-            ? 'This class is not available right now.'
-            : 'Esta clase no esta disponible ahora mismo.';
+          const msg = window.I18N?.tr?.('Esta clase no esta disponible ahora mismo.') || 'Esta clase no esta disponible ahora mismo.';
           alert(msg);
           return;
         }
@@ -175,16 +173,32 @@
         document.querySelectorAll('#slide-root .empty-state').forEach(function (n) { n.remove(); });
 
         const lang = String(window.I18N?.getLang?.() || document.documentElement.lang || 'es').toLowerCase();
-        const candidates = lang.startsWith('en')
-          ? [`../clases/slides_${kind}_en.js`, `../clases/slides_${kind}.js`]
+        const candidates = ['en', 'fr', 'de', 'it', 'pt', 'ca', 'va', 'gl', 'eu'].some(function (code) { return lang.startsWith(code); })
+          ? [`../clases/slides_${kind}_${lang.slice(0, 2)}.js`, `../clases/slides_${kind}.js`]
           : [`../clases/slides_${kind}.js`];
 
         const tryLoad = function (idx) {
           if (idx >= candidates.length) {
             const msgEs = `No pude cargar ${candidates[0]} (revisa la ruta o el nombre).`;
-            const msg = (window.I18N && window.I18N.getLang && window.I18N.getLang() === 'en')
+            const msg = (window.I18N?.getLang?.() === 'en')
               ? `I could not load ${candidates[0]} (check path or filename).`
-              : msgEs;
+              : (window.I18N?.getLang?.() === 'fr')
+                ? `Impossible de charger ${candidates[0]} (vérifie le chemin ou le nom du fichier).`
+                : (window.I18N?.getLang?.() === 'de')
+                  ? `Ich konnte ${candidates[0]} nicht laden (prüfe Pfad oder Dateiname).`
+                  : (window.I18N?.getLang?.() === 'it')
+                    ? `Non sono riuscito a caricare ${candidates[0]} (controlla percorso o nome file).`
+                    : (window.I18N?.getLang?.() === 'pt')
+                      ? `Não consegui carregar ${candidates[0]} (verifica o caminho ou o nome do ficheiro).`
+                      : (window.I18N?.getLang?.() === 'ca')
+                        ? `No he pogut carregar ${candidates[0]} (revisa la ruta o el nom del fitxer).`
+                        : (window.I18N?.getLang?.() === 'va')
+                          ? `No he pogut carregar ${candidates[0]} (revisa la ruta o el nom del fitxer).`
+                          : (window.I18N?.getLang?.() === 'gl')
+                            ? `Non puiden cargar ${candidates[0]} (revisa a ruta ou o nome do ficheiro).`
+                            : (window.I18N?.getLang?.() === 'eu')
+                              ? `Ezin izan dut ${candidates[0]} kargatu (egiaztatu bidea edo fitxategi-izena).`
+                              : msgEs;
             alert(msg);
             return;
           }

@@ -22,6 +22,13 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
   const OPEN_LEVELS = new Set([10, 11]);
   let instructionsPreloaded = false;
 
+  const tr = (text) => {
+    try {
+      if (window.I18N && typeof window.I18N.tr === 'function') return window.I18N.tr(String(text || ''));
+    } catch (_) {}
+    return String(text || '');
+  };
+
   const POINTS = [
     [80, 520], [260, 460], [440, 500], [620, 520], [800, 480], [950, 400],
     [730, 330], [550, 310], [400, 400], [240, 300], [100, 250], [90, 130],
@@ -97,7 +104,7 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
       g.setAttribute('class', 'node state--locked');
       g.setAttribute('tabindex', '-1');
       g.setAttribute('aria-disabled', 'true');
-      g.setAttribute('aria-label', `Nivel ${i}`);
+      g.setAttribute('aria-label', tr(`Nivel ${i}`));
       g.setAttribute('transform', `translate(${x} ${y})`);
       g.setAttribute('data-node-available', 'false');
 
@@ -283,7 +290,7 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
       g.setAttribute('data-clase-id', info?.id || '');
       g.setAttribute('data-clase-active', isAvailable ? 'true' : 'false');
       g.setAttribute('data-node-available', isAvailable ? 'true' : 'false');
-      g.setAttribute('aria-label', info?.id ? `Nivel ${i} - ${info.id}` : `Nivel ${i}`);
+      g.setAttribute('aria-label', info?.id ? `${tr(`Nivel ${i}`)} - ${info.id}` : tr(`Nivel ${i}`));
       g.setAttribute('tabindex', isAvailable ? '0' : '-1');
 
       if (isAvailable) {

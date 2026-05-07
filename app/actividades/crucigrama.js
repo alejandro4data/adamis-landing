@@ -15,10 +15,26 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     try {
       const htmlLang = String(document.documentElement.lang || '').toLowerCase();
       if (htmlLang.startsWith('en')) return 'en';
+      if (htmlLang.startsWith('fr')) return 'fr';
+      if (htmlLang.startsWith('de')) return 'de';
+      if (htmlLang.startsWith('it')) return 'it';
+      if (htmlLang.startsWith('pt')) return 'pt';
+      if (htmlLang.startsWith('ca-es-valencia') || htmlLang.startsWith('ca-valencia') || htmlLang.startsWith('val') || htmlLang.startsWith('va')) return 'va';
+      if (htmlLang.startsWith('ca')) return 'ca';
+      if (htmlLang.startsWith('gl')) return 'gl';
+      if (htmlLang.startsWith('eu') || htmlLang.startsWith('baq') || htmlLang.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
@@ -105,8 +121,155 @@
     { word: 'SALE', clue: 'Exchange of goods for money.' },
     { word: 'TOTAL', clue: 'Final sum of all amounts.' },
     { word: 'STORE', clue: 'Place where things are sold.' }
+  ], fr: [
+    { word: 'EPARGNE', clue: 'Garder une partie de ton argent pour le futur.' },
+    { word: 'DEPENSE', clue: 'Argent qui sort quand tu achetes ou paies.' },
+    { word: 'REVENU', clue: 'Argent qui entre.' },
+    { word: 'OBJECTIF', clue: 'But que tu veux atteindre.' },
+    { word: 'DETTE', clue: 'Argent que tu dois rembourser.' },
+    { word: 'BANQUE', clue: 'Lieu ou tu peux garder ou emprunter de l argent.' },
+    { word: 'PLAN', clue: 'Etapes organisees pour atteindre un but.' },
+    { word: 'PRIX', clue: 'Somme d argent que coute quelque chose.' },
+    { word: 'INTERET', clue: 'Argent supplementaire lie a un pret.' },
+    { word: 'BUDGET', clue: 'Plan pour utiliser ton argent.' },
+    { word: 'PIECE', clue: 'Argent en metal.' },
+    { word: 'RISQUE', clue: 'Possibilite de perdre de l argent.' },
+    { word: 'COMPTE', clue: 'Espace bancaire ou ton argent est garde.' },
+    { word: 'VALEUR', clue: 'Importance ou prix de quelque chose.' },
+    { word: 'BILLET', clue: 'Argent en papier.' },
+    { word: 'CARTE', clue: 'Objet utilise pour payer sans especes.' },
+    { word: 'SOLDE', clue: 'Argent encore disponible.' },
+    { word: 'OFFRE', clue: 'Produit vendu moins cher.' },
+    { word: 'PAYER', clue: 'Donner de l argent contre quelque chose.' },
+    { word: 'PRET', clue: 'Argent emprunte pour une periode.' },
+    { word: 'MONNAIE', clue: 'Argent rendu apres un paiement.' },
+    { word: 'RECU', clue: 'Preuve qu un paiement a eu lieu.' },
+    { word: 'PROFIT', clue: 'Argent gagne apres les couts.' },
+    { word: 'SALAIRE', clue: 'Argent gagne en travaillant.' },
+    { word: 'VENTE', clue: 'Echange de biens contre de l argent.' },
+    { word: 'TOTAL', clue: 'Somme finale de tous les montants.' },
+    { word: 'MAGASIN', clue: 'Lieu ou des choses sont vendues.' }
+  ], de: [
+    { word: 'SPAREN', clue: 'Geld fuer die Zukunft behalten.' },
+    { word: 'AUSGABE', clue: 'Geld, das beim Kaufen oder Bezahlen weggeht.' },
+    { word: 'EINKOMMEN', clue: 'Geld, das hereinkommt.' },
+    { word: 'ZIEL', clue: 'Etwas, das du erreichen willst.' },
+    { word: 'SCHULD', clue: 'Geld, das du zurueckzahlen musst.' },
+    { word: 'BANK', clue: 'Ort, an dem du Geld aufbewahren oder leihen kannst.' },
+    { word: 'PLAN', clue: 'Schritte, um ein Ziel zu erreichen.' },
+    { word: 'PREIS', clue: 'Wie viel Geld etwas kostet.' },
+    { word: 'ZINS', clue: 'Zusatzgeld bei einem Kredit.' },
+    { word: 'BUDGET', clue: 'Plan, wie du dein Geld nutzt.' },
+    { word: 'MUENZE', clue: 'Geld aus Metall.' },
+    { word: 'RISIKO', clue: 'Moeglichkeit, Geld zu verlieren.' },
+    { word: 'KONTO', clue: 'Bankplatz, an dem dein Geld liegt.' },
+    { word: 'WERT', clue: 'Bedeutung oder Preis von etwas.' },
+    { word: 'KARTE', clue: 'Plastik zum Bezahlen ohne Bargeld.' },
+    { word: 'GEWINN', clue: 'Geld, das nach den Kosten uebrig bleibt.' }
+  ], it: [
+    { word: 'RISPARMIO', clue: 'Conservare una parte del denaro per il futuro.' },
+    { word: 'SPESA', clue: 'Denaro che esce quando compri o paghi.' },
+    { word: 'REDDITO', clue: 'Denaro che entra.' },
+    { word: 'OBIETTIVO', clue: 'Traguardo che vuoi raggiungere.' },
+    { word: 'DEBITO', clue: 'Denaro che devi restituire.' },
+    { word: 'BANCA', clue: 'Luogo dove puoi conservare o chiedere denaro.' },
+    { word: 'PIANO', clue: 'Passi organizzati per raggiungere qualcosa.' },
+    { word: 'PREZZO', clue: 'Quantita di denaro che costa qualcosa.' },
+    { word: 'INTERESSE', clue: 'Denaro extra legato a un prestito.' },
+    { word: 'BUDGET', clue: 'Piano per usare il tuo denaro.' },
+    { word: 'MONETA', clue: 'Denaro di metallo.' },
+    { word: 'RISCHIO', clue: 'Possibilita di perdere denaro.' },
+    { word: 'CONTO', clue: 'Spazio in banca dove sta il tuo denaro.' },
+    { word: 'VALORE', clue: 'Importanza o prezzo di qualcosa.' },
+    { word: 'CARTA', clue: 'Oggetto usato per pagare senza contanti.' },
+    { word: 'PROFITTO', clue: 'Denaro guadagnato dopo i costi.' }
+  ], pt: [
+    { word: 'POUPANCA', clue: 'Guardar parte do dinheiro para o futuro.' },
+    { word: 'DESPESA', clue: 'Dinheiro que sai quando compras ou pagas.' },
+    { word: 'RECEITA', clue: 'Dinheiro que entra.' },
+    { word: 'OBJETIVO', clue: 'Meta que queres atingir.' },
+    { word: 'DIVIDA', clue: 'Dinheiro que tens de devolver.' },
+    { word: 'BANCO', clue: 'Lugar onde podes guardar ou pedir dinheiro.' },
+    { word: 'PLANO', clue: 'Passos organizados para atingir algo.' },
+    { word: 'PRECO', clue: 'Quantidade de dinheiro que algo custa.' },
+    { word: 'JURO', clue: 'Dinheiro extra associado a um emprestimo.' },
+    { word: 'ORCAMENTO', clue: 'Plano para usar o teu dinheiro.' },
+    { word: 'MOEDA', clue: 'Dinheiro em metal.' },
+    { word: 'RISCO', clue: 'Possibilidade de perder dinheiro.' },
+    { word: 'CONTA', clue: 'Espaco no banco onde fica o teu dinheiro.' },
+    { word: 'VALOR', clue: 'Importancia ou preco de algo.' },
+    { word: 'CARTAO', clue: 'Objeto usado para pagar sem dinheiro fisico.' },
+    { word: 'LUCRO', clue: 'Dinheiro ganho depois dos custos.' }
+  ], ca: [
+    { word: 'ESTALVI', clue: 'Guardar una part dels diners per al futur.' },
+    { word: 'DESPESA', clue: 'Diners que surten quan compres o pagues.' },
+    { word: 'INGRES', clue: 'Diners que entren.' },
+    { word: 'META', clue: 'Objectiu que vols aconseguir.' },
+    { word: 'DEUTE', clue: 'Diners que has de tornar.' },
+    { word: 'BANC', clue: 'Lloc on pots guardar o demanar diners.' },
+    { word: 'PLA', clue: 'Passos organitzats per aconseguir alguna cosa.' },
+    { word: 'PREU', clue: 'Quantitat de diners que costa alguna cosa.' },
+    { word: 'INTERES', clue: 'Diners extra associats a un prestec.' },
+    { word: 'PRESSUPOST', clue: 'Pla per fer servir els teus diners.' },
+    { word: 'MONEDA', clue: 'Diners en metall.' },
+    { word: 'RISC', clue: 'Possibilitat de perdre diners.' },
+    { word: 'COMPTE', clue: 'Espai del banc on tens els diners.' },
+    { word: 'VALOR', clue: 'Importancia o preu d alguna cosa.' },
+    { word: 'TARGETA', clue: 'Objecte per pagar sense efectiu.' },
+    { word: 'BENEFICI', clue: 'Diners guanyats despres dels costos.' }
+  ], va: [
+    { word: 'ESTALVI', clue: 'Guardar una part dels diners per al futur.' },
+    { word: 'DESPESA', clue: 'Diners que ixen quan compres o pagues.' },
+    { word: 'INGRES', clue: 'Diners que entren.' },
+    { word: 'META', clue: 'Objectiu que vols aconseguir.' },
+    { word: 'DEUTE', clue: 'Diners que has de tornar.' },
+    { word: 'BANC', clue: 'Lloc on pots guardar o demanar diners.' },
+    { word: 'PLA', clue: 'Passos organitzats per aconseguir alguna cosa.' },
+    { word: 'PREU', clue: 'Quantitat de diners que costa alguna cosa.' },
+    { word: 'INTERES', clue: 'Diners extra associats a un prestec.' },
+    { word: 'PRESSUPOST', clue: 'Pla per a usar els teus diners.' },
+    { word: 'MONEDA', clue: 'Diners en metall.' },
+    { word: 'RISC', clue: 'Possibilitat de perdre diners.' },
+    { word: 'COMPTE', clue: 'Espai del banc on tens els diners.' },
+    { word: 'VALOR', clue: 'Importancia o preu d alguna cosa.' },
+    { word: 'TARGETA', clue: 'Objecte per pagar sense efectiu.' },
+    { word: 'BENEFICI', clue: 'Diners guanyats despres dels costos.' }
+  ], gl: [
+    { word: 'AFORRO', clue: 'Gardar unha parte do diñeiro para o futuro.' },
+    { word: 'GASTO', clue: 'Diñeiro que sae cando compras ou pagas.' },
+    { word: 'INGRESO', clue: 'Diñeiro que entra.' },
+    { word: 'META', clue: 'Obxectivo que queres acadar.' },
+    { word: 'DEBEDA', clue: 'Diñeiro que debes devolver.' },
+    { word: 'BANCO', clue: 'Lugar onde podes gardar ou pedir diñeiro.' },
+    { word: 'PLAN', clue: 'Pasos organizados para conseguir algo.' },
+    { word: 'PREZO', clue: 'Cantidade de diñeiro que custa algo.' },
+    { word: 'XURO', clue: 'Diñeiro extra asociado a un prestamo.' },
+    { word: 'ORZAMENTO', clue: 'Plan para usar o teu diñeiro.' },
+    { word: 'MOEDA', clue: 'Diñeiro en metal.' },
+    { word: 'RISCO', clue: 'Posibilidade de perder diñeiro.' },
+    { word: 'CONTA', clue: 'Espazo do banco onde tes o diñeiro.' },
+    { word: 'VALOR', clue: 'Importancia ou prezo de algo.' },
+    { word: 'TARXETA', clue: 'Obxecto para pagar sen efectivo.' },
+    { word: 'GANANCIA', clue: 'Diñeiro gañado despois dos custos.' }
+  ], eu: [
+    { word: 'AURREZKI', clue: 'Diruaren zati bat etorkizunerako gordetzea.' },
+    { word: 'GASTU', clue: 'Erosten edo ordaintzen duzunean ateratzen den dirua.' },
+    { word: 'SARRERA', clue: 'Sartzen den dirua.' },
+    { word: 'HELBURU', clue: 'Lortu nahi duzun xedea.' },
+    { word: 'ZOR', clue: 'Itzuli behar duzun dirua.' },
+    { word: 'BANKU', clue: 'Dirua gordetzeko edo eskatzeko lekua.' },
+    { word: 'PLAN', clue: 'Zerbait lortzeko antolatutako urratsak.' },
+    { word: 'PREZIO', clue: 'Zerbait kostatzen den diru kopurua.' },
+    { word: 'INTERES', clue: 'Mailegu bati lotutako diru gehigarria.' },
+    { word: 'AURREKONTU', clue: 'Zure dirua erabiltzeko plana.' },
+    { word: 'TXANPON', clue: 'Metalezko dirua.' },
+    { word: 'ARRISKU', clue: 'Dirua galtzeko aukera.' },
+    { word: 'KONTU', clue: 'Bankuan zure dirua dagoen lekua.' },
+    { word: 'BALIO', clue: 'Zerbaiten garrantzia edo prezioa.' },
+    { word: 'TXARTEL', clue: 'Diru fisikorik gabe ordaintzeko objektua.' },
+    { word: 'IRABAZI', clue: 'Kostuen ondoren lortutako dirua.' }
   ] };
-  const getWordPool = () => WORD_POOL_BY_LANG[currentLang() === 'en' ? 'en' : 'es'];
+  const getWordPool = () => WORD_POOL_BY_LANG[currentLang()] || WORD_POOL_BY_LANG.es;
 
   function showToast(msg){
     if (!toastEl) return;
@@ -315,7 +478,17 @@
         input.dataset.c = String(c);
         input.setAttribute(
           'aria-label',
-          currentLang() === 'en' ? `Row ${r + 1}, Column ${c + 1}` : `Fila ${r + 1}, Columna ${c + 1}`
+          currentLang() === 'en'
+            ? `Row ${r + 1}, Column ${c + 1}`
+            : currentLang() === 'fr'
+              ? `Ligne ${r + 1}, colonne ${c + 1}`
+              : currentLang() === 'de'
+                ? `Zeile ${r + 1}, Spalte ${c + 1}`
+                : currentLang() === 'it'
+                  ? `Riga ${r + 1}, colonna ${c + 1}`
+                  : currentLang() === 'pt'
+                    ? `Linha ${r + 1}, coluna ${c + 1}`
+              : `Fila ${r + 1}, Columna ${c + 1}`
         );
         input.dataset.letter = cell.letter;
         cellEl.appendChild(input);

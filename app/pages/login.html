@@ -63,9 +63,9 @@
         ev.preventDefault();
         try { localStorage.setItem('currentUser', user.value || ''); } catch(e) {}
         if (window.AdamisPageTransition?.go) {
-          window.AdamisPageTransition.go('./menu.html');
+          window.AdamisPageTransition.go('./alumno-splash.html');
         } else {
-          window.location.href = './menu.html';
+          window.location.href = './alumno-splash.html';
         }
       }, false);
     })();

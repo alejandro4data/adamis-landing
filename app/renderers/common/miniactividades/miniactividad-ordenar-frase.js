@@ -14,6 +14,14 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
@@ -362,9 +370,17 @@
     ensureStyles();
     root.classList.add('tpl--miniact-ordenar-frase');
 
-    const isEn = lang() === 'en';
-    const sourcePhrases = isEn
+    const activeLang = lang();
+    const sourcePhrases = activeLang === 'en'
       ? (s?.phrases_en ?? s?.frases_en ?? s?.phrasesEn ?? s?.frasesEn ?? s?.phrases ?? s?.frases ?? s?.frase)
+      : activeLang === 'fr'
+        ? (s?.phrases_fr ?? s?.frases_fr ?? s?.phrasesFr ?? s?.frasesFr ?? s?.phrases ?? s?.frases ?? s?.frase)
+        : activeLang === 'de'
+          ? (s?.phrases_de ?? s?.frases_de ?? s?.phrasesDe ?? s?.frasesDe ?? s?.phrases ?? s?.frases ?? s?.frase)
+          : activeLang === 'it'
+            ? (s?.phrases_it ?? s?.frases_it ?? s?.phrasesIt ?? s?.frasesIt ?? s?.phrases ?? s?.frases ?? s?.frase)
+            : activeLang === 'pt'
+              ? (s?.phrases_pt ?? s?.frases_pt ?? s?.phrasesPt ?? s?.frasesPt ?? s?.phrases ?? s?.frases ?? s?.frase)
       : (s?.phrases ?? s?.frases ?? s?.frase);
     const phrases = normalizePhrases(sourcePhrases).map((p) => tr(p));
     if (!phrases.length) {

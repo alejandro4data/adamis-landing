@@ -17,17 +17,36 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     try {
       const htmlLang = String(document.documentElement.lang || '').toLowerCase();
       if (htmlLang.startsWith('en')) return 'en';
+      if (htmlLang.startsWith('fr')) return 'fr';
+      if (htmlLang.startsWith('de')) return 'de';
+      if (htmlLang.startsWith('it')) return 'it';
+      if (htmlLang.startsWith('pt')) return 'pt';
+      if (htmlLang.startsWith('ca-es-valencia') || htmlLang.startsWith('ca-valencia') || htmlLang.startsWith('val') || htmlLang.startsWith('va')) return 'va';
+      if (htmlLang.startsWith('ca')) return 'ca';
+      if (htmlLang.startsWith('gl')) return 'gl';
+      if (htmlLang.startsWith('eu') || htmlLang.startsWith('baq') || htmlLang.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
   const byLang = (obj, fallback = '') => {
     if (!obj || typeof obj !== 'object') return fallback;
-    const lang = currentLang() === 'en' ? 'en' : 'es';
-    return obj[lang] || obj.es || fallback;
+    const lang = currentLang();
+    if (lang === 'va' && obj.ca) return obj.va || obj.ca;
+    if (obj[lang]) return obj[lang];
+    if (['ca', 'va', 'gl', 'eu'].includes(lang) && obj.es) return tr(obj.es);
+    return obj.es || fallback;
   };
 
   const CONFIG = {
@@ -86,26 +105,38 @@
 
   const PROFILE_INFO = {
     impulsive: {
-      name: { es: 'Naranja · Impulsivo', en: 'Orange · Impulsive' },
+      name: { es: 'Naranja · Impulsivo', en: 'Orange · Impulsive', fr: 'Orange · Impulsif', de: 'Orange · Impulsiv', it: 'Arancione · Impulsivo', pt: 'Laranja · Impulsivo' },
       desc: {
         es: 'Compra por impulso hasta $3.50. Si el precio es moderado y la fila fluye, decide rapido.',
-        en: 'Buys impulsively up to $3.50. If the price is moderate and queue flows, decides fast.'
+        en: 'Buys impulsively up to $3.50. If the price is moderate and queue flows, decides fast.',
+        fr: 'Achète par impulsion jusqu à 3,50 $. Si le prix est modéré et que la file avance, décide vite.',
+        de: 'Kauft spontan bis 3,50 $. Bei moderatem Preis und kurzer Schlange entscheidet er schnell.',
+        it: 'Compra d impulso fino a 3,50 $. Se il prezzo e moderato e la fila scorre, decide in fretta.',
+        pt: 'Compra por impulso ate 3,50 $. Se o preco for moderado e a fila avancar, decide rapido.'
       },
       swatch: 'is-impulsive'
     },
     saver: {
-      name: { es: 'Azul · Ahorrador', en: 'Blue · Saver' },
+      name: { es: 'Azul · Ahorrador', en: 'Blue · Saver', fr: 'Bleu · Économe', de: 'Blau · Sparer', it: 'Blu · Risparmiatore', pt: 'Azul · Poupador' },
       desc: {
         es: 'Busca precios bajos (tope $2.00). Subidas bruscas o poco stock lo ahuyentan.',
-        en: 'Looks for low prices (cap $2.00). Sudden increases or low stock scare them away.'
+        en: 'Looks for low prices (cap $2.00). Sudden increases or low stock scare them away.',
+        fr: 'Cherche des prix bas (maximum 2,00 $). Les fortes hausses ou le manque de stock le font fuir.',
+        de: 'Sucht niedrige Preise (bis 2,00 $). Starke Erhoehungen oder wenig Bestand schrecken ihn ab.',
+        it: 'Cerca prezzi bassi (massimo 2,00 $). Aumenti improvvisi o poche scorte lo allontanano.',
+        pt: 'Procura precos baixos (limite 2,00 $). Aumentos bruscos ou pouco stock afastam-no.'
       },
       swatch: 'is-saver'
     },
     vip: {
-      name: { es: 'Purpura · VIP', en: 'Purple · VIP' },
+      name: { es: 'Purpura · VIP', en: 'Purple · VIP', fr: 'Violet · VIP', de: 'Violett · VIP', it: 'Viola · VIP', pt: 'Roxo · VIP' },
       desc: {
         es: 'Valora comodidad y calor: paga hasta $5.00 y compra mas cuando hace buen tiempo.',
-        en: 'Values comfort and warm weather: pays up to $5.00 and buys more on warm days.'
+        en: 'Values comfort and warm weather: pays up to $5.00 and buys more on warm days.',
+        fr: 'Valorise le confort et la chaleur : paie jusqu à 5,00 $ et achète davantage quand il fait beau.',
+        de: 'Schaetzt Komfort und Waerme: zahlt bis 5,00 $ und kauft bei gutem Wetter mehr.',
+        it: 'Apprezza comodita e caldo: paga fino a 5,00 $ e compra di piu con il bel tempo.',
+        pt: 'Valoriza conforto e calor: paga ate 5,00 $ e compra mais quando esta bom tempo.'
       },
       swatch: 'is-vip'
     }
@@ -413,16 +444,16 @@
   function updateWeatherUI(){
     if (!state.weather) return;
     if (el.weatherIcon) el.weatherIcon.innerHTML = state.weather.icon;
-    if (el.weatherLabel) el.weatherLabel.textContent = state.weather.label;
+    if (el.weatherLabel) el.weatherLabel.textContent = tr(state.weather.label);
     if (el.weatherTemp) el.weatherTemp.textContent = String(state.weather.temp);
-    if (el.weatherTip) el.weatherTip.textContent = state.weather.tip;
+    if (el.weatherTip) el.weatherTip.textContent = tr(state.weather.tip);
 
     if (el.stage) {
       el.stage.classList.remove('is-sunny', 'is-cloudy', 'is-rainy');
       el.stage.classList.add(`is-${state.weather.id}`);
     }
     if (el.stageInfo) {
-      el.stageInfo.textContent = `${state.weather.label} / ${state.weather.temp}\u00B0C`;
+      el.stageInfo.textContent = `${tr(state.weather.label)} / ${state.weather.temp}\u00B0C`;
     }
   }
 
@@ -525,15 +556,37 @@
 
   function updateLog(client, outcome, wtp){
     if (!el.log) return;
+    const label = tr(client.label);
     if (outcome === 'buy'){
-      el.log.textContent = `${client.label} compra a ${formatMoney(state.price)}.`;
+      el.log.textContent = byLang({
+        es: `${client.label} compra a ${formatMoney(state.price)}.`,
+        en: `${label} buys at ${formatMoney(state.price)}.`,
+        fr: `${label} achète à ${formatMoney(state.price)}.`,
+        de: `${label} kauft für ${formatMoney(state.price)}.`,
+        it: `${label} compra a ${formatMoney(state.price)}.`,
+        pt: `${label} compra a ${formatMoney(state.price)}.`
+      });
       return;
     }
     if (outcome === 'price'){
-      el.log.textContent = `${client.label} se va: muy caro (WTP ${formatMoney(wtp)}).`;
+      el.log.textContent = byLang({
+        es: `${client.label} se va: muy caro (WTP ${formatMoney(wtp)}).`,
+        en: `${label} leaves: too expensive (WTP ${formatMoney(wtp)}).`,
+        fr: `${label} part : trop cher (WTP ${formatMoney(wtp)}).`,
+        de: `${label} geht: zu teuer (WTP ${formatMoney(wtp)}).`,
+        it: `${label} se ne va: troppo caro (WTP ${formatMoney(wtp)}).`,
+        pt: `${label} vai embora: demasiado caro (WTP ${formatMoney(wtp)}).`
+      });
       return;
     }
-    el.log.textContent = `${client.label} se va: sin stock.`;
+    el.log.textContent = byLang({
+      es: `${client.label} se va: sin stock.`,
+      en: `${label} leaves: out of stock.`,
+      fr: `${label} part : rupture de stock.`,
+      de: `${label} geht: kein Bestand.`,
+      it: `${label} se ne va: scorte esaurite.`,
+      pt: `${label} vai embora: sem stock.`
+    });
   }
 
   function recordOutcome(outcome, hourIndex){
@@ -688,14 +741,22 @@
   function openEventOverlay(event){
     if (!el.eventOverlay || !event) return;
     const rarity = RARITY_META[event.rarity] || RARITY_META.common;
-    if (el.eventRarity) el.eventRarity.textContent = rarity.label;
+    if (el.eventRarity) el.eventRarity.textContent = tr(rarity.label);
     if (el.eventCard){
       el.eventCard.classList.remove('is-common', 'is-rare', 'is-legendary');
       el.eventCard.classList.add(rarity.className);
     }
-    if (el.eventTitle) el.eventTitle.textContent = event.name;
-    if (el.eventCause) el.eventCause.textContent = `Posible causa del evento: ${event.cause}`;
-    setEventInfo(`Duración del evento: ${Math.round(event.duration)}s`);
+    if (el.eventTitle) el.eventTitle.textContent = tr(event.name);
+    if (el.eventCause) el.eventCause.textContent = `${tr('Posible causa del evento:')} ${tr(event.cause)}`;
+    const duration = Math.round(event.duration);
+    setEventInfo(byLang({
+      es: `Duración del evento: ${duration}s`,
+      en: `Event duration: ${duration}s`,
+      fr: `Durée de l'événement : ${duration}s`,
+      de: `Ereignisdauer: ${duration}s`,
+      it: `Durata evento: ${duration}s`,
+      pt: `Duração do evento: ${duration}s`
+    }));
     el.eventOverlay.classList.add('is-visible');
     el.eventOverlay.setAttribute('aria-hidden', 'false');
     state.pendingEvent = event;

@@ -15,6 +15,14 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
@@ -717,9 +725,17 @@
     ensureStyles();
     root.classList.add('tpl--miniact-arrastrar-etiquetas');
 
-    const isEn = lang() === 'en';
-    const sourceItems = isEn
+    const activeLang = lang();
+    const sourceItems = activeLang === 'en'
       ? (s?.items_en ?? s?.elementos_en ?? s?.matches_en ?? s?.items ?? s?.elementos ?? s?.matches)
+      : activeLang === 'fr'
+        ? (s?.items_fr ?? s?.elementos_fr ?? s?.matches_fr ?? s?.items ?? s?.elementos ?? s?.matches)
+        : activeLang === 'de'
+          ? (s?.items_de ?? s?.elementos_de ?? s?.matches_de ?? s?.items ?? s?.elementos ?? s?.matches)
+          : activeLang === 'it'
+            ? (s?.items_it ?? s?.elementos_it ?? s?.matches_it ?? s?.items ?? s?.elementos ?? s?.matches)
+            : activeLang === 'pt'
+              ? (s?.items_pt ?? s?.elementos_pt ?? s?.matches_pt ?? s?.items ?? s?.elementos ?? s?.matches)
       : (s?.items ?? s?.elementos ?? s?.matches);
     const items = normalizeItems(sourceItems);
 

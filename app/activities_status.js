@@ -16,11 +16,14 @@
   }
 
   function statusText(frequency) {
+    var tr = window.I18N && typeof window.I18N.tr === 'function'
+      ? window.I18N.tr
+      : function (value) { return String(value || ''); };
     var freq = String(frequency || '').toLowerCase();
-    if (freq === 'daily') return 'Completada hoy';
-    if (freq === 'weekly') return 'Completada esta semana';
-    if (freq === 'monthly') return 'Completada este mes';
-    return 'Recompensa reclamada';
+    if (freq === 'daily') return tr('Completada hoy');
+    if (freq === 'weekly') return tr('Completada esta semana');
+    if (freq === 'monthly') return tr('Completada este mes');
+    return tr('Recompensa reclamada');
   }
 
   function render() {
@@ -51,6 +54,7 @@
   }
 
   window.addEventListener('adamis:reward-claimed', render);
+  document.addEventListener('i18n:change', render);
   window.addEventListener('DOMContentLoaded', render);
   render();
 })();

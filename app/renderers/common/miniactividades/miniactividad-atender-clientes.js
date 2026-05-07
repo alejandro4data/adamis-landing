@@ -15,6 +15,14 @@
     try {
       const stored = String(localStorage.getItem('adamis_lang') || '').toLowerCase();
       if (stored.startsWith('en')) return 'en';
+      if (stored.startsWith('fr')) return 'fr';
+      if (stored.startsWith('de')) return 'de';
+      if (stored.startsWith('it')) return 'it';
+      if (stored.startsWith('pt')) return 'pt';
+      if (stored.startsWith('ca-es-valencia') || stored.startsWith('ca-valencia') || stored.startsWith('val') || stored.startsWith('va')) return 'va';
+      if (stored.startsWith('ca')) return 'ca';
+      if (stored.startsWith('gl')) return 'gl';
+      if (stored.startsWith('eu') || stored.startsWith('baq') || stored.startsWith('eus')) return 'eu';
     } catch (_) {}
     return 'es';
   };
@@ -530,9 +538,17 @@
     ensureStyles();
     root.classList.add('tpl--miniact-atender-clientes');
 
-    const isEn = lang() === 'en';
-    const sourceChannels = isEn
+    const activeLang = lang();
+    const sourceChannels = activeLang === 'en'
       ? (s?.channels_en ?? s?.canales_en ?? s?.channels ?? s?.canales)
+      : activeLang === 'fr'
+        ? (s?.channels_fr ?? s?.canales_fr ?? s?.channels ?? s?.canales)
+        : activeLang === 'de'
+          ? (s?.channels_de ?? s?.canales_de ?? s?.channels ?? s?.canales)
+          : activeLang === 'it'
+            ? (s?.channels_it ?? s?.canales_it ?? s?.channels ?? s?.canales)
+            : activeLang === 'pt'
+              ? (s?.channels_pt ?? s?.canales_pt ?? s?.channels ?? s?.canales)
       : (s?.channels ?? s?.canales);
     const channelDefs = normalizeChannels(sourceChannels);
 
