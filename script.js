@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const audienceField = infoRequestForm?.querySelector('[name="audience"]');
     const interestField = infoRequestForm?.querySelector('[name="interest"]');
     const infoModalInterest = document.getElementById('infoModalInterest');
+    const tutorialVideo = document.querySelector('[data-tutorial-video]');
+    const tutorialPlayButton = document.querySelector('[data-tutorial-play]');
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const mobileProductQuery = window.matchMedia('(max-width: 720px)');
 
@@ -51,6 +53,26 @@ document.addEventListener('DOMContentLoaded', () => {
             launchPlatformAccess();
         });
     });
+
+    if (tutorialVideo && tutorialPlayButton) {
+        const hideTutorialPlayButton = () => {
+            tutorialPlayButton.classList.add('is-hidden');
+        };
+
+        const showTutorialPlayButton = () => {
+            tutorialPlayButton.classList.remove('is-hidden');
+        };
+
+        tutorialPlayButton.addEventListener('click', () => {
+            const playRequest = tutorialVideo.play();
+            if (playRequest && typeof playRequest.catch === 'function') {
+                playRequest.catch(showTutorialPlayButton);
+            }
+        });
+
+        tutorialVideo.addEventListener('play', hideTutorialPlayButton);
+        tutorialVideo.addEventListener('ended', showTutorialPlayButton);
+    }
 
     const speed = 100;
 

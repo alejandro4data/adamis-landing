@@ -665,6 +665,208 @@ a {
     margin: 14px 0 12px;
 }
 
+.tutorial-section {
+    position: relative;
+    padding: 122px 0 142px;
+    background:
+        radial-gradient(circle at 18% 18%, rgba(255, 210, 79, 0.24), transparent 24%),
+        radial-gradient(circle at 82% 38%, rgba(65, 193, 163, 0.14), transparent 22%),
+        linear-gradient(180deg, #ffffff 0%, #fff5d8 52%, #ffffff 100%);
+    overflow: hidden;
+}
+
+.tutorial-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(39, 95, 98, 0.1) 0%, transparent 24%, transparent 74%, rgba(198, 156, 58, 0.2) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, transparent 36%);
+}
+
+.tutorial-section::after {
+    content: '';
+    position: absolute;
+    top: 8%;
+    right: 8%;
+    width: 140px;
+    height: 140px;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, transparent 46%, rgba(198, 156, 58, 0.54) 47%, rgba(198, 156, 58, 0.54) 53%, transparent 54%),
+        linear-gradient(0deg, transparent 46%, rgba(198, 156, 58, 0.54) 47%, rgba(198, 156, 58, 0.54) 53%, transparent 54%);
+    clip-path: polygon(50% 0, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0 50%, 42% 42%);
+    opacity: 0.22;
+    transform: rotate(12deg);
+}
+
+.tutorial-intro {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 42px;
+}
+
+.tutorial-intro .section-kicker {
+    color: #6f4e08;
+    background:
+        linear-gradient(135deg, rgba(255, 243, 176, 0.95), rgba(217, 170, 63, 0.28));
+    border: 1px solid rgba(198, 156, 58, 0.28);
+    box-shadow: 0 12px 24px rgba(154, 107, 18, 0.1);
+}
+
+.tutorial-intro .section-title {
+    max-width: 12ch;
+}
+
+.tutorial-intro .section-copy {
+    max-width: 56ch;
+}
+
+.tutorial-video-shell {
+    position: relative;
+    z-index: 1;
+    padding: 22px;
+    border-radius: 38px;
+    border: 1px solid rgba(198, 156, 58, 0.36);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0) 50%),
+        linear-gradient(145deg, #fffdf8 0%, #fff0bf 48%, #f7efdd 100%);
+    box-shadow:
+        0 34px 80px rgba(154, 107, 18, 0.18),
+        0 0 0 1px rgba(255, 255, 255, 0.74),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    isolation: isolate;
+}
+
+.tutorial-video-shell::before,
+.tutorial-video-shell::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.tutorial-video-shell::before {
+    inset: -1px;
+    border-radius: inherit;
+    background:
+        linear-gradient(115deg, rgba(255, 255, 255, 0.9) 0%, transparent 26%, rgba(255, 210, 79, 0.42) 48%, transparent 70%, rgba(65, 193, 163, 0.18) 100%);
+    opacity: 0.76;
+}
+
+.tutorial-video-shell::after {
+    top: 20px;
+    left: 22px;
+    width: 78px;
+    height: 78px;
+    background:
+        linear-gradient(90deg, transparent 45%, rgba(255, 210, 79, 0.7) 47%, rgba(255, 210, 79, 0.7) 53%, transparent 55%),
+        linear-gradient(0deg, transparent 45%, rgba(255, 210, 79, 0.7) 47%, rgba(255, 210, 79, 0.7) 53%, transparent 55%);
+    clip-path: polygon(50% 0, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0 50%, 42% 42%);
+    opacity: 0.46;
+}
+
+.tutorial-video-frame {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 28px;
+    border: 1px solid rgba(143, 106, 22, 0.3);
+    background: #172231;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 22px 52px rgba(30, 36, 48, 0.22);
+}
+
+.tutorial-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.tutorial-video {
+    object-fit: contain;
+    border: 0;
+    background: #172231;
+}
+
+.tutorial-play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    width: clamp(94px, 10vw, 136px);
+    height: clamp(94px, 10vw, 136px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(143, 106, 22, 0.48);
+    border-radius: 999px;
+    color: #261c05;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 48%),
+        linear-gradient(135deg, #fff3b0 0%, #ffd24f 38%, #c9931e 72%, #765511 100%);
+    box-shadow:
+        0 28px 60px rgba(10, 14, 22, 0.38),
+        0 0 0 13px rgba(255, 210, 79, 0.18),
+        0 0 0 26px rgba(255, 210, 79, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.66),
+        inset 0 -1px 0 rgba(90, 64, 9, 0.22);
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.24s ease, transform 0.24s ease, box-shadow 0.24s ease;
+    animation: tutorialPlayPulse 2.4s ease-in-out infinite;
+}
+
+.tutorial-play-button i {
+    margin-left: 8px;
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+}
+
+.tutorial-play-button:hover {
+    transform: translate(-50%, -50%) scale(1.04);
+    box-shadow:
+        0 28px 54px rgba(10, 14, 22, 0.38),
+        0 0 0 16px rgba(255, 210, 79, 0.22),
+        0 0 0 32px rgba(255, 210, 79, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72),
+        inset 0 -1px 0 rgba(90, 64, 9, 0.26);
+}
+
+.tutorial-play-button:focus-visible {
+    outline: 3px solid rgba(255, 226, 128, 0.92);
+    outline-offset: 7px;
+}
+
+.tutorial-play-button.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.9);
+    animation: none;
+}
+
+@keyframes tutorialPlayPulse {
+    0%, 100% {
+        box-shadow:
+            0 28px 60px rgba(10, 14, 22, 0.38),
+            0 0 0 13px rgba(255, 210, 79, 0.18),
+            0 0 0 26px rgba(255, 210, 79, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.66),
+            inset 0 -1px 0 rgba(90, 64, 9, 0.22);
+    }
+    50% {
+        box-shadow:
+            0 32px 66px rgba(10, 14, 22, 0.42),
+            0 0 0 17px rgba(255, 210, 79, 0.22),
+            0 0 0 34px rgba(255, 210, 79, 0.11),
+            inset 0 1px 0 rgba(255, 255, 255, 0.72),
+            inset 0 -1px 0 rgba(90, 64, 9, 0.24);
+    }
+}
+
 .products-section {
     position: relative;
     padding: 148px 0 136px;
@@ -2356,7 +2558,8 @@ footer {
     .product-trigger-title,
     .product-trigger-note,
     .product-dock,
-    .course-tab {
+    .course-tab,
+    .tutorial-play-button {
         transition: none !important;
         animation: none !important;
     }
@@ -2483,6 +2686,7 @@ footer {
 
     .impact-section,
     .learning-section,
+    .tutorial-section,
     .products-section {
         padding: 88px 0;
     }
@@ -2523,6 +2727,31 @@ footer {
     .product-dock {
         margin-top: -6px;
         padding: 38px 24px 32px;
+    }
+
+    .tutorial-video-shell {
+        padding: 14px;
+        border-radius: 28px;
+    }
+
+    .tutorial-video-frame {
+        border-radius: 22px;
+    }
+
+    .tutorial-play-button {
+        width: 88px;
+        height: 88px;
+        box-shadow:
+            0 18px 36px rgba(10, 14, 22, 0.32),
+            0 0 0 10px rgba(255, 210, 79, 0.16),
+            0 0 0 20px rgba(255, 210, 79, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.66),
+            inset 0 -1px 0 rgba(90, 64, 9, 0.22);
+    }
+
+    .tutorial-play-button i {
+        margin-left: 6px;
+        font-size: 2.4rem;
     }
 
     .impact-card-lead {

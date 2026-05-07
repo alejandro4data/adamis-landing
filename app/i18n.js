@@ -7632,9 +7632,10 @@
       .adamis-lang-picker--standalone{position:fixed;top:14px;right:14px;z-index:10000;width:min(420px,calc(100vw - 28px))}
       .adamis-lang-picker__head{display:flex;align-items:center;justify-content:space-between;gap:10px}
       .adamis-lang-picker__label{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8B6B20}
-      .adamis-lang-picker__current{font-size:12px;font-weight:800;color:#5C4B25}
+      .adamis-lang-picker__current{font-size:12px;font-weight:800;color:#5C4B25;display:inline-flex;align-items:center;gap:5px}
+      .adamis-lang-picker__current .adamis-lang-option__flag{width:24px;height:17px;border-radius:4px}
       .adamis-lang-picker__grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
-      .adamis-lang-option{appearance:none;border:1px solid rgba(92,75,37,.16);border-radius:14px;background:rgba(255,255,255,.72);color:#5C4B25;min-width:0;min-height:72px;padding:8px 7px;display:grid;place-items:center;align-content:center;gap:4px;text-align:center;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.75);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease}
+      .adamis-lang-picker button.adamis-lang-option{appearance:none;width:100%;font:inherit;line-height:1;border:1px solid rgba(92,75,37,.16);border-radius:14px;background:rgba(255,255,255,.72);color:#5C4B25;min-width:0;min-height:72px;padding:8px 7px;display:grid;place-items:center;align-content:center;gap:4px;text-align:center;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.75);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease}
       .adamis-lang-option__flag{display:block;width:34px;height:24px;border:1px solid rgba(92,75,37,.18);border-radius:6px;position:relative;overflow:hidden;box-shadow:0 3px 8px rgba(92,75,37,.16),inset 0 0 0 1px rgba(255,255,255,.34);background:#fff}
       .adamis-lang-option__flag--es{background:linear-gradient(to bottom,#c60b1e 0 25%,#ffc400 25% 75%,#c60b1e 75% 100%)}
       .adamis-lang-option__flag--en{background:linear-gradient(90deg,transparent 0 42%,#c8102e 42% 58%,transparent 58%),linear-gradient(0deg,transparent 0 40%,#c8102e 40% 60%,transparent 60%),linear-gradient(90deg,transparent 0 35%,#fff 35% 65%,transparent 65%),linear-gradient(0deg,transparent 0 31%,#fff 31% 69%,transparent 69%),linear-gradient(33deg,transparent 0 43%,#fff 43% 49%,#c8102e 49% 53%,#fff 53% 59%,transparent 59%),linear-gradient(-33deg,transparent 0 43%,#fff 43% 49%,#c8102e 49% 53%,#fff 53% 59%,transparent 59%),#012169}
@@ -7649,8 +7650,8 @@
       .adamis-lang-option__flag--eu{background:linear-gradient(45deg,transparent 0 43%,#009b48 43% 57%,transparent 57%),linear-gradient(-45deg,transparent 0 43%,#009b48 43% 57%,transparent 57%),linear-gradient(90deg,transparent 0 42%,#fff 42% 58%,transparent 58%),linear-gradient(0deg,transparent 0 38%,#fff 38% 62%,transparent 62%),#d52b1e}
       .adamis-lang-option__code{font-weight:950;font-size:13px;line-height:1;letter-spacing:.08em}
       .adamis-lang-option__name{font-weight:750;font-size:10px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .adamis-lang-option:hover,.adamis-lang-option:focus-visible{transform:translateY(-1px);outline:none;box-shadow:0 8px 18px rgba(92,75,37,.16),inset 0 1px 0 rgba(255,255,255,.8);border-color:rgba(179,138,44,.52)}
-      .adamis-lang-option.is-active{background:linear-gradient(180deg,#5C4B25,#8B6B20);color:#F9F1D0;border-color:rgba(92,75,37,.72);box-shadow:0 10px 24px rgba(92,75,37,.24)}
+      .adamis-lang-picker button.adamis-lang-option:hover,.adamis-lang-picker button.adamis-lang-option:focus-visible{transform:translateY(-1px);outline:none;box-shadow:0 8px 18px rgba(92,75,37,.16),inset 0 1px 0 rgba(255,255,255,.8);border-color:rgba(179,138,44,.52)}
+      .adamis-lang-picker button.adamis-lang-option.is-active{background:linear-gradient(180deg,#5C4B25,#8B6B20);color:#F9F1D0;border-color:rgba(92,75,37,.72);box-shadow:0 10px 24px rgba(92,75,37,.24)}
       @media (max-width:420px){.adamis-lang-picker--standalone{left:14px;right:14px;width:auto}.adamis-lang-option__name{display:none}.adamis-lang-picker__grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
     `;
     document.head.appendChild(style);
@@ -7658,6 +7659,7 @@
 
   function mountStandaloneLanguagePicker() {
     const page = (document.documentElement.getAttribute('data-page') || '').toLowerCase();
+    if (page === 'splash') return;
     if (page !== 'splash' && page !== 'login') return;
     if (document.querySelector('[data-i18n-language-picker]')) return;
     ensureLanguagePickerStyles();
@@ -7675,7 +7677,13 @@
     label.textContent = t('common.langLabel');
     const current = document.createElement('span');
     current.className = 'adamis-lang-picker__current';
-    current.textContent = getLangLabel(currentLang);
+    const currentFlag = document.createElement('span');
+    currentFlag.className = `adamis-lang-option__flag adamis-lang-option__flag--${currentLang}`;
+    currentFlag.setAttribute('aria-hidden', 'true');
+    const currentCode = document.createElement('span');
+    currentCode.textContent = String(currentLang || '').toUpperCase();
+    current.appendChild(currentFlag);
+    current.appendChild(currentCode);
     head.appendChild(label);
     head.appendChild(current);
     picker.appendChild(head);

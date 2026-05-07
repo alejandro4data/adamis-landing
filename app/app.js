@@ -11,7 +11,8 @@
 
 (() => {
   const PAGE = document.documentElement.getAttribute('data-page') || '';
-  if (PAGE === 'login' || PAGE === 'splash') return;
+  if (PAGE === 'login') return;
+  const IS_SPLASH = PAGE === 'splash';
   const tr = (value, vars) => {
     if (!window.I18N) return String(value || '');
     const mapped = window.I18N.tr(String(value || ''));
@@ -42,7 +43,7 @@
     btn.setAttribute('aria-label', tr('Ajustes'));
     btn.title = tr('Ajustes');
     btn.textContent = '';
-    btn.style.backgroundImage = "url('../assets/icons/engranaje.png')";
+    btn.style.backgroundImage = IS_SPLASH ? "url('./app/assets/icons/engranaje.png')" : "url('../assets/icons/engranaje.png')";
     btn.style.backgroundRepeat = 'no-repeat';
     btn.style.backgroundPosition = 'center';
     btn.style.backgroundSize = '35px 35px';
@@ -69,13 +70,14 @@
             </div>
             <div class="adamis-lang-picker__grid">${langButtonsHtml}</div>
           </div>
-          <button class="btn btn-primary" data-action="logout">${tr('Salir')}</button>
+          ${IS_SPLASH ? '' : `<button class="btn btn-primary" data-action="logout">${tr('Salir')}</button>`}
         </div>
       </div>`;
     document.body.appendChild(menu);
 
     // 2) Modal (inyección única)
-    const modal = document.createElement('div');
+    const modal = IS_SPLASH ? null : document.createElement('div');
+    if (modal) {
     modal.className = 'logout-modal';
     modal.innerHTML = `
       <div class="logout-dialog" role="dialog" aria-modal="true" aria-labelledby="logout-title" aria-describedby="logout-desc">
@@ -93,12 +95,13 @@
         </div>
       </div>`;
     document.body.appendChild(modal);
+    }
 
     // Utilidades de apertura/cierre con trampa de foco
-    const dialog = modal.querySelector('.logout-dialog');
-    const closeBtn = modal.querySelector('.logout-close');
-    const cancelBtn = modal.querySelector('[data-action="cancel"]');
-    const confirmBtn = modal.querySelector('[data-action="confirm"]');
+    const dialog = modal?.querySelector('.logout-dialog');
+    const closeBtn = modal?.querySelector('.logout-close');
+    const cancelBtn = modal?.querySelector('[data-action="cancel"]');
+    const confirmBtn = modal?.querySelector('[data-action="confirm"]');
     const langBtns = Array.from(menu.querySelectorAll('[data-lang]'));
     const logoutBtn = menu.querySelector('[data-action="logout"]');
     const focusablesSelector =
@@ -107,6 +110,7 @@
     let lastFocused = null;
 
     function openModal() {
+      if (!modal || !dialog) return;
       menu.classList.remove('is-open');
       lastFocused = document.activeElement;
       modal.classList.add('is-open');
@@ -141,6 +145,7 @@
     }
 
     function closeModal() {
+      if (!modal) return;
       modal.classList.remove('is-open');
       document.removeEventListener('keydown', onKeydown);
       modal.removeEventListener('click', onBackdrop);
@@ -148,7 +153,7 @@
     }
 
     function onBackdrop(e) {
-      if (e.target === modal) closeModal(); // clic fuera
+      if (modal && e.target === modal) closeModal(); // clic fuera
     }
 
     function onKeydown(e) {
@@ -179,10 +184,10 @@
         window.location.reload();
       }
     }));
-    closeBtn.addEventListener('click', closeModal);
-    cancelBtn.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
+    cancelBtn?.addEventListener('click', closeModal);
 
-    confirmBtn.addEventListener('click', () => {
+    confirmBtn?.addEventListener('click', () => {
       // 1) Limpiar datos de sesión (lo importante en aula)
       try { sessionStorage.clear(); } catch (_e) {}
 
