@@ -46,9 +46,9 @@
     btn.style.backgroundImage = IS_SPLASH ? "url('./app/assets/icons/engranaje.png')" : "url('../assets/icons/engranaje.png')";
     btn.style.backgroundRepeat = 'no-repeat';
     btn.style.backgroundPosition = 'center';
-    btn.style.backgroundSize = '35px 35px';
-    btn.style.minWidth = '64px';
-    btn.style.minHeight = '64px';
+    btn.style.backgroundSize = '29px 29px';
+    btn.style.minWidth = '52px';
+    btn.style.minHeight = '52px';
     document.body.appendChild(btn);
 
     const menu = document.createElement('div');

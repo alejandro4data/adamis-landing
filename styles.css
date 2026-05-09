@@ -21,7 +21,10 @@
     --font-stage: 'Syne', sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+}
 
 * {
     margin: 0;
@@ -156,45 +159,161 @@ a {
 }
 
 .topbar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 20;
-    padding: 24px 0;
+    z-index: 1000;
+    padding: 14px 0;
+    background: rgba(255, 253, 247, 0.78);
+    border-bottom: 1px solid rgba(91, 75, 37, 0.1);
+    backdrop-filter: blur(18px);
 }
 
 .topbar-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0 24px 0 14px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 22px;
+    align-items: center;
+}
+
+.topbar-brand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: max-content;
+    color: var(--ink);
+    font-family: var(--font-stage);
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.topbar-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 14px rgba(139, 107, 32, 0.16));
+}
+
+.topbar-links {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 2vw, 26px);
+    min-width: 0;
+}
+
+.topbar-links a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    color: rgba(30, 36, 48, 0.72);
+    font-size: 0.88rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: color 0.22s ease;
+}
+
+.topbar-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 3px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.22s ease;
+}
+
+.topbar-links a:hover {
+    color: var(--ink);
+}
+
+.topbar-links a:hover::after {
+    transform: scaleX(1);
+}
+
+.topbar-actions {
+    display: inline-flex;
+    align-items: center;
     justify-content: flex-end;
+    gap: 10px;
 }
 
 .topbar-access {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
-    border: 1px solid rgba(91, 75, 37, 0.18);
+    min-height: 46px;
     border-radius: 999px;
-    padding: 12px 22px;
-    background: rgba(255, 255, 255, 0.8);
-    color: var(--ink);
-    font-size: 0.84rem;
-    font-weight: 700;
+    padding: 11px 19px 11px 21px;
+    position: relative;
+    overflow: hidden;
+    font-size: 0.78rem;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-    box-shadow: 0 16px 36px rgba(92, 75, 37, 0.08);
+    white-space: nowrap;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+}
+
+.topbar-access {
+    border: 1px solid rgba(174, 129, 28, 0.3);
+    background: linear-gradient(120deg, #fff4ac 0%, #f6dc78 24%, #c69c3a 48%, #f2d46c 72%, #fff6bf 100%);
+    background-size: 220% 100%;
+    color: #2b220c;
+    box-shadow:
+        0 16px 30px rgba(198, 156, 58, 0.24),
+        0 0 0 7px rgba(246, 216, 110, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.58);
+    animation: topbarAccessShimmer 4.8s ease-in-out infinite;
+}
+
+.topbar-access::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: linear-gradient(115deg, rgba(255, 255, 255, 0.36), transparent 38%, rgba(255, 255, 255, 0.16) 58%, transparent 100%);
+    pointer-events: none;
+}
+
+.topbar-access span,
+.topbar-access i {
+    position: relative;
+    z-index: 1;
+}
+
+.topbar-access i {
+    color: #4a390f;
+    font-size: 0.98rem;
+    transition: transform 0.25s ease;
 }
 
 .topbar-access:hover {
     transform: translateY(-2px);
-    border-color: rgba(92, 75, 37, 0.34);
-    background: #FFFFFF;
-    box-shadow: 0 20px 42px rgba(92, 75, 37, 0.12);
+    border-color: rgba(174, 129, 28, 0.46);
+    background-position: 100% center;
+    color: #241a05;
+    box-shadow:
+        0 20px 38px rgba(198, 156, 58, 0.32),
+        0 0 0 9px rgba(246, 216, 110, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.64);
+}
+
+.topbar-access:hover i {
+    transform: translate(2px, -2px);
 }
 
 .hero-shell {
@@ -322,16 +441,21 @@ a {
 }
 
 .btn-contact-solid {
-    background: linear-gradient(135deg, #fff1a6 0%, #ffe17a 22%, #d6a22a 58%, #8f6a16 100%);
-    border-color: transparent;
-    color: #2f2108;
-    box-shadow: 0 18px 34px rgba(198, 156, 58, 0.28);
+    background: linear-gradient(135deg, #fff2a8 0%, #f4d86e 48%, #c69c3a 100%);
+    border-color: rgba(174, 129, 28, 0.2);
+    color: #2b220c;
+    box-shadow:
+        0 16px 30px rgba(198, 156, 58, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.48);
 }
 
 .btn-contact-solid:hover {
-    background: linear-gradient(135deg, #fff5bf 0%, #ffe58d 20%, #dfad31 56%, #9a7219 100%);
-    color: #2f2108;
-    box-shadow: 0 22px 38px rgba(198, 156, 58, 0.34);
+    background: linear-gradient(135deg, #fff6bd 0%, #f5dc7c 48%, #cfa845 100%);
+    color: #2b220c;
+    border-color: rgba(174, 129, 28, 0.28);
+    box-shadow:
+        0 20px 36px rgba(198, 156, 58, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
 .impact-section {
@@ -523,6 +647,131 @@ a {
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+}
+
+.pilot-section {
+    position: relative;
+    padding: 124px 0 118px;
+    background:
+        radial-gradient(circle at 14% 12%, rgba(255, 210, 79, 0.16), transparent 22%),
+        radial-gradient(circle at 82% 36%, rgba(65, 193, 163, 0.12), transparent 24%),
+        linear-gradient(180deg, #ffffff 0%, #fffaf1 48%, #ffffff 100%);
+    overflow: hidden;
+}
+
+.pilot-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(39, 95, 98, 0.06) 0%, transparent 24%, transparent 78%, rgba(198, 156, 58, 0.12) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, transparent 34%, rgba(255, 255, 255, 0.72) 100%);
+}
+
+.pilot-shell {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: clamp(64px, 8vw, 104px);
+}
+
+.pilot-row {
+    display: grid;
+    grid-template-columns: minmax(270px, 0.9fr) minmax(340px, 1.1fr);
+    gap: clamp(34px, 6vw, 72px);
+    align-items: center;
+}
+
+.pilot-row-reverse .pilot-media {
+    order: -1;
+}
+
+.pilot-copy {
+    max-width: 520px;
+}
+
+.pilot-copy .section-kicker {
+    margin-bottom: 18px;
+    color: #7a540e;
+    background:
+        linear-gradient(135deg, rgba(255, 243, 176, 0.95), rgba(217, 170, 63, 0.24));
+    border: 1px solid rgba(198, 156, 58, 0.26);
+}
+
+.pilot-copy .section-title {
+    max-width: 12.5ch;
+    font-size: clamp(2.25rem, 3.4vw, 3.45rem);
+    line-height: 0.98;
+}
+
+.pilot-copy .section-copy {
+    max-width: 52ch;
+    margin-top: 18px;
+    font-size: 0.98rem;
+}
+
+.pilot-photo-surface {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    border: 1px solid rgba(198, 156, 58, 0.18);
+    background-image:
+        var(--pilot-photo),
+        radial-gradient(circle at 24% 18%, rgba(255, 226, 128, 0.5), transparent 34%),
+        radial-gradient(circle at 76% 70%, rgba(39, 95, 98, 0.2), transparent 32%),
+        linear-gradient(145deg, #fffdf8 0%, #f7efdd 100%);
+    background-size: cover, cover, cover, cover;
+    background-position: center, center, center, center;
+    box-shadow:
+        0 28px 64px rgba(92, 75, 37, 0.13),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.pilot-photo-surface::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 32%),
+        linear-gradient(110deg, rgba(255, 255, 255, 0.18), transparent 28%, transparent 72%, rgba(255, 255, 255, 0.12));
+}
+
+.pilot-photo-wide {
+    aspect-ratio: 16 / 9;
+}
+
+.pilot-photo-portrait {
+    width: min(100%, 520px);
+    aspect-ratio: 4 / 3;
+}
+
+.pilot-collage {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(104px, 0.58fr);
+    grid-template-rows: repeat(3, minmax(82px, 1fr));
+    gap: 8px;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 28px;
+    border: 1px solid rgba(198, 156, 58, 0.18);
+    background: rgba(255, 255, 255, 0.74);
+    box-shadow: 0 28px 64px rgba(92, 75, 37, 0.13);
+}
+
+.pilot-collage .pilot-photo-surface {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.pilot-collage-main {
+    grid-row: 1 / -1;
 }
 
 .learning-section {
@@ -803,18 +1052,15 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(143, 106, 22, 0.48);
+    border: 1px solid rgba(174, 129, 28, 0.24);
     border-radius: 999px;
-    color: #261c05;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 48%),
-        linear-gradient(135deg, #fff3b0 0%, #ffd24f 38%, #c9931e 72%, #765511 100%);
+    color: #2b220c;
+    background: linear-gradient(135deg, #fff2a8 0%, #f4d86e 48%, #c69c3a 100%);
     box-shadow:
-        0 28px 60px rgba(10, 14, 22, 0.38),
+        0 28px 60px rgba(10, 14, 22, 0.26),
         0 0 0 13px rgba(255, 210, 79, 0.18),
         0 0 0 26px rgba(255, 210, 79, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.66),
-        inset 0 -1px 0 rgba(90, 64, 9, 0.22);
+        inset 0 1px 0 rgba(255, 255, 255, 0.54);
     cursor: pointer;
     transform: translate(-50%, -50%);
     transition: opacity 0.24s ease, transform 0.24s ease, box-shadow 0.24s ease;
@@ -828,12 +1074,12 @@ a {
 
 .tutorial-play-button:hover {
     transform: translate(-50%, -50%) scale(1.04);
+    background: linear-gradient(135deg, #fff6bd 0%, #f5dc7c 48%, #cfa845 100%);
     box-shadow:
-        0 28px 54px rgba(10, 14, 22, 0.38),
+        0 28px 54px rgba(10, 14, 22, 0.28),
         0 0 0 16px rgba(255, 210, 79, 0.22),
         0 0 0 32px rgba(255, 210, 79, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.72),
-        inset 0 -1px 0 rgba(90, 64, 9, 0.26);
+        inset 0 1px 0 rgba(255, 255, 255, 0.58);
 }
 
 .tutorial-play-button:focus-visible {
@@ -851,19 +1097,17 @@ a {
 @keyframes tutorialPlayPulse {
     0%, 100% {
         box-shadow:
-            0 28px 60px rgba(10, 14, 22, 0.38),
+            0 28px 60px rgba(10, 14, 22, 0.26),
             0 0 0 13px rgba(255, 210, 79, 0.18),
             0 0 0 26px rgba(255, 210, 79, 0.08),
-            inset 0 1px 0 rgba(255, 255, 255, 0.66),
-            inset 0 -1px 0 rgba(90, 64, 9, 0.22);
+            inset 0 1px 0 rgba(255, 255, 255, 0.54);
     }
     50% {
         box-shadow:
-            0 32px 66px rgba(10, 14, 22, 0.42),
+            0 32px 66px rgba(10, 14, 22, 0.28),
             0 0 0 17px rgba(255, 210, 79, 0.22),
             0 0 0 34px rgba(255, 210, 79, 0.11),
-            inset 0 1px 0 rgba(255, 255, 255, 0.72),
-            inset 0 -1px 0 rgba(90, 64, 9, 0.24);
+            inset 0 1px 0 rgba(255, 255, 255, 0.58);
     }
 }
 
@@ -2216,37 +2460,21 @@ a {
 .product-panel-cta,
 .closing-cta {
     position: relative;
-    isolation: isolate;
     width: auto;
     min-width: 248px;
     min-height: 52px;
     padding: 14px 22px;
-    border: 1px solid rgba(143, 106, 22, 0.34);
-    border-radius: 16px;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 46%),
-        linear-gradient(135deg, #fff0a3 0%, #ffd24f 36%, #c9931e 68%, #765511 100%);
-    color: #241a05;
+    border: 1px solid rgba(174, 129, 28, 0.22);
+    border-radius: 999px;
+    background: linear-gradient(135deg, #fff2a8 0%, #f4d86e 48%, #c69c3a 100%);
+    color: #2b220c;
     box-shadow:
-        0 14px 24px rgba(143, 106, 22, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.58),
-        inset 0 -1px 0 rgba(90, 64, 9, 0.24);
+        0 16px 30px rgba(198, 156, 58, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
     font-size: 0.82rem;
     font-weight: 900;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-}
-
-.product-panel-cta::before,
-.closing-cta::before {
-    content: '';
-    position: absolute;
-    inset: 1px;
-    z-index: -1;
-    border-radius: 14px;
-    background:
-        linear-gradient(115deg, rgba(255, 255, 255, 0.34) 0%, transparent 34%, rgba(255, 255, 255, 0.16) 58%, transparent 100%);
-    pointer-events: none;
 }
 
 .product-panel-cta i,
@@ -2257,15 +2485,12 @@ a {
 
 .product-panel-cta:hover,
 .closing-cta:hover {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0) 46%),
-        linear-gradient(135deg, #fff6bf 0%, #ffdc62 34%, #d7a12a 66%, #866114 100%);
-    color: #241a05;
-    border-color: rgba(143, 106, 22, 0.46);
+    background: linear-gradient(135deg, #fff6bd 0%, #f5dc7c 48%, #cfa845 100%);
+    color: #2b220c;
+    border-color: rgba(174, 129, 28, 0.32);
     box-shadow:
-        0 18px 30px rgba(143, 106, 22, 0.22),
-        inset 0 1px 0 rgba(255, 255, 255, 0.64),
-        inset 0 -1px 0 rgba(90, 64, 9, 0.28);
+        0 20px 36px rgba(198, 156, 58, 0.26),
+        inset 0 1px 0 rgba(255, 255, 255, 0.56);
 }
 
 .product-panel-cta:hover i,
@@ -2283,10 +2508,10 @@ a {
 
 .closing-shell {
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 28px;
-    align-items: center;
-    padding: 34px 38px;
+    grid-template-columns: minmax(0, 0.78fr) minmax(420px, 1fr);
+    gap: clamp(28px, 5vw, 58px);
+    align-items: start;
+    padding: clamp(28px, 4vw, 42px);
     border-radius: 34px;
     border: 1px solid rgba(198, 156, 58, 0.16);
     background:
@@ -2303,22 +2528,17 @@ a {
 .closing-copy .section-title {
     color: var(--ink);
     margin-top: 14px;
-    max-width: 12ch;
+    max-width: 13ch;
 }
 
 .closing-copy .section-copy {
     color: var(--ink-soft);
-    max-width: 62ch;
+    max-width: 50ch;
     margin-top: 14px;
 }
 
-.closing-actions {
-    display: grid;
-    gap: 16px;
-    justify-items: start;
-}
-
 .closing-pills {
+    margin-top: 22px;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -2341,6 +2561,187 @@ a {
 
 .closing-cta {
     color: #2f2108;
+}
+
+.closing-form-card {
+    padding: 24px;
+    border-radius: 28px;
+    border: 1px solid rgba(198, 156, 58, 0.18);
+    background:
+        radial-gradient(circle at top left, rgba(255, 226, 128, 0.22), transparent 32%),
+        rgba(255, 253, 247, 0.9);
+    box-shadow:
+        0 28px 64px rgba(92, 75, 37, 0.11),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.closing-form-card .form-actions {
+    align-items: flex-end;
+}
+
+.closing-form-card .form-status {
+    max-width: 30ch;
+    color: rgba(30, 36, 48, 0.68);
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
+.schools-section {
+    position: relative;
+    padding: 78px 0 88px;
+    background:
+        radial-gradient(circle at 18% 18%, rgba(198, 156, 58, 0.16), transparent 24%),
+        radial-gradient(circle at 82% 28%, rgba(65, 193, 163, 0.09), transparent 24%),
+        linear-gradient(180deg, #1e2430 0%, #161b24 100%);
+    color: #fffaf1;
+    overflow: hidden;
+}
+
+.schools-section::before,
+.schools-section::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(198, 156, 58, 0.34), transparent);
+}
+
+.schools-section::before {
+    top: 0;
+}
+
+.schools-section::after {
+    bottom: 0;
+}
+
+.schools-heading {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+    text-align: center;
+}
+
+.schools-heading .section-kicker {
+    color: #f4d47c;
+    background: rgba(198, 156, 58, 0.14);
+    border: 1px solid rgba(198, 156, 58, 0.24);
+}
+
+.schools-heading .section-title {
+    max-width: 17ch;
+    color: #fffaf1;
+    font-size: clamp(2.2rem, 4vw, 3.9rem);
+}
+
+.schools-marquee {
+    position: relative;
+    margin-top: 44px;
+    width: 100%;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+}
+
+.schools-track {
+    display: flex;
+    width: max-content;
+    gap: 0;
+    animation: schoolsMarquee 34s linear infinite;
+    will-change: transform;
+}
+
+.schools-marquee:hover .schools-track {
+    animation-play-state: paused;
+}
+
+.school-logo-slot {
+    position: relative;
+    flex: 0 0 clamp(240px, 21vw, 330px);
+    min-height: 108px;
+    margin-right: clamp(34px, 5vw, 72px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    overflow: hidden;
+    color: rgba(255, 250, 241, 0.68);
+    text-decoration: none;
+    filter: grayscale(1);
+    opacity: 0.72;
+    transition: opacity 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.school-logo-slot:hover,
+.school-logo-slot:focus-visible {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.school-logo-slot span {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 12px;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(247, 250, 252, 0.94);
+    color: #173f36;
+    font-family: var(--font-body);
+    font-size: clamp(0.7rem, 0.82vw, 0.88rem);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.05;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.82),
+        0 10px 24px rgba(27, 50, 70, 0.1);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    pointer-events: none;
+}
+
+.school-logo-slot:hover span,
+.school-logo-slot:focus-visible span {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.school-logo-slot img {
+    max-width: 100%;
+    max-height: 82px;
+    object-fit: contain;
+}
+
+.school-logo-slot.has-landing-image {
+    min-height: 118px;
+    padding: 16px 28px 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 250, 241, 0.16);
+    background: rgba(255, 253, 247, 0.94);
+    filter: none;
+    opacity: 0.92;
+}
+
+.school-logo-slot.has-landing-image img {
+    width: 100%;
+    max-width: 270px;
+    max-height: 78px;
+    display: block;
+    transition: transform 0.22s ease;
+}
+
+.school-logo-slot.has-landing-image:hover img,
+.school-logo-slot.has-landing-image:focus-visible img {
+    transform: translateY(-8px) scale(0.94);
 }
 
 .modal-backdrop {
@@ -2468,6 +2869,10 @@ a {
     min-height: 140px;
 }
 
+.closing-form-card .form-field textarea {
+    min-height: 112px;
+}
+
 .form-actions {
     display: flex;
     align-items: center;
@@ -2483,6 +2888,12 @@ a {
 .form-status.is-success { color: #2e7d32; }
 .form-status.is-error { color: #b3261e; }
 
+[data-form-submit]:disabled {
+    cursor: wait;
+    opacity: 0.68;
+    transform: none !important;
+}
+
 footer {
     padding: 40px 0;
     border-top: 1px solid rgba(30, 36, 48, 0.08);
@@ -2491,6 +2902,11 @@ footer {
 
 @keyframes shine {
     to { background-position: 200% center; }
+}
+
+@keyframes topbarAccessShimmer {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
 }
 
 .fade-in {
@@ -2544,6 +2960,11 @@ footer {
     100% { width: 100vw; }
 }
 
+@keyframes schoolsMarquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+}
+
 .hero-shell.fade-out-content,
 .split-hero.fade-out-content {
     opacity: 0;
@@ -2557,6 +2978,9 @@ footer {
     .product-trigger-no,
     .product-trigger-title,
     .product-trigger-note,
+    .pilot-photo-surface,
+    .schools-track,
+    .topbar-access,
     .product-dock,
     .course-tab,
     .tutorial-play-button {
@@ -2565,8 +2989,41 @@ footer {
     }
 }
 
+@media (max-width: 1120px) {
+    html {
+        scroll-padding-top: 136px;
+    }
+
+    .topbar-inner {
+        grid-template-columns: auto auto;
+        gap: 10px 18px;
+    }
+
+    .topbar-links {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        gap: 18px;
+        overflow-x: auto;
+        padding: 2px 2px 4px;
+        scrollbar-width: none;
+    }
+
+    .topbar-links::-webkit-scrollbar {
+        display: none;
+    }
+
+    .topbar-actions {
+        justify-self: end;
+    }
+
+    .hero-center {
+        padding-top: 156px;
+    }
+}
+
 @media (max-width: 1024px) {
     .impact-editorial,
+    .pilot-row,
     .learning-editorial,
     .product-dock-hero,
     .program-layout,
@@ -2574,6 +3031,10 @@ footer {
     .closing-shell,
     .section-intro {
         grid-template-columns: 1fr;
+    }
+
+    .pilot-row-reverse .pilot-media {
+        order: 0;
     }
 
     .learning-anchor {
@@ -2647,21 +3108,37 @@ footer {
 
 @media (max-width: 900px) {
     .topbar {
-        padding: 18px 0;
+        padding: 10px 0;
     }
 
     .topbar-inner {
-        justify-content: center;
+        padding: 0 18px;
+    }
+
+    .topbar-brand {
+        font-size: 0.84rem;
+        letter-spacing: 0.1em;
+    }
+
+    .topbar-logo {
+        width: 30px;
+        height: 30px;
+    }
+
+    .topbar-links a {
+        min-height: 32px;
+        font-size: 0.82rem;
     }
 
     .topbar-access {
-        width: 100%;
-        justify-content: center;
+        min-height: 38px;
+        padding: 9px 13px;
+        font-size: 0.7rem;
     }
 
     .hero-center {
         min-height: 100vh;
-        padding: 112px 24px 58px;
+        padding: 150px 24px 58px;
     }
 
     .brand-wrapper,
@@ -2685,6 +3162,7 @@ footer {
     }
 
     .impact-section,
+    .pilot-section,
     .learning-section,
     .tutorial-section,
     .products-section {
@@ -2693,6 +3171,10 @@ footer {
 
     .closing-section {
         padding: 44px 0 88px;
+    }
+
+    .schools-section {
+        padding: 66px 0 76px;
     }
 
     .hero-actions,
@@ -2742,11 +3224,10 @@ footer {
         width: 88px;
         height: 88px;
         box-shadow:
-            0 18px 36px rgba(10, 14, 22, 0.32),
+            0 18px 36px rgba(10, 14, 22, 0.24),
             0 0 0 10px rgba(255, 210, 79, 0.16),
             0 0 0 20px rgba(255, 210, 79, 0.08),
-            inset 0 1px 0 rgba(255, 255, 255, 0.66),
-            inset 0 -1px 0 rgba(90, 64, 9, 0.22);
+            inset 0 1px 0 rgba(255, 255, 255, 0.54);
     }
 
     .tutorial-play-button i {
@@ -2756,6 +3237,34 @@ footer {
 
     .impact-card-lead {
         min-height: auto;
+    }
+
+    .pilot-row {
+        gap: 28px;
+    }
+
+    .pilot-copy {
+        max-width: none;
+    }
+
+    .pilot-photo-portrait {
+        width: 100%;
+    }
+
+    .schools-marquee {
+        margin-top: 34px;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+    }
+
+    .school-logo-slot {
+        flex-basis: 220px;
+        min-height: 96px;
+    }
+
+    .school-logo-slot.has-landing-image img {
+        max-width: 230px;
+        max-height: 74px;
     }
 
     .learning-step {
@@ -2810,6 +3319,97 @@ footer {
         padding: 0 18px;
     }
 
+    .topbar-inner {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        min-height: 42px;
+    }
+
+    .topbar-links {
+        display: none;
+    }
+
+    .topbar-actions {
+        position: absolute;
+        top: 50%;
+        right: 14px;
+        transform: translateY(-50%);
+        min-width: 0;
+        margin-left: auto;
+        gap: 8px;
+    }
+
+    .topbar-access {
+        display: inline-flex;
+        width: 42px;
+        min-height: 42px;
+        padding: 0;
+        gap: 0;
+        box-shadow: 0 14px 30px rgba(30, 36, 48, 0.18), 0 6px 16px rgba(198, 156, 58, 0.12);
+    }
+
+    .topbar-access span {
+        display: none;
+    }
+
+    .topbar-access i {
+        font-size: 1.05rem;
+    }
+
+    .schools-track {
+        animation-duration: 28s;
+    }
+
+    .school-logo-slot {
+        flex-basis: 190px;
+        min-height: 92px;
+        margin-right: 28px;
+    }
+
+    .school-logo-slot span {
+        left: 12px;
+        right: 12px;
+        bottom: 10px;
+        min-height: 28px;
+        padding: 5px 8px;
+        font-size: 0.62rem;
+        letter-spacing: 0.055em;
+    }
+
+    .school-logo-slot.has-landing-image {
+        min-height: 98px;
+        padding: 12px 20px 28px;
+    }
+
+    .school-logo-slot.has-landing-image img {
+        max-width: 190px;
+        max-height: 68px;
+    }
+
+    .hero-center {
+        padding-top: 118px;
+    }
+
+    .brand-hero {
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .hero-logo-img {
+        height: clamp(118px, 32vw, 146px);
+    }
+
+    .metallic-title {
+        font-size: clamp(3.15rem, 16vw, 4.7rem);
+        letter-spacing: 0.1em;
+    }
+
+    .hero-note {
+        max-width: 32ch;
+    }
+
     .product-experience {
         padding: 10px 8px 18px;
         border-radius: 26px;
@@ -2818,7 +3418,7 @@ footer {
 
     .product-stage {
         position: sticky;
-        top: 10px;
+        top: 118px;
         z-index: 10;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2985,6 +3585,13 @@ footer {
         max-width: none;
     }
 
+    .pilot-collage {
+        grid-template-columns: minmax(0, 1.4fr) minmax(82px, 0.58fr);
+        grid-template-rows: repeat(3, minmax(58px, 1fr));
+        gap: 6px;
+        border-radius: 22px;
+    }
+
     .product-dock-hero {
         gap: 16px;
         margin-bottom: 20px;
@@ -3085,9 +3692,22 @@ footer {
     .form-grid {
         grid-template-columns: 1fr;
     }
+
+    .closing-form-card .form-actions {
+        align-items: stretch;
+    }
 }
 
 @media (max-width: 420px) {
+    .topbar-inner {
+        gap: 8px 12px;
+        padding: 0 14px;
+    }
+
+    .topbar-links {
+        gap: 14px;
+    }
+
     .brand-hero {
         width: 100%;
         gap: 8px;
@@ -3117,6 +3737,20 @@ footer {
 @media (max-width: 360px) {
     .container {
         padding: 0 16px;
+    }
+
+    .topbar-inner {
+        padding: 0 12px;
+    }
+
+    .topbar-logo {
+        width: 28px;
+        height: 28px;
+    }
+
+    .topbar-access {
+        width: 40px;
+        min-height: 40px;
     }
 
     .brand-hero {

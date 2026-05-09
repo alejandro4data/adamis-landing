@@ -13,13 +13,27 @@
 </head>
 <body>
 
-    <header class="hero-shell">
-        <nav class="topbar">
+    <header id="inicio" class="hero-shell">
+        <nav class="topbar" aria-label="Navegacion principal">
             <div class="topbar-inner">
-                <button type="button" class="topbar-access" data-platform-access>
-                    Acceso a la plataforma
-                    <i class="ph ph-arrow-up-right"></i>
-                </button>
+                <a href="#inicio" class="topbar-brand" aria-label="Ir al inicio de ADAMIS">
+                    <img src="assets/logo.png" alt="" class="topbar-logo" aria-hidden="true">
+                </a>
+
+                <div class="topbar-links">
+                    <a href="#demo">Qu&eacute; es ADAMIS</a>
+                    <a href="#impact">El reto</a>
+                    <a href="#evidencias">En colegios</a>
+                    <a href="#programa">Programa</a>
+                    <a href="#productos">Soluciones</a>
+                </div>
+
+                <div class="topbar-actions">
+                    <button type="button" class="topbar-access" data-platform-access aria-label="Acceso plataforma">
+                        <span>Acceso plataforma</span>
+                        <i class="ph ph-arrow-up-right"></i>
+                    </button>
+                </div>
             </div>
         </nav>
 
@@ -31,19 +45,20 @@
                         <h1 class="metallic-title">DAMIS</h1>
                     </div>
                 </div>
-                <p class="hero-slogan">Educaci&oacute;n financiera para colegios</p>
+                <p class="hero-slogan">Educaci&oacute;n Financiera para colegios</p>
                 <p class="hero-note">Un recorrido claro y progresivo para 4&ordm;, 5&ordm; y 6&ordm; de Primaria.</p>
 
                 <div class="hero-actions hero-actions-centered">
+                    <button type="button" class="btn-contact btn-contact-solid" data-open-info-modal data-audience="Colegio">
+                        Solicitar propuesta
+                        <i class="ph ph-paper-plane-tilt"></i>
+                    </button>
                     <a href="#demo" class="btn-explore">
-                        Saber m&aacute;s
+                        Ver c&oacute;mo funciona
                         <i class="ph ph-arrow-down"></i>
                     </a>
-                    <a href="#productos" class="btn-contact btn-contact-solid">
-                        Consultar productos
-                        <i class="ph ph-caret-right"></i>
-                    </a>
                 </div>
+
             </div>
         </div>
     </header>
@@ -70,6 +85,7 @@
                     </button>
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -117,7 +133,64 @@
         </div>
     </section>
 
-    <section class="learning-section">
+    <section id="evidencias" class="pilot-section">
+        <div class="container">
+            <div class="pilot-shell">
+                <article class="pilot-row">
+                    <div class="pilot-copy scroll-reveal">
+                        <p class="section-kicker">Aulas piloto</p>
+                        <h2 class="section-title">M&aacute;s de 350 alumnos ya han aprendido con ADAMIS</h2>
+                    <p class="section-copy">
+                        Medimos indicadores en cada sesi&oacute;n y mejoramos continuamente el producto con feedback real de profesorado y alumnado.
+                    </p>
+                </div>
+                    <figure
+                        class="pilot-media pilot-photo-surface pilot-photo-wide scroll-reveal delay-100"
+                        data-landing-bg="assets/colegios/imagen-arcangel.jpg"
+                        style="--pilot-photo: url('assets/colegios/imagen-arcangel.jpg');"
+                        role="img"
+                        aria-label="Alumnos trabajando con ADAMIS en una sesion piloto de aula">
+                    </figure>
+                </article>
+
+                <article class="pilot-row pilot-row-reverse">
+                    <div class="pilot-copy scroll-reveal delay-100">
+                        <p class="section-kicker">Despliegue</p>
+                        <h2 class="section-title">Cada vez m&aacute;s centros se suman</h2>
+                        <p class="section-copy">
+                            Acompa&ntilde;amos la integraci&oacute;n de principio a fin: pilotos, formaci&oacute;n docente y seguimiento para que el programa funcione desde el primer d&iacute;a.
+                        </p>
+                    </div>
+                    <figure
+                        class="pilot-media pilot-photo-surface pilot-photo-portrait scroll-reveal"
+                        data-landing-bg="assets/colegios/imagen_abaco.jpg"
+                        style="--pilot-photo: url('assets/colegios/imagen_abaco.jpg');"
+                        role="img"
+                        aria-label="Equipo ADAMIS durante una presentacion en un centro educativo">
+                    </figure>
+                </article>
+
+                <article class="pilot-row">
+                    <div class="pilot-copy scroll-reveal">
+                        <p class="section-kicker">Curso 2026-2027</p>
+                        <h2 class="section-title">El pr&oacute;ximo curso, escalamos contigo</h2>
+                        <p class="section-copy">
+                            La versi&oacute;n completa del producto se lanza el pr&oacute;ximo curso. Este es el momento de asegurar la implantaci&oacute;n de ADAMIS y posicionar tu centro un paso por delante.
+                        </p>
+                    </div>
+                    <figure
+                        class="pilot-media pilot-photo-surface pilot-photo-wide scroll-reveal delay-100"
+                        data-landing-bg="assets/colegios/imagen_pedro_antonio.png"
+                        style="--pilot-photo: url('assets/colegios/imagen_pedro_antonio.png');"
+                        role="img"
+                        aria-label="Sesion piloto de ADAMIS en el Colegio Pedro Antonio">
+                    </figure>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="programa" class="learning-section">
         <div class="container">
             <div class="learning-shell">
                 <div class="section-intro learning-intro scroll-reveal">
@@ -191,7 +264,7 @@
                     <h2 class="section-title">Tres productos. Un escenario mucho m&aacute;s decidido.</h2>
                 </div>
                 <p class="section-copy">
-                    ADAMIS no se presenta aqu&iacute; como un cat&aacute;logo plano. Cada v&iacute;a de implantaci&oacute;n entra con una presencia distinta, y al activarla despliega un detalle que se siente conectado a su propia identidad.
+                    Elige entre programa completo, packs tem&aacute;ticos o configuraci&oacute;n flexible seg&uacute;n el curso, el calendario y el alcance real del centro.
                 </p>
             </div>
 
@@ -379,7 +452,7 @@
                                             data-open-info-modal
                                             data-audience="Colegio"
                                             data-product-interest="Programas completos">
-                                            Solicitar informaci&oacute;n
+                                            Elegir este formato
                                             <i class="ph ph-paper-plane-tilt"></i>
                                         </button>
                                     </div>
@@ -477,7 +550,7 @@
                                     data-open-info-modal
                                     data-audience="Colegio"
                                     data-product-interest="Packs Tem&aacute;ticos">
-                                    Solicitar informaci&oacute;n
+                                    Elegir este formato
                                     <i class="ph ph-paper-plane-tilt"></i>
                                 </button>
                             </div>
@@ -553,7 +626,7 @@
                                     data-open-info-modal
                                     data-audience="Colegio"
                                     data-product-interest="Configuraci&oacute;n Flexible">
-                                    Solicitar informaci&oacute;n
+                                    Elegir este formato
                                     <i class="ph ph-paper-plane-tilt"></i>
                                 </button>
                             </div>
@@ -565,28 +638,95 @@
         </div>
     </section>
 
+    <section class="schools-section" aria-labelledby="schoolsTitle">
+        <div class="container">
+            <div class="schools-heading scroll-reveal">
+                <p class="section-kicker">Centros piloto</p>
+                <h2 class="section-title" id="schoolsTitle">Colegios que ya han aprendido con ADAMIS</h2>
+            </div>
+        </div>
+
+        <div class="schools-marquee scroll-reveal delay-100" aria-label="Logos de colegios participantes">
+            <div class="schools-track">
+                <a class="school-logo-slot" href="https://colegio-arcangel.com/" data-landing-image="assets/evidencias/colegio-arcangel.png" data-landing-image-kind="logo" aria-label="Ir a la web del Colegio Arcangel"><img alt="Logo Colegio Arcangel" loading="lazy" decoding="async" hidden><span>Colegio Arcangel</span></a>
+                <a class="school-logo-slot" href="https://www.colegiotorrevilano.es/" data-landing-image="assets/evidencias/colegio-torrevilano.svg" data-landing-image-kind="logo" aria-label="Ir a la web del Colegio Torrevilano"><img alt="Logo Colegio Torrevilano" loading="lazy" decoding="async" hidden><span>Colegio Educare Torrevilano</span></a>
+                <a class="school-logo-slot" href="https://colegio-abaco.com/" data-landing-image="assets/evidencias/colegio_abaco.png" data-landing-image-kind="logo" aria-label="Ir a la web del Colegio Abaco"><img alt="Logo Colegio Abaco" loading="lazy" decoding="async" hidden><span>Colegio Abaco</span></a>
+                <a class="school-logo-slot" href="https://www.educa2.madrid.org/web/centro.cp.alarcon.valdemoro" data-landing-image="assets/evidencias/colegio_pedro_antonio.png" data-landing-image-kind="logo" aria-label="Ir a la web del CEIP Pedro Antonio de Alarcon"><img alt="Logo CEIP Pedro Antonio de Alarcon" loading="lazy" decoding="async" hidden><span>CEIP Pedro Antonio de Alarcon</span></a>
+                <a class="school-logo-slot" href="https://colegio-arcangel.com/" data-landing-image="assets/evidencias/colegio-arcangel.png" data-landing-image-kind="logo" aria-label="Ir a la web del Colegio Arcangel"><img alt="Logo Colegio Arcangel" loading="lazy" decoding="async" hidden><span>Colegio Arcangel</span></a>
+                <a class="school-logo-slot" href="https://www.colegiotorrevilano.es/" data-landing-image="assets/evidencias/colegio-torrevilano.svg" data-landing-image-kind="logo" aria-label="Ir a la web del Colegio Torrevilano"><img alt="Logo Colegio Torrevilano" loading="lazy" decoding="async" hidden><span>Colegio Educare Torrevilano</span></a>
+                <a class="school-logo-slot" href="https://colegio-abaco.com/" data-landing-image="assets/evidencias/colegio_abaco.png" data-landing-image-kind="logo" aria-label="Ir a la web del Colegio Abaco"><img alt="Logo Colegio Abaco" loading="lazy" decoding="async" hidden><span>Colegio Abaco</span></a>
+                <a class="school-logo-slot" href="https://www.educa2.madrid.org/web/centro.cp.alarcon.valdemoro" data-landing-image="assets/evidencias/colegio_pedro_antonio.png" data-landing-image-kind="logo" aria-label="Ir a la web del CEIP Pedro Antonio de Alarcon"><img alt="Logo CEIP Pedro Antonio de Alarcon" loading="lazy" decoding="async" hidden><span>CEIP Pedro Antonio de Alarcon</span></a>
+                <a class="school-logo-slot" href="https://colegio-arcangel.com/" data-landing-image="assets/evidencias/colegio-arcangel.png" data-landing-image-kind="logo" aria-hidden="true" tabindex="-1"><img alt="" loading="lazy" decoding="async" hidden><span>Colegio Arcangel</span></a>
+                <a class="school-logo-slot" href="https://www.colegiotorrevilano.es/" data-landing-image="assets/evidencias/colegio-torrevilano.svg" data-landing-image-kind="logo" aria-hidden="true" tabindex="-1"><img alt="" loading="lazy" decoding="async" hidden><span>Colegio Educare Torrevilano</span></a>
+                <a class="school-logo-slot" href="https://colegio-abaco.com/" data-landing-image="assets/evidencias/colegio_abaco.png" data-landing-image-kind="logo" aria-hidden="true" tabindex="-1"><img alt="" loading="lazy" decoding="async" hidden><span>Colegio Abaco</span></a>
+                <a class="school-logo-slot" href="https://www.educa2.madrid.org/web/centro.cp.alarcon.valdemoro" data-landing-image="assets/evidencias/colegio_pedro_antonio.png" data-landing-image-kind="logo" aria-hidden="true" tabindex="-1"><img alt="" loading="lazy" decoding="async" hidden><span>CEIP Pedro Antonio de Alarcon</span></a>
+                <a class="school-logo-slot" href="https://colegio-arcangel.com/" data-landing-image="assets/evidencias/colegio-arcangel.png" data-landing-image-kind="logo" aria-hidden="true" tabindex="-1"><img alt="" loading="lazy" decoding="async" hidden><span>Colegio Arcangel</span></a>
+                <a class="school-logo-slot" href="https://www.colegiotorrevilano.es/" data-landing-image="assets/evidencias/colegio-torrevilano.svg" data-landing-image-kind="logo" aria-hidden="true" tabindex="-1"><img alt="" loading="lazy" decoding="async" hidden><span>Colegio Educare Torrevilano</span></a>
+                <a class="school-logo-slot" href="https://colegio-abaco.com/" data-landing-image="assets/evidencias/colegio_abaco.png" data-landing-image-kind="logo" aria-hidden="true" tabindex="-1"><img alt="" loading="lazy" decoding="async" hidden><span>Colegio Abaco</span></a>
+                <a class="school-logo-slot" href="https://www.educa2.madrid.org/web/centro.cp.alarcon.valdemoro" data-landing-image="assets/evidencias/colegio_pedro_antonio.png" data-landing-image-kind="logo" aria-hidden="true" tabindex="-1"><img alt="" loading="lazy" decoding="async" hidden><span>CEIP Pedro Antonio de Alarcon</span></a>
+            </div>
+        </div>
+    </section>
+
     <section class="closing-section">
         <div class="container">
             <div class="closing-shell scroll-reveal">
                 <div class="closing-copy">
                     <p class="section-kicker">Solicitud de propuesta</p>
-                    <h2 class="section-title">ADAMIS se ajusta a cada centro</h2>
+                    <h2 class="section-title">Recibe una propuesta adaptada a tu centro</h2>
                     <p class="section-copy">
-                        La configuraci&oacute;n econ&oacute;mica se personaliza seg&uacute;n curso, combinaci&oacute;n de formatos, n&uacute;mero de alumnos y alcance real de la implantaci&oacute;n.
+                        Ind&iacute;canos curso, n&uacute;mero aproximado de alumnos y formato preferido. Te responderemos con una opci&oacute;n concreta y sin compromiso.
                     </p>
-                </div>
-
-                <div class="closing-actions">
                     <div class="closing-pills">
                         <span>Por curso</span>
                         <span>Modular</span>
                         <span>Packs</span>
                     </div>
-                    <button type="button" class="btn-contact btn-contact-solid closing-cta" data-open-info-modal data-audience="Colegio">
-                        Solicitar propuesta para mi centro
-                        <i class="ph ph-paper-plane-tilt"></i>
-                    </button>
                 </div>
+
+                <form class="info-form closing-form-card" data-info-form>
+                    <input type="hidden" name="audience" value="Colegio">
+
+                    <div class="form-grid">
+                        <label class="form-field">
+                            <span>Nombre</span>
+                            <input type="text" name="name" required>
+                        </label>
+                        <label class="form-field">
+                            <span>Email</span>
+                            <input type="email" name="email" required>
+                        </label>
+                    </div>
+
+                    <div class="form-grid">
+                        <label class="form-field">
+                            <span>Centro</span>
+                            <input type="text" name="organization" required>
+                        </label>
+                        <label class="form-field">
+                            <span>Producto</span>
+                            <select name="interest" required>
+                                <option value="">Selecciona una opci&oacute;n</option>
+                                <option value="Programas completos">Programas completos</option>
+                                <option value="Packs Tem&aacute;ticos">Packs Tem&aacute;ticos</option>
+                                <option value="Configuraci&oacute;n Flexible">Configuraci&oacute;n Flexible</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <label class="form-field">
+                        <span>Mensaje opcional</span>
+                        <textarea name="message" rows="4" placeholder="Curso, n&uacute;mero aproximado de alumnos o cualquier detalle relevante."></textarea>
+                    </label>
+
+                    <div class="form-actions">
+                        <p class="form-status" data-form-status aria-live="polite">Sin compromiso. Te responderemos con una propuesta concreta.</p>
+                        <button type="submit" class="btn-contact btn-contact-solid closing-cta" data-form-submit>
+                            Recibir propuesta
+                            <i class="ph ph-paper-plane-tilt"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
@@ -601,7 +741,7 @@
             <p class="modal-copy">Te responderemos en los correos del equipo de Prospere.</p>
             <p class="modal-interest" id="infoModalInterest" hidden></p>
 
-            <form class="info-form" id="infoRequestForm">
+            <form class="info-form" id="infoRequestForm" data-info-form>
                 <div class="form-grid">
                     <label class="form-field">
                         <span>Nombre</span>
@@ -640,14 +780,14 @@
                 </label>
 
                 <label class="form-field">
-                    <span>Mensaje</span>
-                    <textarea name="message" rows="5" placeholder="Cu&eacute;ntanos qu&eacute; informaci&oacute;n necesitas." required></textarea>
+                    <span>Mensaje opcional</span>
+                    <textarea name="message" rows="5" placeholder="Cu&eacute;ntanos qu&eacute; informaci&oacute;n necesitas."></textarea>
                 </label>
 
                 <div class="form-actions">
-                    <p class="form-status" id="infoFormStatus" aria-live="polite"></p>
-                    <button type="submit" class="btn-contact btn-contact-solid" id="infoFormSubmit">
-                        Enviar solicitud
+                    <p class="form-status" id="infoFormStatus" data-form-status aria-live="polite"></p>
+                    <button type="submit" class="btn-contact btn-contact-solid" id="infoFormSubmit" data-form-submit>
+                        Recibir propuesta
                         <i class="ph ph-paper-plane-tilt"></i>
                     </button>
                 </div>

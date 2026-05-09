@@ -7511,10 +7511,10 @@ html[lang="eu"] .od-stage-card.is-paused::before{ content: "PAUSA"; }
   transform: scale(1) rotate(0deg);
 }
 .settings-gear-btn:hover{
-  transform: scale(1.2) rotate(360deg);
+  transform: scale(1.08) rotate(360deg);
 }
 .settings-gear-btn:focus-visible{
-  transform: scale(1.1);
+  transform: scale(1.04);
 }
 
 /* ===================== Menu premium dashboard ===================== */

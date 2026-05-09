@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const infoModal = document.getElementById('infoModal');
     const closeInfoModalBtn = document.getElementById('closeInfoModal');
     const infoRequestForm = document.getElementById('infoRequestForm');
+    const infoRequestForms = document.querySelectorAll('[data-info-form]');
     const infoFormStatus = document.getElementById('infoFormStatus');
-    const infoFormSubmit = document.getElementById('infoFormSubmit');
     const audienceField = infoRequestForm?.querySelector('[name="audience"]');
     const interestField = infoRequestForm?.querySelector('[name="interest"]');
     const infoModalInterest = document.getElementById('infoModalInterest');
@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorialPlayButton = document.querySelector('[data-tutorial-play]');
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const mobileProductQuery = window.matchMedia('(max-width: 720px)');
+    const topbar = document.querySelector('.topbar');
+    const topbarAnchorLinks = document.querySelectorAll('.topbar a[href^="#"]');
+    const landingBackgrounds = document.querySelectorAll('[data-landing-bg]');
+    const landingImageSlots = document.querySelectorAll('[data-landing-image]');
+    const LANDING_PHOTO_EXTENSIONS = ['avif', 'webp', 'jpg', 'jpeg', 'png'];
+    const LANDING_LOGO_EXTENSIONS = ['svg', 'webp', 'png', 'avif', 'jpg', 'jpeg'];
 
     let panelRevealAnimation = null;
     let activeProduct = productTabs.find((tab) => tab.classList.contains('is-active'))?.dataset.productTab || productTabs[0]?.dataset.productTab || '';
@@ -29,6 +35,110 @@ document.addEventListener('DOMContentLoaded', () => {
     let productTransitionFrame = 0;
     let productMeasureFrame = 0;
     const productTriggerAnimations = new Map();
+    const landingAssetCache = new Map();
+
+    const getAnchorTargetPosition = (target) => {
+        if (!target || target.id === 'inicio') return 0;
+
+        const contentAnchor = target.querySelector(
+            '.section-intro, .impact-intro, .pilot-shell, .learning-shell, .products-intro, .closing-shell'
+        ) || target;
+        const topbarHeight = topbar?.getBoundingClientRect().height || 0;
+        const breathingRoom = Math.min(80, Math.max(28, window.innerHeight * 0.08));
+        const absoluteTop = contentAnchor.getBoundingClientRect().top + window.pageYOffset;
+
+        return Math.max(0, absoluteTop - topbarHeight - breathingRoom);
+    };
+
+    topbarAnchorLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            const hash = link.getAttribute('href');
+            if (!hash || hash === '#') return;
+
+            const target = document.querySelector(hash);
+            if (!target) return;
+
+            event.preventDefault();
+            window.scrollTo({
+                top: getAnchorTargetPosition(target),
+                behavior: reducedMotionQuery.matches ? 'auto' : 'smooth'
+            });
+            window.history.pushState(null, '', hash);
+        });
+    });
+
+    const probeLandingAsset = (src) => new Promise((resolve) => {
+        if (!src) {
+            resolve('');
+            return;
+        }
+
+        const probe = new Image();
+        probe.onload = () => resolve(src);
+        probe.onerror = () => resolve('');
+        probe.src = src;
+    });
+
+    const getLandingAssetCandidates = (basePath, extensions) => {
+        if (!basePath) return [];
+        if (/\.(avif|webp|jpe?g|png|svg)$/i.test(basePath)) return [basePath];
+
+        return extensions.map((extension) => `${basePath}.${extension}`);
+    };
+
+    const resolveLandingAsset = async (basePath, extensions) => {
+        const cacheKey = `${basePath || ''}|${extensions.join(',')}`;
+        if (landingAssetCache.has(cacheKey)) {
+            return landingAssetCache.get(cacheKey);
+        }
+
+        const resolveRequest = (async () => {
+            const candidates = getLandingAssetCandidates(basePath, extensions);
+
+            for (const candidate of candidates) {
+                const loadedAsset = await probeLandingAsset(candidate);
+                if (loadedAsset) return loadedAsset;
+            }
+
+            return '';
+        })();
+
+        landingAssetCache.set(cacheKey, resolveRequest);
+        return resolveRequest;
+    };
+
+    const setLandingBackgrounds = () => {
+        landingBackgrounds.forEach(async (element) => {
+            const resolvedAsset = await resolveLandingAsset(element.dataset.landingBg, LANDING_PHOTO_EXTENSIONS);
+            if (!resolvedAsset) return;
+
+            element.style.setProperty('--pilot-photo', `url("${resolvedAsset.replace(/"/g, '\\"')}")`);
+            element.classList.add('has-landing-image');
+        });
+    };
+
+    const setLandingImages = () => {
+        landingImageSlots.forEach(async (slot) => {
+            const image = slot.querySelector('img');
+            if (!image) return;
+
+            const extensions = slot.dataset.landingImageKind === 'logo'
+                ? LANDING_LOGO_EXTENSIONS
+                : LANDING_PHOTO_EXTENSIONS;
+            const resolvedAsset = await resolveLandingAsset(slot.dataset.landingImage, extensions);
+            if (!resolvedAsset) return;
+
+            image.src = resolvedAsset;
+            image.hidden = false;
+            slot.querySelectorAll('small').forEach((fallbackItem) => {
+                fallbackItem.hidden = true;
+            });
+            slot.classList.add('has-landing-image');
+        });
+    };
+
+    setLandingBackgrounds();
+    setLandingImages();
 
     const launchPlatformAccess = () => {
         if (document.querySelector('.transition-curtain')) return;
@@ -483,39 +593,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    infoRequestForm?.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    infoRequestForms.forEach((form) => {
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-        if (!infoFormStatus || !infoFormSubmit) return;
+            const formStatus = form.querySelector('[data-form-status]');
+            const formSubmit = form.querySelector('[data-form-submit]');
 
-        const payload = Object.fromEntries(new FormData(infoRequestForm).entries());
+            if (!formStatus || !formSubmit) return;
 
-        infoFormSubmit.disabled = true;
-        infoFormStatus.className = 'form-status';
-        infoFormStatus.textContent = 'Enviando solicitud...';
+            const payload = Object.fromEntries(new FormData(form).entries());
 
-        try {
-            const response = await fetch('/api/request-info', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            formSubmit.disabled = true;
+            formStatus.className = 'form-status';
+            formStatus.textContent = 'Enviando solicitud...';
 
-            const data = await response.json().catch(() => ({}));
+            try {
+                const response = await fetch('/api/request-info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-            if (!response.ok || !data.ok) {
-                throw new Error(data.error || 'No se pudo enviar la solicitud.');
+                const data = await response.json().catch(() => ({}));
+
+                if (!response.ok || !data.ok) {
+                    throw new Error(data.error || 'No se pudo enviar la solicitud.');
+                }
+
+                formStatus.className = 'form-status is-success';
+                formStatus.textContent = 'Solicitud enviada. Te responderemos pronto.';
+                form.reset();
+
+                if (form === infoRequestForm) {
+                    setTimeout(closeInfoModal, 1200);
+                }
+            } catch (error) {
+                formStatus.className = 'form-status is-error';
+                formStatus.textContent = error.message || 'Ha ocurrido un error al enviar la solicitud.';
+            } finally {
+                formSubmit.disabled = false;
             }
-
-            infoFormStatus.className = 'form-status is-success';
-            infoFormStatus.textContent = 'Solicitud enviada. Te responderemos pronto.';
-            infoRequestForm.reset();
-            setTimeout(closeInfoModal, 1200);
-        } catch (error) {
-            infoFormStatus.className = 'form-status is-error';
-            infoFormStatus.textContent = error.message || 'Ha ocurrido un error al enviar la solicitud.';
-        } finally {
-            infoFormSubmit.disabled = false;
-        }
+        });
     });
 });
