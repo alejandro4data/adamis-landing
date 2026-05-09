@@ -12,6 +12,14 @@ app0.js
 passgen.php
 whereami.php
 index.html
+!educacion-financiera-primaria/index.html
+!colegios/index.html
+!programa-educacion-financiera-4-primaria/index.html
+!programa-educacion-financiera-5-primaria/index.html
+!programa-educacion-financiera-6-primaria/index.html
+!packs-tematicos/index.html
+!configuracion-flexible/index.html
+!preguntas-frecuentes/index.html
 .env
 .vercel
 .env*.local

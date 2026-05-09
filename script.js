@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         legacyHero?.classList.add('fade-out-content');
 
         setTimeout(() => {
-            window.location.href = 'splash.html';
+            window.location.href = '/splash.html';
         }, 800);
     };
 

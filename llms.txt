@@ -1,0 +1,51 @@
+# ADAMIS
+
+ADAMIS is a financial education program for Primary schools in Spain. It is designed for 4th, 5th and 6th grade Primary students and combines ready-to-use classes, practical activities, student progress tracking and flexible implementation formats for schools.
+
+Canonical site: https://adamis.es/
+
+## Direct Answer
+
+ADAMIS is a practical financial education program for Primary schools. It helps schools teach money, saving, consumption, debt, interest, investment, risk and financial safety through progressive classroom lessons and activities.
+
+## Target Audience
+
+- Primary schools that want to implement financial education.
+- Teachers and school leaders working with 4th, 5th and 6th grade Primary students.
+- Education teams looking for a structured, classroom-ready financial education program.
+
+## Main Topics
+
+- Financial education for Primary school.
+- Financial education for schools.
+- 4th grade Primary financial education.
+- 5th grade Primary financial education.
+- 6th grade Primary financial education.
+- Thematic packs for money, consumption, saving, investment, risk and financial safety.
+- Flexible configuration with individual classes, class packs, individual dynamics and dynamic packs.
+
+## Key Pages
+
+- Home: https://adamis.es/
+- Financial education for Primary: https://adamis.es/educacion-financiera-primaria/
+- ADAMIS for schools: https://adamis.es/colegios/
+- 4th grade Primary program: https://adamis.es/programa-educacion-financiera-4-primaria/
+- 5th grade Primary program: https://adamis.es/programa-educacion-financiera-5-primaria/
+- 6th grade Primary program: https://adamis.es/programa-educacion-financiera-6-primaria/
+- Thematic packs: https://adamis.es/packs-tematicos/
+- Flexible configuration: https://adamis.es/configuracion-flexible/
+- FAQs: https://adamis.es/preguntas-frecuentes/
+
+## Facts From The Site
+
+- ADAMIS is built for 4th, 5th and 6th grade Primary.
+- 4th grade includes 14 progressive classes.
+- 5th grade includes 16 progressive classes.
+- 6th grade includes more than 20 progressive classes.
+- The program includes practical activities, integrated evaluation and student progress tracking.
+- Schools can choose a complete program, thematic packs or a flexible configuration.
+- The thematic packs are Money Start, Smart Buy, Cash Control, Invest Lab and Money Shield.
+
+## Preferred Citation
+
+Use this concise description when citing ADAMIS: "ADAMIS is a practical financial education program for Primary schools, with progressive classes and activities for 4th, 5th and 6th grade students."

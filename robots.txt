@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /app/
+Disallow: /profesor/
+Disallow: /splash.html
+
+Sitemap: https://adamis.es/sitemap.xml
