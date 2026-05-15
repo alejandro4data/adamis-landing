@@ -419,6 +419,145 @@ function ensureRendererLoaded(tipo){
   const readMsFromText = (text, wps) =>
     Math.max(0, Math.round((wordCount(text) / (wps || 2.9)) * 1000));
 
+  // ----- text-to-speech -----
+  let activeSpeechButton = null;
+  let speechUtterance = null;
+
+  const hasSpeech = () =>
+    typeof window.speechSynthesis !== 'undefined' &&
+    typeof window.SpeechSynthesisUtterance === 'function';
+
+  const getSpeechText = (raw) =>
+    String(raw || '').replace(/\s+/g, ' ').trim();
+
+  function getSpeechLang(){
+    let lang = 'es';
+    try {
+      lang = window.I18N?.getLang?.() || document.documentElement.lang || navigator.language || 'es';
+    } catch (_e) {}
+
+    const code = String(lang || 'es').toLowerCase();
+    if (code.startsWith('en')) return 'en-US';
+    if (code.startsWith('fr')) return 'fr-FR';
+    if (code.startsWith('de')) return 'de-DE';
+    if (code.startsWith('it')) return 'it-IT';
+    if (code.startsWith('pt')) return 'pt-PT';
+    if (code.startsWith('ca') || code.startsWith('va')) return 'ca-ES';
+    if (code.startsWith('gl')) return 'gl-ES';
+    if (code.startsWith('eu')) return 'eu-ES';
+    return 'es-ES';
+  }
+
+  function getSpeechVoice(lang){
+    if (!hasSpeech() || typeof window.speechSynthesis.getVoices !== 'function') return null;
+    const voices = window.speechSynthesis.getVoices() || [];
+    if (!voices.length) return null;
+
+    const target = String(lang || 'es-ES').toLowerCase();
+    const family = target.split('-')[0];
+    const byLang = (voice) => String(voice.lang || '').toLowerCase();
+    const exactDefault = voices.find((voice) => byLang(voice) === target && voice.default);
+    const exact = voices.find((voice) => byLang(voice) === target);
+    const familyDefault = voices.find((voice) => byLang(voice).startsWith(family + '-') && voice.default);
+    const familyVoice = voices.find((voice) => byLang(voice).startsWith(family + '-'));
+    const spanishFallback = family === 'es'
+      ? null
+      : voices.find((voice) => byLang(voice) === 'es-es') ||
+        voices.find((voice) => byLang(voice).startsWith('es-'));
+
+    return exactDefault || exact || familyDefault || familyVoice || spanishFallback || null;
+  }
+
+  function setSpeechButtonState(button, speaking){
+    if (!button) return;
+    const label = speaking ? tr('Detener audio') : tr('Escuchar texto');
+    button.classList.toggle('is-speaking', !!speaking);
+    button.setAttribute('aria-label', label);
+    button.title = label;
+  }
+
+  function stopSpeech(){
+    if (hasSpeech()) {
+      try { window.speechSynthesis.cancel(); } catch (_e) {}
+    }
+    speechUtterance = null;
+    if (activeSpeechButton) setSpeechButtonState(activeSpeechButton, false);
+    activeSpeechButton = null;
+  }
+
+  function speakText(text, button){
+    const plain = getSpeechText(text);
+    if (!plain || !hasSpeech()) return;
+
+    stopSpeech();
+
+    const lang = getSpeechLang();
+    const utterance = new window.SpeechSynthesisUtterance(plain);
+    utterance.lang = lang;
+    utterance.rate = 0.95;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+    const voice = getSpeechVoice(lang);
+    if (voice) utterance.voice = voice;
+
+    speechUtterance = utterance;
+    activeSpeechButton = button || null;
+    setSpeechButtonState(activeSpeechButton, true);
+
+    const finish = () => {
+      if (speechUtterance !== utterance) return;
+      speechUtterance = null;
+      setSpeechButtonState(activeSpeechButton, false);
+      activeSpeechButton = null;
+    };
+
+    utterance.onend = finish;
+    utterance.onerror = finish;
+
+    try {
+      window.speechSynthesis.speak(utterance);
+    } catch (_e) {
+      finish();
+    }
+  }
+
+  function addSpeechButton(root, view){
+    const text = getSpeechText(view && view.lockText);
+    if (!root || !text || !hasSpeech()) return;
+
+    try {
+      if (typeof window.speechSynthesis.getVoices === 'function') {
+        window.speechSynthesis.getVoices();
+      }
+    } catch (_e) {}
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'slide-tts-btn';
+    button.innerHTML = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"></path>
+        <path d="M16 8.2a5 5 0 0 1 0 7.6M18.6 5.6a8.5 8.5 0 0 1 0 12.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <span class="slide-tts-btn__stop" aria-hidden="true"></span>`;
+    setSpeechButtonState(button, false);
+
+    button.addEventListener('pointerdown', (ev) => ev.stopPropagation());
+    button.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (button.classList.contains('is-speaking')) {
+        stopSpeech();
+        return;
+      }
+      stopOrFinishTyping(true);
+      speakText(text, button);
+    });
+
+    root.appendChild(button);
+  }
+
   // ----- typewriter -----
   function typeIn(el, fullText, speed, onDone){
     let idx = 0; let done = false;
@@ -533,11 +672,13 @@ function ensureRendererLoaded(tipo){
   // ----- render master -----
   function renderCurrent(){
     // limpiar
+    slideRoot.querySelectorAll('.slide-tts-btn').forEach(n => n.remove());
     const olds = slideRoot.querySelectorAll('.slide');
     if (olds.length){
       olds.forEach(n => { n.classList.add('is-exiting'); n.style.pointerEvents = 'none'; n.remove(); });
     }
     stopOrFinishTyping(true);
+    stopSpeech();
     unlockAt = 0;
     if (lockTicker){ clearInterval(lockTicker); lockTicker = null; }
 
@@ -615,6 +756,8 @@ function ensureRendererLoaded(tipo){
         root.innerHTML = `<div class="empty-state__text">${tCommon('common.renderError', 'No se pudo renderizar esta diapositiva.')}</div>`;
       }
     }
+
+    addSpeechButton(slideRoot, view);
 
     // ---- bloqueo de lectura ----
     const lockMs = (CFG.lockEnabled && !(view && view.noLock))

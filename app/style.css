@@ -578,6 +578,91 @@ a, a:link, a:visited, a:hover, a:focus, a:active { text-decoration: none; }
   border-left: 3px solid currentColor; border-top: 3px solid currentColor; transform: rotate(45deg);
 }
 
+#clase .slide-tts-btn{
+  position: absolute;
+  top: clamp(12px, 2vw, 18px);
+  right: clamp(12px, 2vw, 18px);
+  z-index: 8;
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f5962;
+  background: rgb(255 255 255 / 86%);
+  box-shadow: 0 10px 24px rgb(0 0 0 / 14%), inset 0 1px 0 rgb(255 255 255 / 65%);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: transform .16s ease, filter .16s ease, background .16s ease, color .16s ease;
+}
+#clase .slide-tts-btn svg{
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+}
+#clase .slide-tts-btn:hover{
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+}
+#clase .slide-tts-btn:active{
+  transform: translateY(1px);
+}
+#clase .slide-tts-btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(22 161 180 / 26%), 0 10px 24px rgb(0 0 0 / 14%);
+}
+#clase .slide-tts-btn.is-speaking{
+  color: #fff;
+  background: linear-gradient(180deg, #16a1b4 0%, #0f766e 100%);
+}
+#clase .slide-tts-btn.is-speaking::after{
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 2px solid rgb(22 161 180 / 35%);
+  border-radius: inherit;
+  animation: slideTtsPulse 1.25s ease-out infinite;
+  pointer-events: none;
+}
+#clase .slide-tts-btn__stop{
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+}
+#clase .slide-tts-btn.is-speaking .slide-tts-btn__stop{
+  opacity: .95;
+}
+@keyframes slideTtsPulse{
+  0%{ transform: scale(.92); opacity: .72; }
+  100%{ transform: scale(1.28); opacity: 0; }
+}
+@media (max-width: 640px){
+  #clase .slide-tts-btn{
+    width: 44px;
+    height: 44px;
+    top: 10px;
+    right: 10px;
+  }
+  #clase .slide-tts-btn svg{
+    width: 24px;
+    height: 24px;
+  }
+  #clase .slide-tts-btn__stop{
+    right: 10px;
+    bottom: 10px;
+    width: 8px;
+    height: 8px;
+  }
+}
+
 /* Progreso integrado en la parte baja del slide */
 #clase .progress{
   position: absolute; left: 5%; right: 5%; bottom: 16px;
