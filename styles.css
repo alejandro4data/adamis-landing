@@ -3354,10 +3354,8 @@ footer {
     }
 
     .topbar-actions {
-        position: absolute;
-        top: 50%;
-        right: 14px;
-        transform: translateY(-50%);
+        position: static;
+        transform: none;
         min-width: 0;
         margin-left: auto;
         gap: 8px;
@@ -3365,19 +3363,24 @@ footer {
 
     .topbar-access {
         display: inline-flex;
-        width: 42px;
+        width: auto;
         min-height: 42px;
-        padding: 0;
-        gap: 0;
+        padding: 0 14px 0 16px;
+        gap: 8px;
+        font-size: 0.62rem;
+        letter-spacing: 0.055em;
+        max-width: calc(100vw - 104px);
         box-shadow: 0 14px 30px rgba(30, 36, 48, 0.18), 0 6px 16px rgba(198, 156, 58, 0.12);
     }
 
     .topbar-access span {
-        display: none;
+        display: inline;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .topbar-access i {
-        font-size: 1.05rem;
+        font-size: 0.98rem;
     }
 
     .schools-track {
@@ -3415,18 +3418,20 @@ footer {
     }
 
     .brand-hero {
-        width: 100%;
-        flex-direction: column;
-        gap: 8px;
+        width: auto;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: clamp(2px, 1.5vw, 8px);
     }
 
     .hero-logo-img {
-        height: clamp(118px, 32vw, 146px);
+        height: clamp(56px, 17vw, 80px);
+        flex: 0 0 auto;
     }
 
     .metallic-title {
-        font-size: clamp(3.15rem, 16vw, 4.7rem);
-        letter-spacing: 0.1em;
+        font-size: clamp(2.7rem, 12vw, 4.3rem);
+        letter-spacing: 0.065em;
     }
 
     .hero-note {
@@ -3737,8 +3742,8 @@ footer {
     }
 
     .metallic-title {
-        font-size: clamp(2.7rem, 12vw, 3rem);
-        letter-spacing: 0.085em;
+        font-size: clamp(2.35rem, 10.6vw, 2.78rem);
+        letter-spacing: 0.055em;
     }
 
     .hero-actions {
@@ -3772,8 +3777,15 @@ footer {
     }
 
     .topbar-access {
-        width: 40px;
         min-height: 40px;
+        padding: 0 12px 0 14px;
+        font-size: 0.56rem;
+        letter-spacing: 0.035em;
+        max-width: calc(100vw - 88px);
+    }
+
+    .topbar-access i {
+        font-size: 0.9rem;
     }
 
     .brand-hero {
@@ -3782,13 +3794,13 @@ footer {
     }
 
     .hero-logo-img {
-        height: clamp(118px, 39vw, 138px);
+        height: clamp(48px, 16vw, 60px);
         flex: 0 1 auto;
     }
 
     .metallic-title {
-        font-size: clamp(2.55rem, 12.5vw, 3rem);
-        letter-spacing: 0.075em;
+        font-size: clamp(2.15rem, 10.5vw, 2.55rem);
+        letter-spacing: 0.045em;
     }
 
     .hero-actions {
