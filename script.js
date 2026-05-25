@@ -1,4 +1,316 @@
+(() => {
+    const normalizeLang = (value = '') => {
+        const lang = String(value).toLowerCase();
+        if (lang.startsWith('es')) return 'es';
+        if (lang.startsWith('en')) return 'en';
+        return '';
+    };
+
+    const getQueryLang = () => {
+        try {
+            return normalizeLang(new URLSearchParams(window.location.search).get('lang'));
+        } catch {
+            return '';
+        }
+    };
+
+    const getBrowserLang = () => {
+        const languages = Array.isArray(navigator.languages) && navigator.languages.length
+            ? navigator.languages
+            : [navigator.language || navigator.userLanguage || ''];
+
+        for (const language of languages) {
+            const supportedLang = normalizeLang(language);
+            if (supportedLang) return supportedLang;
+        }
+
+        return 'en';
+    };
+
+    const lang = getQueryLang() || getBrowserLang();
+    const isEnglish = lang === 'en';
+
+    const exact = new Map([
+        ['ADAMIS | Educación financiera para colegios de Primaria', 'ADAMIS | Financial education for primary schools'],
+        ['Programa de educación financiera práctica para 4º, 5º y 6º de Primaria. Clases, actividades y seguimiento para implantar en colegios de forma sencilla.', 'A practical financial education program for 4th, 5th and 6th grade. Lessons, activities and tracking to make school implementation simple.'],
+        ['ADAMIS: educación financiera para colegios de Primaria', 'ADAMIS: financial education for primary schools'],
+        ['Navegacion principal', 'Main navigation'],
+        ['Ir al inicio de ADAMIS', 'Go to the ADAMIS homepage'],
+        ['Qué es ADAMIS', 'What is ADAMIS'],
+        ['El reto', 'The challenge'],
+        ['En colegios', 'In schools'],
+        ['Programa', 'Program'],
+        ['Soluciones', 'Solutions'],
+        ['Acceso plataforma', 'Platform access'],
+        ['Logotipo de ADAMIS', 'ADAMIS logo'],
+        ['Educación Financiera para colegios', 'Financial education for schools'],
+        ['Un recorrido claro y progresivo para 4º, 5º y 6º de Primaria.', 'A clear, progressive path for 4th, 5th and 6th grade.'],
+        ['Solicitar propuesta', 'Request a proposal'],
+        ['Ver cómo funciona', 'See how it works'],
+        ['Video tutorial', 'Video tutorial'],
+        ['Un recorrido por las clases, actividades, dashboard y seguimiento del alumno dentro de la plataforma.', 'A walkthrough of the lessons, activities, dashboard and student tracking inside the platform.'],
+        ['Video tutorial de la plataforma ADAMIS', 'ADAMIS platform video tutorial'],
+        ['Reproducir video tutorial', 'Play video tutorial'],
+        ['Conflictos reales', 'Real conflicts'],
+        ['Tres datos para entender', 'Three facts to understand'],
+        ['el problema', 'the problem'],
+        ['Lo financiero ya está influyendo en decisiones reales antes de que exista una comprensión clara. ADAMIS entra aquí: antes de que el criterio llegue tarde.', 'Money is already shaping real decisions before students fully understand it. ADAMIS steps in here: before judgement arrives too late.'],
+        ['Adultos en España', 'Adults in Spain'],
+        ['No sabe calcular cómo crece el ahorro con intereses.', 'Do not know how to calculate how savings grow with interest.'],
+        ['Una dificultad básica para entender rentabilidad, tiempo y construcción de ahorro.', 'A basic difficulty when understanding returns, time and savings growth.'],
+        ['Banco de España · ECF 2021', 'Bank of Spain · ECF 2021'],
+        ['Estudiantes de 15 años en España', '15-year-old students in Spain'],
+        ['Compró algo porque sus amigos lo tenían.', 'Bought something because their friends had it.'],
+        ['La presión social ya está condicionando decisiones de consumo.', 'Social pressure is already shaping spending decisions.'],
+        ['OCDE · PISA 2022 · España', 'OECD · PISA 2022 · Spain'],
+        ['No entiende bien qué implica pedir un préstamo.', 'Do not fully understand what taking out a loan involves.'],
+        ['Un concepto financiero básico sigue sin comprenderse con claridad.', 'A basic financial concept is still not clearly understood.'],
+        ['Aulas piloto', 'Pilot classrooms'],
+        ['Más de 350 alumnos ya han aprendido con ADAMIS', 'More than 350 students have already learned with ADAMIS'],
+        ['Medimos indicadores en cada sesión y mejoramos continuamente el producto con feedback real de profesorado y alumnado.', 'We measure indicators in every session and continuously improve the product with real feedback from teachers and students.'],
+        ['Alumnos trabajando con ADAMIS en una sesion piloto de aula', 'Students working with ADAMIS in a classroom pilot session'],
+        ['Despliegue', 'Rollout'],
+        ['Cada vez más centros se suman', 'More and more schools are joining'],
+        ['Acompañamos la integración de principio a fin: pilotos, formación docente y seguimiento para que el programa funcione desde el primer día.', 'We support the integration from start to finish: pilots, teacher training and tracking so the program works from day one.'],
+        ['Equipo ADAMIS durante una presentacion en un centro educativo', 'The ADAMIS team during a presentation at a school'],
+        ['Curso 2026-2027', '2026-2027 school year'],
+        ['El próximo curso, escalamos contigo', 'Next school year, we scale with you'],
+        ['La versión completa del producto se lanza el próximo curso. Este es el momento de asegurar la implantación de ADAMIS y posicionar tu centro un paso por delante.', 'The complete product launches next school year. This is the moment to secure ADAMIS implementation and position your school one step ahead.'],
+        ['Sesion piloto de ADAMIS en el Colegio Pedro Antonio', 'ADAMIS pilot session at Colegio Pedro Antonio'],
+        ['Programa completo', 'Complete program'],
+        ['El recorrido se entiende mejor cuando cada bloque ocupa su lugar.', 'The journey is easier to understand when every block has its place.'],
+        ['Desde el dinero y el consumo hasta la inversión, la seguridad y la toma de decisiones, ADAMIS avanza por una progresión clara y acumulativa.', 'From money and spending to investing, security and decision-making, ADAMIS follows a clear cumulative progression.'],
+        ['Personaje Adamis', 'Adamis character'],
+        ['El personaje ADAMIS', 'The ADAMIS character'],
+        ['Acompaña el recorrido del alumno', 'Guides the student journey'],
+        ['Inicio', 'Start'],
+        ['Dinero, valor y consumo cotidiano', 'Money, value and everyday spending'],
+        ['Se introduce la educación financiera, la historia y función del dinero, y la base del consumo: necesidades, deseos, precio y mercado.', 'Students are introduced to financial education, the history and function of money, and the basics of consumption: needs, wants, price and market.'],
+        ['Orden', 'Structure'],
+        ['Ingresos, gastos y ahorro', 'Income, expenses and savings'],
+        ['Se trabaja cómo entra y sale el dinero y cómo construir objetivos de ahorro con criterio y continuidad.', 'Students work on how money comes in and goes out, and how to build savings goals with judgement and consistency.'],
+        ['Profundidad', 'Depth'],
+        ['Deuda, interés, inversión y riesgo', 'Debt, interest, investment and risk'],
+        ['Se explica qué implica pedir prestado, cómo funciona el interés y cómo empezar a entender rentabilidad, riesgo y distintas formas de invertir.', 'Students learn what borrowing means, how interest works and how to begin understanding returns, risk and different ways to invest.'],
+        ['Cierre', 'Wrap-up'],
+        ['Decisiones, seguridad y consolidación', 'Decisions, security and consolidation'],
+        ['Se integran emociones, sesgos, estafas, protección de datos y un cierre final para unir todo el aprendizaje.', 'Emotions, biases, scams, data protection and a final wrap-up bring the learning together.'],
+        ['Implantación flexible', 'Flexible implementation'],
+        ['Tres productos. Un escenario mucho más decidido.', 'Three products. A much clearer setup.'],
+        ['Elige entre programa completo, packs temáticos o configuración flexible según el curso, el calendario y el alcance real del centro.', 'Choose between the complete program, thematic packs or flexible configuration depending on the grade, schedule and real scope of the school.'],
+        ['Soluciones ADAMIS', 'ADAMIS solutions'],
+        ['Cursos completos', 'Complete courses'],
+        ['Programa integral', 'Full program'],
+        ['Programas completos', 'Complete programs'],
+        ['De 4º a 6º de Primaria', 'From 4th to 6th grade'],
+        ['Recorrido completo por curso.', 'Full journey by grade.'],
+        ['Packs temáticos', 'Thematic packs'],
+        ['Secuencia temática', 'Thematic sequence'],
+        ['Packs Temáticos', 'Thematic Packs'],
+        ['Bloques listos para activar criterio', 'Ready-to-use blocks for building judgement'],
+        ['Progresión cerrada por objetivos.', 'Goal-based closed progression.'],
+        ['Flexible', 'Flexible'],
+        ['Sistema modular', 'Modular system'],
+        ['Configuración Flexible', 'Flexible Configuration'],
+        ['Clases y dinámicas según tu centro', 'Lessons and dynamics adapted to your school'],
+        ['Montaje propio con ritmo real.', 'Custom setup at a realistic pace.'],
+        ['Cursos disponibles', 'Available grades'],
+        ['6º Primaria', '6th grade'],
+        ['5º Primaria', '5th grade'],
+        ['4º Primaria', '4th grade'],
+        ['La opción más completa para cerrar Primaria', 'The most complete option to finish primary school'],
+        ['Más de 20 clases progresivas listas para usar', 'More than 20 progressive ready-to-use lessons'],
+        ['Actividades prácticas y evaluación integrada', 'Practical activities and built-in assessment'],
+        ['Dashboard para seguir el progreso de cada alumno', 'Dashboard to track each student’s progress'],
+        ['Ranking con premios para reforzar la participación', 'Ranking with rewards to reinforce participation'],
+        ['Formación gratuita para profesores e implantación sencilla', 'Free teacher training and simple implementation'],
+        ['Complementos disponibles: dinámicas y diplomas de finalización', 'Available add-ons: dynamics and completion certificates'],
+        ['Un recorrido amplio para avanzar con criterio', 'A broad path to move forward with judgement'],
+        ['16 clases progresivas listas para usar', '16 progressive ready-to-use lessons'],
+        ['La entrada más sencilla a la educación financiera', 'The simplest entry point into financial education'],
+        ['14 clases progresivas listas para usar', '14 progressive ready-to-use lessons'],
+        ['Elegir este formato', 'Choose this format'],
+        ['Bloques 1 y 2', 'Blocks 1 and 2'],
+        ['Introducción a la educación financiera', 'Introduction to financial education'],
+        ['Origen y función del dinero', 'Origin and function of money'],
+        ['Bloques 3 y 4', 'Blocks 3 and 4'],
+        ['Necesidades y decisiones de compra', 'Needs and purchase decisions'],
+        ['Precio, valor y criterio financiero', 'Price, value and financial judgement'],
+        ['Bloques 5 y 6', 'Blocks 5 and 6'],
+        ['Ingresos, gastos y ahorro', 'Income, expenses and savings'],
+        ['Presupuesto, deuda e interés', 'Budget, debt and interest'],
+        ['Bloques 7 y 8', 'Blocks 7 and 8'],
+        ['Inversión, riesgo y activos', 'Investment, risk and assets'],
+        ['Primeras ideas de emprendimiento', 'First entrepreneurship ideas'],
+        ['Bloque 9', 'Block 9'],
+        ['Decisiones financieras y protección', 'Financial decisions and protection'],
+        ['Simulación final del recorrido', 'Final journey simulation'],
+        ['Los packs avanzados parten de contenidos ya trabajados en fases anteriores, por lo que se aplican sobre el itinerario de 6º de Primaria.', 'Advanced packs build on content already covered in previous stages, so they apply to the 6th grade pathway.'],
+        ['Diseña un bloque propio combinando clases y dinámicas.', 'Design your own block by combining lessons and dynamics.'],
+        ['Clases', 'Lessons'],
+        ['Clases individuales', 'Individual lessons'],
+        ['Sesiones concretas del itinerario.', 'Specific sessions from the pathway.'],
+        ['Pack de clases', 'Lesson pack'],
+        ['Bloque propio con varias sesiones.', 'Custom block with several sessions.'],
+        ['Dinámicas', 'Dynamics'],
+        ['Solo 6º Primaria', '6th grade only'],
+        ['Dinámicas individuales', 'Individual dynamics'],
+        ['Experiencias sueltas por temática.', 'Standalone experiences by topic.'],
+        ['Pack de dinámicas', 'Dynamics pack'],
+        ['Conjunto práctico adaptado al centro.', 'Practical set adapted to the school.'],
+        ['Cada clase o dinámica dura aproximadamente entre 45 minutos y 1 hora.', 'Each lesson or dynamic lasts approximately 45 minutes to 1 hour.'],
+        ['Centros piloto', 'Pilot schools'],
+        ['Colegios que ya han aprendido con ADAMIS', 'Schools that have already learned with ADAMIS'],
+        ['Logos de colegios participantes', 'Logos of participating schools'],
+        ['Ir a la web del Colegio Arcangel', 'Visit Colegio Arcangel website'],
+        ['Ir a la web del Colegio Torrevilano', 'Visit Colegio Torrevilano website'],
+        ['Ir a la web del Colegio Abaco', 'Visit Colegio Abaco website'],
+        ['Ir a la web del CEIP Pedro Antonio de Alarcon', 'Visit CEIP Pedro Antonio de Alarcon website'],
+        ['Logo Colegio Arcangel', 'Colegio Arcangel logo'],
+        ['Logo Colegio Torrevilano', 'Colegio Torrevilano logo'],
+        ['Logo Colegio Abaco', 'Colegio Abaco logo'],
+        ['Logo CEIP Pedro Antonio de Alarcon', 'CEIP Pedro Antonio de Alarcon logo'],
+        ['Preguntas frecuentes', 'Frequently asked questions'],
+        ['Respuestas directas sobre ADAMIS.', 'Direct answers about ADAMIS.'],
+        ['ADAMIS es un programa de educación financiera para colegios de Primaria, diseñado para implantarse de forma práctica en 4º, 5º y 6º.', 'ADAMIS is a financial education program for primary schools, designed for practical implementation in 4th, 5th and 6th grade.'],
+        ['FAQs de ADAMIS', 'ADAMIS FAQs'],
+        ['Definición', 'Definition'],
+        ['¿Qué es ADAMIS?', 'What is ADAMIS?'],
+        ['ADAMIS es un programa de', 'ADAMIS is a'],
+        ['educación financiera para Primaria', 'financial education program for primary school'],
+        ['y', 'and'],
+        ['colegios', 'schools'],
+        ['que combina clases, actividades prácticas, plataforma y seguimiento del alumno.', 'that combines lessons, practical activities, platform access and student tracking.'],
+        ['Cursos', 'Grades'],
+        ['¿Para qué cursos está pensado?', 'Which grades is it designed for?'],
+        ['ADAMIS está pensado para', 'ADAMIS is designed for'],
+        ['4º de Primaria', '4th grade'],
+        ['5º de Primaria', '5th grade'],
+        ['6º de Primaria', '6th grade'],
+        [', con recorridos progresivos que adaptan la educación financiera al nivel de cada curso.', ', with progressive pathways that adapt financial education to each grade level.'],
+        ['Implantación', 'Implementation'],
+        ['¿Cómo se implanta en un colegio?', 'How is it implemented in a school?'],
+        ['El colegio puede elegir programa completo,', 'The school can choose the complete program,'],
+        ['packs temáticos', 'thematic packs'],
+        ['o', 'or'],
+        ['configuración flexible', 'flexible configuration'],
+        ['. ADAMIS acompaña la implantación con formación docente y seguimiento.', '. ADAMIS supports implementation with teacher training and tracking.'],
+        ['Packs', 'Packs'],
+        ['¿Qué incluyen los packs temáticos?', 'What do the thematic packs include?'],
+        ['Los packs temáticos agrupan bloques de aprendizaje como Money Start, Smart Buy, Cash Control, Invest Lab y Money Shield para trabajar objetivos concretos.', 'Thematic packs group learning blocks such as Money Start, Smart Buy, Cash Control, Invest Lab and Money Shield to work on specific goals.'],
+        ['Solicitud de propuesta', 'Proposal request'],
+        ['Recibe una propuesta adaptada a tu centro', 'Receive a proposal adapted to your school'],
+        ['Indícanos curso, número aproximado de alumnos y formato preferido. Te responderemos con una opción concreta y sin compromiso.', 'Tell us the grade, approximate number of students and preferred format. We will reply with a concrete option with no commitment.'],
+        ['Por curso', 'By grade'],
+        ['Modular', 'Modular'],
+        ['Nombre', 'Name'],
+        ['Centro', 'School'],
+        ['Producto', 'Product'],
+        ['Selecciona una opción', 'Select an option'],
+        ['Mensaje opcional', 'Optional message'],
+        ['Curso, número aproximado de alumnos o cualquier detalle relevante.', 'Grade, approximate number of students or any relevant detail.'],
+        ['Sin compromiso. Te responderemos con una propuesta concreta.', 'No commitment. We will reply with a concrete proposal.'],
+        ['Recibir propuesta', 'Receive proposal'],
+        ['Cerrar formulario', 'Close form'],
+        ['Solicitud de información', 'Information request'],
+        ['Cuéntanos qué necesitas', 'Tell us what you need'],
+        ['Te responderemos en los correos del equipo de Prospere.', 'The Prospere team will reply by email.'],
+        ['Perfil', 'Profile'],
+        ['Familia', 'Family'],
+        ['Colegio', 'School'],
+        ['Otro', 'Other'],
+        ['Centro / organización', 'School / organization'],
+        ['Selecciona un producto', 'Select a product'],
+        ['Cuéntanos qué información necesitas.', 'Tell us what information you need.'],
+        ['Enviando solicitud...', 'Sending request...'],
+        ['No se pudo enviar la solicitud.', 'The request could not be sent.'],
+        ['Solicitud enviada. Te responderemos pronto.', 'Request sent. We will reply soon.'],
+        ['Ha ocurrido un error al enviar la solicitud.', 'An error occurred while sending the request.'],
+        ['Producto seleccionado: {interest}', 'Selected product: {interest}']
+    ]);
+
+    const normalizeText = (value = '') => String(value).replace(/\s+/g, ' ').trim();
+    const normalized = new Map(Array.from(exact.entries()).map(([key, value]) => [normalizeText(key), value]));
+
+    const t = (value, vars = {}) => {
+        if (!isEnglish) return String(value || '');
+        const source = String(value || '');
+        const mapped = exact.get(source) || normalized.get(normalizeText(source)) || source;
+        return mapped.replace(/\{(\w+)\}/g, (_match, key) => {
+            return Object.prototype.hasOwnProperty.call(vars, key) ? String(vars[key]) : `{${key}}`;
+        });
+    };
+
+    const translateTextNodes = (root) => {
+        if (!root || !isEnglish) return;
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+                const parent = node.parentElement;
+                if (!parent || ['SCRIPT', 'STYLE'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+                return node.nodeValue && node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+            }
+        });
+        const changes = [];
+
+        while (walker.nextNode()) {
+            const node = walker.currentNode;
+            const current = node.nodeValue;
+            const trimmed = current.trim();
+            const next = t(trimmed);
+            if (next !== trimmed) changes.push([node, current.replace(trimmed, next)]);
+        }
+
+        changes.forEach(([node, value]) => {
+            node.nodeValue = value;
+        });
+    };
+
+    const translateAttributes = (root) => {
+        if (!root || !isEnglish) return;
+        const attrs = ['alt', 'aria-label', 'placeholder', 'title', 'data-mobile-label'];
+        root.querySelectorAll('*').forEach((element) => {
+            attrs.forEach((attr) => {
+                if (!element.hasAttribute(attr)) return;
+                const current = element.getAttribute(attr);
+                const next = t(current);
+                if (next !== current) element.setAttribute(attr, next);
+            });
+        });
+    };
+
+    const updateMetadata = () => {
+        document.documentElement.lang = lang;
+        if (!isEnglish) return;
+
+        document.title = t(document.title);
+        const description = t('Programa de educación financiera práctica para 4º, 5º y 6º de Primaria. Clases, actividades y seguimiento para implantar en colegios de forma sencilla.');
+        document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+        document.querySelector('meta[property="og:locale"]')?.setAttribute('content', 'en_US');
+        document.querySelector('meta[property="og:title"]')?.setAttribute('content', t('ADAMIS | Educación financiera para colegios de Primaria'));
+        document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
+        document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', t('ADAMIS | Educación financiera para colegios de Primaria'));
+        document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description);
+    };
+
+    const apply = () => {
+        updateMetadata();
+        translateTextNodes(document.body);
+        translateAttributes(document.body);
+    };
+
+    if (document.body) {
+        apply();
+    } else {
+        document.addEventListener('DOMContentLoaded', apply, { once: true });
+    }
+
+    window.AdamisLandingI18n = { lang, isEnglish, t };
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
+    const landingI18n = window.AdamisLandingI18n || {
+        t: (value) => String(value || '')
+    };
     const platformAccessButtons = document.querySelectorAll('[data-platform-access]');
     const counters = document.querySelectorAll('.stat-number');
     const openInfoButtons = document.querySelectorAll('[data-open-info-modal]');
@@ -542,7 +854,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (interest) {
             infoModalInterest.hidden = false;
-            infoModalInterest.textContent = `Producto seleccionado: ${interest}`;
+            infoModalInterest.textContent = landingI18n.t('Producto seleccionado: {interest}', {
+                interest: landingI18n.t(interest)
+            });
             return;
         }
 
@@ -606,7 +920,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             formSubmit.disabled = true;
             formStatus.className = 'form-status';
-            formStatus.textContent = 'Enviando solicitud...';
+            formStatus.textContent = landingI18n.t('Enviando solicitud...');
 
             try {
                 const response = await fetch('/api/request-info', {
@@ -618,11 +932,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json().catch(() => ({}));
 
                 if (!response.ok || !data.ok) {
-                    throw new Error(data.error || 'No se pudo enviar la solicitud.');
+                    throw new Error(data.error || landingI18n.t('No se pudo enviar la solicitud.'));
                 }
 
                 formStatus.className = 'form-status is-success';
-                formStatus.textContent = 'Solicitud enviada. Te responderemos pronto.';
+                formStatus.textContent = landingI18n.t('Solicitud enviada. Te responderemos pronto.');
                 form.reset();
 
                 if (form === infoRequestForm) {
@@ -630,7 +944,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                 formStatus.className = 'form-status is-error';
-                formStatus.textContent = error.message || 'Ha ocurrido un error al enviar la solicitud.';
+                formStatus.textContent = landingI18n.t(error.message || 'Ha ocurrido un error al enviar la solicitud.');
             } finally {
                 formSubmit.disabled = false;
             }

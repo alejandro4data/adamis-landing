@@ -398,13 +398,20 @@ a {
     line-height: 0.9;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    background: linear-gradient(110deg, var(--ink) 8%, var(--gold) 34%, #fff 50%, var(--gold) 64%, var(--ink) 90%);
-    background-size: 200% auto;
+    background: linear-gradient(
+        100deg,
+        #b66b00 0%,
+        #e89400 16%,
+        #ffb900 36%,
+        #ffc32a 52%,
+        #f2a000 70%,
+        #c87500 100%
+    );
+    background-size: 100% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.04));
-    animation: shine 6s linear infinite;
+    filter: drop-shadow(0 2px 0 rgba(177, 104, 0, 0.16)) drop-shadow(0 16px 24px rgba(255, 185, 0, 0.1));
 }
 
 .hero-slogan {
