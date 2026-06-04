@@ -1,4 +1,7 @@
+import { sendLoginNotification } from './_login-notification.js';
+
 export default async function handler(req, res) {
+  const SESSION_MAX_AGE_SECONDS = 60 * 60;
   if (req.method !== "POST") {
     return res.status(405).send("Método no permitido");
   }
@@ -14,9 +17,24 @@ export default async function handler(req, res) {
     : "";
 
   if (passwordInput === passwordReal) {
+    const expiresAt = Date.now() + SESSION_MAX_AGE_SECONDS * 1000;
+    try {
+      await sendLoginNotification({
+        req,
+        role: 'student',
+        school: req.body?.centro,
+        expiresAt
+      });
+    } catch (error) {
+      console.error('Error enviando notificacion de login alumno:', error);
+    }
+
     res.setHeader(
       "Set-Cookie",
-      `acceso_adamis_alumno=permitido; Path=/; Max-Age=3600; SameSite=Lax; HttpOnly${secure}`
+      [
+        `acceso_adamis_alumno=permitido; Path=/; Max-Age=${SESSION_MAX_AGE_SECONDS}; SameSite=Lax; HttpOnly${secure}`,
+        `adamis_session_expires_at=${expiresAt}; Path=/; Max-Age=${SESSION_MAX_AGE_SECONDS}; SameSite=Lax${secure}`
+      ]
     );
     res.statusCode = 302;
     res.setHeader("Location", "/app/pages/alumno-splash.html");

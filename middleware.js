@@ -1,5 +1,5 @@
 export const config = {
-  matcher: ["/app/index.html", "/profesor/index-profesor.html"]
+  matcher: ["/app/:path*", "/profesor/:path*"]
 };
 
 export default function middleware(request) {

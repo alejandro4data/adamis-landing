@@ -1,3 +1,42 @@
+(() => {
+  const expiresAt = Number(readCookie("adamis_session_expires_at"));
+  if (!Number.isFinite(expiresAt) || expiresAt <= 0) return;
+
+  function expireIfNeeded() {
+    if (Date.now() < expiresAt) return;
+
+    try {
+      sessionStorage.clear();
+    } catch (_) {}
+
+    window.location.replace("/api/auth-logout?reason=expired");
+  }
+
+  const delay = Math.max(0, expiresAt - Date.now() + 250);
+  window.setTimeout(expireIfNeeded, Math.min(delay, 2147483647));
+  window.addEventListener("focus", expireIfNeeded);
+  window.addEventListener("pageshow", expireIfNeeded);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) expireIfNeeded();
+  });
+
+  expireIfNeeded();
+
+  function readCookie(name) {
+    const prefix = encodeURIComponent(name) + "=";
+    const parts = document.cookie ? document.cookie.split(";") : [];
+
+    for (const item of parts) {
+      const part = item.trim();
+      if (part.indexOf(prefix) === 0) {
+        return decodeURIComponent(part.slice(prefix.length));
+      }
+    }
+
+    return "";
+  }
+})();
+
 const historyData = [
   {
     title: "Clase 1 · ¿Que es Educacion Financiera? Motivaciones.",
@@ -2432,7 +2471,6 @@ document.addEventListener("DOMContentLoaded", () => {
       sessionStorage.clear();
     } catch (_) {}
 
-    document.cookie = "acceso_adamis_profesor=; Path=/; Max-Age=0; SameSite=Lax";
-    window.location.href = "/splash.html";
+    window.location.href = "/api/auth-logout";
   });
 });

@@ -200,8 +200,8 @@
         localStorage.removeItem('currentUser');
       } catch (_e) {}
 
-      // 3) Volver al splash
-      window.location.href = '../../splash.html';
+      // 3) Borrar tambien la cookie HttpOnly en servidor y volver al splash
+      window.location.href = '/api/auth-logout';
     });
   });
 })();

@@ -16,6 +16,7 @@
   }
 
   installStyles();
+  installSessionExpiryGuard();
   root.classList.add("page-transition-enabled");
   if (reducedMotion) root.classList.add("page-transition-reduced");
   startEnterTransition();
@@ -148,5 +149,50 @@
       "@media (prefers-reduced-motion: reduce){html.page-transition-enabled::before,html.page-transition-enabled::after{display:none!important;}}"
     ].join("");
     document.head.appendChild(style);
+  }
+
+  function installSessionExpiryGuard() {
+    if (window.location.protocol !== "http:" && window.location.protocol !== "https:") return;
+    if (!/^\/app(?:\/|$)/.test(window.location.pathname)) return;
+
+    var page = root.getAttribute("data-page") || "";
+    if (page === "login") return;
+
+    var expiresAt = Number(readCookie("adamis_session_expires_at"));
+    if (!Number.isFinite(expiresAt) || expiresAt <= 0) return;
+
+    function expireIfNeeded() {
+      if (Date.now() < expiresAt) return;
+
+      try {
+        sessionStorage.clear();
+      } catch (_error) {}
+
+      window.location.replace("/api/auth-logout?reason=expired");
+    }
+
+    var delay = Math.max(0, expiresAt - Date.now() + 250);
+    window.setTimeout(expireIfNeeded, Math.min(delay, 2147483647));
+    window.addEventListener("focus", expireIfNeeded);
+    window.addEventListener("pageshow", expireIfNeeded);
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) expireIfNeeded();
+    });
+
+    expireIfNeeded();
+  }
+
+  function readCookie(name) {
+    var prefix = encodeURIComponent(name) + "=";
+    var parts = document.cookie ? document.cookie.split(";") : [];
+
+    for (var i = 0; i < parts.length; i += 1) {
+      var part = parts[i].trim();
+      if (part.indexOf(prefix) === 0) {
+        return decodeURIComponent(part.slice(prefix.length));
+      }
+    }
+
+    return "";
   }
 })();
