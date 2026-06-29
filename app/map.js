@@ -18,8 +18,8 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
   const IS_LOCAL_STATIC = window.location.protocol === 'file:';
   const DEFAULT_CURRENT_LEVEL = 10;
   const FIRST_OPEN_LEVEL = 10;
-  const LAST_OPEN_LEVEL = 11;
-  const OPEN_LEVELS = new Set([10, 11]);
+  const LAST_OPEN_LEVEL = 10;
+  const OPEN_LEVELS = new Set([10]);
   let instructionsPreloaded = false;
 
   const tr = (text) => {

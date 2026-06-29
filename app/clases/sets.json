@@ -2,7 +2,7 @@
   "ahorro": "Ahorro",
   "deuda": "Deuda",
   "emprendimiento": "Emprendimiento",
-  "bool_ahorro":true,
-  "bool_deuda":true,
-  "bool_emprendimiento":true
+  "bool_ahorro": true,
+  "bool_deuda": false,
+  "bool_emprendimiento": false
 }

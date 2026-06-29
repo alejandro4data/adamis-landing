@@ -19,12 +19,13 @@ export default async function handler(req, res) {
   if (passwordInput === passwordReal) {
     const expiresAt = Date.now() + SESSION_MAX_AGE_SECONDS * 1000;
     try {
-      await sendLoginNotification({
+      const notification = await sendLoginNotification({
         req,
         role: 'student',
         school: req.body?.centro,
         expiresAt
       });
+      console.log('Notificacion de login alumno enviada:', notification);
     } catch (error) {
       console.error('Error enviando notificacion de login alumno:', error);
     }
