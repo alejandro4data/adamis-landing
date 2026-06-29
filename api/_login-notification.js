@@ -43,8 +43,7 @@ export async function sendLoginNotification({
   const from = process.env.CONTACT_FROM_EMAIL;
 
   if (!apiKey || !from) {
-    console.warn('No se envia notificacion de login: faltan RESEND_API_KEY o CONTACT_FROM_EMAIL');
-    return;
+    throw new Error('Faltan RESEND_API_KEY o CONTACT_FROM_EMAIL');
   }
 
   const now = new Date();
@@ -83,7 +82,7 @@ export async function sendLoginNotification({
   `).join('');
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 2500);
+  const timeout = setTimeout(() => controller.abort(), 8000);
 
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -112,4 +111,12 @@ export async function sendLoginNotification({
   if (!response.ok) {
     throw new Error(data?.message || `Error enviando notificacion de login (${response.status})`);
   }
+
+  return {
+    id: data?.id || null,
+    to: LOGIN_NOTIFICATION_RECIPIENTS,
+    from,
+    role: roleLabel,
+    school: schoolLabel
+  };
 }

@@ -95,7 +95,7 @@
           return {
             id: id,
             label: labelize(id),
-            active: true
+            active: item && item.activa !== false
           };
         }).filter(Boolean);
       }
@@ -116,8 +116,8 @@
           if (localSets.length) return localSets;
           return [
             { id: 'ahorro', label: 'Ahorro', active: true },
-            { id: 'deuda', label: 'Deuda', active: true },
-            { id: 'emprendimiento', label: 'Emprendimiento', active: true }
+            { id: 'deuda', label: 'Deuda', active: false },
+            { id: 'emprendimiento', label: 'Emprendimiento', active: false }
           ];
         }
       }
