@@ -20,6 +20,11 @@ index.html
 !packs-tematicos/index.html
 !configuracion-flexible/index.html
 !preguntas-frecuentes/index.html
+!talleres/index.html
+!programa/index.html
+!aviso-legal/index.html
+!politica-privacidad/index.html
+!politica-cookies/index.html
 .env
 .vercel
 .env*.local

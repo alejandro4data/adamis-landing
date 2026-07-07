@@ -5,4 +5,25 @@ Disallow: /app/
 Disallow: /profesor/
 Disallow: /splash.html
 
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+Disallow: /app/
+Disallow: /profesor/
+Disallow: /splash.html
+
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+Disallow: /app/
+Disallow: /profesor/
+Disallow: /splash.html
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /api/
+Disallow: /app/
+Disallow: /profesor/
+Disallow: /splash.html
+
 Sitemap: https://adamis.es/sitemap.xml

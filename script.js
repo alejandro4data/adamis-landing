@@ -27,8 +27,29 @@
         return 'en';
     };
 
-    const lang = getQueryLang() || getBrowserLang();
+    const browserLang = getQueryLang() || getBrowserLang();
+    const pageLang = normalizeLang(document.documentElement.lang) || 'es';
+    const normalizedPath = `${window.location.pathname.replace(/\/+$/, '')}/`.replace(/^\/$/, '/');
+    const requestedLang = getQueryLang();
+
+    if (requestedLang === 'en' && (normalizedPath === '/' || normalizedPath === '/educacion-financiera/')) {
+        window.location.replace('/financial-education/');
+        return;
+    }
+
+    if (requestedLang === 'es' && normalizedPath === '/financial-education/') {
+        window.location.replace('/educacion-financiera/');
+        return;
+    }
+
+    if (!requestedLang && normalizedPath === '/' && browserLang === 'en') {
+        window.location.replace('/financial-education/');
+        return;
+    }
+
+    const lang = pageLang;
     const isEnglish = lang === 'en';
+    const allowRuntimeTranslation = document.documentElement.hasAttribute('data-auto-translate');
 
     const exact = new Map([
         ['ADAMIS | Educación financiera para colegios de Primaria', 'ADAMIS | Financial education for primary schools'],
@@ -293,6 +314,8 @@
     };
 
     const apply = () => {
+        document.documentElement.lang = lang;
+        if (!allowRuntimeTranslation) return;
         updateMetadata();
         translateTextNodes(document.body);
         translateAttributes(document.body);
@@ -311,7 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const landingI18n = window.AdamisLandingI18n || {
         t: (value) => String(value || '')
     };
-    const platformAccessButtons = document.querySelectorAll('[data-platform-access]');
     const counters = document.querySelectorAll('.stat-number');
     const openInfoButtons = document.querySelectorAll('[data-open-info-modal]');
     const productTabs = Array.from(document.querySelectorAll('[data-product-tab]'));
@@ -334,8 +356,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorialPlayButton = document.querySelector('[data-tutorial-play]');
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const mobileProductQuery = window.matchMedia('(max-width: 720px)');
-    const topbar = document.querySelector('.topbar');
-    const topbarAnchorLinks = document.querySelectorAll('.topbar a[href^="#"]');
+    const header = document.querySelector('.commercial-header');
+    const siteHeader = document.querySelector('[data-site-header]');
+    const menuToggle = document.querySelector('[data-menu-toggle]');
+    const mainMenu = document.querySelector('[data-main-menu]');
+    const anchorLinks = document.querySelectorAll('.site-nav a[href^="#"], .commercial-footer a[href^="#"], .mobile-cta-bar a[href^="#"], .hero-text-link[href^="#"], .inline-cta[href^="#"], .btn-primary[href^="#"], .btn-outline[href^="#"]');
+    const whatsappLinks = document.querySelectorAll('[data-whatsapp-link]');
+    const ctaElements = document.querySelectorAll('[data-cta]');
+    const mobileCtaBar = document.querySelector('.mobile-cta-bar');
+    const contactSection = document.getElementById('contacto');
+    const footer = document.querySelector('.commercial-footer');
     const landingBackgrounds = document.querySelectorAll('[data-landing-bg]');
     const landingImageSlots = document.querySelectorAll('[data-landing-image]');
     const LANDING_PHOTO_EXTENSIONS = ['avif', 'webp', 'jpg', 'jpeg', 'png'];
@@ -353,16 +383,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!target || target.id === 'inicio') return 0;
 
         const contentAnchor = target.querySelector(
-            '.section-intro, .impact-intro, .pilot-shell, .learning-shell, .products-intro, .closing-shell'
+            '.section-heading, .hero-copy, .trust-copy, .problem-copy, .how-grid, .schools-copy, .contact-copy, .section-intro, .impact-intro, .pilot-shell, .learning-shell, .products-intro, .closing-shell'
         ) || target;
-        const topbarHeight = topbar?.getBoundingClientRect().height || 0;
+        const headerHeight = header?.getBoundingClientRect().height || 0;
         const breathingRoom = Math.min(80, Math.max(28, window.innerHeight * 0.08));
         const absoluteTop = contentAnchor.getBoundingClientRect().top + window.pageYOffset;
 
-        return Math.max(0, absoluteTop - topbarHeight - breathingRoom);
+        return Math.max(0, absoluteTop - headerHeight - breathingRoom);
     };
 
-    topbarAnchorLinks.forEach((link) => {
+    const closeMobileMenu = () => {
+        if (!siteHeader || !menuToggle || !mainMenu) return;
+        siteHeader.classList.remove('is-menu-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
+    menuToggle?.addEventListener('click', () => {
+        if (!siteHeader || !mainMenu) return;
+        const isOpen = siteHeader.classList.toggle('is-menu-open');
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!siteHeader || !siteHeader.classList.contains('is-menu-open')) return;
+        if (siteHeader.contains(event.target)) return;
+        closeMobileMenu();
+    });
+
+    anchorLinks.forEach((link) => {
         link.addEventListener('click', (event) => {
             const hash = link.getAttribute('href');
             if (!hash || hash === '#') return;
@@ -376,6 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 behavior: reducedMotionQuery.matches ? 'auto' : 'smooth'
             });
             window.history.pushState(null, '', hash);
+            closeMobileMenu();
         });
     });
 
@@ -452,29 +501,85 @@ document.addEventListener('DOMContentLoaded', () => {
     setLandingBackgrounds();
     setLandingImages();
 
-    const launchPlatformAccess = () => {
-        if (document.querySelector('.transition-curtain')) return;
+    const trackCta = (element, eventName = '') => {
+        const cta = element?.dataset?.cta || eventName;
+        if (!cta) return;
 
-        const heroShell = document.querySelector('.hero-shell');
-        const legacyHero = document.querySelector('.split-hero');
-        const curtain = document.createElement('div');
-        curtain.classList.add('transition-curtain');
-        document.body.appendChild(curtain);
+        const payload = {
+            event: eventName || `click_${cta.replace(/-/g, '_')}`,
+            cta,
+            section: element.dataset.section || ''
+        };
 
-        heroShell?.classList.add('fade-out-content');
-        legacyHero?.classList.add('fade-out-content');
+        if (typeof window.gtag === 'function') {
+            window.gtag('event', payload.event, {
+                cta: payload.cta,
+                section: payload.section
+            });
+            return;
+        }
 
-        setTimeout(() => {
-            window.location.href = '/splash.html';
-        }, 800);
+        if (Array.isArray(window.dataLayer)) {
+            window.dataLayer.push(payload);
+        }
     };
 
-    platformAccessButtons.forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            launchPlatformAccess();
+    ctaElements.forEach((element) => {
+        element.addEventListener('click', () => {
+            trackCta(element);
         });
     });
+
+    const getWhatsappHref = (rawNumber = '') => {
+        const number = String(rawNumber || '').replace(/[^\d]/g, '');
+        if (!number || rawNumber.includes('[') || rawNumber.includes('WHATSAPP_NUMBER')) return '';
+
+        const message = encodeURIComponent('Hola, soy de un centro escolar y me gustaria conocer los talleres de ADAMIS.');
+        return `https://wa.me/${number}?text=${message}`;
+    };
+
+    whatsappLinks.forEach((link) => {
+        const whatsappHref = getWhatsappHref(link.dataset.whatsappNumber || '');
+        if (!whatsappHref) {
+            link.classList.add('is-disabled');
+            link.setAttribute('aria-disabled', 'true');
+            link.setAttribute('tabindex', '-1');
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+            });
+            return;
+        }
+
+        link.href = whatsappHref;
+        link.classList.remove('is-disabled');
+        link.removeAttribute('aria-disabled');
+        link.removeAttribute('tabindex');
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener');
+    });
+
+    if (mobileCtaBar && 'IntersectionObserver' in window) {
+        const mobileCtaHiddenSections = new Set();
+        const mobileCtaObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    mobileCtaHiddenSections.add(entry.target);
+                    return;
+                }
+
+                mobileCtaHiddenSections.delete(entry.target);
+            });
+
+            mobileCtaBar.classList.toggle('is-hidden', mobileCtaHiddenSections.size > 0);
+        }, {
+            rootMargin: '0px 0px -12% 0px',
+            threshold: 0.04
+        });
+
+        [contactSection, footer].filter(Boolean).forEach((section) => {
+            mobileCtaObserver.observe(section);
+        });
+    }
 
     if (tutorialVideo && tutorialPlayButton) {
         const hideTutorialPlayButton = () => {
@@ -503,26 +608,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!entry.isIntersecting) return;
 
             const counter = entry.target;
+            if (counter.dataset.counting === 'true') return;
+
             const target = +counter.getAttribute('data-target');
             const originalText = counter.innerText;
-            const suffix = originalText.replace(/[0-9]/g, '') || '';
+            const leadingMatch = originalText.match(/^\D+/);
+            const trailingMatch = originalText.match(/\D+$/);
+            const prefix = counter.dataset.prefix ?? (leadingMatch ? leadingMatch[0] : '');
+            const suffix = counter.dataset.suffix ?? (trailingMatch ? trailingMatch[0] : '');
+            const shouldRepeat = counter.dataset.counterRepeat === 'true';
 
             let count = 0;
+            counter.dataset.counting = 'true';
+            counter.innerText = `${prefix}${count}${suffix}`;
 
             const updateCount = () => {
                 const inc = target / speed * 5;
                 if (count < target) {
                     count = Math.ceil(count + inc);
                     if (count > target) count = target;
-                    counter.innerText = count + suffix;
+                    counter.innerText = `${prefix}${count}${suffix}`;
                     setTimeout(updateCount, 25);
                 } else {
-                    counter.innerText = target + suffix;
+                    counter.innerText = `${prefix}${target}${suffix}`;
+                    counter.dataset.counting = 'false';
                 }
             };
 
             updateCount();
-            observer.unobserve(counter);
+            if (!shouldRepeat) {
+                observer.unobserve(counter);
+            }
         });
     };
 
@@ -532,8 +648,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     counters.forEach((counter) => {
         const originalText = counter.innerText;
-        const suffix = originalText.replace(/[0-9]/g, '') || '';
-        counter.innerText = '0' + suffix;
+        const leadingMatch = originalText.match(/^\D+/);
+        const trailingMatch = originalText.match(/\D+$/);
+        const prefix = counter.dataset.prefix ?? (leadingMatch ? leadingMatch[0] : '');
+        const suffix = counter.dataset.suffix ?? (trailingMatch ? trailingMatch[0] : '');
+        counter.innerText = `${prefix}0${suffix}`;
         counterObserver.observe(counter);
     });
 
@@ -916,7 +1035,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!formStatus || !formSubmit) return;
 
-            const payload = Object.fromEntries(new FormData(form).entries());
+            if (!form.checkValidity()) {
+                formStatus.className = 'form-status is-error';
+                formStatus.textContent = landingI18n.t('Revisa los campos obligatorios y acepta el tratamiento de datos.');
+                form.reportValidity();
+                return;
+            }
+
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+            payload.dataConsent = formData.get('dataConsent') === 'yes';
+            payload.marketingConsent = formData.get('marketingConsent') === 'yes';
 
             formSubmit.disabled = true;
             formStatus.className = 'form-status';
@@ -936,7 +1065,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 formStatus.className = 'form-status is-success';
-                formStatus.textContent = landingI18n.t('Solicitud enviada. Te responderemos pronto.');
+                formStatus.textContent = landingI18n.t('Gracias. Hemos recibido tu solicitud y te responderemos en breve.');
+                trackCta(formSubmit, 'submit_form_propuesta');
                 form.reset();
 
                 if (form === infoRequestForm) {
