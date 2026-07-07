@@ -6,6 +6,7 @@
         return '';
     };
 
+    
     const getQueryLang = () => {
         try {
             return normalizeLang(new URLSearchParams(window.location.search).get('lang'));
