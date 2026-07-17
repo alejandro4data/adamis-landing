@@ -1411,10 +1411,6 @@ button.is-disabled {
 }
 
 @media (max-width: 980px) {
-    body {
-        padding-bottom: 74px;
-    }
-
     .seo-answer-grid {
         grid-template-columns: 1fr;
         gap: 24px;

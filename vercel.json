@@ -1,6 +1,6 @@
 {
   "redirects": [
-    { "source": "/educacion-financiera-primaria/:path*", "destination": "/", "permanent": true },
+    { "source": "/educacion-financiera-primaria/:path*", "destination": "/educacion-financiera/", "permanent": true },
     { "source": "/colegios/:path*", "destination": "/", "permanent": true },
     { "source": "/packs-tematicos/:path*", "destination": "/programa/", "permanent": true },
     { "source": "/configuracion-flexible/:path*", "destination": "/programa/", "permanent": true },

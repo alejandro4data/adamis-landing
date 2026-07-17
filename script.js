@@ -43,7 +43,7 @@
         return;
     }
 
-    if (!requestedLang && normalizedPath === '/' && browserLang === 'en') {
+    if (!requestedLang && normalizedPath === '/' && browserLang === 'en' && !window.location.hash) {
         window.location.replace('/financial-education/');
         return;
     }
@@ -361,11 +361,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const siteHeader = document.querySelector('[data-site-header]');
     const menuToggle = document.querySelector('[data-menu-toggle]');
     const mainMenu = document.querySelector('[data-main-menu]');
+    const menuToggleLabel = menuToggle?.querySelector('.visually-hidden');
+    const leadInterestTriggers = document.querySelectorAll('[data-lead-interest]');
+    const leadInterestFields = document.querySelectorAll('[data-lead-interest-field]');
+    const leadCourseFields = document.querySelectorAll('[data-lead-course-field]');
     const anchorLinks = document.querySelectorAll('.site-nav a[href^="#"], .commercial-footer a[href^="#"], .mobile-cta-bar a[href^="#"], .hero-text-link[href^="#"], .inline-cta[href^="#"], .btn-primary[href^="#"], .btn-outline[href^="#"]');
     const whatsappLinks = document.querySelectorAll('[data-whatsapp-link]');
     const ctaElements = document.querySelectorAll('[data-cta]');
     const mobileCtaBar = document.querySelector('.mobile-cta-bar');
     const contactSection = document.getElementById('contacto');
+    const openingSection = document.querySelector('.lead-hero, .detail-hero, .brief-hero, .methodology-hero, .workshop-watch-heading');
     const footer = document.querySelector('.commercial-footer');
     const landingBackgrounds = document.querySelectorAll('[data-landing-bg]');
     const landingImageSlots = document.querySelectorAll('[data-landing-image]');
@@ -383,26 +388,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const getAnchorTargetPosition = (target) => {
         if (!target || target.id === 'inicio') return 0;
 
-        const contentAnchor = target.querySelector(
+        const leadFormAnchor = target.id === 'contacto' ? target.querySelector('.lead-form') : null;
+        const contentAnchor = leadFormAnchor || target.querySelector(
             '.section-heading, .hero-copy, .trust-copy, .problem-copy, .how-grid, .schools-copy, .contact-copy, .section-intro, .impact-intro, .pilot-shell, .learning-shell, .products-intro, .closing-shell'
         ) || target;
         const headerHeight = header?.getBoundingClientRect().height || 0;
-        const breathingRoom = Math.min(80, Math.max(28, window.innerHeight * 0.08));
+        const breathingRoom = target.matches?.('[data-method-story]')
+            ? 0
+            : window.innerWidth <= 920
+                ? 16
+                : Math.min(80, Math.max(28, window.innerHeight * 0.08));
         const absoluteTop = contentAnchor.getBoundingClientRect().top + window.pageYOffset;
 
         return Math.max(0, absoluteTop - headerHeight - breathingRoom);
     };
 
-    const closeMobileMenu = () => {
+    const setMenuState = (isOpen) => {
         if (!siteHeader || !menuToggle || !mainMenu) return;
-        siteHeader.classList.remove('is-menu-open');
-        menuToggle.setAttribute('aria-expanded', 'false');
+        siteHeader.classList.toggle('is-menu-open', isOpen);
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        if (menuToggleLabel) {
+            menuToggleLabel.textContent = isOpen ? 'Cerrar men\u00fa' : 'Abrir men\u00fa';
+        }
+    };
+
+    const closeMobileMenu = ({ restoreFocus = false } = {}) => {
+        if (!siteHeader || !menuToggle || !mainMenu) return;
+        setMenuState(false);
+        if (restoreFocus) menuToggle.focus();
     };
 
     menuToggle?.addEventListener('click', () => {
         if (!siteHeader || !mainMenu) return;
-        const isOpen = siteHeader.classList.toggle('is-menu-open');
-        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        setMenuState(!siteHeader.classList.contains('is-menu-open'));
     });
 
     document.addEventListener('click', (event) => {
@@ -410,6 +428,29 @@ document.addEventListener('DOMContentLoaded', () => {
         if (siteHeader.contains(event.target)) return;
         closeMobileMenu();
     });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && siteHeader?.classList.contains('is-menu-open')) {
+            closeMobileMenu({ restoreFocus: true });
+        }
+    });
+
+    mainMenu?.addEventListener('click', (event) => {
+        if (event.target.closest('a')) closeMobileMenu();
+    });
+
+    if (siteHeader) {
+        let headerFrame = 0;
+        const syncHeaderState = () => {
+            headerFrame = 0;
+            siteHeader.classList.toggle('is-scrolled', window.scrollY > 12);
+        };
+        syncHeaderState();
+        window.addEventListener('scroll', () => {
+            if (headerFrame) return;
+            headerFrame = window.requestAnimationFrame(syncHeaderState);
+        }, { passive: true });
+    }
 
     anchorLinks.forEach((link) => {
         link.addEventListener('click', (event) => {
@@ -426,8 +467,83 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             window.history.pushState(null, '', hash);
             closeMobileMenu();
+
+            if (event.detail === 0) {
+                window.setTimeout(() => {
+                    const focusTarget = target.id === 'contacto' ? target.querySelector('.lead-form') || target : target;
+                    focusTarget.setAttribute('tabindex', '-1');
+                    focusTarget.focus({ preventScroll: true });
+                }, reducedMotionQuery.matches ? 0 : 450);
+            }
         });
     });
+
+    const alignInitialHash = () => {
+        const hash = window.location.hash;
+        if (!hash || hash === '#') return;
+        let target = null;
+        try {
+            target = document.getElementById(decodeURIComponent(hash.slice(1)));
+        } catch {
+            target = document.getElementById(hash.slice(1));
+        }
+        if (!target) return;
+        const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
+        window.scrollTo(0, getAnchorTargetPosition(target));
+        window.requestAnimationFrame(() => {
+            document.documentElement.style.scrollBehavior = previousScrollBehavior;
+        });
+    };
+
+    if (window.location.hash) {
+        window.requestAnimationFrame(() => window.requestAnimationFrame(alignInitialHash));
+        window.addEventListener('load', alignInitialHash, { once: true });
+    }
+
+    const selectLeadInterest = (interest = '') => {
+        if (!interest) return;
+        leadInterestFields.forEach((field) => {
+            if (!field.options) {
+                field.value = interest;
+                return;
+            }
+            const matchingOption = Array.from(field.options || []).find((option) => option.value === interest || option.textContent.trim() === interest);
+            if (matchingOption) field.value = matchingOption.value;
+        });
+    };
+
+    const selectLeadCourse = (course = '') => {
+        if (!course) return;
+        leadCourseFields.forEach((field) => {
+            if (!field.options) {
+                field.value = course;
+                return;
+            }
+            const matchingOption = Array.from(field.options || []).find((option) => option.value === course || option.textContent.trim() === course);
+            if (matchingOption) field.value = matchingOption.value;
+        });
+    };
+
+    leadInterestTriggers.forEach((trigger) => {
+        trigger.addEventListener('click', () => selectLeadInterest(trigger.dataset.leadInterest || ''));
+    });
+
+    try {
+        const params = new URLSearchParams(window.location.search);
+        selectLeadInterest(params.get('interest') || '');
+        selectLeadCourse(params.get('courses') || '');
+        const sourceParts = [`${window.location.pathname}${window.location.hash || ''}`];
+        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach((key) => {
+            const value = params.get(key);
+            if (value) sourceParts.push(`${key}=${value}`);
+        });
+        document.querySelectorAll('[data-info-form] [name="source"]').forEach((field) => {
+            field.value = sourceParts.join(' | ').slice(0, 500);
+        });
+    } catch {
+        // Keep the authored source value if URL parsing is unavailable.
+    }
 
     const probeLandingAsset = (src) => new Promise((resolve) => {
         if (!src) {
@@ -520,9 +636,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (Array.isArray(window.dataLayer)) {
-            window.dataLayer.push(payload);
-        }
+        if (!Array.isArray(window.dataLayer)) window.dataLayer = [];
+        window.dataLayer.push(payload);
     };
 
     ctaElements.forEach((element) => {
@@ -577,7 +692,7 @@ document.addEventListener('DOMContentLoaded', () => {
             threshold: 0.04
         });
 
-        [contactSection, footer].filter(Boolean).forEach((section) => {
+        [openingSection, contactSection, footer].filter(Boolean).forEach((section) => {
             mobileCtaObserver.observe(section);
         });
     }
@@ -643,32 +758,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const counterObserver = new IntersectionObserver(animateCounters, {
-        threshold: 0.5
-    });
-
-    counters.forEach((counter) => {
-        const originalText = counter.innerText;
-        const leadingMatch = originalText.match(/^\D+/);
-        const trailingMatch = originalText.match(/\D+$/);
-        const prefix = counter.dataset.prefix ?? (leadingMatch ? leadingMatch[0] : '');
-        const suffix = counter.dataset.suffix ?? (trailingMatch ? trailingMatch[0] : '');
-        counter.innerText = `${prefix}0${suffix}`;
-        counterObserver.observe(counter);
-    });
-
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                revealObserver.unobserve(entry.target);
-            }
+    if ('IntersectionObserver' in window && !reducedMotionQuery.matches) {
+        const counterObserver = new IntersectionObserver(animateCounters, {
+            threshold: 0.5
         });
-    }, { threshold: 0.1 });
 
-    document.querySelectorAll('.scroll-reveal').forEach((el) => {
-        revealObserver.observe(el);
-    });
+        counters.forEach((counter) => {
+            const originalText = counter.innerText;
+            const leadingMatch = originalText.match(/^\D+/);
+            const trailingMatch = originalText.match(/\D+$/);
+            const prefix = counter.dataset.prefix ?? (leadingMatch ? leadingMatch[0] : '');
+            const suffix = counter.dataset.suffix ?? (trailingMatch ? trailingMatch[0] : '');
+            counter.innerText = `${prefix}0${suffix}`;
+            counterObserver.observe(counter);
+        });
+    }
+
+    const revealItems = document.querySelectorAll('.scroll-reveal');
+    if ('IntersectionObserver' in window && !reducedMotionQuery.matches) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealItems.forEach((el) => {
+            if (el.closest('.lead-section')) {
+                el.classList.add('visible');
+                return;
+            }
+            el.classList.add('reveal-pending');
+            revealObserver.observe(el);
+        });
+    } else {
+        revealItems.forEach((el) => el.classList.add('visible'));
+    }
 
     const setActiveCourse = (target) => {
         courseTabs.forEach((item) => {
@@ -1027,6 +1154,136 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const methodFlow = document.querySelector('[data-method-flow]');
+    const methodStage = methodFlow?.querySelector('[data-method-stage]');
+    const methodPanels = methodFlow ? Array.from(methodFlow.querySelectorAll('[data-method-panel]')) : [];
+    const methodUiSteps = methodFlow ? Array.from(methodFlow.querySelectorAll('[data-method-ui-step]')) : [];
+    const methodPills = methodUiSteps.map((step) => step.querySelector('.method-meta-v5 > strong'));
+    const methodTrack = methodFlow?.querySelector('[data-method-track]');
+
+    if (methodFlow && methodStage && methodPanels.length === 3 && methodUiSteps.length === 3 && methodPills.every(Boolean) && methodTrack) {
+        if (reducedMotionQuery.matches) {
+            methodUiSteps.forEach((step) => step.removeAttribute('aria-hidden'));
+        } else {
+            const methodClamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+            let methodMetrics = {
+                start: 0,
+                travel: 1,
+                viewportHeight: window.innerHeight
+            };
+            let methodFrame = 0;
+            let methodLastProgress = -1;
+            let methodLastNear = false;
+            let methodLastEntered = false;
+            let methodLastActive = 0;
+            let methodViewportWidth = window.innerWidth;
+            let methodViewportHeight = window.innerHeight;
+
+            const measureMethodPills = () => {
+                methodPills.forEach((pill) => {
+                    const previousWidth = pill.style.width;
+                    pill.style.width = 'max-content';
+                    const targetWidth = Math.max(28, Math.ceil(pill.getBoundingClientRect().width));
+                    pill.style.width = previousWidth;
+                    pill.style.setProperty('--pill-target-width', `${targetWidth}px`);
+                });
+            };
+
+            const renderMethodFlow = () => {
+                methodFrame = 0;
+
+                const scrollPosition = window.scrollY || window.pageYOffset;
+                const progress = methodClamp((scrollPosition - methodMetrics.start) / methodMetrics.travel);
+                const isNear = scrollPosition >= methodMetrics.start - methodMetrics.viewportHeight
+                    && scrollPosition <= methodMetrics.start + methodMetrics.travel + methodMetrics.viewportHeight;
+
+                if (isNear !== methodLastNear) {
+                    methodFlow.classList.toggle('is-in-range', isNear);
+                    methodLastNear = isNear;
+                }
+
+                const hasEntered = scrollPosition >= methodMetrics.start - 1;
+                if (hasEntered !== methodLastEntered) {
+                    methodFlow.classList.toggle('has-entered', hasEntered);
+                    methodLastEntered = hasEntered;
+                }
+
+                if (Math.abs(progress - methodLastProgress) < 0.0001) return;
+                methodLastProgress = progress;
+
+                // Images stay anchored. Only the clipping edge advances, so each new
+                // scene progressively covers the previous one without vertical drift.
+                const dynamicsReveal = methodClamp((progress - 0.04) / 0.44);
+                const aiReveal = methodClamp((progress - 0.52) / 0.44);
+                const dynamicsInset = (1 - dynamicsReveal) * 100;
+                const aiInset = (1 - aiReveal) * 100;
+
+                methodPanels[1].style.clipPath = `inset(${dynamicsInset.toFixed(3)}% 0 0 0)`;
+                methodPanels[2].style.clipPath = `inset(${aiInset.toFixed(3)}% 0 0 0)`;
+                methodTrack.style.transform = `scaleX(${progress.toFixed(5)})`;
+
+                const activeStep = progress < 0.43 ? 0 : progress < 0.9 ? 1 : 2;
+
+                if (methodFlow.dataset.activeStep !== String(activeStep)) {
+                    methodFlow.dataset.activeStep = String(activeStep);
+                }
+
+                methodUiSteps.forEach((step, index) => {
+                    if (activeStep !== methodLastActive) {
+                        const isActive = index === activeStep;
+                        step.classList.toggle('is-active', isActive);
+                        if (isActive) {
+                            step.removeAttribute('aria-hidden');
+                        } else {
+                            step.setAttribute('aria-hidden', 'true');
+                        }
+                    }
+                });
+
+                methodLastActive = activeStep;
+            };
+
+            const requestMethodRender = () => {
+                if (methodFrame) return;
+                methodFrame = window.requestAnimationFrame(renderMethodFlow);
+            };
+
+            const measureMethodFlow = () => {
+                measureMethodPills();
+                const flowRect = methodFlow.getBoundingClientRect();
+                const flowTop = (window.scrollY || window.pageYOffset) + flowRect.top;
+                const headerHeight = siteHeader?.getBoundingClientRect().height || (window.innerWidth <= 920 ? 68 : 76);
+                const stageHeight = methodStage.getBoundingClientRect().height;
+
+                methodMetrics = {
+                    start: flowTop - headerHeight,
+                    travel: Math.max(1, methodFlow.offsetHeight - stageHeight),
+                    viewportHeight: window.innerHeight
+                };
+                methodLastProgress = -1;
+                renderMethodFlow();
+            };
+
+            const handleMethodResize = () => {
+                const nextWidth = window.innerWidth;
+                const nextHeight = window.innerHeight;
+                const widthChanged = Math.abs(nextWidth - methodViewportWidth) > 2;
+                const stableDesktopHeightChanged = nextWidth > 920 && Math.abs(nextHeight - methodViewportHeight) > 2;
+
+                if (!widthChanged && !stableDesktopHeightChanged) return;
+
+                methodViewportWidth = nextWidth;
+                methodViewportHeight = nextHeight;
+                measureMethodFlow();
+            };
+
+            measureMethodFlow();
+            window.addEventListener('scroll', requestMethodRender, { passive: true });
+            window.addEventListener('resize', handleMethodResize, { passive: true });
+            window.addEventListener('pageshow', measureMethodFlow, { passive: true });
+        }
+    }
+
     infoRequestForms.forEach((form) => {
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -1052,11 +1309,15 @@ document.addEventListener('DOMContentLoaded', () => {
             formStatus.className = 'form-status';
             formStatus.textContent = landingI18n.t('Enviando solicitud...');
 
+            const controller = typeof AbortController === 'function' ? new AbortController() : null;
+            const timeoutId = controller ? window.setTimeout(() => controller.abort(), 15000) : 0;
+
             try {
-                const response = await fetch('/api/request-info', {
+                const response = await fetch(form.action || '/api/request-info', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(payload),
+                    signal: controller?.signal
                 });
 
                 const data = await response.json().catch(() => ({}));
@@ -1075,8 +1336,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                 formStatus.className = 'form-status is-error';
-                formStatus.textContent = landingI18n.t(error.message || 'Ha ocurrido un error al enviar la solicitud.');
+                const errorMessage = error?.name === 'AbortError'
+                    ? landingI18n.t('La solicitud est\u00e1 tardando demasiado. Int\u00e9ntalo de nuevo o escr\u00edbenos por WhatsApp.')
+                    : landingI18n.t(error.message || 'Ha ocurrido un error al enviar la solicitud.');
+                formStatus.textContent = `${errorMessage} `;
+                const fallbackLink = document.createElement('a');
+                fallbackLink.href = 'https://wa.me/34644576186?text=Hola%2C%20he%20intentado%20enviar%20una%20solicitud%20desde%20la%20web%20de%20ADAMIS.';
+                fallbackLink.target = '_blank';
+                fallbackLink.rel = 'noopener';
+                fallbackLink.textContent = landingI18n.t('Abrir WhatsApp');
+                formStatus.appendChild(fallbackLink);
             } finally {
+                if (timeoutId) window.clearTimeout(timeoutId);
                 formSubmit.disabled = false;
             }
         });
