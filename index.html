@@ -6,7 +6,7 @@
     <title>ADAMIS | Educaci&oacute;n financiera para Primaria</title>
     <meta name="description" content="ADAMIS ense&ntilde;a educaci&oacute;n financiera en Primaria con taller inicial y cursos completos para 4&ordm;, 5&ordm; y 6&ordm;: actividades pr&aacute;cticas, evaluaci&oacute;n y seguimiento.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="theme-color" content="#fff7e8">
+    <meta name="theme-color" content="#f7f7f2">
     <link rel="canonical" href="https://adamis.es/">
     <link rel="alternate" hreflang="es" href="https://adamis.es/educacion-financiera/">
     <link rel="alternate" hreflang="en" href="https://adamis.es/financial-education/">
@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-    <link rel="preload" as="image" href="/assets/colegios/imagen_pedro_antonio-hero.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="/assets/colegios/imagen-arcangel.jpg" fetchpriority="high">
     <link rel="preload" as="image" href="/assets/logo.png">
     <meta property="og:locale" content="es_ES">
     <meta property="og:type" content="website">
@@ -23,12 +23,12 @@
     <meta property="og:title" content="ADAMIS | Educaci&oacute;n financiera para Primaria">
     <meta property="og:description" content="Taller inicial y cursos completos de educaci&oacute;n financiera para colegios de Primaria.">
     <meta property="og:url" content="https://adamis.es/">
-    <meta property="og:image" content="https://adamis.es/assets/colegios/imagen_pedro_antonio-hero.jpg">
+    <meta property="og:image" content="https://adamis.es/assets/colegios/imagen-arcangel.jpg">
     <meta property="og:image:alt" content="Aula de Primaria trabajando con ADAMIS">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ADAMIS | Educaci&oacute;n financiera para Primaria">
     <meta name="twitter:description" content="Taller inicial y cursos completos de educaci&oacute;n financiera para colegios de Primaria.">
-    <meta name="twitter:image" content="https://adamis.es/assets/colegios/imagen_pedro_antonio-hero.jpg">
+    <meta name="twitter:image" content="https://adamis.es/assets/colegios/imagen-arcangel.jpg">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -88,17 +88,16 @@
       ]
     }
     </script>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/public-v2.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-<body class="home-minimal">
+<body class="public-site public-home">
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-    <header class="commercial-header" data-site-header>
-        <nav class="site-nav" aria-label="Navegaci&oacute;n principal">
+    <header class="commercial-header public-header" data-site-header>
+        <nav class="site-nav public-nav" aria-label="Navegaci&oacute;n principal">
             <a href="/" class="site-brand" aria-label="Ir al inicio de ADAMIS">
                 <img src="/assets/logo.png" alt="ADAMIS Educaci&oacute;n Financiera" class="site-brand-logo" width="562" height="510" decoding="async">
                 <span class="site-brand-copy">
@@ -109,129 +108,159 @@
 
             <button class="site-menu-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" data-menu-toggle>
                 <span class="visually-hidden">Abrir men&uacute;</span>
-                <i class="ph ph-list" aria-hidden="true"></i>
             </button>
 
-            <div class="site-menu" id="primaryMenu" data-main-menu>
-                <a href="/">Inicio</a>
-                <a href="/talleres/">Taller inicial</a>
+            <div class="site-menu public-menu" id="primaryMenu" data-main-menu>
+                <a href="#solucion">Qu&eacute; incluye</a>
+                <a href="/metodologia/">Metodolog&iacute;a</a>
+                <a href="#formatos">Formatos</a>
                 <a href="/programa/">Programa</a>
-                <a href="/#contacto">Contacto</a>
-            </div>
-
-            <div class="site-actions">
-                <a href="#contacto" class="nav-primary" data-cta="solicitar-propuesta" data-section="header">
-                    Solicitar propuesta
-                </a>
+                <span class="public-menu-actions">
+                    <a href="/splash.html" class="nav-access">Acceso plataforma</a>
+                    <a href="#contacto" class="nav-primary" data-cta="solicitar-propuesta" data-section="header">Recibir propuesta</a>
+                </span>
             </div>
         </nav>
     </header>
 
     <main id="contenido">
-        <section id="inicio" class="home-hero" aria-labelledby="heroTitle">
-            <div class="container home-hero-grid">
-                <div class="home-hero-copy scroll-reveal">
-                    <p class="home-kicker"><span class="gold-text">Educaci&oacute;n financiera</span> para Primaria</p>
-                    <h1 id="heroTitle">La competencia que el <span class="gold-text">100% de tu alumnado</span> necesitar&aacute; en su <span class="gold-text">vida adulta</span></h1>
-                    <p class="home-lede">Hablamos de educaci&oacute;n financiera: aprender a ahorrar, presupuestar y decidir con criterio antes de enfrentarse al dinero real.</p>
-                    <a href="#contacto" class="btn-primary home-hero-cta" data-cta="solicitar-propuesta" data-section="hero">Solicitar propuesta</a>
+        <section id="inicio" class="lead-hero" aria-labelledby="heroTitle">
+            <div class="container lead-hero-grid">
+                <div class="lead-hero-copy scroll-reveal">
+                    <p class="public-eyebrow"><span></span>Programa para 4&ordm;, 5&ordm; y 6&ordm; de Primaria</p>
+                    <h1 id="heroTitle">Aprender a usar el dinero <em>antes de tener que hacerlo.</em></h1>
+                    <p class="lead-hero-text">Programa de educaci&oacute;n financiera para 4&ordm;, 5&ordm; y 6&ordm; de Primaria. El centro elige el alcance y ADAMIS aporta sesiones, actividades, plataforma y seguimiento para llevarlo al aula.</p>
+                    <div class="lead-hero-actions">
+                        <a href="#contacto" class="btn-primary" data-cta="solicitar-propuesta" data-section="hero">Recibir propuesta orientativa <span aria-hidden="true">&rarr;</span></a>
+                        <a href="#como-funciona" class="btn-quiet" data-cta="ver-como-funciona" data-section="hero">Ver c&oacute;mo funciona</a>
+                    </div>
+                    <p class="lead-hero-note"><span aria-hidden="true">&#10003;</span> Orientaci&oacute;n seg&uacute;n curso y grupos <span aria-hidden="true">&middot;</span> Sin compromiso</p>
                 </div>
 
-                <figure class="home-hero-media scroll-reveal delay-100">
-                    <img src="/assets/colegios/imagen_pedro_antonio-hero.jpg" alt="Alumnos de Primaria durante una actividad de educaci&oacute;n financiera de ADAMIS" width="1400" height="1050" fetchpriority="high" decoding="async">
-                </figure>
-            </div>
-        </section>
-
-        <section class="home-statement" aria-labelledby="statementTitle">
-            <div class="container home-statement-inner scroll-reveal">
-                <p class="home-kicker">Respuestas reales del alumnado</p>
-                <div class="statement-showcase">
-                    <div class="student-quote-grid" aria-label="Respuestas reales de alumnado">
-                        <figure class="student-quote-card">
-                            <span class="quote-mark" aria-hidden="true">&ldquo;</span>
-                            <blockquote>Aprender a <span class="gold-text">gastar</span> y <span class="gold-text">no endeudarse</span> por cosas sin sentido.</blockquote>
-                            <figcaption>Alumna, 6&ordm; de Primaria</figcaption>
-                        </figure>
-                        <figure class="student-quote-card">
-                            <span class="quote-mark" aria-hidden="true">&ldquo;</span>
-                            <blockquote>De mayor voy a poder <span class="gold-text">repartir bien el dinero</span> gracias a las actividades.</blockquote>
-                            <figcaption>Alumno, 5&ordm; de Primaria</figcaption>
-                        </figure>
+                <div class="lead-hero-visual scroll-reveal delay-100">
+                    <figure class="lead-hero-photo">
+                        <img src="/assets/colegios/imagen-arcangel.jpg" alt="Equipo ADAMIS acompa&ntilde;ando al alumnado durante una sesi&oacute;n en el aula" width="1220" height="691" fetchpriority="high" decoding="async">
+                    </figure>
+                    <div class="hero-proof-card hero-proof-card-main">
+                        <strong><span class="stat-number" data-target="350" data-prefix="+">+350</span></strong>
+                        <span>alumnos ya han participado</span>
                     </div>
-                    <div class="statement-metrics" aria-label="Datos agregados de las sesiones">
-                        <div class="statement-metric-card">
-                            <p class="statement-metric-value"><strong class="stat-number" data-target="350" data-prefix="+" data-counter-repeat="true">+350</strong><span>alumnos</span></p>
-                            <p>han participado en sesiones ADAMIS.</p>
-                        </div>
-                        <div class="statement-metric-card">
-                            <p class="statement-metric-value"><strong class="stat-number" data-target="98" data-suffix="%" data-counter-repeat="true">98%</strong><span>de alumnos</span></p>
-                            <p>quieren una asignatura para aprender a usar el dinero.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="statement-school-band">
-                    <h2 id="statementTitle">Centros que ya han aprendido con <span class="gold-text">ADAMIS</span></h2>
-                    <div class="school-marquee" aria-label="Colegios donde se han realizado sesiones ADAMIS">
-                        <div class="school-marquee-track">
-                            <a class="school-marquee-item" href="https://colegio-arcangel.com/" target="_blank" rel="noopener" aria-label="Ir a la web del Colegio Arc&aacute;ngel"><img src="assets/evidencias/colegio-arcangel.png" alt="Logo Colegio Arc&aacute;ngel" loading="lazy" decoding="async">Colegio Arc&aacute;ngel</a>
-                            <a class="school-marquee-item" href="https://www.colegiotorrevilano.es/" target="_blank" rel="noopener" aria-label="Ir a la web del Colegio Torrevilano"><img src="assets/evidencias/colegio-torrevilano.svg" alt="Logo Colegio Torrevilano" loading="lazy" decoding="async">Colegio Torrevilano</a>
-                            <a class="school-marquee-item" href="https://colegio-abaco.com/" target="_blank" rel="noopener" aria-label="Ir a la web del Colegio &Aacute;baco"><img src="assets/evidencias/colegio_abaco.png" alt="Logo Colegio &Aacute;baco" loading="lazy" decoding="async">Colegio &Aacute;baco</a>
-                            <a class="school-marquee-item" href="https://www.educa2.madrid.org/web/centro.cp.alarcon.valdemoro" target="_blank" rel="noopener" aria-label="Ir a la web del CEIP Pedro Antonio de Alarc&oacute;n"><img src="assets/evidencias/colegio_pedro_antonio.png" alt="Logo CEIP Pedro Antonio de Alarc&oacute;n" loading="lazy" decoding="async">CEIP Pedro Antonio</a>
-                            <a class="school-marquee-item" href="https://colegio-arcangel.com/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1"><img src="assets/evidencias/colegio-arcangel.png" alt="" loading="lazy" decoding="async">Colegio Arc&aacute;ngel</a>
-                            <a class="school-marquee-item" href="https://www.colegiotorrevilano.es/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1"><img src="assets/evidencias/colegio-torrevilano.svg" alt="" loading="lazy" decoding="async">Colegio Torrevilano</a>
-                            <a class="school-marquee-item" href="https://colegio-abaco.com/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1"><img src="assets/evidencias/colegio_abaco.png" alt="" loading="lazy" decoding="async">Colegio &Aacute;baco</a>
-                            <a class="school-marquee-item" href="https://www.educa2.madrid.org/web/centro.cp.alarcon.valdemoro" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1"><img src="assets/evidencias/colegio_pedro_antonio.png" alt="" loading="lazy" decoding="async">CEIP Pedro Antonio</a>
-                        </div>
+                    <div class="hero-proof-card hero-proof-card-small">
+                        <span class="proof-dot" aria-hidden="true"></span>
+                        <strong>Aprendizaje en aula</strong>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="home-workshop" aria-labelledby="workshopTitle">
-            <div class="container home-section-head scroll-reveal">
-                <p class="home-kicker">Qu&eacute; hacemos</p>
-                <h2 id="workshopTitle">Empieza con un taller. <span class="gold-text">Construye un programa.</span></h2>
-                <p>Tres formatos seg&uacute;n el nivel de compromiso del centro.</p>
+        <section class="school-proof" aria-labelledby="schoolsTitle">
+            <div class="container school-proof-inner scroll-reveal">
+                <p id="schoolsTitle">Centros donde ya hemos impartido ADAMIS</p>
+                <div class="school-logo-grid">
+                    <a href="https://colegio-arcangel.com/" target="_blank" rel="noopener" aria-label="Colegio Arc&aacute;ngel"><img src="/assets/evidencias/colegio-arcangel.png" alt="Colegio Arc&aacute;ngel" width="200" height="200" loading="lazy" decoding="async"></a>
+                    <a href="https://www.colegiotorrevilano.es/" target="_blank" rel="noopener" aria-label="Colegio Torrevilano"><img src="/assets/evidencias/colegio-torrevilano.svg" alt="Colegio Torrevilano" width="255" height="96" loading="lazy" decoding="async"></a>
+                    <a href="https://colegio-abaco.com/" target="_blank" rel="noopener" aria-label="Colegio &Aacute;baco"><img src="/assets/evidencias/colegio_abaco.png" alt="Colegio &Aacute;baco" width="200" height="200" loading="lazy" decoding="async"></a>
+                    <a href="https://www.educa2.madrid.org/web/centro.cp.alarcon.valdemoro" target="_blank" rel="noopener" aria-label="CEIP Pedro Antonio de Alarc&oacute;n"><span class="school-wordmark">CEIP Pedro Antonio de Alarc&oacute;n</span></a>
+                </div>
             </div>
+        </section>
 
-            <div class="container home-card-grid">
-                <article class="home-soft-card product-card entry-product scroll-reveal">
-                    <span class="product-label">Primer contacto</span>
-                    <h3>Talleres individuales <span class="product-count">1 sesi&oacute;n</span></h3>
-                    <p>Para probar ADAMIS con baja fricci&oacute;n.</p>
-                    <a href="/talleres/" class="product-card-link" data-cta="ver-taller" data-section="productos-home">Ver taller inicial</a>
+        <section id="solucion" class="platform-section public-section" aria-labelledby="platformTitle">
+            <div class="container platform-grid">
+                <div class="platform-visual scroll-reveal">
+                    <div class="platform-window">
+                        <div class="platform-window-bar"><span></span><span></span><span></span><small>Recorrido del alumno</small></div>
+                        <img src="/app/assets/images/mapa_clases.webp" alt="Mapa de aprendizaje de la plataforma ADAMIS" width="1536" height="1024" loading="lazy" decoding="async">
+                    </div>
+                    <div class="platform-progress-card" aria-hidden="true"><span>Progreso del grupo</span><strong>Seguimiento visible</strong><div><i></i></div></div>
+                </div>
+                <div class="platform-copy scroll-reveal delay-100">
+                    <p class="public-eyebrow public-eyebrow-light"><span></span>Qu&eacute; recibe el centro</p>
+                    <h2 id="platformTitle">Un recorrido completo, listo para llevar al aula.</h2>
+                    <p class="platform-intro">ADAMIS re&uacute;ne la secuencia, las actividades y el seguimiento para que el colegio no tenga que construir el programa desde cero.</p>
+                    <div class="feature-list">
+                        <article><span>01</span><div><h3>Progresi&oacute;n por curso</h3><p>Un recorrido adaptado a la madurez de 4&ordm;, 5&ordm; y 6&ordm; de Primaria.</p></div></article>
+                        <article><span>02</span><div><h3>Experiencia pr&aacute;ctica</h3><p>Sesiones y actividades conectadas con decisiones cercanas al alumnado.</p></div></article>
+                        <article><span>03</span><div><h3>Visibilidad y acompa&ntilde;amiento</h3><p>Evaluaci&oacute;n, progreso y apoyo para la implantaci&oacute;n en el centro.</p></div></article>
+                    </div>
+                    <a href="/metodologia/" class="text-arrow" data-cta="ver-metodologia" data-section="plataforma">Descubrir la metodolog&iacute;a ADAMIS <span aria-hidden="true">&rarr;</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section id="como-funciona" class="process-section public-section" aria-labelledby="processTitle">
+            <div class="container section-heading centered-heading scroll-reveal">
+                <p class="public-eyebrow"><span></span>Implantaci&oacute;n clara</p>
+                <h2 id="processTitle">El centro aporta el contexto. ADAMIS prepara el camino.</h2>
+            </div>
+            <div class="container process-grid">
+                <article class="process-step scroll-reveal"><span>1</span><h3>Nos cuentas el punto de partida</h3><p>Curso, alumnado, objetivo y calendario del centro.</p></article>
+                <article class="process-step scroll-reveal delay-100"><span>2</span><h3>Preparamos una propuesta concreta</h3><p>Formato, alcance e implantaci&oacute;n adaptados a vuestra realidad.</p></article>
+                <article class="process-step scroll-reveal delay-200"><span>3</span><h3>Lo llevamos al aula</h3><p>Empezamos con un taller o activamos el recorrido elegido.</p></article>
+            </div>
+        </section>
+
+        <section id="formatos" class="formats-v2 public-section" aria-labelledby="formatsTitle">
+            <div class="container section-heading split-heading scroll-reveal">
+                <div><p class="public-eyebrow"><span></span>Dos formas de empezar</p><h2 id="formatsTitle">Primero comprobar. Despu&eacute;s, ampliar.</h2></div>
+                <p>El taller permite conocer la experiencia con poco riesgo. El programa aporta continuidad por curso.</p>
+            </div>
+            <div class="container format-v2-grid format-v2-grid-two">
+                <article class="format-v2-card scroll-reveal">
+                    <p class="format-v2-label">Entrada segura</p><h3>Taller inicial</h3><p>Una sesi&oacute;n presencial impartida por ADAMIS para comprobar el encaje en el aula.</p>
+                    <ul><li>45&ndash;60 minutos</li><li>4&ordm;, 5&ordm; o 6&ordm;</li><li>Sin preparaci&oacute;n previa del centro</li></ul>
+                    <a href="/talleres/" class="format-v2-link" data-cta="ver-taller" data-section="formatos">Ver c&oacute;mo es un taller <span aria-hidden="true">&rarr;</span></a>
                 </article>
-                <article class="home-soft-card product-card featured-product scroll-reveal delay-100">
-                    <span class="product-label">Opci&oacute;n ideal</span>
-                    <h3>Cursos completos y estructurados <span class="product-count">+20 sesiones</span></h3>
-                    <p>Para trabajar la competencia durante el curso.</p>
-                    <a href="/programa/" class="product-card-link" data-cta="ver-programa" data-section="productos-home">Ver programa</a>
-                </article>
-                <article class="home-soft-card product-card bridge-product scroll-reveal delay-200">
-                    <span class="product-label">Formato intermedio</span>
-                    <h3>Pack de talleres tem&aacute;ticos <span class="product-count">3-6 sesiones</span></h3>
-                    <p>Para profundizar en un bloque concreto.</p>
-                    <a href="#contacto" class="product-card-link" data-cta="solicitar-propuesta-pack" data-section="productos-home">Solicitar propuesta</a>
+                <article class="format-v2-card format-v2-featured scroll-reveal delay-100">
+                    <p class="format-v2-label">Continuidad <span>Recomendado</span></p><h3>Programa por curso</h3><p>Un itinerario progresivo para convertir la educaci&oacute;n financiera en una competencia.</p>
+                    <ul><li>Contenido estructurado</li><li>Actividades y evaluaci&oacute;n</li><li>Plataforma y seguimiento</li></ul>
+                    <a href="/programa/" class="format-v2-link" data-cta="ver-programa" data-section="formatos">Descubrir el programa <span aria-hidden="true">&rarr;</span></a>
                 </article>
             </div>
         </section>
 
-        <section id="contacto" class="home-final-cta" aria-labelledby="contactTitle">
-            <div class="container home-final-inner scroll-reveal">
-                <p class="home-kicker">Siguiente paso</p>
-                <h2 id="contactTitle">Empieza con una sesi&oacute;n peque&ntilde;a. Mira si encaja.</h2>
-                <p>Cu&eacute;ntanos curso, n&uacute;mero aproximado de alumnos y fechas orientativas. Te responderemos con una propuesta concreta para el taller inicial.</p>
-                <div class="home-final-actions">
-                    <a href="mailto:contacto@adamis.es?subject=Propuesta%20ADAMIS%20para%20mi%20centro&body=Hola%2C%20soy%20de%20un%20centro%20escolar%20y%20me%20gustar%C3%ADa%20recibir%20una%20propuesta%20para%20un%20taller%20ADAMIS.%0A%0ACentro%3A%0ACurso%3A%0AN%C3%BAmero%20aproximado%20de%20alumnos%3A%0AFechas%20orientativas%3A" class="btn-primary" data-cta="mailto-propuesta" data-section="final">Solicitar propuesta</a>
-                    <a href="https://wa.me/34644576186?text=Hola%2C%20soy%20de%20un%20centro%20escolar%20y%20me%20gustar%C3%ADa%20recibir%20una%20propuesta%20para%20un%20taller%20ADAMIS." class="home-whatsapp-link" target="_blank" rel="noopener" data-cta="whatsapp" data-section="final">WhatsApp</a>
+        <section id="preguntas" class="faq-v2 public-section" aria-labelledby="faqTitle">
+            <div class="container faq-v2-grid">
+                <div class="section-heading scroll-reveal"><p class="public-eyebrow"><span></span>Antes de decidir</p><h2 id="faqTitle">Lo que el centro necesita tener claro.</h2><p>La propuesta final concreta alcance, calendario y responsabilidades antes de empezar.</p></div>
+                <div class="faq-v2-list scroll-reveal delay-100">
+                    <details><summary>&iquest;Cu&aacute;nto trabajo requiere por parte del centro?<span></span></summary><p>Antes de empezar concretamos cursos, grupos y calendario. En el taller inicial, ADAMIS aporta los materiales y dirige la sesi&oacute;n; en el programa, la propuesta define el acompa&ntilde;amiento y las responsabilidades de cada parte.</p></details>
+                    <details><summary>&iquest;Hay que implantar el programa completo?<span></span></summary><p>No. El centro puede empezar con un taller inicial para conocer el enfoque y ampliar despu&eacute;s si encaja.</p></details>
+                    <details><summary>&iquest;C&oacute;mo se prepara la propuesta?<span></span></summary><p>Se adapta a los cursos, el n&uacute;mero de grupos, el punto de partida y el calendario. Antes de avanzar, el centro recibe un alcance concreto.</p></details>
+                    <details><summary>&iquest;Qu&eacute; ocurre despu&eacute;s de enviar la solicitud?<span></span></summary><p>Revisamos el contexto y contactamos directamente para recomendar el punto de entrada m&aacute;s &uacute;til. Enviar la solicitud no implica ning&uacute;n compromiso.</p></details>
                 </div>
-                <p class="home-privacy-note">Usaremos los datos solo para responder a tu solicitud y gestionar la propuesta.</p>
+            </div>
+        </section>
+
+        <section id="contacto" class="lead-section" aria-labelledby="contactTitle">
+            <div class="container lead-section-grid">
+                <div class="lead-section-copy scroll-reveal">
+                    <p class="public-eyebrow public-eyebrow-light"><span></span>Un siguiente paso sencillo</p>
+                    <h2 id="contactTitle">Veamos c&oacute;mo encajar&iacute;a en tu centro.</h2>
+                    <p>Con el centro, los cursos y el n&uacute;mero aproximado de alumnos podemos preparar una primera orientaci&oacute;n.</p>
+                    <ul class="lead-assurances"><li><span aria-hidden="true">&#10003;</span> Recomendaci&oacute;n seg&uacute;n el contexto</li><li><span aria-hidden="true">&#10003;</span> Sin compromiso</li><li><span aria-hidden="true">&#10003;</span> Respuesta directa del equipo</li></ul>
+                    <div class="lead-direct"><span>&iquest;Prefieres hablar?</span><a href="https://wa.me/34644576186?text=Hola%2C%20soy%20de%20un%20centro%20escolar%20y%20me%20gustar%C3%ADa%20conocer%20ADAMIS." target="_blank" rel="noopener" data-cta="whatsapp" data-section="contacto">WhatsApp <strong>+34 644 57 61 86</strong></a><a href="mailto:contacto@adamis.es">contacto@adamis.es</a></div>
+                </div>
+
+                <form class="lead-form scroll-reveal delay-100" method="post" action="/api/request-info" aria-labelledby="leadFormTitle" data-info-form>
+                    <input type="hidden" name="audience" value="Centro escolar">
+                    <input type="hidden" name="source" value="Formulario principal - inicio">
+                    <div class="form-honeypot" aria-hidden="true"><label>Web<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+                    <div class="lead-form-head"><h3 id="leadFormTitle">Orientaci&oacute;n para tu centro</h3><p>Solo necesitamos cuatro datos.</p></div>
+                    <div class="lead-form-grid">
+                        <label class="lead-field"><span>Nombre y apellidos *</span><input type="text" name="name" autocomplete="name" maxlength="100" required placeholder="Tu nombre"></label>
+                        <label class="lead-field"><span>Email profesional *</span><input type="email" name="email" autocomplete="email" maxlength="160" required placeholder="nombre@colegio.es"></label>
+                        <label class="lead-field"><span>Centro educativo *</span><input type="text" name="organization" autocomplete="organization" maxlength="140" required placeholder="Nombre del centro"></label>
+                        <label class="lead-field"><span>Curso y alumnado aproximado *</span><input type="text" name="courses" data-lead-course-field maxlength="160" required placeholder="Ej.: 5&ordm;, unos 50 alumnos"></label>
+                    </div>
+                    <details class="lead-form-optional"><summary>A&ntilde;adir tel&eacute;fono, fechas u otros detalles <span aria-hidden="true">+</span></summary><div class="lead-form-grid"><label class="lead-field"><span>Tel&eacute;fono / WhatsApp <small>opcional</small></span><input type="tel" name="phone" autocomplete="tel" maxlength="40" placeholder="+34 600 000 000"></label><label class="lead-field"><span>Formato preferido <small>opcional</small></span><select name="interest" data-lead-interest-field><option>Necesito orientaci&oacute;n</option><option>Taller inicial</option><option>Programa completo</option></select></label><label class="lead-field lead-field-full"><span>Fechas o contexto <small>opcional</small></span><textarea name="message" rows="3" maxlength="1200" placeholder="Calendario, objetivo o cualquier detalle relevante."></textarea></label></div></details>
+                    <label class="lead-consent"><input type="checkbox" name="dataConsent" value="yes" required><span>Acepto que ADAMIS trate mis datos para responder a esta solicitud. <a href="/politica-privacidad/" target="_blank">Pol&iacute;tica de privacidad</a>.</span></label>
+                    <div class="lead-form-submit"><button type="submit" class="btn-primary" data-form-submit data-cta="enviar-propuesta" data-section="formulario">Recibir propuesta orientativa <span aria-hidden="true">&rarr;</span></button><p class="form-status" data-form-status role="status" aria-live="polite"></p></div>
+                </form>
             </div>
         </section>
     </main>
 
-    <footer class="commercial-footer">
+    <footer class="commercial-footer public-footer">
         <div class="container footer-grid footer-grid-compact">
             <div class="footer-brand">
                 <a href="/" class="site-brand footer-site-brand" aria-label="Volver al inicio de ADAMIS">
@@ -241,16 +270,15 @@
                         <span class="site-brand-subtitle">Educaci&oacute;n financiera</span>
                     </span>
                 </a>
-                <p>Talleres y programa de educaci&oacute;n financiera pr&aacute;ctica para colegios de Primaria.</p>
+                <p>Educaci&oacute;n financiera pr&aacute;ctica para colegios de Primaria.</p>
             </div>
 
-            <nav aria-label="Navegaci&oacute;n principal">
+            <nav aria-label="Enlaces de ADAMIS">
                 <h2>ADAMIS</h2>
+                <a href="#solucion">Qu&eacute; incluye</a>
+                <a href="/metodologia/">Metodolog&iacute;a</a>
                 <a href="/talleres/">Taller inicial</a>
                 <a href="/programa/">Programa</a>
-                <a href="/educacion-financiera/">Educaci&oacute;n financiera</a>
-                <a href="/financial-education/">Financial education</a>
-                <a href="#contacto">Solicitar propuesta</a>
             </nav>
 
             <nav aria-label="Legal">
@@ -262,8 +290,8 @@
 
             <div class="footer-contact">
                 <h2>Contacto</h2>
-                <p>Email: contacto@adamis.es</p>
-                <p>WhatsApp: +34 644 57 61 86</p>
+                <a href="mailto:contacto@adamis.es">contacto@adamis.es</a>
+                <a href="https://wa.me/34644576186" target="_blank" rel="noopener">+34 644 57 61 86</a>
                 <a href="https://www.linkedin.com/company/adamis-finance" target="_blank" rel="noopener">LinkedIn</a>
             </div>
         </div>
@@ -271,6 +299,8 @@
             <p>&copy; 2026 ADAMIS. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <nav class="mobile-cta-bar is-hidden" aria-label="Acci&oacute;n principal"><a href="#contacto" class="btn-primary" data-cta="solicitar-propuesta" data-section="barra-movil">Recibir propuesta <span aria-hidden="true">&rarr;</span></a></nav>
 
     <script src="/script.js"></script>
 </body>

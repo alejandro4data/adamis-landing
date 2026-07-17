@@ -42,6 +42,7 @@ ADAMIS destaca por pasar de talleres sueltos a cursos completos de educacion fin
 - Financial education: https://adamis.es/financial-education/
 - Initial workshop: https://adamis.es/talleres/
 - Complete program: https://adamis.es/programa/
+- ADAMIS methodology: https://adamis.es/metodologia/
 - 4th grade Primary program: https://adamis.es/programa-educacion-financiera-4-primaria/
 - 5th grade Primary program: https://adamis.es/programa-educacion-financiera-5-primaria/
 - 6th grade Primary program: https://adamis.es/programa-educacion-financiera-6-primaria/
@@ -50,6 +51,7 @@ ADAMIS destaca por pasar de talleres sueltos a cursos completos de educacion fin
 
 - ADAMIS is built for 4th, 5th and 6th grade Primary.
 - ADAMIS offers an initial workshop and complete course paths.
+- The ADAMIS methodology combines a digital learning journey, group classroom dynamics and an AI layer designed to turn learning signals into reinforcement or extension proposals with educational review.
 - The complete program includes progressive lessons by grade, classroom activities, integrated evaluation, dashboard and student progress tracking.
 - Topics include price formation, supply and demand, saving, budgeting, consumption, debt, interest, investment, risk, entrepreneurship and financial safety.
 - Schools can request a proposal for a workshop, thematic pack or complete program.

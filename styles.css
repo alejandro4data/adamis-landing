@@ -1411,10 +1411,6 @@ button.is-disabled {
 }
 
 @media (max-width: 980px) {
-    body {
-        padding-bottom: 74px;
-    }
-
     .seo-answer-grid {
         grid-template-columns: 1fr;
         gap: 24px;
@@ -7068,5 +7064,220 @@ footer {
         border-top: 2px solid currentColor;
         border-bottom: 2px solid currentColor;
         background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
+    }
+}
+
+/* Final public mobile fixes */
+.commercial-footer .footer-site-brand .site-brand-subtitle {
+    color: #f6d77c;
+    -webkit-text-fill-color: #f6d77c;
+}
+
+@media (max-width: 720px) {
+    body .commercial-header {
+        position: sticky;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        overflow: visible;
+    }
+
+    body .commercial-header .site-nav,
+    body.home-minimal .commercial-header .site-nav,
+    body.detail-minimal .commercial-header .site-nav {
+        position: relative;
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) 44px !important;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        max-width: none;
+        min-height: 64px;
+        padding: 8px 16px !important;
+        box-sizing: border-box;
+    }
+
+    body .commercial-header .site-brand {
+        min-width: 0;
+        max-width: calc(100vw - 96px);
+    }
+
+    body .commercial-header .site-actions,
+    body.home-minimal .commercial-header .site-actions,
+    body.detail-minimal .commercial-header .site-actions {
+        display: none !important;
+    }
+
+    body .commercial-header .site-menu-toggle,
+    body .commercial-header [data-menu-toggle],
+    body.home-minimal .commercial-header .site-menu-toggle,
+    body.detail-minimal .commercial-header .site-menu-toggle {
+        position: static !important;
+        top: auto !important;
+        right: auto !important;
+        z-index: 1;
+        display: inline-flex !important;
+        grid-column: 2;
+        justify-self: end;
+        align-self: center;
+        width: 44px;
+        min-width: 44px;
+        height: 44px;
+        margin: 0;
+        transform: none !important;
+        border: 1px solid rgba(30, 36, 48, 0.18);
+        border-radius: 14px;
+        background: #ffffff;
+        color: var(--ink);
+        box-shadow: 0 8px 18px rgba(30, 36, 48, 0.08);
+    }
+
+    body .commercial-header .site-menu-toggle::before,
+    body .commercial-header [data-menu-toggle]::before {
+        display: block;
+        content: "";
+        width: 18px;
+        height: 13px;
+        border-top: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
+    }
+
+    body .commercial-header .site-menu,
+    body.home-minimal .commercial-header .site-menu,
+    body.detail-minimal .commercial-header .site-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 16px;
+        left: 16px;
+        z-index: 2000;
+        display: none !important;
+        width: auto;
+        max-width: calc(100vw - 32px);
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 12px;
+        border: 1px solid rgba(30, 36, 48, 0.1);
+        border-radius: 18px;
+        background: #fffdf7;
+        box-shadow: var(--shadow-deep);
+        box-sizing: border-box;
+    }
+
+    body .commercial-header.is-menu-open .site-menu,
+    body.home-minimal .commercial-header.is-menu-open .site-menu,
+    body.detail-minimal .commercial-header.is-menu-open .site-menu {
+        display: grid !important;
+    }
+
+    body .commercial-header .site-menu a {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        color: var(--ink);
+    }
+
+    body.detail-minimal .detail-page {
+        overflow-x: hidden;
+    }
+
+    body.detail-minimal .hero-commercial .container,
+    body.detail-minimal .program-section .container,
+    body.detail-minimal .how-section .container,
+    body.detail-minimal .formats-section .container,
+    body.detail-minimal .mid-cta-section .container {
+        width: 100%;
+        max-width: 560px;
+        margin-inline: auto;
+        padding-inline: 20px;
+        overflow: visible;
+        box-sizing: border-box;
+    }
+
+    body.detail-minimal .hero-grid,
+    body.detail-minimal .topic-editorial,
+    body.detail-minimal .course-card-grid,
+    body.detail-minimal .benefits-grid {
+        width: 100%;
+        margin-inline: auto;
+        justify-items: center;
+    }
+
+    body.detail-minimal .hero-copy,
+    body.detail-minimal .section-heading,
+    body.detail-minimal .topic-editorial-copy,
+    body.detail-minimal .video-card,
+    body.detail-minimal .hero-visual {
+        width: 100%;
+        max-width: 430px;
+        margin-inline: auto;
+    }
+
+    body.detail-minimal .hero-copy h1,
+    body.detail-minimal .hero-subheadline,
+    body.detail-minimal .video-description,
+    body.detail-minimal .hero-cta-row,
+    body.detail-minimal .hero-proof-list,
+    body.detail-minimal .video-card,
+    body.detail-minimal .hero-visual,
+    body.detail-minimal .hero-photo {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    body.detail-minimal .course-card-grid,
+    body.detail-minimal .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    body.detail-minimal .course-commercial-card,
+    body.detail-minimal .benefits-grid article {
+        width: 100%;
+        max-width: 430px;
+    }
+}
+
+@media (max-width: 520px) {
+    body .commercial-header .site-menu-toggle,
+    body .commercial-header [data-menu-toggle],
+    body.home-minimal .commercial-header .site-menu-toggle,
+    body.detail-minimal .commercial-header .site-menu-toggle {
+        position: fixed !important;
+        top: 10px !important;
+        right: auto !important;
+        left: calc(min(100vw, 390px) - 60px);
+        z-index: 2001;
+    }
+
+    body .commercial-header .site-menu,
+    body.home-minimal .commercial-header .site-menu,
+    body.detail-minimal .commercial-header .site-menu {
+        right: auto;
+        left: 16px;
+        width: min(calc(100vw - 32px), 358px);
+        max-width: 358px;
+    }
+
+    body.detail-minimal .hero-commercial .container,
+    body.detail-minimal .program-section .container,
+    body.detail-minimal .how-section .container,
+    body.detail-minimal .formats-section .container,
+    body.detail-minimal .mid-cta-section .container {
+        width: min(100%, 390px);
+        max-width: 390px;
+        padding-inline: 20px;
+    }
+
+    body.detail-minimal .hero-copy,
+    body.detail-minimal .section-heading,
+    body.detail-minimal .topic-editorial-copy,
+    body.detail-minimal .video-card,
+    body.detail-minimal .hero-visual,
+    body.detail-minimal .course-commercial-card,
+    body.detail-minimal .benefits-grid article {
+        width: calc(min(100vw, 390px) - 40px);
+        max-width: 350px;
     }
 }
