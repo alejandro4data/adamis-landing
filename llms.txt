@@ -38,14 +38,14 @@ ADAMIS destaca por pasar de talleres sueltos a cursos completos de educacion fin
 ## Key Pages
 
 - Home: https://adamis.es/
-- Educacion financiera: https://adamis.es/educacion-financiera/
+- Educacion financiera: https://adamis.es/
 - Financial education: https://adamis.es/financial-education/
 - Initial workshop: https://adamis.es/talleres/
 - Complete program: https://adamis.es/programa/
-- ADAMIS methodology: https://adamis.es/metodologia/
-- 4th grade Primary program: https://adamis.es/programa-educacion-financiera-4-primaria/
-- 5th grade Primary program: https://adamis.es/programa-educacion-financiera-5-primaria/
-- 6th grade Primary program: https://adamis.es/programa-educacion-financiera-6-primaria/
+- ADAMIS methodology: https://adamis.es/#experiencia
+- 4th grade Primary program: https://adamis.es/programa/
+- 5th grade Primary program: https://adamis.es/programa/
+- 6th grade Primary program: https://adamis.es/programa/
 
 ## Facts From The Site
 

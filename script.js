@@ -32,13 +32,13 @@
     const normalizedPath = `${window.location.pathname.replace(/\/+$/, '')}/`.replace(/^\/$/, '/');
     const requestedLang = getQueryLang();
 
-    if (requestedLang === 'en' && (normalizedPath === '/' || normalizedPath === '/educacion-financiera/')) {
+    if (requestedLang === 'en' && normalizedPath === '/') {
         window.location.replace('/financial-education/');
         return;
     }
 
     if (requestedLang === 'es' && normalizedPath === '/financial-education/') {
-        window.location.replace('/educacion-financiera/');
+        window.location.replace('/?lang=es');
         return;
     }
 
@@ -361,6 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('[data-menu-toggle]');
     const mainMenu = document.querySelector('[data-main-menu]');
     const menuToggleLabel = menuToggle?.querySelector('.visually-hidden');
+    const sectionNavLinks = Array.from(mainMenu?.querySelectorAll('[data-nav-section]') || []);
     const leadInterestTriggers = document.querySelectorAll('[data-lead-interest]');
     const leadInterestFields = document.querySelectorAll('[data-lead-interest-field]');
     const leadCourseFields = document.querySelectorAll('[data-lead-course-field]');
@@ -387,7 +388,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const getAnchorTargetPosition = (target) => {
         if (!target || target.id === 'inicio') return 0;
 
-        const leadFormAnchor = target.id === 'contacto' ? target.querySelector('.lead-form') : null;
+        const leadFormAnchor = target.id === 'contacto' && !document.body.classList.contains('landing-page')
+            ? target.querySelector('.lead-form')
+            : null;
         const contentAnchor = leadFormAnchor || target.querySelector(
             '.section-heading, .hero-copy, .trust-copy, .problem-copy, .how-grid, .schools-copy, .contact-copy, .section-intro, .impact-intro, .pilot-shell, .learning-shell, .products-intro, .closing-shell'
         ) || target;
@@ -451,6 +454,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
+    if (document.body.classList.contains('landing-page') && sectionNavLinks.length && 'IntersectionObserver' in window) {
+        const observedSections = sectionNavLinks
+            .map((link) => document.getElementById(link.dataset.navSection))
+            .filter(Boolean);
+        const visibleSections = new Set();
+
+        const setActiveNavSection = (sectionId = '') => {
+            sectionNavLinks.forEach((link) => {
+                if (link.dataset.navSection === sectionId) {
+                    link.setAttribute('aria-current', 'location');
+                } else {
+                    link.removeAttribute('aria-current');
+                }
+            });
+        };
+
+        const activeSectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.01) {
+                    visibleSections.add(entry.target.id);
+                } else {
+                    visibleSections.delete(entry.target.id);
+                }
+            });
+
+            const activeLine = window.innerHeight * 0.29;
+            const activeSection = observedSections
+                .filter((section) => visibleSections.has(section.id))
+                .sort((first, second) => (
+                    Math.abs(first.getBoundingClientRect().top - activeLine)
+                    - Math.abs(second.getBoundingClientRect().top - activeLine)
+                ))[0];
+            setActiveNavSection(activeSection?.id || '');
+        }, {
+            rootMargin: '-24% 0px -64% 0px',
+            threshold: 0.01
+        });
+
+        observedSections.forEach((section) => activeSectionObserver.observe(section));
+    }
+
     anchorLinks.forEach((link) => {
         link.addEventListener('click', (event) => {
             const hash = link.getAttribute('href');
@@ -469,7 +513,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (event.detail === 0) {
                 window.setTimeout(() => {
-                    const focusTarget = target.id === 'contacto' ? target.querySelector('.lead-form') || target : target;
+                    const focusTarget = target.id === 'contacto' && !document.body.classList.contains('landing-page')
+                        ? target.querySelector('.lead-form') || target
+                        : target;
                     focusTarget.setAttribute('tabindex', '-1');
                     focusTarget.focus({ preventScroll: true });
                 }, reducedMotionQuery.matches ? 0 : 450);
@@ -497,7 +543,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (window.location.hash) {
         window.requestAnimationFrame(() => window.requestAnimationFrame(alignInitialHash));
-        window.addEventListener('load', alignInitialHash, { once: true });
+        window.addEventListener('load', () => {
+            alignInitialHash();
+            window.setTimeout(alignInitialHash, 320);
+            window.setTimeout(alignInitialHash, 900);
+        }, { once: true });
+        document.fonts?.ready.then(() => {
+            window.requestAnimationFrame(alignInitialHash);
+        });
     }
 
     const selectLeadInterest = (interest = '') => {
@@ -674,26 +727,116 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (mobileCtaBar && 'IntersectionObserver' in window) {
-        const mobileCtaHiddenSections = new Set();
-        const mobileCtaObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    mobileCtaHiddenSections.add(entry.target);
-                    return;
-                }
+        const isLanding = document.body.classList.contains('landing-page');
 
-                mobileCtaHiddenSections.delete(entry.target);
+        if (isLanding) {
+            const mobileCtaMedia = window.matchMedia('(max-width: 768px)');
+            const heroCta = openingSection?.querySelector('[data-cta="llevar-adamis"]') || openingSection;
+            const mobileCtaState = {
+                heroVisible: true,
+                contactVisible: false,
+                footerVisible: false
+            };
+
+            const elementIsNearViewport = (element, bottomMargin = 0) => {
+                if (!element) return false;
+                const rect = element.getBoundingClientRect();
+                return rect.bottom > 0 && rect.top < window.innerHeight * (1 + bottomMargin);
+            };
+
+            const syncMobileCta = () => {
+                mobileCtaState.heroVisible = elementIsNearViewport(heroCta);
+                mobileCtaState.contactVisible = elementIsNearViewport(contactSection, 0.24);
+                mobileCtaState.footerVisible = elementIsNearViewport(footer, 0.12);
+                const menuOpen = menuToggle?.getAttribute('aria-expanded') === 'true';
+                const contactHasFocus = Boolean(contactSection?.contains(document.activeElement));
+                const shouldShow = mobileCtaMedia.matches
+                    && !mobileCtaState.heroVisible
+                    && !mobileCtaState.contactVisible
+                    && !mobileCtaState.footerVisible
+                    && !menuOpen
+                    && !contactHasFocus;
+
+                mobileCtaBar.classList.toggle('is-hidden', !shouldShow);
+                document.body.classList.toggle('is-mobile-cta-visible', shouldShow);
+                mobileCtaBar.dataset.heroVisible = String(mobileCtaState.heroVisible);
+                mobileCtaBar.dataset.menuOpen = String(menuOpen);
+                mobileCtaBar.dataset.contactVisible = String(mobileCtaState.contactVisible || contactHasFocus);
+                mobileCtaBar.dataset.footerVisible = String(mobileCtaState.footerVisible);
+                mobileCtaBar.dataset.stickyVisible = String(shouldShow);
+            };
+
+            const refreshMobileCtaGeometry = () => {
+                syncMobileCta();
+            };
+
+            mobileCtaState.heroVisible = elementIsNearViewport(heroCta);
+            mobileCtaState.contactVisible = elementIsNearViewport(contactSection, 0.24);
+            mobileCtaState.footerVisible = elementIsNearViewport(footer, 0.12);
+            syncMobileCta();
+
+            if (heroCta) {
+                const heroObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.target === heroCta) mobileCtaState.heroVisible = entry.isIntersecting;
+                    });
+                    syncMobileCta();
+                }, { threshold: 0.01 });
+                heroObserver.observe(heroCta);
+            }
+
+            const closingObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.target === contactSection) mobileCtaState.contactVisible = entry.isIntersecting;
+                    if (entry.target === footer) mobileCtaState.footerVisible = entry.isIntersecting;
+                });
+                syncMobileCta();
+            }, {
+                rootMargin: '0px 0px 24% 0px',
+                threshold: 0.01
             });
 
-            mobileCtaBar.classList.toggle('is-hidden', mobileCtaHiddenSections.size > 0);
-        }, {
-            rootMargin: '0px 0px -12% 0px',
-            threshold: 0.04
-        });
+            [contactSection, footer].filter(Boolean).forEach((section) => closingObserver.observe(section));
 
-        [openingSection, contactSection, footer].filter(Boolean).forEach((section) => {
-            mobileCtaObserver.observe(section);
-        });
+            if (menuToggle) {
+                const menuStateObserver = new MutationObserver(syncMobileCta);
+                menuStateObserver.observe(menuToggle, { attributes: true, attributeFilter: ['aria-expanded'] });
+            }
+
+            contactSection?.addEventListener('focusin', syncMobileCta);
+            contactSection?.addEventListener('focusout', () => window.requestAnimationFrame(syncMobileCta));
+            mobileCtaMedia.addEventListener?.('change', syncMobileCta);
+            let mobileCtaFrame = 0;
+            window.addEventListener('scroll', () => {
+                if (mobileCtaFrame) return;
+                mobileCtaFrame = window.requestAnimationFrame(() => {
+                    mobileCtaFrame = 0;
+                    refreshMobileCtaGeometry();
+                });
+            }, { passive: true });
+            window.addEventListener('resize', refreshMobileCtaGeometry, { passive: true });
+            window.addEventListener('orientationchange', refreshMobileCtaGeometry, { passive: true });
+        } else {
+            const mobileCtaHiddenSections = new Set();
+            const mobileCtaObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        mobileCtaHiddenSections.add(entry.target);
+                    } else {
+                        mobileCtaHiddenSections.delete(entry.target);
+                    }
+                });
+
+                mobileCtaBar.classList.toggle('is-hidden', mobileCtaHiddenSections.size > 0);
+            }, {
+                rootMargin: '0px 0px -12% 0px',
+                threshold: 0.04
+            });
+
+            [openingSection, contactSection, footer].filter(Boolean).forEach((section) => {
+                mobileCtaObserver.observe(section);
+            });
+        }
     }
 
     if (tutorialVideo && tutorialPlayButton) {
