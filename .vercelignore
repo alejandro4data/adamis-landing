@@ -1,0 +1,10 @@
+.env*
+source-materials/
+audit/
+.git/
+.github/
+.vercel/
+docs/
+CONTRIBUTING.md
+tmp_i18n_candidates.txt
+*.zip

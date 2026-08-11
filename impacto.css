@@ -1,0 +1,1488 @@
+/* Impacto: visual impact record built from approved ADAMIS evidence. */
+
+.public-site.impact-page {
+    --impact-paper: #fbf7ef;
+    --impact-paper-deep: #f1e8d8;
+    --impact-ink: #122b2a;
+    --impact-ink-soft: #425955;
+    --impact-night: #102d2c;
+    --impact-night-deep: #0b2423;
+    --impact-teal: #1d6662;
+    --impact-gold: #f5b92f;
+    --impact-gold-light: #ffda70;
+    --impact-gold-deep: #8a5700;
+    --impact-line: rgba(18, 43, 42, 0.15);
+    --impact-line-light: rgba(255, 255, 255, 0.14);
+    --impact-shadow: 0 30px 80px rgba(18, 43, 42, 0.16);
+    background: var(--impact-paper);
+}
+
+.public-site.impact-page .public-menu > a[aria-current="page"]::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+}
+
+.public-site.impact-page .impact-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    width: fit-content;
+    color: var(--impact-teal);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.public-site.impact-page .impact-eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--impact-gold);
+}
+
+.public-site.impact-page .impact-eyebrow-light {
+    color: var(--impact-gold-light);
+}
+
+.public-site.impact-page .impact-section-heading h2 {
+    color: var(--impact-ink);
+    font-size: clamp(2.8rem, 5.2vw, 5.9rem);
+    font-weight: 800;
+    letter-spacing: -0.068em;
+    line-height: 0.96;
+}
+
+.public-site.impact-page .impact-section-heading h2 em {
+    color: var(--impact-gold-deep);
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.public-site.impact-page .impact-section-heading > p,
+.public-site.impact-page .impact-section-heading > div + p {
+    color: var(--impact-ink-soft);
+    font-size: clamp(1rem, 1.25vw, 1.16rem);
+    line-height: 1.75;
+}
+
+/* 01 — Hero */
+
+.public-site.impact-page .impact-hero {
+    position: relative;
+    isolation: isolate;
+    min-height: calc(100svh - 82px);
+    overflow: hidden;
+    border-bottom: 1px solid var(--impact-line);
+    background:
+        radial-gradient(circle at 88% 12%, rgba(245, 185, 47, 0.23), transparent 25%),
+        radial-gradient(circle at 5% 86%, rgba(29, 102, 98, 0.1), transparent 27%),
+        var(--impact-paper);
+}
+
+.public-site.impact-page .impact-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.24;
+    background-image: radial-gradient(rgba(18, 43, 42, 0.22) 0.8px, transparent 0.8px);
+    background-size: 20px 20px;
+    mask-image: linear-gradient(90deg, #000, transparent 43%, #000);
+}
+
+.public-site.impact-page .impact-hero-layout {
+    display: grid;
+    grid-template-columns: minmax(350px, 0.88fr) minmax(500px, 1.12fr);
+    align-items: center;
+    gap: clamp(52px, 7vw, 108px);
+    min-height: calc(100svh - 82px);
+    padding-block: clamp(62px, 7.5vw, 104px);
+}
+
+.public-site.impact-page .impact-hero-copy {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    justify-items: start;
+}
+
+.public-site.impact-page .impact-hero-copy h1 {
+    max-width: 10.5ch;
+    margin-top: 23px;
+    color: var(--impact-ink);
+    font-size: clamp(3.7rem, 5.75vw, 6.55rem);
+    font-weight: 800;
+    letter-spacing: -0.074em;
+    line-height: 0.91;
+}
+
+.public-site.impact-page .impact-hero-copy h1 em {
+    color: var(--impact-gold-deep);
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.public-site.impact-page .impact-hero-intro {
+    max-width: 60ch;
+    margin-top: 30px;
+    color: #50635f;
+    font-size: clamp(1rem, 1.18vw, 1.13rem);
+    line-height: 1.76;
+}
+
+.public-site.impact-page .impact-hero-evidence {
+    position: relative;
+    min-width: 0;
+    padding-left: clamp(22px, 3vw, 48px);
+}
+
+.public-site.impact-page .impact-hero-evidence::before {
+    content: "";
+    position: absolute;
+    inset: 6% -5% 1% 15%;
+    z-index: -1;
+    border-radius: 42% 58% 49% 51% / 55% 38% 62% 45%;
+    background: rgba(245, 185, 47, 0.19);
+    transform: rotate(-4deg);
+}
+
+.public-site.impact-page .impact-hero-photo {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border: 1px solid rgba(18, 43, 42, 0.13);
+    border-radius: 8px 54px 8px 8px;
+    background: #d7d6cc;
+    box-shadow: var(--impact-shadow);
+}
+
+.public-site.impact-page .impact-hero-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8, 29, 29, 0.05) 45%, rgba(8, 29, 29, 0.6));
+    pointer-events: none;
+}
+
+.public-site.impact-page .impact-hero-photo picture,
+.public-site.impact-page .impact-hero-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.public-site.impact-page .impact-hero-photo img {
+    object-fit: cover;
+    object-position: center;
+}
+
+.public-site.impact-page .impact-hero-photo figcaption {
+    position: absolute;
+    right: 26px;
+    bottom: 24px;
+    left: 26px;
+    z-index: 1;
+    display: grid;
+    gap: 3px;
+    color: #fff;
+}
+
+.public-site.impact-page .impact-hero-photo figcaption span {
+    color: var(--impact-gold-light);
+    font-size: 0.61rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* 02 — Metrics */
+
+.public-site.impact-page .impact-metrics {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--impact-night);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.public-site.impact-page .impact-metrics::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.14;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(circle at 55% 46%, #000 4%, transparent 72%);
+}
+
+.public-site.impact-page .impact-metrics-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(330px, 0.85fr);
+    gap: clamp(54px, 7vw, 105px) clamp(48px, 7vw, 112px);
+    padding-block: clamp(112px, 11vw, 175px);
+}
+
+.public-site.impact-page .impact-metrics-heading {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    align-items: end;
+    gap: clamp(44px, 8vw, 130px);
+}
+
+.public-site.impact-page .impact-metrics-heading .impact-eyebrow {
+    grid-column: 1 / -1;
+}
+
+.public-site.impact-page .impact-metrics-heading h2,
+.public-site.impact-page .impact-metrics-heading h2 em {
+    color: #fff;
+}
+
+.public-site.impact-page .impact-metrics-heading h2 em {
+    color: var(--impact-gold-light);
+}
+
+.public-site.impact-page .impact-metrics-heading > p {
+    color: rgba(255, 255, 255, 0.64);
+}
+
+.public-site.impact-page .impact-students {
+    display: grid;
+    grid-template-columns: minmax(155px, 0.42fr) minmax(260px, 1fr);
+    align-items: center;
+    gap: clamp(28px, 4vw, 64px);
+    min-width: 0;
+    padding-block: clamp(25px, 3.5vw, 44px);
+    border-block: 1px solid var(--impact-line-light);
+}
+
+.public-site.impact-page .impact-primary-metric {
+    display: grid;
+    align-content: center;
+}
+
+.public-site.impact-page .impact-primary-metric strong {
+    color: var(--impact-gold);
+    font-size: clamp(5.8rem, 9.5vw, 10rem);
+    font-weight: 800;
+    letter-spacing: -0.085em;
+    line-height: 0.76;
+}
+
+.public-site.impact-page .impact-primary-metric span {
+    max-width: 12ch;
+    margin-top: 19px;
+    color: #fff;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    line-height: 1.45;
+    text-transform: uppercase;
+}
+
+.public-site.impact-page .impact-student-field {
+    position: relative;
+    width: min(100%, 420px);
+    aspect-ratio: 1;
+    padding: 16px;
+}
+
+.public-site.impact-page .impact-student-field::before,
+.public-site.impact-page .impact-student-field::after {
+    content: "";
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    border-color: rgba(255, 218, 112, 0.48);
+}
+
+.public-site.impact-page .impact-student-field::before {
+    top: 0;
+    left: 0;
+    border-top: 1px solid;
+    border-left: 1px solid;
+}
+
+.public-site.impact-page .impact-student-field::after {
+    right: 0;
+    bottom: 0;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.public-site.impact-page .impact-student-matrix {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.public-site.impact-page .impact-student-matrix circle {
+    fill: var(--impact-gold);
+}
+
+.public-site.impact-page .impact-student-legend {
+    grid-column: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: -48px;
+    color: rgba(255, 255, 255, 0.56);
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.public-site.impact-page .impact-student-legend span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--impact-gold);
+}
+
+.public-site.impact-page .impact-satisfaction {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 26px;
+    min-width: 0;
+    padding-block: 34px;
+    border-block: 1px solid var(--impact-line-light);
+    text-align: center;
+}
+
+.public-site.impact-page .impact-satisfaction-orbit {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: min(100%, 310px);
+    aspect-ratio: 1;
+}
+
+.public-site.impact-page .impact-satisfaction-orbit svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.public-site.impact-page .impact-orbit-track {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 1;
+}
+
+.public-site.impact-page .impact-orbit-complete {
+    fill: var(--impact-gold);
+}
+
+.public-site.impact-page .impact-orbit-remainder {
+    fill: rgba(255, 255, 255, 0.2);
+}
+
+.public-site.impact-page .impact-orbit-plus circle {
+    fill: var(--impact-paper);
+}
+
+.public-site.impact-page .impact-orbit-plus path {
+    fill: none;
+    stroke: var(--impact-night);
+    stroke-linecap: round;
+    stroke-width: 3;
+}
+
+.public-site.impact-page .impact-satisfaction-orbit p {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    font-size: clamp(3.7rem, 6vw, 6.4rem);
+    font-weight: 800;
+    letter-spacing: -0.075em;
+    line-height: 0.9;
+}
+
+.public-site.impact-page .impact-satisfaction > p {
+    max-width: 32ch;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+    line-height: 1.65;
+}
+
+.public-site.impact-page .impact-secondary-metrics {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: 0;
+    border-block: 1px solid var(--impact-line-light);
+    list-style: none;
+}
+
+.public-site.impact-page .impact-secondary-metric {
+    display: grid;
+    align-content: space-between;
+    gap: 32px;
+    min-width: 0;
+    min-height: 210px;
+    padding: 31px clamp(20px, 2.8vw, 40px);
+    border-right: 1px solid var(--impact-line-light);
+}
+
+.public-site.impact-page .impact-secondary-metric:last-child {
+    border-right: 0;
+}
+
+.public-site.impact-page .impact-secondary-metric p {
+    display: grid;
+    gap: 10px;
+}
+
+.public-site.impact-page .impact-secondary-metric strong {
+    color: #fff;
+    font-size: clamp(3rem, 4.4vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.07em;
+    line-height: 0.84;
+}
+
+.public-site.impact-page .impact-secondary-metric span {
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.public-site.impact-page .impact-microvisual {
+    width: min(100%, 150px);
+    height: auto;
+    overflow: visible;
+    fill: none;
+    stroke: var(--impact-gold);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+}
+
+.public-site.impact-page .impact-secondary-metric:nth-child(2) .impact-microvisual {
+    fill: var(--impact-gold);
+    stroke: none;
+}
+
+.public-site.impact-page .impact-micro-guide {
+    opacity: 0.2;
+}
+
+.public-site.impact-page .impact-secondary-metric:nth-child(3) use:nth-of-type(4n) {
+    stroke-width: 4;
+}
+
+/* 03 — Reportage */
+
+.public-site.impact-page .impact-reportage {
+    position: relative;
+    padding-block: clamp(110px, 11vw, 174px);
+    background: var(--impact-paper);
+}
+
+.public-site.impact-page .impact-reportage-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.72fr);
+    align-items: end;
+    gap: clamp(50px, 8vw, 125px);
+}
+
+.public-site.impact-page .impact-reportage-heading > div {
+    display: grid;
+    gap: 25px;
+}
+
+.public-site.impact-page .impact-reportage-heading h2 {
+    max-width: 11.5ch;
+}
+
+.public-site.impact-page .impact-reportage-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.38fr) minmax(330px, 0.82fr);
+    gap: 22px;
+    margin-top: clamp(68px, 8vw, 112px);
+}
+
+.public-site.impact-page .impact-reportage-label {
+    grid-column: 1 / -1;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+    color: #5c6e69;
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.public-site.impact-page .impact-reportage-label span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--impact-teal);
+    box-shadow: 0 0 0 5px rgba(29, 102, 98, 0.1);
+}
+
+.public-site.impact-page .impact-reportage-secondary {
+    display: grid;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    min-width: 0;
+}
+
+.public-site.impact-page .impact-shot {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background: #d8d5ca;
+}
+
+.public-site.impact-page .impact-shot-primary {
+    min-height: 790px;
+}
+
+.public-site.impact-page .impact-shot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 45%, rgba(7, 27, 26, 0.72));
+    pointer-events: none;
+}
+
+.public-site.impact-page .impact-shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms cubic-bezier(.2,.8,.2,1);
+}
+
+.public-site.impact-page .impact-shot-primary img {
+    object-position: center 45%;
+}
+
+.public-site.impact-page .impact-shot-secondary:first-child img {
+    object-position: center 48%;
+}
+
+.public-site.impact-page .impact-shot-secondary:last-child img {
+    object-position: center 52%;
+}
+
+.public-site.impact-page .impact-shot:hover img {
+    transform: scale(1.018);
+}
+
+.public-site.impact-page .impact-shot-caption {
+    position: absolute;
+    right: clamp(18px, 2.5vw, 34px);
+    bottom: clamp(18px, 2.5vw, 31px);
+    left: clamp(18px, 2.5vw, 34px);
+    z-index: 1;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: end;
+    gap: 5px 13px;
+    color: #fff;
+}
+
+.public-site.impact-page .impact-shot-caption > span {
+    grid-row: 1 / span 2;
+    color: var(--impact-gold-light);
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.public-site.impact-page .impact-shot-caption strong {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(1rem, 1.5vw, 1.35rem);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.public-site.impact-page .impact-shot-caption small {
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 0.67rem;
+    line-height: 1.35;
+}
+
+/* 04 — Survey */
+
+.public-site.impact-page .impact-survey {
+    background: var(--impact-paper);
+}
+
+.public-site.impact-page .impact-survey-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(330px, 0.58fr);
+    align-items: center;
+    gap: clamp(46px, 8vw, 130px);
+    padding-block: clamp(48px, 5.5vw, 76px);
+    border-block: 1px solid var(--impact-line);
+}
+
+.public-site.impact-page .impact-survey-copy {
+    max-width: 720px;
+}
+
+.public-site.impact-page .impact-survey-kicker {
+    color: var(--impact-teal);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.public-site.impact-page .impact-survey-copy h2 {
+    max-width: 16ch;
+    margin-top: 14px;
+    color: var(--impact-ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(2rem, 3.7vw, 3.75rem);
+    font-weight: 650;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+}
+
+.public-site.impact-page .impact-survey-copy > p:last-child {
+    max-width: 58ch;
+    margin-top: 20px;
+    color: var(--impact-ink-soft);
+    font-size: clamp(0.94rem, 1.15vw, 1.05rem);
+    line-height: 1.72;
+}
+
+.public-site.impact-page .impact-survey-sheet {
+    position: relative;
+    width: min(100%, 410px);
+    min-height: 220px;
+    justify-self: end;
+    padding: 28px 30px;
+    border: 1px solid rgba(18, 43, 42, 0.16);
+    border-radius: 4px 18px 4px 4px;
+    background: rgba(255, 254, 250, 0.84);
+    box-shadow: 18px 22px 0 rgba(29, 102, 98, 0.075);
+}
+
+.public-site.impact-page .impact-survey-sheet::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(225deg, var(--impact-paper) 49%, rgba(18, 43, 42, 0.13) 50%, rgba(255, 255, 255, 0.82) 52%);
+}
+
+.public-site.impact-page .impact-survey-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--impact-line);
+    color: #64746f;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.public-site.impact-page .impact-survey-meta i {
+    color: var(--impact-gold-deep);
+    font-style: normal;
+}
+
+.public-site.impact-page .impact-survey-question {
+    display: grid;
+    grid-template-columns: minmax(60px, 1fr) repeat(5, 18px);
+    align-items: center;
+    gap: 9px;
+    margin-top: 27px;
+}
+
+.public-site.impact-page .impact-survey-question > span,
+.public-site.impact-page .impact-survey-line i {
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(18, 43, 42, 0.13);
+}
+
+.public-site.impact-page .impact-survey-question i {
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(18, 43, 42, 0.25);
+    border-radius: 50%;
+}
+
+.public-site.impact-page .impact-survey-question i:nth-of-type(4) {
+    border-color: var(--impact-teal);
+    background: var(--impact-teal);
+    box-shadow: inset 0 0 0 4px #fffefa;
+}
+
+.public-site.impact-page .impact-survey-line {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    align-items: center;
+    gap: 11px;
+    margin-top: 23px;
+}
+
+.public-site.impact-page .impact-survey-line span {
+    width: 14px;
+    height: 8px;
+    border-bottom: 2px solid var(--impact-gold-deep);
+    border-left: 2px solid var(--impact-gold-deep);
+    transform: rotate(-45deg) translateY(-2px);
+}
+
+/* 05 — Participating schools */
+
+.public-site.impact-page .impact-schools {
+    padding-block: clamp(92px, 9vw, 140px);
+    border-bottom: 1px solid var(--impact-line);
+    background: #fffdfa;
+}
+
+.public-site.impact-page .impact-schools-title {
+    margin-bottom: clamp(46px, 6vw, 76px);
+}
+
+.public-site.impact-page .impact-school-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-block: 1px solid var(--impact-line);
+}
+
+.public-site.impact-page .impact-school {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    place-items: center;
+    gap: 26px;
+    min-width: 0;
+    min-height: 310px;
+    padding: 27px clamp(17px, 2.5vw, 34px);
+    border-right: 1px solid var(--impact-line);
+    text-align: center;
+    transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.public-site.impact-page .impact-school:last-child {
+    border-right: 0;
+}
+
+.public-site.impact-page .impact-school:hover,
+.public-site.impact-page .impact-school:focus-visible {
+    background: var(--impact-paper);
+}
+
+.public-site.impact-page .impact-school-index {
+    justify-self: start;
+    color: #88938f;
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.public-site.impact-page .impact-school img {
+    width: auto;
+    max-width: min(150px, 82%);
+    height: 104px;
+    object-fit: contain;
+}
+
+.public-site.impact-page .impact-school > span:last-child {
+    color: #526460;
+    font-size: 0.71rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.public-site.impact-page .impact-school-wordmark {
+    display: grid;
+    place-items: center;
+    min-height: 104px;
+    color: #536460;
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1.22;
+}
+
+.public-site.impact-page .impact-school-wordmark strong {
+    color: var(--impact-teal);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.55rem;
+    letter-spacing: 0.08em;
+}
+
+/* 06 — Testimonials */
+
+.public-site.impact-page .impact-testimonials {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: clamp(110px, 11vw, 176px);
+    background: var(--impact-night-deep);
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.public-site.impact-page .impact-testimonials::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 90% 18%, rgba(245, 185, 47, 0.12), transparent 26%),
+        radial-gradient(circle at 8% 80%, rgba(29, 102, 98, 0.42), transparent 32%);
+}
+
+.public-site.impact-page .impact-testimonials-mark {
+    position: absolute;
+    top: -0.13em;
+    right: 2vw;
+    color: rgba(255, 218, 112, 0.07);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(18rem, 32vw, 38rem);
+    line-height: 1;
+    pointer-events: none;
+}
+
+.public-site.impact-page .impact-testimonials-heading {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.65fr);
+    align-items: end;
+    gap: clamp(50px, 8vw, 128px);
+}
+
+.public-site.impact-page .impact-testimonials-heading > div {
+    display: grid;
+    gap: 25px;
+}
+
+.public-site.impact-page .impact-testimonials-heading h2 {
+    max-width: 12ch;
+    color: #fff;
+}
+
+.public-site.impact-page .impact-testimonials-heading h2 em {
+    color: var(--impact-gold-light);
+}
+
+.public-site.impact-page .impact-testimonials .impact-testimonials-heading > p {
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.public-site.impact-page .impact-testimonial-layout {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.18fr) minmax(360px, 0.82fr);
+    gap: clamp(48px, 7vw, 112px);
+    margin-top: clamp(72px, 8vw, 116px);
+}
+
+.public-site.impact-page .impact-testimonial-secondary {
+    display: grid;
+    align-content: start;
+}
+
+.public-site.impact-page .impact-testimonial {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(20px, 3vw, 42px);
+    min-width: 0;
+    padding-block: 35px;
+    border-top: 1px solid var(--impact-line-light);
+}
+
+.public-site.impact-page .impact-testimonial-featured {
+    align-content: start;
+    padding-top: 42px;
+    border-bottom: 1px solid var(--impact-line-light);
+}
+
+.public-site.impact-page .impact-testimonial-secondary .impact-testimonial:last-child {
+    border-bottom: 1px solid var(--impact-line-light);
+}
+
+.public-site.impact-page .impact-testimonial-number {
+    padding-top: 0.55em;
+    color: var(--impact-gold-light);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.public-site.impact-page .impact-testimonial-content {
+    display: grid;
+    align-content: space-between;
+    gap: 34px;
+}
+
+.public-site.impact-page .impact-testimonial-quote {
+    color: rgba(255, 255, 255, 0.77);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(1.16rem, 1.72vw, 1.65rem);
+    font-weight: 600;
+    line-height: 1.54;
+}
+
+.public-site.impact-page .impact-testimonial-featured .impact-testimonial-quote {
+    color: #fff;
+    font-size: clamp(1.65rem, 2.45vw, 2.65rem);
+    letter-spacing: -0.02em;
+    line-height: 1.38;
+}
+
+.public-site.impact-page .impact-testimonial-emphasis {
+    color: var(--impact-gold-light);
+}
+
+.public-site.impact-page .impact-testimonial-attribution {
+    display: grid;
+    gap: 7px;
+}
+
+.public-site.impact-page .impact-testimonial-attribution > strong {
+    color: #fff;
+    font-size: 0.84rem;
+    font-weight: 800;
+}
+
+.public-site.impact-page .impact-testimonial-attribution > span {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.68rem;
+    font-style: normal;
+    line-height: 1.55;
+}
+
+.public-site.impact-page .impact-testimonial-attribution i {
+    padding-inline: 4px;
+    font-style: normal;
+}
+
+/* 07 — Closing CTA */
+
+.public-site.impact-page .impact-cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-bottom: 1px solid var(--impact-line);
+    background: var(--impact-paper);
+}
+
+.public-site.impact-page .impact-cta::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: clamp(-110px, -4vw, -38px);
+    z-index: -1;
+    width: clamp(280px, 33vw, 520px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(245, 185, 47, 0.22);
+    transform: translateY(-50%);
+}
+
+.public-site.impact-page .impact-cta-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: clamp(48px, 8vw, 120px);
+    padding-block: clamp(90px, 9vw, 138px);
+}
+
+.public-site.impact-page .impact-cta-layout > div:first-child {
+    display: grid;
+    gap: 24px;
+}
+
+.public-site.impact-page .impact-cta h2 {
+    max-width: 16ch;
+    color: var(--impact-ink);
+    font-size: clamp(2.65rem, 4.8vw, 5.35rem);
+    font-weight: 800;
+    letter-spacing: -0.067em;
+    line-height: 0.99;
+}
+
+.public-site.impact-page .impact-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px;
+    max-width: 390px;
+}
+
+/* Motion */
+
+html.impact-js .impact-page .impact-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity 650ms ease var(--impact-delay, 0ms),
+        transform 650ms cubic-bezier(.2,.75,.25,1) var(--impact-delay, 0ms);
+}
+
+html.impact-js .impact-page .impact-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+html.impact-js .impact-page .impact-students:not(.is-visible) .impact-student-matrix,
+html.impact-js .impact-page .impact-satisfaction:not(.is-visible) .impact-satisfaction-orbit svg {
+    opacity: 0;
+    transform: scale(0.94);
+}
+
+.public-site.impact-page .impact-student-matrix,
+.public-site.impact-page .impact-satisfaction-orbit svg {
+    transform-origin: center;
+    transition: opacity 780ms ease 160ms, transform 780ms cubic-bezier(.2,.75,.25,1) 160ms;
+}
+
+@media (max-width: 1120px) {
+    .public-site.impact-page .impact-hero-layout {
+        grid-template-columns: minmax(320px, 0.82fr) minmax(440px, 1.18fr);
+        gap: 48px;
+    }
+
+    .public-site.impact-page .impact-metrics-layout {
+        grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.82fr);
+        column-gap: 58px;
+    }
+
+    .public-site.impact-page .impact-students {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.impact-page .impact-primary-metric {
+        grid-template-columns: auto 1fr;
+        align-items: end;
+        gap: 18px;
+    }
+
+    .public-site.impact-page .impact-primary-metric span {
+        margin-bottom: 8px;
+    }
+
+    .public-site.impact-page .impact-student-field {
+        width: min(100%, 380px);
+    }
+
+    .public-site.impact-page .impact-student-legend {
+        grid-column: 1;
+        margin-top: -22px;
+    }
+
+    .public-site.impact-page .impact-shot-primary {
+        min-height: 690px;
+    }
+}
+
+@media (max-width: 980px) {
+    .public-site.impact-page .impact-hero,
+    .public-site.impact-page .impact-hero-layout {
+        min-height: auto;
+    }
+
+    .public-site.impact-page .impact-hero-layout {
+        grid-template-columns: 1fr;
+        gap: 56px;
+        padding-block: 82px 96px;
+    }
+
+    .public-site.impact-page .impact-hero-copy {
+        max-width: 800px;
+    }
+
+    .public-site.impact-page .impact-hero-copy h1 {
+        max-width: 11ch;
+    }
+
+    .public-site.impact-page .impact-hero-evidence {
+        width: min(100%, 840px);
+        margin-inline: auto;
+        padding-left: 0;
+    }
+
+    .public-site.impact-page .impact-hero-photo,
+    .public-site.impact-page .impact-hero-photo img {
+        aspect-ratio: 3 / 2;
+    }
+
+    .public-site.impact-page .impact-hero-photo img {
+        object-position: center 43%;
+    }
+
+    .public-site.impact-page .impact-metrics-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.74fr);
+        column-gap: 46px;
+    }
+
+    .public-site.impact-page .impact-metrics-heading,
+    .public-site.impact-page .impact-reportage-heading,
+    .public-site.impact-page .impact-testimonials-heading {
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: 28px;
+    }
+
+    .public-site.impact-page .impact-metrics-heading > p,
+    .public-site.impact-page .impact-reportage-heading > p,
+    .public-site.impact-page .impact-testimonials-heading > p {
+        max-width: 62ch;
+    }
+
+    .public-site.impact-page .impact-secondary-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .public-site.impact-page .impact-secondary-metric:nth-child(2) {
+        border-right: 0;
+    }
+
+    .public-site.impact-page .impact-secondary-metric:nth-child(-n + 2) {
+        border-bottom: 1px solid var(--impact-line-light);
+    }
+
+    .public-site.impact-page .impact-reportage-grid {
+        grid-template-columns: minmax(0, 1.2fr) minmax(285px, 0.8fr);
+    }
+
+    .public-site.impact-page .impact-shot-primary {
+        min-height: 610px;
+    }
+
+    .public-site.impact-page .impact-survey-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(270px, 0.64fr);
+        gap: 40px;
+    }
+
+    .public-site.impact-page .impact-school-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .public-site.impact-page .impact-school:nth-child(2) {
+        border-right: 0;
+    }
+
+    .public-site.impact-page .impact-school:nth-child(-n + 2) {
+        border-bottom: 1px solid var(--impact-line);
+    }
+
+    .public-site.impact-page .impact-testimonial-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.impact-page .impact-testimonial-featured .impact-testimonial-quote {
+        max-width: 26ch;
+    }
+
+    .public-site.impact-page .impact-cta-layout {
+        grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    .public-site.impact-page .impact-cta-actions {
+        justify-content: flex-start;
+        max-width: none;
+    }
+}
+
+@media (max-width: 820px) {
+    .public-site.impact-page .impact-metrics-layout {
+        grid-template-columns: 1fr;
+        row-gap: 62px;
+    }
+
+    .public-site.impact-page .impact-metrics-heading,
+    .public-site.impact-page .impact-secondary-metrics {
+        grid-column: 1;
+    }
+
+    .public-site.impact-page .impact-students {
+        grid-template-columns: minmax(150px, 0.45fr) minmax(270px, 1fr);
+    }
+
+    .public-site.impact-page .impact-primary-metric {
+        grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    .public-site.impact-page .impact-primary-metric span {
+        margin-bottom: 0;
+    }
+
+    .public-site.impact-page .impact-student-legend {
+        grid-column: 2;
+        margin-top: -46px;
+    }
+
+    .public-site.impact-page .impact-survey-layout {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+
+    .public-site.impact-page .impact-survey-copy h2 {
+        max-width: 16ch;
+    }
+
+    .public-site.impact-page .impact-survey-sheet {
+        justify-self: start;
+    }
+}
+
+@media (max-width: 760px) {
+    .public-site.impact-page .impact-hero-layout {
+        padding-block: 66px 82px;
+    }
+
+    .public-site.impact-page .impact-hero-copy h1 {
+        font-size: clamp(3.05rem, 12vw, 5rem);
+    }
+
+    .public-site.impact-page .impact-hero-evidence {
+        padding-bottom: 0;
+    }
+
+    .public-site.impact-page .impact-hero-photo {
+        border-radius: 5px 36px 5px 5px;
+    }
+
+    .public-site.impact-page .impact-hero-photo,
+    .public-site.impact-page .impact-hero-photo img {
+        aspect-ratio: 4 / 3;
+    }
+
+    .public-site.impact-page .impact-hero-photo figcaption {
+        bottom: 20px;
+    }
+
+    .public-site.impact-page .impact-section-heading h2 {
+        font-size: clamp(2.65rem, 10vw, 4.8rem);
+    }
+
+    .public-site.impact-page .impact-reportage-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.impact-page .impact-reportage-label {
+        grid-column: 1;
+    }
+
+    .public-site.impact-page .impact-shot-primary {
+        min-height: 0;
+        aspect-ratio: 4 / 4.8;
+    }
+
+    .public-site.impact-page .impact-reportage-secondary {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+    }
+
+    .public-site.impact-page .impact-shot-secondary {
+        aspect-ratio: 4 / 3.8;
+    }
+
+    .public-site.impact-page .impact-school {
+        min-height: 280px;
+    }
+
+    .public-site.impact-page .impact-testimonial {
+        grid-template-columns: 1fr;
+        gap: 17px;
+    }
+
+    .public-site.impact-page .impact-testimonial-number {
+        padding-top: 0;
+    }
+}
+
+@media (max-width: 560px) {
+    .public-site.impact-page .impact-hero-copy h1 {
+        font-size: clamp(2.85rem, 13.4vw, 4.35rem);
+    }
+
+    .public-site.impact-page .impact-metrics-layout,
+    .public-site.impact-page .impact-reportage,
+    .public-site.impact-page .impact-schools,
+    .public-site.impact-page .impact-testimonials,
+    .public-site.impact-page .impact-cta-layout {
+        padding-block: 88px;
+    }
+
+    .public-site.impact-page .impact-students {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .public-site.impact-page .impact-primary-metric {
+        grid-template-columns: auto 1fr;
+        align-items: end;
+    }
+
+    .public-site.impact-page .impact-primary-metric span {
+        margin-bottom: 7px;
+    }
+
+    .public-site.impact-page .impact-student-field {
+        width: min(100%, 390px);
+        margin-inline: auto;
+    }
+
+    .public-site.impact-page .impact-student-legend {
+        grid-column: 1;
+        margin-top: -18px;
+    }
+
+    .public-site.impact-page .impact-secondary-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.impact-page .impact-secondary-metric {
+        grid-template-columns: minmax(120px, 0.72fr) minmax(140px, 1fr);
+        align-items: center;
+        min-height: 150px;
+        border-right: 0;
+        border-bottom: 1px solid var(--impact-line-light);
+    }
+
+    .public-site.impact-page .impact-secondary-metric:nth-child(-n + 2) {
+        border-bottom: 1px solid var(--impact-line-light);
+    }
+
+    .public-site.impact-page .impact-secondary-metric:last-child {
+        border-bottom: 0;
+    }
+
+    .public-site.impact-page .impact-reportage-secondary {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.impact-page .impact-shot-secondary {
+        aspect-ratio: 4 / 3.25;
+    }
+
+    .public-site.impact-page .impact-school-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.impact-page .impact-school,
+    .public-site.impact-page .impact-school:nth-child(2) {
+        min-height: 245px;
+        border-right: 0;
+        border-bottom: 1px solid var(--impact-line);
+    }
+
+    .public-site.impact-page .impact-school:last-child {
+        border-bottom: 0;
+    }
+
+    .public-site.impact-page .impact-school img {
+        height: 90px;
+    }
+
+    .public-site.impact-page .impact-testimonial-featured .impact-testimonial-quote {
+        font-size: clamp(1.48rem, 7vw, 2.1rem);
+    }
+
+    .public-site.impact-page .impact-testimonial-attribution > span > span {
+        display: block;
+        margin-top: 2px;
+    }
+
+    .public-site.impact-page .impact-testimonial-attribution i {
+        display: none;
+    }
+
+    .public-site.impact-page .impact-cta h2 {
+        font-size: clamp(2.45rem, 10vw, 3.75rem);
+    }
+
+    .public-site.impact-page .impact-cta-actions,
+    .public-site.impact-page .impact-cta-actions .detail-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+    .public-site.impact-page .impact-eyebrow {
+        font-size: 0.67rem;
+    }
+
+    .public-site.impact-page .impact-hero-copy h1 {
+        font-size: clamp(2.6rem, 13vw, 3.25rem);
+    }
+
+    .public-site.impact-page .impact-primary-metric strong {
+        font-size: clamp(5rem, 25vw, 6.4rem);
+    }
+
+    .public-site.impact-page .impact-primary-metric span {
+        font-size: 0.66rem;
+    }
+
+    .public-site.impact-page .impact-secondary-metric {
+        grid-template-columns: 0.76fr 1fr;
+        gap: 20px;
+        padding-inline: 18px;
+    }
+
+    .public-site.impact-page .impact-secondary-metric strong {
+        font-size: 2.8rem;
+    }
+
+    .public-site.impact-page .impact-survey-sheet {
+        min-height: 204px;
+        padding: 24px 21px;
+        box-shadow: 10px 14px 0 rgba(29, 102, 98, 0.075);
+    }
+
+    .public-site.impact-page .impact-survey-question {
+        grid-template-columns: minmax(40px, 1fr) repeat(5, 16px);
+        gap: 6px;
+    }
+
+    .public-site.impact-page .impact-survey-question i {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.impact-js .impact-page .impact-reveal,
+    html.impact-js .impact-page .impact-student-matrix,
+    html.impact-js .impact-page .impact-satisfaction-orbit svg {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .public-site.impact-page .impact-shot img {
+        transition: none;
+    }
+
+    .public-site.impact-page .impact-shot:hover img {
+        transform: none;
+    }
+}

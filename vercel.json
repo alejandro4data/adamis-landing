@@ -1,10 +1,15 @@
 {
   "redirects": [
-    { "source": "/educacion-financiera-primaria/:path*", "destination": "/educacion-financiera/", "permanent": true },
+    { "source": "/educacion-financiera-primaria/:path*", "destination": "/", "permanent": true },
     { "source": "/colegios/:path*", "destination": "/", "permanent": true },
     { "source": "/packs-tematicos/:path*", "destination": "/programa/", "permanent": true },
     { "source": "/configuracion-flexible/:path*", "destination": "/programa/", "permanent": true },
-    { "source": "/preguntas-frecuentes/:path*", "destination": "/", "permanent": true }
+    { "source": "/preguntas-frecuentes/:path*", "destination": "/", "permanent": true },
+    { "source": "/educacion-financiera/:path*", "destination": "/", "permanent": true },
+    { "source": "/programa-educacion-financiera-4-primaria/:path*", "destination": "/programa/", "permanent": true },
+    { "source": "/programa-educacion-financiera-5-primaria/:path*", "destination": "/programa/", "permanent": true },
+    { "source": "/programa-educacion-financiera-6-primaria/:path*", "destination": "/programa/", "permanent": true },
+    { "source": "/animación/:path*", "destination": "/", "permanent": true }
   ],
   "headers": [
     {

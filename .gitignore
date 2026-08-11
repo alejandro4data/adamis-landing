@@ -11,7 +11,6 @@ app0.js
 .htpasswd
 passgen.php
 whereami.php
-index.html
 !educacion-financiera-primaria/index.html
 !educacion-financiera/index.html
 !financial-education/index.html
@@ -28,6 +27,9 @@ index.html
 !aviso-legal/index.html
 !politica-privacidad/index.html
 !politica-cookies/index.html
-.env
-.vercel
-.env*.local
+.env*
+!.env.example
+source-materials/
+audit/
+.vercel/
+*.zip

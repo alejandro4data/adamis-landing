@@ -1,53 +1,5 @@
 (() => {
-    const normalizeLang = (value = '') => {
-        const lang = String(value).toLowerCase();
-        if (lang.startsWith('es')) return 'es';
-        if (lang.startsWith('en')) return 'en';
-        return '';
-    };
-
-    const getQueryLang = () => {
-        try {
-            return normalizeLang(new URLSearchParams(window.location.search).get('lang'));
-        } catch {
-            return '';
-        }
-    };
-
-    const getBrowserLang = () => {
-        const languages = Array.isArray(navigator.languages) && navigator.languages.length
-            ? navigator.languages
-            : [navigator.language || navigator.userLanguage || ''];
-
-        for (const language of languages) {
-            const supportedLang = normalizeLang(language);
-            if (supportedLang) return supportedLang;
-        }
-
-        return 'en';
-    };
-
-    const browserLang = getQueryLang() || getBrowserLang();
-    const pageLang = normalizeLang(document.documentElement.lang) || 'es';
-    const normalizedPath = `${window.location.pathname.replace(/\/+$/, '')}/`.replace(/^\/$/, '/');
-    const requestedLang = getQueryLang();
-
-    if (requestedLang === 'en' && (normalizedPath === '/' || normalizedPath === '/educacion-financiera/')) {
-        window.location.replace('/financial-education/');
-        return;
-    }
-
-    if (requestedLang === 'es' && normalizedPath === '/financial-education/') {
-        window.location.replace('/educacion-financiera/');
-        return;
-    }
-
-    if (!requestedLang && normalizedPath === '/' && browserLang === 'en' && !window.location.hash) {
-        window.location.replace('/financial-education/');
-        return;
-    }
-
-    const lang = pageLang;
+    const lang = document.documentElement.lang.toLowerCase().startsWith('en') ? 'en' : 'es';
     const isEnglish = lang === 'en';
     const allowRuntimeTranslation = document.documentElement.hasAttribute('data-auto-translate');
 
@@ -356,11 +308,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorialPlayButton = document.querySelector('[data-tutorial-play]');
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const mobileProductQuery = window.matchMedia('(max-width: 720px)');
+    const mobileMenuQuery = window.matchMedia('(max-width: 1180px)');
     const header = document.querySelector('.commercial-header');
     const siteHeader = document.querySelector('[data-site-header]');
     const menuToggle = document.querySelector('[data-menu-toggle]');
     const mainMenu = document.querySelector('[data-main-menu]');
     const menuToggleLabel = menuToggle?.querySelector('.visually-hidden');
+    const sectionNavLinks = Array.from(mainMenu?.querySelectorAll('[data-nav-section]') || []);
     const leadInterestTriggers = document.querySelectorAll('[data-lead-interest]');
     const leadInterestFields = document.querySelectorAll('[data-lead-interest-field]');
     const leadCourseFields = document.querySelectorAll('[data-lead-course-field]');
@@ -368,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const whatsappLinks = document.querySelectorAll('[data-whatsapp-link]');
     const ctaElements = document.querySelectorAll('[data-cta]');
     const mobileCtaBar = document.querySelector('.mobile-cta-bar');
-    const contactSection = document.getElementById('contacto');
+    const contactSection = document.querySelector('[data-contact-section]') || document.getElementById('contacto');
     const openingSection = document.querySelector('.lead-hero, .detail-hero, .brief-hero, .methodology-hero, .workshop-watch-heading');
     const footer = document.querySelector('.commercial-footer');
     const landingBackgrounds = document.querySelectorAll('[data-landing-bg]');
@@ -383,11 +337,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let productMeasureFrame = 0;
     const productTriggerAnimations = new Map();
     const landingAssetCache = new Map();
+    let menuScrollPosition = 0;
+    let menuBodyInlineStyles = null;
 
     const getAnchorTargetPosition = (target) => {
         if (!target || target.id === 'inicio') return 0;
 
-        const leadFormAnchor = target.id === 'contacto' ? target.querySelector('.lead-form') : null;
+        const leadFormAnchor = target.id === 'contacto' && !document.body.classList.contains('landing-page')
+            ? target.querySelector('.lead-form')
+            : null;
         const contentAnchor = leadFormAnchor || target.querySelector(
             '.section-heading, .hero-copy, .trust-copy, .problem-copy, .how-grid, .schools-copy, .contact-copy, .section-intro, .impact-intro, .pilot-shell, .learning-shell, .products-intro, .closing-shell'
         ) || target;
@@ -402,24 +360,85 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.max(0, absoluteTop - headerHeight - breathingRoom);
     };
 
-    const setMenuState = (isOpen) => {
+    const getMenuFocusableItems = () => {
+        if (!menuToggle || !mainMenu) return [];
+        return [
+            menuToggle,
+            ...Array.from(mainMenu.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+        ].filter((item) => !item.hasAttribute('hidden'));
+    };
+
+    const syncMenuAccessibility = () => {
+        if (!mainMenu || !siteHeader) return;
+        if (!mobileMenuQuery.matches) {
+            mainMenu.removeAttribute('aria-hidden');
+            return;
+        }
+        mainMenu.setAttribute('aria-hidden', String(!siteHeader.classList.contains('is-menu-open')));
+    };
+
+    const setMenuState = (isOpen, { moveFocus = true } = {}) => {
         if (!siteHeader || !menuToggle || !mainMenu) return;
-        siteHeader.classList.toggle('is-menu-open', isOpen);
-        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        const shouldOpen = Boolean(isOpen && mobileMenuQuery.matches);
+        const wasOpen = siteHeader.classList.contains('is-menu-open');
+
+        if (shouldOpen && !wasOpen) {
+            menuScrollPosition = window.scrollY;
+            menuBodyInlineStyles = {
+                position: document.body.style.position,
+                top: document.body.style.top,
+                width: document.body.style.width,
+                paddingRight: document.body.style.paddingRight
+            };
+            const scrollbarGap = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${menuScrollPosition}px`;
+            document.body.style.width = '100%';
+            if (scrollbarGap) document.body.style.paddingRight = `${scrollbarGap}px`;
+        }
+
+        siteHeader.classList.toggle('is-menu-open', shouldOpen);
+        document.documentElement.classList.toggle('mobile-menu-open', shouldOpen);
+        document.body.classList.toggle('mobile-menu-open', shouldOpen);
+        menuToggle.setAttribute('aria-expanded', String(shouldOpen));
+        mainMenu.setAttribute('aria-hidden', String(!shouldOpen));
         if (menuToggleLabel) {
-            menuToggleLabel.textContent = isOpen ? 'Cerrar men\u00fa' : 'Abrir men\u00fa';
+            const openLabel = menuToggle.dataset.menuOpenLabel || 'Abrir men\u00fa';
+            const closeLabel = menuToggle.dataset.menuCloseLabel || 'Cerrar men\u00fa';
+            menuToggleLabel.textContent = shouldOpen ? closeLabel : openLabel;
+        }
+        if (shouldOpen && moveFocus) {
+            window.requestAnimationFrame(() => {
+                const firstMenuLink = mainMenu.querySelector('a[href]');
+                firstMenuLink?.focus({ preventScroll: true });
+            });
+        }
+
+        if (!shouldOpen && wasOpen && menuBodyInlineStyles) {
+            const restoreScrollPosition = menuScrollPosition;
+            document.body.style.position = menuBodyInlineStyles.position;
+            document.body.style.top = menuBodyInlineStyles.top;
+            document.body.style.width = menuBodyInlineStyles.width;
+            document.body.style.paddingRight = menuBodyInlineStyles.paddingRight;
+            menuBodyInlineStyles = null;
+            window.requestAnimationFrame(() => {
+                const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+                document.documentElement.style.scrollBehavior = 'auto';
+                window.scrollTo(0, restoreScrollPosition);
+                document.documentElement.style.scrollBehavior = previousScrollBehavior;
+            });
         }
     };
 
     const closeMobileMenu = ({ restoreFocus = false } = {}) => {
         if (!siteHeader || !menuToggle || !mainMenu) return;
         setMenuState(false);
-        if (restoreFocus) menuToggle.focus();
+        if (restoreFocus) menuToggle.focus({ preventScroll: true });
     };
 
     menuToggle?.addEventListener('click', () => {
         if (!siteHeader || !mainMenu) return;
-        setMenuState(!siteHeader.classList.contains('is-menu-open'));
+        setMenuState(!siteHeader.classList.contains('is-menu-open'), { moveFocus: false });
     });
 
     document.addEventListener('click', (event) => {
@@ -431,11 +450,37 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && siteHeader?.classList.contains('is-menu-open')) {
             closeMobileMenu({ restoreFocus: true });
+            return;
+        }
+
+        if (event.key === 'Tab' && siteHeader?.classList.contains('is-menu-open') && mobileMenuQuery.matches) {
+            const focusableItems = getMenuFocusableItems();
+            if (!focusableItems.length) return;
+            const firstItem = focusableItems[0];
+            const lastItem = focusableItems[focusableItems.length - 1];
+
+            if (event.shiftKey && document.activeElement === firstItem) {
+                event.preventDefault();
+                lastItem.focus();
+            } else if (!event.shiftKey && document.activeElement === lastItem) {
+                event.preventDefault();
+                firstItem.focus();
+            }
         }
     });
 
     mainMenu?.addEventListener('click', (event) => {
-        if (event.target.closest('a')) closeMobileMenu();
+        if (event.target.closest('a')) {
+            closeMobileMenu();
+            return;
+        }
+        if (event.target === mainMenu) closeMobileMenu({ restoreFocus: true });
+    });
+
+    syncMenuAccessibility();
+    mobileMenuQuery.addEventListener?.('change', () => {
+        if (!mobileMenuQuery.matches) setMenuState(false, { moveFocus: false });
+        syncMenuAccessibility();
     });
 
     if (siteHeader) {
@@ -449,6 +494,47 @@ document.addEventListener('DOMContentLoaded', () => {
             if (headerFrame) return;
             headerFrame = window.requestAnimationFrame(syncHeaderState);
         }, { passive: true });
+    }
+
+    if (document.body.classList.contains('landing-page') && sectionNavLinks.length && 'IntersectionObserver' in window) {
+        const observedSections = sectionNavLinks
+            .map((link) => document.getElementById(link.dataset.navSection))
+            .filter(Boolean);
+        const visibleSections = new Set();
+
+        const setActiveNavSection = (sectionId = '') => {
+            sectionNavLinks.forEach((link) => {
+                if (link.dataset.navSection === sectionId) {
+                    link.setAttribute('aria-current', 'location');
+                } else {
+                    link.removeAttribute('aria-current');
+                }
+            });
+        };
+
+        const activeSectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.01) {
+                    visibleSections.add(entry.target.id);
+                } else {
+                    visibleSections.delete(entry.target.id);
+                }
+            });
+
+            const activeLine = window.innerHeight * 0.29;
+            const activeSection = observedSections
+                .filter((section) => visibleSections.has(section.id))
+                .sort((first, second) => (
+                    Math.abs(first.getBoundingClientRect().top - activeLine)
+                    - Math.abs(second.getBoundingClientRect().top - activeLine)
+                ))[0];
+            setActiveNavSection(activeSection?.id || '');
+        }, {
+            rootMargin: '-24% 0px -64% 0px',
+            threshold: 0.01
+        });
+
+        observedSections.forEach((section) => activeSectionObserver.observe(section));
     }
 
     anchorLinks.forEach((link) => {
@@ -469,7 +555,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (event.detail === 0) {
                 window.setTimeout(() => {
-                    const focusTarget = target.id === 'contacto' ? target.querySelector('.lead-form') || target : target;
+                    const focusTarget = target.id === 'contacto' && !document.body.classList.contains('landing-page')
+                        ? target.querySelector('.lead-form') || target
+                        : target;
                     focusTarget.setAttribute('tabindex', '-1');
                     focusTarget.focus({ preventScroll: true });
                 }, reducedMotionQuery.matches ? 0 : 450);
@@ -497,7 +585,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (window.location.hash) {
         window.requestAnimationFrame(() => window.requestAnimationFrame(alignInitialHash));
-        window.addEventListener('load', alignInitialHash, { once: true });
+        window.addEventListener('load', () => {
+            alignInitialHash();
+            window.setTimeout(alignInitialHash, 320);
+            window.setTimeout(alignInitialHash, 900);
+        }, { once: true });
+        document.fonts?.ready.then(() => {
+            window.requestAnimationFrame(alignInitialHash);
+        });
     }
 
     const selectLeadInterest = (interest = '') => {
@@ -528,21 +623,40 @@ document.addEventListener('DOMContentLoaded', () => {
         trigger.addEventListener('click', () => selectLeadInterest(trigger.dataset.leadInterest || ''));
     });
 
+    const syncInfoFormSource = (form) => {
+        const sourceField = form?.querySelector('[name="source"]');
+        if (!sourceField) return '';
+
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const sourceParts = [`${window.location.pathname}${window.location.hash || ''}`];
+            const sourceContext = form.dataset.sourceContext || '';
+            if (sourceContext) sourceParts.push(sourceContext);
+            ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach((key) => {
+                const value = params.get(key);
+                if (value) sourceParts.push(`${key}=${value}`);
+            });
+            sourceField.value = sourceParts.join(' | ').slice(0, 500);
+        } catch {
+            // Keep the authored source value if URL parsing is unavailable.
+        }
+
+        return sourceField.value;
+    };
+
+    window.AdamisInfoForms = Object.assign(window.AdamisInfoForms || {}, {
+        syncSource: syncInfoFormSource
+    });
+
     try {
         const params = new URLSearchParams(window.location.search);
         selectLeadInterest(params.get('interest') || '');
         selectLeadCourse(params.get('courses') || '');
-        const sourceParts = [`${window.location.pathname}${window.location.hash || ''}`];
-        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach((key) => {
-            const value = params.get(key);
-            if (value) sourceParts.push(`${key}=${value}`);
-        });
-        document.querySelectorAll('[data-info-form] [name="source"]').forEach((field) => {
-            field.value = sourceParts.join(' | ').slice(0, 500);
-        });
     } catch {
-        // Keep the authored source value if URL parsing is unavailable.
+        // Keep the authored field values if URL parsing is unavailable.
     }
+
+    infoRequestForms.forEach(syncInfoFormSource);
 
     const probeLandingAsset = (src) => new Promise((resolve) => {
         if (!src) {
@@ -674,26 +788,116 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (mobileCtaBar && 'IntersectionObserver' in window) {
-        const mobileCtaHiddenSections = new Set();
-        const mobileCtaObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    mobileCtaHiddenSections.add(entry.target);
-                    return;
-                }
+        const isLanding = document.body.classList.contains('landing-page');
 
-                mobileCtaHiddenSections.delete(entry.target);
+        if (isLanding) {
+            const mobileCtaMedia = window.matchMedia('(max-width: 768px)');
+            const heroCta = openingSection?.querySelector('[data-cta="llevar-adamis"]') || openingSection;
+            const mobileCtaState = {
+                heroVisible: true,
+                contactVisible: false,
+                footerVisible: false
+            };
+
+            const elementIsNearViewport = (element, bottomMargin = 0) => {
+                if (!element) return false;
+                const rect = element.getBoundingClientRect();
+                return rect.bottom > 0 && rect.top < window.innerHeight * (1 + bottomMargin);
+            };
+
+            const syncMobileCta = () => {
+                mobileCtaState.heroVisible = elementIsNearViewport(heroCta);
+                mobileCtaState.contactVisible = elementIsNearViewport(contactSection, 0.24);
+                mobileCtaState.footerVisible = elementIsNearViewport(footer, 0.12);
+                const menuOpen = menuToggle?.getAttribute('aria-expanded') === 'true';
+                const contactHasFocus = Boolean(contactSection?.contains(document.activeElement));
+                const shouldShow = mobileCtaMedia.matches
+                    && !mobileCtaState.heroVisible
+                    && !mobileCtaState.contactVisible
+                    && !mobileCtaState.footerVisible
+                    && !menuOpen
+                    && !contactHasFocus;
+
+                mobileCtaBar.classList.toggle('is-hidden', !shouldShow);
+                document.body.classList.toggle('is-mobile-cta-visible', shouldShow);
+                mobileCtaBar.dataset.heroVisible = String(mobileCtaState.heroVisible);
+                mobileCtaBar.dataset.menuOpen = String(menuOpen);
+                mobileCtaBar.dataset.contactVisible = String(mobileCtaState.contactVisible || contactHasFocus);
+                mobileCtaBar.dataset.footerVisible = String(mobileCtaState.footerVisible);
+                mobileCtaBar.dataset.stickyVisible = String(shouldShow);
+            };
+
+            const refreshMobileCtaGeometry = () => {
+                syncMobileCta();
+            };
+
+            mobileCtaState.heroVisible = elementIsNearViewport(heroCta);
+            mobileCtaState.contactVisible = elementIsNearViewport(contactSection, 0.24);
+            mobileCtaState.footerVisible = elementIsNearViewport(footer, 0.12);
+            syncMobileCta();
+
+            if (heroCta) {
+                const heroObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.target === heroCta) mobileCtaState.heroVisible = entry.isIntersecting;
+                    });
+                    syncMobileCta();
+                }, { threshold: 0.01 });
+                heroObserver.observe(heroCta);
+            }
+
+            const closingObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.target === contactSection) mobileCtaState.contactVisible = entry.isIntersecting;
+                    if (entry.target === footer) mobileCtaState.footerVisible = entry.isIntersecting;
+                });
+                syncMobileCta();
+            }, {
+                rootMargin: '0px 0px 24% 0px',
+                threshold: 0.01
             });
 
-            mobileCtaBar.classList.toggle('is-hidden', mobileCtaHiddenSections.size > 0);
-        }, {
-            rootMargin: '0px 0px -12% 0px',
-            threshold: 0.04
-        });
+            [contactSection, footer].filter(Boolean).forEach((section) => closingObserver.observe(section));
 
-        [openingSection, contactSection, footer].filter(Boolean).forEach((section) => {
-            mobileCtaObserver.observe(section);
-        });
+            if (menuToggle) {
+                const menuStateObserver = new MutationObserver(syncMobileCta);
+                menuStateObserver.observe(menuToggle, { attributes: true, attributeFilter: ['aria-expanded'] });
+            }
+
+            contactSection?.addEventListener('focusin', syncMobileCta);
+            contactSection?.addEventListener('focusout', () => window.requestAnimationFrame(syncMobileCta));
+            mobileCtaMedia.addEventListener?.('change', syncMobileCta);
+            let mobileCtaFrame = 0;
+            window.addEventListener('scroll', () => {
+                if (mobileCtaFrame) return;
+                mobileCtaFrame = window.requestAnimationFrame(() => {
+                    mobileCtaFrame = 0;
+                    refreshMobileCtaGeometry();
+                });
+            }, { passive: true });
+            window.addEventListener('resize', refreshMobileCtaGeometry, { passive: true });
+            window.addEventListener('orientationchange', refreshMobileCtaGeometry, { passive: true });
+        } else {
+            const mobileCtaHiddenSections = new Set();
+            const mobileCtaObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        mobileCtaHiddenSections.add(entry.target);
+                    } else {
+                        mobileCtaHiddenSections.delete(entry.target);
+                    }
+                });
+
+                mobileCtaBar.classList.toggle('is-hidden', mobileCtaHiddenSections.size > 0);
+            }, {
+                rootMargin: '0px 0px -12% 0px',
+                threshold: 0.04
+            });
+
+            [openingSection, contactSection, footer].filter(Boolean).forEach((section) => {
+                mobileCtaObserver.observe(section);
+            });
+        }
     }
 
     if (tutorialVideo && tutorialPlayButton) {
@@ -1289,12 +1493,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formStatus = form.querySelector('[data-form-status]');
             const formSubmit = form.querySelector('[data-form-submit]');
+            const formMessage = (key, fallback) => form.getAttribute(`data-form-${key}`) || landingI18n.t(fallback);
 
             if (!formStatus || !formSubmit) return;
 
             if (!form.checkValidity()) {
                 formStatus.className = 'form-status is-error';
-                formStatus.textContent = landingI18n.t('Revisa los campos obligatorios y acepta el tratamiento de datos.');
+                formStatus.textContent = formMessage('validation', 'Revisa los campos obligatorios y acepta el tratamiento de datos.');
                 form.reportValidity();
                 return;
             }
@@ -1306,7 +1511,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             formSubmit.disabled = true;
             formStatus.className = 'form-status';
-            formStatus.textContent = landingI18n.t('Enviando solicitud...');
+            formStatus.textContent = formMessage('sending', 'Enviando solicitud...');
 
             const controller = typeof AbortController === 'function' ? new AbortController() : null;
             const timeoutId = controller ? window.setTimeout(() => controller.abort(), 15000) : 0;
@@ -1322,11 +1527,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json().catch(() => ({}));
 
                 if (!response.ok || !data.ok) {
-                    throw new Error(data.error || landingI18n.t('No se pudo enviar la solicitud.'));
+                    const responseError = landingI18n.isEnglish ? '' : data.error;
+                    throw new Error(responseError || formMessage('error', 'No se pudo enviar la solicitud.'));
                 }
 
                 formStatus.className = 'form-status is-success';
-                formStatus.textContent = landingI18n.t('Gracias. Hemos recibido tu solicitud y te responderemos en breve.');
+                formStatus.textContent = formMessage('success', 'Gracias. Hemos recibido tu solicitud y te responderemos en breve.');
                 trackCta(formSubmit, 'submit_form_propuesta');
                 form.reset();
 
@@ -1336,14 +1542,16 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 formStatus.className = 'form-status is-error';
                 const errorMessage = error?.name === 'AbortError'
-                    ? landingI18n.t('La solicitud est\u00e1 tardando demasiado. Int\u00e9ntalo de nuevo o escr\u00edbenos por WhatsApp.')
-                    : landingI18n.t(error.message || 'Ha ocurrido un error al enviar la solicitud.');
+                    ? formMessage('timeout', 'La solicitud est\u00e1 tardando demasiado. Int\u00e9ntalo de nuevo o escr\u00edbenos por WhatsApp.')
+                    : landingI18n.isEnglish
+                        ? formMessage('error', 'Ha ocurrido un error al enviar la solicitud.')
+                        : landingI18n.t(error.message || 'Ha ocurrido un error al enviar la solicitud.');
                 formStatus.textContent = `${errorMessage} `;
                 const fallbackLink = document.createElement('a');
                 fallbackLink.href = 'https://wa.me/34644576186?text=Hola%2C%20he%20intentado%20enviar%20una%20solicitud%20desde%20la%20web%20de%20ADAMIS.';
                 fallbackLink.target = '_blank';
                 fallbackLink.rel = 'noopener';
-                fallbackLink.textContent = landingI18n.t('Abrir WhatsApp');
+                fallbackLink.textContent = formMessage('fallback', 'Abrir WhatsApp');
                 formStatus.appendChild(fallbackLink);
             } finally {
                 if (timeoutId) window.clearTimeout(timeoutId);
