@@ -625,157 +625,133 @@
 /* 04 — Survey */
 
 .public-site.impact-page .impact-survey {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    background: var(--impact-paper-deep);
-}
-
-.public-site.impact-page .impact-survey::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    opacity: 0.34;
-    background-image: radial-gradient(rgba(18, 43, 42, 0.19) 0.75px, transparent 0.75px);
-    background-size: 22px 22px;
-    mask-image: linear-gradient(90deg, transparent, #000 50%, transparent);
+    background: var(--impact-paper);
 }
 
 .public-site.impact-page .impact-survey-layout {
     display: grid;
-    grid-template-columns: minmax(330px, 0.84fr) minmax(480px, 1.16fr);
+    grid-template-columns: minmax(0, 0.92fr) minmax(330px, 0.58fr);
     align-items: center;
-    gap: clamp(65px, 10vw, 155px);
-    padding-block: clamp(100px, 10vw, 154px);
+    gap: clamp(46px, 8vw, 130px);
+    padding-block: clamp(48px, 5.5vw, 76px);
+    border-block: 1px solid var(--impact-line);
 }
 
 .public-site.impact-page .impact-survey-copy {
-    display: grid;
-    gap: 25px;
+    max-width: 720px;
+}
+
+.public-site.impact-page .impact-survey-kicker {
+    color: var(--impact-teal);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    line-height: 1.4;
+    text-transform: uppercase;
 }
 
 .public-site.impact-page .impact-survey-copy h2 {
-    max-width: 10.5ch;
+    max-width: 16ch;
+    margin-top: 14px;
     color: var(--impact-ink);
-    font-size: clamp(2.7rem, 4.5vw, 5.2rem);
-    font-weight: 800;
-    letter-spacing: -0.065em;
-    line-height: 0.98;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(2rem, 3.7vw, 3.75rem);
+    font-weight: 650;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
 }
 
 .public-site.impact-page .impact-survey-copy > p:last-child {
-    max-width: 55ch;
+    max-width: 58ch;
+    margin-top: 20px;
     color: var(--impact-ink-soft);
-    font-size: clamp(1rem, 1.2vw, 1.14rem);
-    line-height: 1.75;
+    font-size: clamp(0.94rem, 1.15vw, 1.05rem);
+    line-height: 1.72;
 }
 
-.public-site.impact-page .impact-survey-visual {
+.public-site.impact-page .impact-survey-sheet {
     position: relative;
-    min-height: 460px;
+    width: min(100%, 410px);
+    min-height: 220px;
+    justify-self: end;
+    padding: 28px 30px;
+    border: 1px solid rgba(18, 43, 42, 0.16);
+    border-radius: 4px 18px 4px 4px;
+    background: rgba(255, 254, 250, 0.84);
+    box-shadow: 18px 22px 0 rgba(29, 102, 98, 0.075);
 }
 
-.public-site.impact-page .impact-survey-visual::before,
-.public-site.impact-page .impact-survey-visual::after {
+.public-site.impact-page .impact-survey-sheet::before {
     content: "";
     position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 1px;
-    background: rgba(18, 43, 42, 0.2);
-    transform-origin: left center;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(225deg, var(--impact-paper) 49%, rgba(18, 43, 42, 0.13) 50%, rgba(255, 255, 255, 0.82) 52%);
 }
 
-.public-site.impact-page .impact-survey-visual::before {
-    width: 42%;
-    transform: rotate(-28deg);
-}
-
-.public-site.impact-page .impact-survey-visual::after {
-    width: 39%;
-    transform: rotate(153deg);
-}
-
-.public-site.impact-page .impact-survey-visual > strong {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 2;
-    display: grid;
-    place-items: center;
-    width: 128px;
-    height: 128px;
-    border-radius: 50%;
-    background: var(--impact-night);
-    color: var(--impact-gold-light);
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 25px 54px rgba(18, 43, 42, 0.2);
-}
-
-.public-site.impact-page .impact-survey-ring {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border: 1px solid rgba(18, 43, 42, 0.16);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.public-site.impact-page .impact-survey-ring-one {
-    width: 230px;
-    height: 230px;
-}
-
-.public-site.impact-page .impact-survey-ring-two {
-    width: 370px;
-    height: 370px;
-    border-style: dashed;
-}
-
-.public-site.impact-page .impact-survey-ring-three {
-    width: 94%;
-    height: 94%;
-    border-color: rgba(18, 43, 42, 0.09);
-}
-
-.public-site.impact-page .impact-survey-node {
-    position: absolute;
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    min-width: 116px;
-    min-height: 50px;
-    padding: 12px 17px;
-    border: 1px solid rgba(18, 43, 42, 0.16);
-    border-radius: 999px;
-    background: rgba(251, 247, 239, 0.9);
-    color: var(--impact-teal);
-    font-size: 0.67rem;
+.public-site.impact-page .impact-survey-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--impact-line);
+    color: #64746f;
+    font-size: 0.62rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    box-shadow: 0 15px 38px rgba(18, 43, 42, 0.09);
 }
 
-.public-site.impact-page .impact-survey-node-one {
-    top: 13%;
-    right: 9%;
+.public-site.impact-page .impact-survey-meta i {
+    color: var(--impact-gold-deep);
+    font-style: normal;
 }
 
-.public-site.impact-page .impact-survey-node-two {
-    bottom: 16%;
-    left: 4%;
+.public-site.impact-page .impact-survey-question {
+    display: grid;
+    grid-template-columns: minmax(60px, 1fr) repeat(5, 18px);
+    align-items: center;
+    gap: 9px;
+    margin-top: 27px;
 }
 
-.public-site.impact-page .impact-survey-node-three {
-    right: 2%;
-    bottom: 10%;
-    border-color: transparent;
-    background: var(--impact-gold);
-    color: var(--impact-ink);
+.public-site.impact-page .impact-survey-question > span,
+.public-site.impact-page .impact-survey-line i {
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(18, 43, 42, 0.13);
+}
+
+.public-site.impact-page .impact-survey-question i {
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(18, 43, 42, 0.25);
+    border-radius: 50%;
+}
+
+.public-site.impact-page .impact-survey-question i:nth-of-type(4) {
+    border-color: var(--impact-teal);
+    background: var(--impact-teal);
+    box-shadow: inset 0 0 0 4px #fffefa;
+}
+
+.public-site.impact-page .impact-survey-line {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    align-items: center;
+    gap: 11px;
+    margin-top: 23px;
+}
+
+.public-site.impact-page .impact-survey-line span {
+    width: 14px;
+    height: 8px;
+    border-bottom: 2px solid var(--impact-gold-deep);
+    border-left: 2px solid var(--impact-gold-deep);
+    transform: rotate(-45deg) translateY(-2px);
 }
 
 /* 05 — Participating schools */
@@ -1198,8 +1174,8 @@ html.impact-js .impact-page .impact-satisfaction:not(.is-visible) .impact-satisf
     }
 
     .public-site.impact-page .impact-survey-layout {
-        grid-template-columns: minmax(280px, 0.82fr) minmax(390px, 1.18fr);
-        gap: 44px;
+        grid-template-columns: minmax(0, 1fr) minmax(270px, 0.64fr);
+        gap: 40px;
     }
 
     .public-site.impact-page .impact-school-grid {
@@ -1264,16 +1240,15 @@ html.impact-js .impact-page .impact-satisfaction:not(.is-visible) .impact-satisf
 
     .public-site.impact-page .impact-survey-layout {
         grid-template-columns: 1fr;
-        gap: 58px;
+        gap: 36px;
     }
 
     .public-site.impact-page .impact-survey-copy h2 {
-        max-width: 14ch;
+        max-width: 16ch;
     }
 
-    .public-site.impact-page .impact-survey-visual {
-        width: min(100%, 640px);
-        margin-inline: auto;
+    .public-site.impact-page .impact-survey-sheet {
+        justify-self: start;
     }
 }
 
@@ -1350,7 +1325,6 @@ html.impact-js .impact-page .impact-satisfaction:not(.is-visible) .impact-satisf
 
     .public-site.impact-page .impact-metrics-layout,
     .public-site.impact-page .impact-reportage,
-    .public-site.impact-page .impact-survey-layout,
     .public-site.impact-page .impact-schools,
     .public-site.impact-page .impact-testimonials,
     .public-site.impact-page .impact-cta-layout {
@@ -1407,37 +1381,6 @@ html.impact-js .impact-page .impact-satisfaction:not(.is-visible) .impact-satisf
 
     .public-site.impact-page .impact-shot-secondary {
         aspect-ratio: 4 / 3.25;
-    }
-
-    .public-site.impact-page .impact-survey-visual {
-        min-height: 350px;
-    }
-
-    .public-site.impact-page .impact-survey-ring-one {
-        width: 180px;
-        height: 180px;
-    }
-
-    .public-site.impact-page .impact-survey-ring-two {
-        width: 290px;
-        height: 290px;
-    }
-
-    .public-site.impact-page .impact-survey-ring-three {
-        width: 106%;
-        height: 106%;
-    }
-
-    .public-site.impact-page .impact-survey-visual > strong {
-        width: 108px;
-        height: 108px;
-    }
-
-    .public-site.impact-page .impact-survey-node {
-        min-width: 96px;
-        min-height: 44px;
-        padding-inline: 12px;
-        font-size: 0.57rem;
     }
 
     .public-site.impact-page .impact-school-grid {
@@ -1509,12 +1452,20 @@ html.impact-js .impact-page .impact-satisfaction:not(.is-visible) .impact-satisf
         font-size: 2.8rem;
     }
 
-    .public-site.impact-page .impact-survey-node-one {
-        right: 1%;
+    .public-site.impact-page .impact-survey-sheet {
+        min-height: 204px;
+        padding: 24px 21px;
+        box-shadow: 10px 14px 0 rgba(29, 102, 98, 0.075);
     }
 
-    .public-site.impact-page .impact-survey-node-two {
-        left: 0;
+    .public-site.impact-page .impact-survey-question {
+        grid-template-columns: minmax(40px, 1fr) repeat(5, 16px);
+        gap: 6px;
+    }
+
+    .public-site.impact-page .impact-survey-question i {
+        width: 16px;
+        height: 16px;
     }
 }
 
