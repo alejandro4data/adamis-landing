@@ -94,18 +94,19 @@
             </a>
 
             <button class="site-menu-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" data-menu-toggle>
+                <span class="site-menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
                 <span class="visually-hidden">Abrir men&uacute;</span>
             </button>
 
             <div class="site-menu public-menu" id="primaryMenu" data-main-menu>
-                <a href="#experiencia" data-nav-section="experiencia">C&oacute;mo funciona</a>
-                <a href="#dinamicas" data-nav-section="dinamicas">Din&aacute;micas</a>
+                <a href="/producto/">C&oacute;mo funciona</a>
                 <a href="/talleres/" class="nav-group-start">Talleres</a>
                 <a href="/programa/">Cursos</a>
-                <a href="#impacto" class="nav-group-start" data-nav-section="impacto">Impacto</a>
+                <a href="/impacto/" class="nav-group-start">Impacto</a>
                 <span class="public-menu-actions">
+                    <a href="/financial-education/" class="nav-language" hreflang="en" lang="en" data-language-choice="en" aria-label="View this page in English">EN</a>
                     <a href="/splash.html" class="nav-access">Acceso plataforma</a>
-                    <a href="#contacto" class="nav-primary" data-cta="llevar-adamis" data-section="header">Llevar ADAMIS a mi centro</a>
+                    <a href="/#contacto" class="nav-primary" data-cta="llevar-adamis" data-section="header">Llevar ADAMIS a mi centro</a>
                 </span>
             </div>
         </nav>
@@ -127,15 +128,15 @@
                 </div>
 
                 <div class="landing-hero-visual landing-enter" data-landing-reveal data-landing-tilt>
-                    <div class="landing-hero-question" aria-label="Pregunta de ADAMIS">
-                        <span class="landing-hero-question-label" aria-hidden="true"><span></span>ADAMIS pregunta</span>
-                        <p>&iquest;Y a ti&hellip; <strong>qui&eacute;n te ense&ntilde;&oacute;</strong> a usar el dinero?</p>
-                    </div>
                     <div class="landing-hero-scene">
                         <div class="landing-hero-visual-backdrop" aria-hidden="true"></div>
                         <span class="landing-hero-spark landing-hero-spark-one" aria-hidden="true"></span>
                         <span class="landing-hero-spark landing-hero-spark-two" aria-hidden="true"></span>
                         <span class="landing-hero-spark landing-hero-spark-three" aria-hidden="true"></span>
+                        <div class="landing-hero-question" aria-label="Pregunta de ADAMIS">
+                            <span class="landing-hero-question-label" aria-hidden="true"><span></span>ADAMIS pregunta</span>
+                            <p>&iquest;Y a ti&hellip; <strong>qui&eacute;n te ense&ntilde;&oacute;</strong> a usar el dinero?</p>
+                        </div>
                         <figure class="landing-hero-photo">
                             <picture>
                                 <source type="image/webp" srcset="/assets/landing/hero-aula-pedro-antonio-safe-v2-640.webp 640w, /assets/landing/hero-aula-pedro-antonio-safe-v2-1024.webp 1024w, /assets/landing/hero-aula-pedro-antonio-safe-v2-1440.webp 1440w" sizes="(max-width: 560px) calc(100vw - 44px), (max-width: 1024px) 72vw, 560px">
@@ -155,578 +156,132 @@
             </div>
         </section>
 
-        <section id="impacto" class="landing-proof" aria-labelledby="proofTitle">
-            <div class="container landing-proof-layout">
-                <header class="landing-proof-heading landing-enter" data-landing-reveal>
-                    <p class="landing-eyebrow landing-eyebrow-on-dark"><span aria-hidden="true"></span>ADAMIS en cifras</p>
-                    <h2 id="proofTitle">Ya est&aacute; pasando <em>en las aulas.</em></h2>
-                    <p>Resultados acumulados de las sesiones ADAMIS realizadas hasta ahora.</p>
+        <span id="impacto" class="legacy-anchor" aria-hidden="true"></span>
+        <section id="impacto-preview" class="landing-preview landing-impact-preview" aria-labelledby="impactPreviewTitle">
+            <div class="container landing-impact-preview-layout">
+                <header class="landing-preview-copy landing-enter" data-landing-reveal>
+                    <p class="landing-eyebrow landing-eyebrow-on-dark"><span aria-hidden="true"></span>Impacto real</p>
+                    <h2 id="impactPreviewTitle">ADAMIS <em>ya est&aacute; en las aulas.</em></h2>
+                    <p>400 alumnos de 4 centros ya han participado en experiencias ADAMIS.</p>
                 </header>
 
-                <article class="landing-impact-students" data-landing-reveal aria-labelledby="impactStudentsLabel">
-                    <p class="landing-impact-primary" id="impactStudentsLabel"><strong>400</strong> <span>alumnos alcanzados</span></p>
-                    <div class="landing-impact-dot-field">
-                        <svg class="landing-impact-dot-svg" viewBox="0 0 400 400" aria-hidden="true" focusable="false" data-columns="20" data-rows="20" data-total="400">
-                            <defs>
-                                <pattern id="impactStudentPattern" width="20" height="20" patternUnits="userSpaceOnUse">
-                                    <circle cx="10" cy="10" r="4"></circle>
-                                </pattern>
-                            </defs>
-                            <rect width="400" height="400" fill="url(#impactStudentPattern)"></rect>
-                        </svg>
-                    </div>
-                    <p class="landing-impact-legend"><span aria-hidden="true"></span>Cada punto representa un alumno.</p>
-                </article>
-
-                <article class="landing-impact-satisfaction landing-enter" data-landing-reveal aria-labelledby="impactSatisfactionLabel">
-                    <div class="landing-impact-orbit">
-                        <svg viewBox="0 0 200 200" aria-hidden="true" focusable="false" data-segments="20" data-complete-segments="19" data-treatment="plus">
-                            <defs><circle id="impactOrbitSegment" cx="100" cy="18" r="6"></circle></defs>
-                            <circle class="landing-impact-orbit-track" cx="100" cy="100" r="82"></circle>
-                            <g class="landing-impact-orbit-complete" data-segment-state="complete">
-                                <use href="#impactOrbitSegment" transform="rotate(0 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(18 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(36 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(54 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(72 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(90 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(108 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(126 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(144 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(162 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(180 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(198 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(216 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(234 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(252 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(270 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(288 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(306 100 100)"></use>
-                                <use href="#impactOrbitSegment" transform="rotate(324 100 100)"></use>
-                            </g>
-                            <use class="landing-impact-orbit-remainder" href="#impactOrbitSegment" transform="rotate(342 100 100)" data-segment-state="remainder"></use>
-                            <g class="landing-impact-orbit-plus" data-plus-treatment="true">
-                                <circle cx="157" cy="157" r="17"></circle>
-                                <path d="M157 149v16M149 157h16"></path>
-                            </g>
-                        </svg>
-                        <p class="landing-impact-percentage" id="impactSatisfactionLabel">&gt;95 %</p>
-                    </div>
-                    <p>del alumnado quiere seguir aprendiendo o repetir la experiencia.</p>
-                </article>
-
-                <ul class="landing-impact-secondary" aria-label="M&eacute;tricas de contexto">
-                    <li class="landing-impact-secondary-item landing-enter" data-landing-reveal>
-                        <p><strong>4</strong> <span>centros</span></p>
-                        <svg class="landing-impact-micro" viewBox="0 0 150 58" aria-hidden="true" focusable="false" data-marks="4">
-                            <defs>
-                                <symbol id="impactCenterMark" viewBox="0 0 26 34">
-                                    <path d="M3 31V10L13 3l10 7v21M9 31V20h8v11M3 14h20"></path>
-                                </symbol>
-                            </defs>
-                            <use href="#impactCenterMark" x="2" y="10" width="26" height="34"></use>
-                            <use href="#impactCenterMark" x="42" y="10" width="26" height="34"></use>
-                            <use href="#impactCenterMark" x="82" y="10" width="26" height="34"></use>
-                            <use href="#impactCenterMark" x="122" y="10" width="26" height="34"></use>
-                        </svg>
-                    </li>
-                    <li class="landing-impact-secondary-item landing-enter" data-landing-reveal>
-                        <p><strong>16</strong> <span>talleres o sesiones</span></p>
-                        <svg class="landing-impact-micro" viewBox="0 0 150 58" aria-hidden="true" focusable="false" data-marks="16">
-                            <defs><rect id="impactWorkshopMark" width="24" height="8" rx="2"></rect></defs>
-                            <use href="#impactWorkshopMark" x="4" y="5"></use><use href="#impactWorkshopMark" x="42" y="5"></use><use href="#impactWorkshopMark" x="80" y="5"></use><use href="#impactWorkshopMark" x="118" y="5"></use>
-                            <use href="#impactWorkshopMark" x="4" y="19"></use><use href="#impactWorkshopMark" x="42" y="19"></use><use href="#impactWorkshopMark" x="80" y="19"></use><use href="#impactWorkshopMark" x="118" y="19"></use>
-                            <use href="#impactWorkshopMark" x="4" y="33"></use><use href="#impactWorkshopMark" x="42" y="33"></use><use href="#impactWorkshopMark" x="80" y="33"></use><use href="#impactWorkshopMark" x="118" y="33"></use>
-                            <use href="#impactWorkshopMark" x="4" y="47"></use><use href="#impactWorkshopMark" x="42" y="47"></use><use href="#impactWorkshopMark" x="80" y="47"></use><use href="#impactWorkshopMark" x="118" y="47"></use>
-                        </svg>
-                    </li>
-                    <li class="landing-impact-secondary-item landing-enter" data-landing-reveal>
-                        <p><strong>16</strong> <span>horas impartidas</span></p>
-                        <svg class="landing-impact-micro" viewBox="0 0 150 58" aria-hidden="true" focusable="false" data-marks="16">
-                            <defs><path id="impactHourMark" d="M0 20V38"></path></defs>
-                            <path class="landing-impact-micro-guide" d="M5 29H145"></path>
-                            <use href="#impactHourMark" x="5"></use><use href="#impactHourMark" x="14.3"></use><use href="#impactHourMark" x="23.6"></use><use href="#impactHourMark" x="32.9"></use>
-                            <use href="#impactHourMark" x="42.2"></use><use href="#impactHourMark" x="51.5"></use><use href="#impactHourMark" x="60.8"></use><use href="#impactHourMark" x="70.1"></use>
-                            <use href="#impactHourMark" x="79.4"></use><use href="#impactHourMark" x="88.7"></use><use href="#impactHourMark" x="98"></use><use href="#impactHourMark" x="107.3"></use>
-                            <use href="#impactHourMark" x="116.6"></use><use href="#impactHourMark" x="125.9"></use><use href="#impactHourMark" x="135.2"></use><use href="#impactHourMark" x="144.5"></use>
-                        </svg>
-                    </li>
-                    <li class="landing-impact-secondary-item landing-enter" data-landing-reveal>
-                        <p><strong>16</strong> <span>profesores</span></p>
-                        <svg class="landing-impact-micro" viewBox="0 0 150 58" aria-hidden="true" focusable="false" data-marks="16">
-                            <defs>
-                                <symbol id="impactTeacherMark" viewBox="0 0 14 14">
-                                    <circle cx="7" cy="4" r="2.5"></circle><path d="M2.5 13c.4-3.5 1.9-5.2 4.5-5.2s4.1 1.7 4.5 5.2"></path>
-                                </symbol>
-                            </defs>
-                            <use href="#impactTeacherMark" x="10" y="0" width="14" height="14"></use><use href="#impactTeacherMark" x="48" y="0" width="14" height="14"></use><use href="#impactTeacherMark" x="86" y="0" width="14" height="14"></use><use href="#impactTeacherMark" x="124" y="0" width="14" height="14"></use>
-                            <use href="#impactTeacherMark" x="10" y="14" width="14" height="14"></use><use href="#impactTeacherMark" x="48" y="14" width="14" height="14"></use><use href="#impactTeacherMark" x="86" y="14" width="14" height="14"></use><use href="#impactTeacherMark" x="124" y="14" width="14" height="14"></use>
-                            <use href="#impactTeacherMark" x="10" y="28" width="14" height="14"></use><use href="#impactTeacherMark" x="48" y="28" width="14" height="14"></use><use href="#impactTeacherMark" x="86" y="28" width="14" height="14"></use><use href="#impactTeacherMark" x="124" y="28" width="14" height="14"></use>
-                            <use href="#impactTeacherMark" x="10" y="42" width="14" height="14"></use><use href="#impactTeacherMark" x="48" y="42" width="14" height="14"></use><use href="#impactTeacherMark" x="86" y="42" width="14" height="14"></use><use href="#impactTeacherMark" x="124" y="42" width="14" height="14"></use>
-                        </svg>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <section id="experiencia" class="landing-experience landing-section" aria-labelledby="experienceTitle" data-platform-story>
-            <div class="container">
-                <header class="landing-section-head landing-section-head-wide landing-enter" data-landing-reveal>
-                    <div>
-                        <p class="landing-eyebrow"><span aria-hidden="true"></span>Qu&eacute; es ADAMIS</p>
-                        <h2 id="experienceTitle">Una experiencia que empieza en pantalla y <em>cobra vida en el aula.</em></h2>
-                    </div>
-                    <p>La plataforma introduce conceptos y decisiones. ADAMIS gu&iacute;a la narrativa. Las din&aacute;micas, los materiales y el trabajo en equipo convierten lo aprendido en una experiencia que el alumnado puede practicar, discutir y recordar.</p>
-                </header>
-
-                <div id="tutorial" class="landing-story-scroll" data-platform-story-scroll>
-                    <div class="landing-story-sticky">
-                        <div class="landing-story-chapter" aria-hidden="true">
-                            <span>01 &middot; Mapa</span>
-                            <i><b></b></i>
-                            <span>02 &middot; Tutorial</span>
-                        </div>
-
-                        <div class="landing-story-visual landing-enter" data-landing-reveal>
-                            <div class="landing-system-visual" data-platform-story-frame>
-                                <div class="landing-story-map" data-platform-map-layer>
-                                    <span class="landing-system-kicker" aria-hidden="true">H&iacute;brido</span>
-                                    <div class="landing-system-halo" aria-hidden="true"></div>
-                                    <div class="landing-platform-window">
-                                        <div class="landing-platform-bar"><span></span><span></span><span></span><small>Recorrido del alumno</small></div>
-                                        <img src="/app/assets/images/mapa_clases.webp" alt="Mapa de aprendizaje de la plataforma ADAMIS" width="1536" height="1024" loading="lazy" decoding="async">
-                                    </div>
-                                    <div class="landing-paper-note landing-paper-note-one" aria-hidden="true"><span>ROL</span><strong>Decidir</strong></div>
-                                    <div class="landing-paper-note landing-paper-note-two" aria-hidden="true"><span>RETO</span><strong>Resolver</strong></div>
-                                    <div class="landing-system-route" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-                                    <div class="landing-system-caption"><strong>Un mismo recorrido</strong><span>pantalla &rarr; mesa &rarr; equipo &rarr; reflexi&oacute;n</span></div>
-                                </div>
-
-                                <div class="landing-story-transition" aria-hidden="true">
-                                    <span></span><span></span><span></span>
-                                    <p>Del mapa a la experiencia</p>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="landing-story-copy">
-                            <ol class="landing-experience-steps" data-platform-steps>
-                                <li>
-                                    <span>01</span>
-                                    <div><p>Plataforma + narrativa</p><h3>Comprender</h3><small>Conceptos financieros adaptados y un personaje que da continuidad al recorrido.</small></div>
-                                </li>
-                                <li>
-                                    <span>02</span>
-                                    <div><p>Roles + materiales</p><h3>Experimentar</h3><small>El alumnado pasa de observar a manipular recursos y actuar dentro de una situaci&oacute;n.</small></div>
-                                </li>
-                                <li>
-                                    <span>03</span>
-                                    <div><p>Negociaci&oacute;n + retos</p><h3>Decidir</h3><small>Cada equipo conversa, compara opciones y asume las consecuencias de sus elecciones.</small></div>
-                                </li>
-                                <li>
-                                    <span>04</span>
-                                    <div><p>Evaluaci&oacute;n + seguimiento</p><h3>Acompa&ntilde;ar</h3><small>El centro obtiene una implantaci&oacute;n guiada y visibilidad sobre el proceso.</small></div>
-                                </li>
-                            </ol>
-
-                            <header class="landing-tutorial-copy" aria-labelledby="tutorialTitle" data-platform-tutorial-copy aria-hidden="true">
-                                <p class="landing-eyebrow"><span aria-hidden="true"></span>ADAMIS en acci&oacute;n</p>
-                                <h2 id="tutorialTitle">Mira la plataforma <em>en menos de 2 minutos.</em></h2>
-                                <p>Un recorrido r&aacute;pido por la experiencia digital que acompa&ntilde;a al alumnado y conecta con lo que despu&eacute;s ocurre en el aula.</p>
-                            </header>
-                        </div>
-
-                        <div class="landing-story-video" data-platform-video-layer aria-hidden="true">
-                            <video class="landing-tutorial-video" controls playsinline preload="none" poster="/assets/landing/tutorial-adamis-poster-v1.jpg" data-tutorial-video aria-label="V&iacute;deo tutorial de la plataforma ADAMIS" title="V&iacute;deo tutorial de la plataforma ADAMIS" tabindex="-1">
-                                <source src="/assets/TUTORIAL-ADAMIS.mp4" type="video/mp4">
-                                Tu navegador no admite v&iacute;deo HTML5. <a href="/assets/TUTORIAL-ADAMIS.mp4">Descargar el tutorial de ADAMIS</a>.
-                            </video>
-                            <button class="landing-tutorial-play" type="button" data-tutorial-play aria-label="Reproducir v&iacute;deo tutorial" tabindex="-1">
-                                <span aria-hidden="true"></span>
-                                <strong>Ver tutorial</strong>
-                            </button>
-                        </div>
-                        <p class="landing-tutorial-note"><span aria-hidden="true">01:43</span> Una demostraci&oacute;n breve de la experiencia digital.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="dinamicas" class="landing-dynamics landing-section" aria-labelledby="dynamicsTitle">
-            <div class="container">
-                <div class="landing-dynamics-opening">
-                    <header class="landing-dynamics-intro landing-enter" data-landing-reveal>
-                        <p class="landing-eyebrow landing-eyebrow-on-dark"><span aria-hidden="true"></span>Din&aacute;micas ADAMIS</p>
-                        <h2 id="dynamicsTitle">Aprender tambi&eacute;n significa <em>hacer.</em></h2>
-                        <p data-dynamics-intro>ADAMIS convierte conceptos financieros en experiencias de aula con roles, retos, decisiones y materiales f&iacute;sicos. El alumnado observa, negocia, crea, intercambia y piensa en equipo.</p>
-                    </header>
-
-                    <aside class="landing-dynamics-definition landing-enter" data-landing-reveal data-dynamics-explanation aria-label="Qu&eacute; son las din&aacute;micas ADAMIS">
-                        <span>Un formato pedag&oacute;gico</span>
-                        <strong>Muchas din&aacute;micas. Una forma de aprender.</strong>
-                        <p>Cada din&aacute;mica convierte un concepto financiero en una experiencia grupal para comprenderlo, debatirlo y aplicarlo.</p>
-                    </aside>
+                <div class="landing-impact-preview-number landing-enter" data-landing-reveal aria-label="400 alumnos alcanzados">
+                    <strong>400</strong>
+                    <span>alumnos alcanzados</span>
+                    <i aria-hidden="true"></i>
                 </div>
 
-                <div class="landing-dynamics-composition" data-dynamics-composition aria-label="Tres expresiones de las din&aacute;micas ADAMIS">
-                    <span class="landing-dynamics-axis" aria-hidden="true"></span>
-
-                    <article class="landing-dynamic-piece landing-dynamic-piece-barter landing-enter" data-landing-reveal data-dynamics-piece="trueque">
-                        <header class="landing-dynamic-piece-head">
-                            <span class="landing-dynamic-piece-index">01</span>
-                            <p>Intercambio y valor</p>
-                        </header>
-
-                        <div class="landing-barter-stage">
-                            <div class="landing-dynamics-table-grid" aria-hidden="true"></div>
-                            <img class="landing-barter-card landing-barter-card-wood" src="/assets/landing/trueque-madera-v1.webp" alt="Carta real de la din&aacute;mica de Trueque: Madera" width="514" height="727" loading="lazy" decoding="async">
-                            <img class="landing-barter-card landing-barter-card-stone" src="/assets/landing/trueque-piedra-v1.webp" alt="Carta real de la din&aacute;mica de Trueque: Piedra" width="501" height="715" loading="lazy" decoding="async">
-                            <img class="landing-barter-card landing-barter-card-fabric" src="/assets/landing/trueque-tela-v1.webp" alt="Carta real de la din&aacute;mica de Trueque: Tela" width="484" height="697" loading="lazy" decoding="async">
-                            <img class="landing-barter-card landing-barter-card-oven" src="/assets/landing/trueque-kit-de-horno-v1.webp" alt="Carta real de la din&aacute;mica de Trueque: Kit de horno" width="484" height="709" loading="lazy" decoding="async">
-                            <img class="landing-barter-card landing-barter-card-cow" src="/assets/landing/trueque-vaca-v1.webp" alt="Carta real de la din&aacute;mica de Trueque: Vaca" width="493" height="712" loading="lazy" decoding="async">
-                            <span class="landing-barter-exchange" aria-hidden="true">↔</span>
-                        </div>
-
-                        <div class="landing-dynamic-piece-copy">
-                            <p class="landing-dynamic-piece-kicker">Un ejemplo <span aria-hidden="true">&middot;</span> Din&aacute;mica de Trueque</p>
-                            <h3>Los recursos pasan por sus manos.</h3>
-                            <p>Cartas reales, objetivos compartidos y decisiones que obligan a conversar sobre el valor.</p>
-                        </div>
-                    </article>
-
-                    <article class="landing-dynamic-piece landing-dynamic-piece-classroom landing-enter" data-landing-reveal data-dynamics-piece="classroom">
-                        <div class="landing-classroom-media">
-                            <img src="/assets/landing/dynamics-classroom-v1.webp" alt="Cuatro alumnos negocian alrededor de una mesa mientras manipulan cartas, fichas, monedas y piezas con textura de impresi&oacute;n 3D" width="1536" height="1024" loading="lazy" decoding="async">
-                            <header class="landing-dynamic-piece-head">
-                                <span class="landing-dynamic-piece-index">02</span>
-                                <p>Aula en acci&oacute;n</p>
-                            </header>
-                            <p class="landing-classroom-note">Materiales manipulativos <span aria-hidden="true">&middot;</span> decisiones en equipo</p>
-                        </div>
-
-                        <div class="landing-dynamic-piece-copy">
-                            <p class="landing-dynamic-piece-kicker">Aprender haciendo</p>
-                            <h3>La decisi&oacute;n ocurre alrededor de la mesa.</h3>
-                            <p>Fichas, monedas y piezas f&iacute;sicas convierten cada reto en una experiencia guiada, participativa y concreta.</p>
-                        </div>
-                    </article>
-
-                    <article class="landing-dynamic-piece landing-dynamic-piece-canvas landing-enter" data-landing-reveal data-dynamics-piece="canvas">
-                        <header class="landing-canvas-copy">
-                            <div class="landing-dynamic-piece-head">
-                                <span class="landing-dynamic-piece-index">03</span>
-                                <p>Emprendimiento</p>
-                            </div>
-                            <p class="landing-dynamic-piece-kicker">Otra din&aacute;mica <span aria-hidden="true">&middot;</span> Business Canvas</p>
-                            <h3>Una empresa empieza con buenas preguntas.</h3>
-                            <p>Cada equipo act&uacute;a como una empresa: ordena una idea, define el problema y decide para qui&eacute;n crea valor, c&oacute;mo ingresa y qu&eacute; necesita.</p>
-                        </header>
-
-                        <div class="landing-canvas-visual" role="img" aria-label="Versi&oacute;n simplificada del ADAMIS Model Canvas con bloques para idea, problema, p&uacute;blico, ingresos y recursos">
-                            <div class="landing-canvas-brand">
-                                <span class="landing-canvas-mark" aria-hidden="true"><img src="/assets/logo.png" alt="" width="1485" height="1342" loading="lazy" decoding="async"></span>
-                                <span><strong>ADAMIS Model Canvas</strong><small>De una idea a una empresa</small></span>
-                                <span class="landing-canvas-team">Equipo</span>
-                            </div>
-                            <div class="landing-canvas-grid">
-                                <div class="landing-canvas-block landing-canvas-block-idea"><span>01</span><strong>Idea</strong><small>&iquest;Qu&eacute; creamos?</small></div>
-                                <div class="landing-canvas-block landing-canvas-block-problem"><span>02</span><strong>Problema</strong><small>&iquest;Qu&eacute; resolvemos?</small></div>
-                                <div class="landing-canvas-block landing-canvas-block-audience"><span>03</span><strong>P&uacute;blico</strong><small>&iquest;Para qui&eacute;n?</small></div>
-                                <div class="landing-canvas-block landing-canvas-block-income"><span>04</span><strong>Ingresos</strong><small>&iquest;C&oacute;mo ganamos?</small></div>
-                                <div class="landing-canvas-block landing-canvas-block-resources"><span>05</span><strong>Recursos</strong><small>Materiales, ayuda, tiempo y dinero</small></div>
-                            </div>
-                            <p class="landing-canvas-pitch"><span>Mini pitch</span> Una idea clara, &uacute;til y f&aacute;cil de explicar.</p>
-                        </div>
-                    </article>
-                </div>
-
-                <div class="landing-dynamics-learning landing-enter" data-landing-reveal data-dynamics-learning aria-label="Aprendizajes que atraviesan las din&aacute;micas ADAMIS">
-                    <div class="landing-dynamics-learning-intro">
-                        <span>En todas las din&aacute;micas</span>
-                        <strong>La experiencia activa cuatro formas de pensar.</strong>
-                    </div>
-                    <ol>
-                        <li><span>01</span><div><strong>Asumir roles</strong><small>Mirar la situaci&oacute;n desde una responsabilidad concreta.</small></div></li>
-                        <li><span>02</span><div><strong>Interpretar recursos</strong><small>Ver, tocar, ordenar y comparar antes de elegir.</small></div></li>
-                        <li><span>03</span><div><strong>Negociar</strong><small>Escuchar, argumentar y acordar con el equipo.</small></div></li>
-                        <li><span>04</span><div><strong>Resolver juntos</strong><small>Convertir distintas ideas en una decisi&oacute;n compartida.</small></div></li>
-                    </ol>
-                </div>
-            </div>
-        </section>
-
-        <section id="formatos" class="landing-formats landing-section" aria-labelledby="formatsTitle">
-            <div class="container">
-                <header class="landing-section-head landing-section-head-wide landing-enter" data-landing-reveal data-formats-header>
-                    <div>
-                        <p class="landing-eyebrow" data-formats-eyebrow><span aria-hidden="true"></span>Una implantaci&oacute;n flexible</p>
-                        <h2 id="formatsTitle">ADAMIS se adapta a c&oacute;mo quiera empezar <em>cada centro.</em></h2>
-                    </div>
-                    <p data-formats-intro>Desde una sesi&oacute;n tem&aacute;tica hasta un recorrido completo por curso, ADAMIS permite adaptar la experiencia al calendario, al alumnado y a los objetivos de cada colegio.</p>
-                </header>
-
-                <div class="landing-formats-flow" data-formats-v2-list data-formats-list>
-                    <article class="landing-format-workshops landing-enter" data-landing-reveal data-format="workshops">
-                        <div class="landing-format-index" aria-hidden="true">
-                            <span>01</span>
-                            <i></i>
-                        </div>
-                        <div class="landing-format-workshops-copy">
-                            <p class="landing-format-kicker">Sesiones tem&aacute;ticas</p>
-                            <h3>Talleres</h3>
-                            <p class="landing-format-lead" data-workshops-copy>Una sesi&oacute;n pr&aacute;ctica para trabajar un concepto financiero concreto y descubrir ADAMIS directamente en el aula.</p>
-                            <p class="landing-format-description">La experiencia puede desarrollarse a trav&eacute;s de la plataforma o combinarla con una peque&ntilde;a din&aacute;mica, seg&uacute;n el contenido del taller.</p>
-                            <ul class="landing-workshop-benefits" data-workshops-benefits>
-                                <li>Un concepto financiero</li>
-                                <li>Una sesi&oacute;n pr&aacute;ctica</li>
-                                <li>F&aacute;cil de incorporar al calendario</li>
-                            </ul>
-                            <a class="landing-format-link" href="/talleres/" data-cta="ver-talleres" data-section="formatos">Ver talleres <span aria-hidden="true">&rarr;</span></a>
-                        </div>
-                        <div class="landing-workshop-visual" data-format-visual aria-hidden="true" focusable="false">
-                            <span class="landing-workshop-concept">Concepto</span>
-                            <div class="landing-workshop-expression">
-                                <span><i></i>Pantalla</span>
-                                <b>+</b>
-                                <span><i></i>Experiencia</span>
-                            </div>
-                            <small>Una experiencia concreta</small>
-                        </div>
-                    </article>
-
-                    <div class="landing-formats-bridge landing-enter" data-landing-reveal data-formats-transition>
-                        <span>Para trabajar la educaci&oacute;n financiera con continuidad.</span>
-                    </div>
-
-                    <article class="landing-format-courses landing-enter" data-landing-reveal data-format="courses">
-                        <header class="landing-format-courses-head">
-                            <div class="landing-format-index" aria-hidden="true">
-                                <span>02</span>
-                                <i></i>
-                            </div>
-                            <div>
-                                <p class="landing-format-kicker">Recorridos por curso</p>
-                                <h3>Cursos completos ADAMIS</h3>
-                                <p class="landing-format-lead" data-courses-copy>Un recorrido progresivo de educaci&oacute;n financiera para 4.&ordm;, 5.&ordm; y 6.&ordm; de Primaria, donde la experiencia digital y las din&aacute;micas de aula forman parte de un mismo aprendizaje.</p>
-                                <p class="landing-format-description">Cada curso adapta los contenidos y la profundidad al momento educativo del alumnado.</p>
-                            </div>
-                        </header>
-
-                        <div class="landing-course-grades" data-course-grades aria-label="Recorridos curriculares de 4.º, 5.º y 6.º de Primaria">
-                            <section class="landing-course-grade landing-course-grade-4 landing-enter" data-landing-reveal data-course="4">
-                                <span class="landing-course-station" aria-hidden="true"></span>
-                                <p>Fundamentos</p>
-                                <h4><b>4.&ordm;</b> de Primaria</h4>
-                                <strong>Elegir y cuidar</strong>
-                                <ul>
-                                    <li data-course-topic>Necesidades y deseos</li>
-                                    <li data-course-topic>Primera meta de ahorro</li>
-                                    <li data-course-topic>Anuncios y decisiones</li>
-                                </ul>
-                            </section>
-                            <section class="landing-course-grade landing-course-grade-5 landing-enter" data-landing-reveal data-course="5">
-                                <span class="landing-course-station" aria-hidden="true"></span>
-                                <p>Curso puente</p>
-                                <h4><b>5.&ordm;</b> de Primaria</h4>
-                                <strong>Comparar y planificar</strong>
-                                <ul>
-                                    <li data-course-topic>Precio, calidad y duraci&oacute;n</li>
-                                    <li data-course-topic>Presupuesto semanal</li>
-                                    <li data-course-topic>Crear valor con una idea</li>
-                                </ul>
-                            </section>
-                            <section class="landing-course-grade landing-course-grade-6 landing-enter" data-landing-reveal data-course="6">
-                                <span class="landing-course-station" aria-hidden="true"></span>
-                                <p>Integraci&oacute;n</p>
-                                <h4><b>6.&ordm;</b> de Primaria</h4>
-                                <strong>Decidir y proteger</strong>
-                                <ul>
-                                    <li data-course-topic>Deuda e inter&eacute;s</li>
-                                    <li data-course-topic>Inversi&oacute;n y riesgo</li>
-                                    <li data-course-topic>Estafas y protecci&oacute;n de datos</li>
-                                </ul>
-                            </section>
-                        </div>
-
-                        <section class="landing-course-anatomy landing-enter" data-landing-reveal data-course-anatomy aria-labelledby="courseAnatomyTitle">
-                            <div class="landing-course-anatomy-copy">
-                                <p class="landing-format-kicker">C&oacute;mo se vive un curso</p>
-                                <h4 id="courseAnatomyTitle">Un recorrido, dos lenguajes que conviven.</h4>
-                                <p>La plataforma y las din&aacute;micas de aula se combinan con momentos de aplicaci&oacute;n y reflexi&oacute;n. Las din&aacute;micas convierten determinados conceptos en experiencias de decisi&oacute;n, negociaci&oacute;n, creaci&oacute;n o trabajo en equipo.</p>
-                                <a class="landing-format-secondary-link" href="#dinamicas" data-cta="descubrir-dinamicas" data-section="formatos">Ver c&oacute;mo son las din&aacute;micas <span aria-hidden="true">&rarr;</span></a>
-                            </div>
-                            <div class="landing-course-anatomy-visual" data-format-visual aria-hidden="true" focusable="false">
-                                <div class="landing-course-language landing-course-language-digital"><span>Plataforma</span><i></i></div>
-                                <div class="landing-course-language landing-course-language-classroom"><span>Din&aacute;micas de aula</span><i></i></div>
-                                <div class="landing-course-merge"><span>Recorrido ADAMIS</span><small>Aplicaci&oacute;n &middot; reflexi&oacute;n</small></div>
-                            </div>
-                            <p class="landing-course-support">Adem&aacute;s, el centro cuenta con <span>gu&iacute;as docentes</span>, <span>panel docente digital</span> y <span>personalizaci&oacute;n del aprendizaje</span>.</p>
-                        </section>
-
-                        <a class="landing-format-link landing-format-courses-cta" href="/programa/" data-cta="ver-programa" data-section="formatos">Conocer los cursos <span aria-hidden="true">&rarr;</span></a>
-                    </article>
-                </div>
-
-                <div class="landing-formats-conclusion landing-enter" data-landing-reveal data-formats-conclusion>
-                    <div class="landing-formats-conclusion-copy">
-                        <span>Una implantaci&oacute;n a medida</span>
-                        <strong>Una implantaci&oacute;n que puede adaptarse al ritmo de cada centro.</strong>
-                    </div>
-                    <div class="landing-formats-conclusion-action">
-                        <p>Desde una experiencia puntual hasta un recorrido completo por curso, configuramos ADAMIS seg&uacute;n el contexto del colegio.</p>
-                        <a href="#contacto" class="btn-primary landing-formats-global-cta" data-formats-global-cta data-cta="llevar-adamis" data-section="formatos">Cu&eacute;ntanos qu&eacute; necesita tu centro <span aria-hidden="true">&rarr;</span></a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="landing-evidence landing-section" aria-labelledby="evidenceTitle">
-            <div class="container">
-                <header class="landing-evidence-header landing-enter" data-landing-reveal>
-                    <div>
-                        <p class="landing-eyebrow"><span aria-hidden="true"></span>ADAMIS en el aula</p>
-                        <h2 id="evidenceTitle">De la iniciativa a una experiencia que <em>ya llega al aula.</em></h2>
-                    </div>
-                    <p>ADAMIS ya se ha probado con alumnado y centros reales. Cada sesi&oacute;n nos permite observar c&oacute;mo aprende el alumnado, escuchar al centro y seguir mejorando la experiencia.</p>
-                </header>
-
-                <div class="landing-evidence-reportage" aria-label="Reportaje fotogr&aacute;fico de sesiones reales de ADAMIS">
-                    <p class="landing-evidence-label landing-enter" data-landing-reveal><span aria-hidden="true"></span>Fotograf&iacute;as reales de sesiones ADAMIS</p>
-
-                    <figure class="landing-evidence-shot landing-evidence-shot-primary landing-enter" data-landing-reveal>
-                        <img
-                            src="/assets/landing/evidence/pedro-antonio-classroom-safe-v1-1024.webp"
-                            srcset="/assets/landing/evidence/pedro-antonio-classroom-safe-v1-640.webp 640w, /assets/landing/evidence/pedro-antonio-classroom-safe-v1-1024.webp 1024w, /assets/landing/evidence/pedro-antonio-classroom-safe-v1-1440.webp 1440w"
-                            sizes="(max-width: 720px) calc(100vw - 40px), (max-width: 920px) calc(100vw - 64px), 60vw"
-                            alt="Alumnado participando en una sesi&oacute;n de ADAMIS en el CEIP Pedro Antonio de Alarc&oacute;n."
-                            width="1440"
-                            height="1460"
-                            loading="lazy"
-                            decoding="async">
-                        <figcaption class="landing-evidence-caption"><span>01</span><strong>CEIP Pedro Antonio de Alarc&oacute;n</strong><small>ADAMIS en una sesi&oacute;n real de aula</small></figcaption>
-                    </figure>
-
-                    <div class="landing-evidence-secondary">
-                        <figure class="landing-evidence-shot landing-evidence-shot-secondary landing-enter" data-landing-reveal>
-                            <img
-                                src="/assets/landing/evidence/arcangel-classroom-v1-816.webp"
-                                srcset="/assets/landing/evidence/arcangel-classroom-v1-480.webp 480w, /assets/landing/evidence/arcangel-classroom-v1-816.webp 816w"
-                                sizes="(max-width: 720px) calc(100vw - 40px), (max-width: 920px) calc(50vw - 40px), 36vw"
-                                alt="Alumnado participando en una sesi&oacute;n de ADAMIS en el Colegio Arc&aacute;ngel."
-                                width="816"
-                                height="691"
-                                loading="lazy"
-                                decoding="async">
-                            <figcaption class="landing-evidence-caption"><span>02</span><strong>Colegio Arc&aacute;ngel</strong><small>Una sesi&oacute;n en un entorno educativo real</small></figcaption>
-                        </figure>
-
-                        <figure class="landing-evidence-shot landing-evidence-shot-secondary landing-enter" data-landing-reveal>
-                            <img
-                                src="/assets/landing/evidence/abaco-team-v1-800.webp"
-                                srcset="/assets/landing/evidence/abaco-team-v1-480.webp 480w, /assets/landing/evidence/abaco-team-v1-800.webp 800w, /assets/landing/evidence/abaco-team-v1-1200.webp 1200w"
-                                sizes="(max-width: 720px) calc(100vw - 40px), (max-width: 920px) calc(50vw - 40px), 36vw"
-                                alt="Equipo ADAMIS en un aula del Colegio &Aacute;baco."
-                                width="1200"
-                                height="900"
-                                loading="lazy"
-                                decoding="async">
-                            <figcaption class="landing-evidence-caption"><span>03</span><strong>Colegio &Aacute;baco</strong><small>Equipo ADAMIS en el centro</small></figcaption>
-                        </figure>
-                    </div>
-                </div>
-
-                <aside class="landing-evidence-survey landing-enter" data-landing-reveal aria-labelledby="evidenceSurveyTitle">
-                    <div class="landing-evidence-survey-copy">
-                        <p class="landing-evidence-kicker">Escuchar para mejorar</p>
-                        <h3 id="evidenceSurveyTitle">Cada sesi&oacute;n tambi&eacute;n nos ense&ntilde;a a nosotros.</h3>
-                        <p>Recogemos la opini&oacute;n del alumnado mediante encuestas para entender c&oacute;mo vive la experiencia y seguir mejorando ADAMIS.</p>
-                    </div>
-                    <div class="landing-evidence-survey-sheet" aria-hidden="true">
-                        <div class="landing-evidence-survey-meta"><span>Encuesta</span><i>ADAMIS</i></div>
-                        <div class="landing-evidence-survey-question"><span></span><i></i><i></i><i></i><i></i><i></i></div>
-                        <div class="landing-evidence-survey-line"><span></span><i></i></div>
-                        <div class="landing-evidence-survey-line"><span></span><i></i></div>
-                    </div>
-                </aside>
-
-                <div class="landing-evidence-schools landing-enter" data-landing-reveal aria-labelledby="evidenceSchoolsTitle">
-                    <p id="evidenceSchoolsTitle">Centros participantes</p>
-                    <div class="landing-evidence-logos">
+                <div class="landing-impact-preview-schools landing-enter" data-landing-reveal aria-labelledby="impactPreviewSchoolsTitle">
+                    <p id="impactPreviewSchoolsTitle">Presentes en centros como:</p>
+                    <div class="landing-preview-logo-grid">
                         <a href="https://colegio-arcangel.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar la web del Colegio Arc&aacute;ngel">
-                            <img src="/assets/evidencias/colegio-arcangel.png" alt="Logo del Colegio Arc&aacute;ngel" width="200" height="200" loading="lazy" decoding="async">
-                            <span>Colegio Arc&aacute;ngel</span>
+                            <img class="landing-preview-logo landing-preview-logo-arcangel" src="/assets/evidencias/colegio-arcangel.png" alt="Logo del Colegio Arc&aacute;ngel" width="200" height="200" decoding="async">
                         </a>
                         <a href="https://www.colegiotorrevilano.es/" target="_blank" rel="noopener noreferrer" aria-label="Visitar la web del Colegio Torrevilano">
-                            <img src="/assets/evidencias/colegio-torrevilano.svg" alt="Logo del Colegio Torrevilano" width="255" height="96" loading="lazy" decoding="async">
-                            <span>Colegio Torrevilano</span>
+                            <img class="landing-preview-logo landing-preview-logo-torrevilano" src="/assets/evidencias/colegio-torrevilano.svg" alt="Logo del Colegio Torrevilano" width="255" height="96" decoding="async">
                         </a>
                         <a href="https://colegio-abaco.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar la web del Colegio &Aacute;baco">
-                            <img src="/assets/evidencias/colegio_abaco.png" alt="Logo del Colegio &Aacute;baco" width="200" height="200" loading="lazy" decoding="async">
-                            <span>Colegio &Aacute;baco</span>
+                            <img class="landing-preview-logo landing-preview-logo-abaco" src="/assets/evidencias/colegio_abaco.png" alt="Logo del Colegio &Aacute;baco" width="200" height="200" decoding="async">
                         </a>
                         <a href="https://www.educa2.madrid.org/web/centro.cp.alarcon.valdemoro" target="_blank" rel="noopener noreferrer" aria-label="Visitar la web del CEIP Pedro Antonio de Alarc&oacute;n">
-                            <span class="landing-evidence-wordmark" role="img" aria-label="Logo del CEIP Pedro Antonio de Alarc&oacute;n"><strong>CEIP</strong>Pedro Antonio de Alarc&oacute;n</span>
-                            <span>CEIP Pedro Antonio de Alarc&oacute;n</span>
+                            <span class="landing-preview-wordmark" role="img" aria-label="Logo del CEIP Pedro Antonio de Alarc&oacute;n"><strong>CEIP</strong>Pedro Antonio de Alarc&oacute;n</span>
                         </a>
                     </div>
                 </div>
+
+                <a href="/impacto/" class="landing-button landing-button-light landing-impact-preview-cta landing-enter" data-landing-reveal data-cta="conocer-impacto" data-section="impacto-preview">Conocer impacto <span aria-hidden="true">&rarr;</span></a>
             </div>
         </section>
 
-        <section id="testimonios" class="landing-testimonials landing-section" aria-labelledby="testimonialsTitle">
-            <span class="landing-testimonials-mark" aria-hidden="true">&ldquo;</span>
-            <div class="container">
-                <header class="landing-section-head landing-testimonials-head landing-enter" data-landing-reveal>
-                    <div>
-                        <p class="landing-eyebrow"><span aria-hidden="true"></span>Lo que dicen los centros</p>
-                        <h2 id="testimonialsTitle">La experiencia tambi&eacute;n se entiende escuchando <em>a quienes la viven.</em></h2>
-                    </div>
-                    <p>Docentes y responsables de los centros nos cuentan c&oacute;mo han vivido ADAMIS dentro del aula.</p>
+        <span id="experiencia" class="legacy-anchor" aria-hidden="true"></span>
+        <span id="dinamicas" class="legacy-anchor" aria-hidden="true"></span>
+        <section id="producto-preview" class="landing-preview landing-product-preview" aria-labelledby="productPreviewTitle">
+            <div class="container landing-product-preview-layout">
+                <header class="landing-preview-copy landing-product-preview-copy landing-enter" data-landing-reveal>
+                    <p class="landing-eyebrow"><span aria-hidden="true"></span>Producto</p>
+                    <h2 id="productPreviewTitle">Una experiencia digital que <em>cobra vida en el aula.</em></h2>
+                    <p>La plataforma gu&iacute;a el aprendizaje y las din&aacute;micas convierten los conceptos en decisiones, retos y experiencias compartidas.</p>
                 </header>
 
-                <div class="landing-testimonials-layout">
-                    <figure class="landing-testimonial landing-testimonial-featured landing-enter" data-landing-reveal>
-                        <span class="landing-testimonial-number" aria-hidden="true">01</span>
-                        <div class="landing-testimonial-content">
-                            <blockquote class="landing-testimonial-quote">
-                                <p><span class="landing-testimonial-emphasis">Es un proyecto esencial.</span> Es necesario incorporar la educaci&oacute;n financiera en todos los colegios, y qu&eacute; mejor manera de hacerlo que uni&eacute;ndola a la tecnolog&iacute;a para crear experiencias de aprendizaje tan valiosas como las que ofrece ADAMIS.</p>
-                            </blockquote>
-                            <figcaption class="landing-testimonial-attribution">
-                                <strong class="landing-testimonial-author">Maribel Valenzuela</strong>
-                                <span class="landing-testimonial-role">Maestra y Coordinadora TIC <span aria-hidden="true">&middot;</span> <span>CEIP Pedro Antonio de Alarc&oacute;n</span></span>
-                            </figcaption>
-                        </div>
+                <div class="landing-product-preview-visual" aria-label="Ecosistema de producto ADAMIS">
+                    <figure class="landing-product-preview-map landing-enter" data-landing-reveal>
+                        <span class="landing-product-preview-tag">Universo ADAMIS</span>
+                        <img src="/app/assets/images/mapa_clases.webp" alt="Mapa de aprendizaje de la plataforma ADAMIS" width="1536" height="1024" decoding="async">
                     </figure>
+                    <figure class="landing-product-preview-app landing-enter" data-landing-reveal>
+                        <span class="landing-product-preview-tag">Plataforma digital</span>
+                        <img src="/assets/landing/tutorial-adamis-poster-v1.jpg" alt="Pantalla de bienvenida de la plataforma ADAMIS" width="1280" height="720" decoding="async">
+                    </figure>
+                    <figure class="landing-product-preview-classroom landing-enter" data-landing-reveal>
+                        <span class="landing-product-preview-tag">Din&aacute;micas de aula</span>
+                        <img src="/assets/landing/dynamics-classroom-v1.webp" alt="Alumnado participando en una din&aacute;mica ADAMIS con materiales f&iacute;sicos" width="1536" height="1024" decoding="async">
+                    </figure>
+                </div>
 
-                    <figure class="landing-testimonial landing-testimonial-noel landing-enter" data-landing-reveal>
-                        <span class="landing-testimonial-number" aria-hidden="true">02</span>
-                        <div class="landing-testimonial-content">
-                            <blockquote class="landing-testimonial-quote">
-                                <p>La educaci&oacute;n financiera es <span class="landing-testimonial-emphasis">la gran asignatura pendiente</span> en nuestro sistema educativo. ADAMIS es s&uacute;per atractivo: lo hemos visto en la concentraci&oacute;n y, al mismo tiempo, en la diversi&oacute;n de los ni&ntilde;os durante los talleres. Iniciativas as&iacute; dan gusto.</p>
-                            </blockquote>
-                            <figcaption class="landing-testimonial-attribution">
-                                <strong class="landing-testimonial-author">Noel Garc&iacute;a</strong>
-                                <span class="landing-testimonial-role">Jefe de Estudios de Primaria <span aria-hidden="true">&middot;</span> <span>Colegio &Aacute;baco</span></span>
-                            </figcaption>
-                        </div>
-                    </figure>
-
-                    <figure class="landing-testimonial landing-testimonial-javier landing-enter" data-landing-reveal>
-                        <span class="landing-testimonial-number" aria-hidden="true">03</span>
-                        <div class="landing-testimonial-content">
-                            <blockquote class="landing-testimonial-quote">
-                                <p>Me ha encantado, y <span class="landing-testimonial-emphasis">la actitud de los ni&ntilde;os habla por s&iacute; sola.</span> Es muy importante que la educaci&oacute;n financiera comience a tratarse al mismo nivel que otras materias, como Matem&aacute;ticas o Ingl&eacute;s, porque es una competencia muy necesaria para la vida. Cuanto antes se ense&ntilde;e, mejores h&aacute;bitos podr&aacute;n desarrollar los alumnos de cara a su vida adulta.</p>
-                            </blockquote>
-                            <figcaption class="landing-testimonial-attribution">
-                                <strong class="landing-testimonial-author">Javier Gonzalez</strong>
-                                <span class="landing-testimonial-role">Coordinador de Extraescolares <span aria-hidden="true">&middot;</span> <span>Colegio Torrevilano</span></span>
-                            </figcaption>
-                        </div>
-                    </figure>
+                <div class="landing-product-preview-footer landing-enter" data-landing-reveal>
+                    <div class="landing-product-preview-pillars">
+                        <article>
+                            <span>01</span>
+                            <div><h3>Plataforma digital</h3><p>Aprender, decidir y avanzar dentro del recorrido.</p></div>
+                        </article>
+                        <article>
+                            <span>02</span>
+                            <div><h3>Din&aacute;micas de aula</h3><p>Practicar conceptos mediante roles, materiales y trabajo en equipo.</p></div>
+                        </article>
+                    </div>
+                    <a href="/producto/" class="landing-button landing-button-primary" data-cta="conocer-producto" data-section="producto-preview">Conocer el producto <span aria-hidden="true">&rarr;</span></a>
                 </div>
             </div>
         </section>
+
+        <section id="formatos" class="landing-offer landing-section" aria-labelledby="offerTitle">
+            <div class="container landing-offer-layout">
+                <header class="landing-offer-head landing-enter" data-landing-reveal>
+                    <div>
+                        <p class="landing-eyebrow"><span aria-hidden="true"></span>Dos formas de empezar</p>
+                        <h2 id="offerTitle">Primero comprobar.<br>Despu&eacute;s, ampliar.</h2>
+                    </div>
+                    <p>El taller permite conocer la experiencia de forma concreta. El programa aporta continuidad y progresi&oacute;n por curso.</p>
+                </header>
+
+                <div class="landing-offer-cards">
+                    <article class="landing-offer-card landing-offer-workshop landing-enter" data-landing-reveal>
+                        <div class="landing-offer-card-head">
+                            <p class="landing-offer-kicker">Experiencia concreta</p>
+                            <h3>Talleres</h3>
+                            <p class="landing-offer-description">Una sesi&oacute;n pr&aacute;ctica para trabajar un concepto financiero concreto y descubrir ADAMIS directamente en el aula.</p>
+                        </div>
+                        <ul class="landing-offer-benefits">
+                            <li>Un concepto financiero concreto</li>
+                            <li>Plataforma, o plataforma + peque&ntilde;a din&aacute;mica</li>
+                            <li>F&aacute;cil de incorporar al calendario</li>
+                        </ul>
+                        <div class="landing-offer-actions">
+                            <button type="button" class="landing-button landing-button-primary" data-request-modal data-request-type="taller" data-cta="solicitar-taller" data-section="formatos">Solicitar taller <span aria-hidden="true">&rarr;</span></button>
+                            <a href="/talleres/" class="landing-offer-link" data-cta="ver-taller" data-section="formatos">Ver c&oacute;mo es un taller <span aria-hidden="true">&rarr;</span></a>
+                        </div>
+                    </article>
+
+                    <article class="landing-offer-card landing-offer-program landing-enter" data-landing-reveal>
+                        <div class="landing-offer-card-head">
+                            <p class="landing-offer-kicker">Continuidad por curso</p>
+                            <h3>Programa ADAMIS</h3>
+                            <p class="landing-offer-description">Un recorrido progresivo para convertir la educaci&oacute;n financiera en una competencia que crece con cada curso.</p>
+                        </div>
+                        <ul class="landing-offer-benefits">
+                            <li>Progresi&oacute;n para 4.&ordm;, 5.&ordm; y 6.&ordm;</li>
+                            <li>Plataforma y din&aacute;micas de aula</li>
+                            <li>Contenido estructurado y seguimiento</li>
+                        </ul>
+                        <div class="landing-offer-actions">
+                            <button type="button" class="landing-button landing-button-primary" data-request-modal data-request-type="programa" data-cta="solicitar-programa" data-section="formatos">Solicitar programa <span aria-hidden="true">&rarr;</span></button>
+                            <a href="/programa/" class="landing-offer-link" data-cta="ver-programa" data-section="formatos">Descubrir el programa <span aria-hidden="true">&rarr;</span></a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
 
         <section id="contacto" class="lead-section landing-contact" aria-labelledby="contactTitle">
             <div class="container landing-contact-grid">
@@ -792,11 +347,10 @@
             </div>
             <nav aria-label="Enlaces de ADAMIS">
                 <h2>ADAMIS</h2>
-                <a href="#experiencia">C&oacute;mo funciona</a>
-                <a href="#dinamicas">Din&aacute;micas</a>
+                <a href="/producto/">C&oacute;mo funciona</a>
                 <a href="/talleres/">Talleres</a>
                 <a href="/programa/">Cursos</a>
-                <a href="#impacto">Impacto</a>
+                <a href="/impacto/">Impacto</a>
             </nav>
             <nav aria-label="Legal">
                 <h2>Legal</h2>
@@ -813,6 +367,39 @@
         </div>
         <div class="container footer-bottom"><p>&copy; 2026 ADAMIS. Todos los derechos reservados.</p></div>
     </footer>
+
+    <dialog class="request-dialog" id="requestDialog" aria-labelledby="requestDialogTitle" aria-describedby="requestDialogIntro">
+        <div class="request-dialog-shell" data-request-dialog-panel>
+            <button type="button" class="request-dialog-close" data-request-dialog-close aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+            <form class="lead-form request-dialog-form" method="post" action="/api/request-info" data-info-form data-request-form data-source-context="modal-taller" aria-labelledby="requestDialogTitle">
+                <input type="hidden" name="audience" value="Centro escolar">
+                <input type="hidden" name="source" value="Formulario modal - inicio">
+                <div class="form-honeypot" aria-hidden="true"><label>Web<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+                <header class="request-dialog-head">
+                    <p class="landing-eyebrow"><span aria-hidden="true"></span>Solicitud para centros</p>
+                    <h2 id="requestDialogTitle" tabindex="-1">Solicitar taller</h2>
+                    <p id="requestDialogIntro">Cu&eacute;ntanos vuestro contexto y os ayudaremos a preparar un taller que encaje con el centro.</p>
+                </header>
+
+                <div class="request-dialog-grid">
+                    <label class="lead-field"><span>Nombre y apellidos *</span><input id="modal-name" type="text" name="name" autocomplete="name" maxlength="100" required placeholder="Tu nombre"></label>
+                    <label class="lead-field"><span>Email profesional *</span><input id="modal-email" type="email" name="email" autocomplete="email" maxlength="160" required placeholder="nombre@colegio.es"></label>
+                    <label class="lead-field"><span>Centro educativo *</span><input id="modal-organization" type="text" name="organization" autocomplete="organization" maxlength="140" required placeholder="Nombre del centro"></label>
+                    <label class="lead-field"><span>Curso(s) y alumnado aproximado *</span><input id="modal-courses" type="text" name="courses" maxlength="160" required placeholder="Ej.: 5.&ordm; de Primaria &middot; unos 50 alumnos"></label>
+                    <label class="lead-field request-dialog-field-full"><span>&iquest;Qu&eacute; formato te interesa?</span><select id="modal-interest" name="interest"><option value="Necesito orientaci&oacute;n">Necesito orientaci&oacute;n</option><option value="Taller inicial">Talleres</option><option value="Programa completo">Cursos completos</option></select></label>
+                    <label class="lead-field"><span>Tel&eacute;fono / WhatsApp <small>opcional</small></span><input id="modal-phone" type="tel" name="phone" autocomplete="tel" maxlength="40" placeholder="+34 600 000 000"></label>
+                    <label class="lead-field request-dialog-field-full"><span>&iquest;Hay algo m&aacute;s que debamos saber? <small>opcional</small></span><textarea id="modal-message" name="message" rows="3" maxlength="1200" placeholder="Cu&eacute;ntanos brevemente qu&eacute; est&aacute;is buscando o cualquier contexto que pueda ayudarnos."></textarea></label>
+                </div>
+
+                <label class="lead-consent request-dialog-consent"><input id="modal-data-consent" type="checkbox" name="dataConsent" value="yes" required><span>Acepto que ADAMIS trate mis datos para responder a esta solicitud. <a href="/politica-privacidad/" target="_blank" rel="noopener">Pol&iacute;tica de privacidad</a>.</span></label>
+                <div class="lead-form-submit request-dialog-submit">
+                    <button type="submit" class="btn-primary landing-button landing-button-primary" data-form-submit data-cta="enviar-solicitud-modal" data-section="modal"><span data-request-submit-label>Solicitar taller</span> <span aria-hidden="true">&rarr;</span></button>
+                    <p class="form-status" id="requestDialogStatus" data-form-status role="status" aria-live="polite"></p>
+                </div>
+            </form>
+        </div>
+    </dialog>
 
     <nav class="mobile-cta-bar is-hidden" aria-label="Acci&oacute;n principal"><a href="#contacto" class="btn-primary" data-cta="llevar-adamis" data-section="barra-movil">Llevar ADAMIS a mi centro <span aria-hidden="true">&rarr;</span></a></nav>
 

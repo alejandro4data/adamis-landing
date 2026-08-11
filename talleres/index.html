@@ -11,65 +11,164 @@
     <link rel="manifest" href="/site.webmanifest">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-    <link rel="preload" as="image" href="/assets/colegios/imagen-arcangel.jpg" fetchpriority="high">
-    <link rel="stylesheet" href="/public.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public.css">
+    <link rel="stylesheet" href="/detail.css">
+    <link rel="stylesheet" href="/talleres.css">
 </head>
-<body class="public-site public-brief public-workshop-brief public-nav-coherent">
+<body class="public-site detail-page workshops-page public-nav-coherent">
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
     <header class="commercial-header public-header" data-site-header>
         <nav class="site-nav public-nav" aria-label="Navegaci&oacute;n principal">
-            <a href="/" class="site-brand" aria-label="Ir al inicio de ADAMIS"><img src="/assets/logo.png" alt="" class="site-brand-logo" width="562" height="510"><span class="site-brand-copy"><span class="site-brand-name">ADAMIS</span><span class="site-brand-subtitle">Educaci&oacute;n financiera</span></span></a>
-            <button class="site-menu-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" data-menu-toggle><span class="visually-hidden">Abrir men&uacute;</span></button>
+            <a href="/" class="site-brand" aria-label="Ir al inicio de ADAMIS">
+                <img src="/assets/logo.png" alt="" class="site-brand-logo" width="1485" height="1342" decoding="async">
+                <span class="site-brand-copy"><span class="site-brand-name">ADAMIS</span><span class="site-brand-subtitle">Educaci&oacute;n financiera</span></span>
+            </a>
+
+            <button class="site-menu-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" data-menu-toggle>
+                <span class="site-menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span class="visually-hidden">Abrir men&uacute;</span>
+            </button>
+
             <div class="site-menu public-menu" id="primaryMenu" data-main-menu>
-                <a href="/#experiencia">C&oacute;mo funciona</a>
-                <a href="/#dinamicas">Din&aacute;micas</a>
+                <a href="/producto/">C&oacute;mo funciona</a>
                 <a href="/talleres/" class="nav-group-start" aria-current="page">Talleres</a>
                 <a href="/programa/">Cursos</a>
-                <a href="/#impacto" class="nav-group-start">Impacto</a>
-                <span class="public-menu-actions"><a href="/splash.html" class="nav-access">Acceso plataforma</a><a href="/#contacto" class="nav-primary" data-cta="llevar-adamis" data-section="taller-header">Llevar ADAMIS a mi centro</a></span>
+                <a href="/impacto/" class="nav-group-start">Impacto</a>
+                <span class="public-menu-actions">
+                    <a href="/financial-education/workshops/" class="nav-language" hreflang="en" lang="en" data-language-choice="en" aria-label="View this page in English">EN</a>
+                    <a href="/splash.html" class="nav-access">Acceso plataforma</a>
+                    <a href="/#contacto" class="nav-primary" data-cta="llevar-adamis" data-section="talleres-header">Llevar ADAMIS a mi centro</a>
+                </span>
             </div>
         </nav>
     </header>
 
     <main id="contenido">
-        <section class="workshop-watch" aria-labelledby="workshopTitle">
-            <div class="container workshop-watch-heading scroll-reveal">
-                <p class="public-eyebrow"><span></span>As&iacute; es un taller ADAMIS</p>
-                <h1 id="workshopTitle">Una sesi&oacute;n para aprender <em>tomando decisiones.</em></h1>
-                <p>El alumnado participa, argumenta y convierte una situaci&oacute;n cotidiana en aprendizaje financiero.</p>
-            </div>
+        <section class="workshops-intro" aria-labelledby="workshopsTitle">
+            <div class="container">
+                <header class="workshops-intro-heading scroll-reveal">
+                    <p class="workshops-eyebrow"><span aria-hidden="true"></span>Talleres ADAMIS</p>
+                    <h1 id="workshopsTitle">Una sesi&oacute;n para aprender <em>tomando decisiones.</em></h1>
+                    <p>Una p&iacute;ldora pr&aacute;ctica de ADAMIS para que el alumnado de 4.&ordm;, 5.&ordm; o 6.&ordm; de Primaria descubra la experiencia trabajando un concepto financiero concreto.</p>
+                    <div class="workshops-intro-actions">
+                        <button type="button" class="btn-primary workshops-button workshops-button-primary" data-request-modal data-request-type="taller" data-cta="solicitar-taller" data-section="talleres-hero">Solicitar taller <span aria-hidden="true">&rarr;</span></button>
+                        <a href="/producto/" class="workshops-button workshops-button-secondary" data-cta="conocer-producto" data-section="talleres-hero">Conocer ADAMIS</a>
+                    </div>
+                </header>
 
-            <div class="container workshop-film-shell scroll-reveal delay-100">
-                <figure class="workshop-film-placeholder">
-                    <img src="/assets/colegios/imagen-arcangel.jpg" alt="Equipo ADAMIS acompa&ntilde;ando al alumnado durante una sesi&oacute;n en el aula" width="1220" height="691" fetchpriority="high">
-                    <div class="workshop-film-shade" aria-hidden="true"></div>
-                    <figcaption><span class="workshop-film-icon" aria-hidden="true">&#9654;</span><span><strong>Una sesi&oacute;n real, en v&iacute;deo</strong><small>Pr&oacute;ximamente</small></span></figcaption>
+                <figure class="workshops-sample scroll-reveal delay-100" aria-labelledby="sampleTitle">
+                    <figcaption class="workshops-sample-head">
+                        <span aria-hidden="true"><i></i><i></i><i></i></span>
+                        <strong id="sampleTitle">Una muestra de ADAMIS</strong>
+                        <small>Taller tem&aacute;tico</small>
+                    </figcaption>
+                    <div class="workshops-sample-body">
+                        <p><small>Un concepto financiero</small><strong>Comprender</strong></p>
+                        <i aria-hidden="true">&rarr;</i>
+                        <p class="is-highlighted"><small>Dentro de ADAMIS</small><strong>Decidir</strong></p>
+                        <i aria-hidden="true">&rarr;</i>
+                        <p><small>Experiencia pr&aacute;ctica</small><strong>Aprender</strong></p>
+                    </div>
+                    <div class="workshops-sample-foot">
+                        <span>Plataforma</span>
+                        <i aria-hidden="true">o</i>
+                        <span>Plataforma + peque&ntilde;a din&aacute;mica <small>seg&uacute;n el contenido</small></span>
+                    </div>
                 </figure>
-                <ul class="workshop-facts" aria-label="Resumen del taller"><li><strong>45&ndash;60 min</strong><span>Una sesi&oacute;n</span></li><li><strong>ADAMIS</strong><span>Dirige el taller</span></li><li><strong>En el centro</strong><span>Sin preparar materiales</span></li></ul>
-            </div>
 
-            <div class="container workshop-request scroll-reveal">
-                <div><p class="public-eyebrow"><span></span>Una primera experiencia</p><h2>Lleva el taller a tu aula.</h2><p>Indica el curso y el n&uacute;mero aproximado de alumnos. Prepararemos una propuesta sin compromiso.</p></div>
-                <a href="/?interest=Taller%20inicial#contacto" class="btn-primary" data-cta="solicitar-taller" data-section="taller-cierre">Solicitar un taller inicial <span aria-hidden="true">&rarr;</span></a>
+                <ul class="workshops-facts scroll-reveal" aria-label="Resumen del taller">
+                    <li><small>01</small><strong>Una muestra</strong><span>De la experiencia ADAMIS.</span></li>
+                    <li><small>02</small><strong>4.&ordm; &middot; 5.&ordm; &middot; 6.&ordm;</strong><span>De Primaria.</span></li>
+                    <li><small>03</small><strong>Pr&aacute;ctico</strong><span>Aprender tomando decisiones.</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="workshops-request" aria-labelledby="finalCtaTitle">
+            <div class="container workshops-request-inner scroll-reveal">
+                <div>
+                    <p class="workshops-eyebrow"><span aria-hidden="true"></span>Una primera experiencia</p>
+                    <h2 id="finalCtaTitle">Lleva el taller a tu aula.</h2>
+                    <p>Cu&eacute;ntanos el curso y el alumnado aproximado. Os ayudaremos a preparar un taller que encaje con el centro.</p>
+                </div>
+                <div class="workshops-request-actions">
+                    <button type="button" class="btn-primary workshops-button workshops-button-primary" data-request-modal data-request-type="taller" data-cta="solicitar-taller" data-section="talleres-cierre">Solicitar taller <span aria-hidden="true">&rarr;</span></button>
+                    <p><a href="/producto/">Conocer ADAMIS</a><span aria-hidden="true">&middot;</span><a href="/programa/">Ver los cursos completos</a></p>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="commercial-footer public-footer public-footer-brief">
+    <footer class="commercial-footer public-footer detail-footer">
         <div class="container footer-grid footer-grid-compact">
-            <div class="footer-brand"><a href="/" class="site-brand footer-site-brand"><img src="/assets/logo.png" alt="ADAMIS" class="site-brand-logo" width="562" height="510" loading="lazy"><span class="site-brand-copy"><span class="site-brand-name">ADAMIS</span><span class="site-brand-subtitle">Educaci&oacute;n financiera</span></span></a><p>Educaci&oacute;n financiera pr&aacute;ctica para colegios de Primaria.</p></div>
-            <nav aria-label="ADAMIS"><h2>ADAMIS</h2><a href="/#experiencia">C&oacute;mo funciona</a><a href="/#dinamicas">Din&aacute;micas</a><a href="/talleres/" aria-current="page">Talleres</a><a href="/programa/">Cursos</a><a href="/#impacto">Impacto</a></nav>
-            <nav aria-label="Legal"><h2>Legal</h2><a href="/aviso-legal/">Aviso legal</a><a href="/politica-privacidad/">Privacidad</a><a href="/politica-cookies/">Cookies</a></nav>
-            <div class="footer-contact"><h2>Contacto</h2><a href="mailto:contacto@adamis.es">contacto@adamis.es</a><a href="https://wa.me/34644576186" target="_blank" rel="noopener">+34 644 57 61 86</a></div>
+            <div class="footer-brand">
+                <a href="/" class="site-brand footer-site-brand" aria-label="Volver al inicio de ADAMIS">
+                    <img src="/assets/logo.png" alt="" class="site-brand-logo" width="1485" height="1342" loading="lazy" decoding="async">
+                    <span class="site-brand-copy"><span class="site-brand-name">ADAMIS</span><span class="site-brand-subtitle">Educaci&oacute;n financiera</span></span>
+                </a>
+                <p>Educaci&oacute;n financiera pr&aacute;ctica para colegios de Primaria.</p>
+            </div>
+            <nav aria-label="Enlaces de ADAMIS">
+                <h2>ADAMIS</h2>
+                <a href="/producto/">C&oacute;mo funciona</a>
+                <a href="/talleres/" aria-current="page">Talleres</a>
+                <a href="/programa/">Cursos</a>
+                <a href="/impacto/">Impacto</a>
+            </nav>
+            <nav aria-label="Legal">
+                <h2>Legal</h2>
+                <a href="/aviso-legal/">Aviso legal</a>
+                <a href="/politica-privacidad/">Pol&iacute;tica de privacidad</a>
+                <a href="/politica-cookies/">Pol&iacute;tica de cookies</a>
+            </nav>
+            <div class="footer-contact">
+                <h2>Contacto</h2>
+                <a href="mailto:contacto@adamis.es">contacto@adamis.es</a>
+                <a href="https://wa.me/34644576186" target="_blank" rel="noopener">+34 644 57 61 86</a>
+                <a href="https://www.linkedin.com/company/adamis-finance" target="_blank" rel="noopener">LinkedIn</a>
+            </div>
         </div>
         <div class="container footer-bottom"><p>&copy; 2026 ADAMIS. Todos los derechos reservados.</p></div>
     </footer>
 
-    <nav class="mobile-cta-bar is-hidden" aria-label="Acci&oacute;n principal"><a href="/?interest=Taller%20inicial#contacto" class="btn-primary" data-cta="solicitar-taller" data-section="taller-mobile">Solicitar taller <span aria-hidden="true">&rarr;</span></a></nav>
+    <dialog class="request-dialog" id="requestDialog" aria-labelledby="requestDialogTitle" aria-describedby="requestDialogIntro">
+        <div class="request-dialog-shell" data-request-dialog-panel>
+            <button type="button" class="request-dialog-close" data-request-dialog-close aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+            <form class="lead-form request-dialog-form" method="post" action="/api/request-info" data-info-form data-request-form data-source-context="modal-taller" aria-labelledby="requestDialogTitle">
+                <input type="hidden" name="audience" value="Centro escolar">
+                <input type="hidden" name="source" value="Formulario modal - talleres">
+                <div class="form-honeypot" aria-hidden="true"><label>Web<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+                <header class="request-dialog-head">
+                    <p class="workshops-eyebrow"><span aria-hidden="true"></span>Solicitud para centros</p>
+                    <h2 id="requestDialogTitle" tabindex="-1">Solicitar taller</h2>
+                    <p id="requestDialogIntro">Cu&eacute;ntanos vuestro contexto y os ayudaremos a preparar un taller que encaje con el centro.</p>
+                </header>
+
+                <div class="request-dialog-grid">
+                    <label class="lead-field"><span>Nombre y apellidos *</span><input id="modal-name" type="text" name="name" autocomplete="name" maxlength="100" required placeholder="Tu nombre"></label>
+                    <label class="lead-field"><span>Email profesional *</span><input id="modal-email" type="email" name="email" autocomplete="email" maxlength="160" required placeholder="nombre@colegio.es"></label>
+                    <label class="lead-field"><span>Centro educativo *</span><input id="modal-organization" type="text" name="organization" autocomplete="organization" maxlength="140" required placeholder="Nombre del centro"></label>
+                    <label class="lead-field"><span>Curso(s) y alumnado aproximado *</span><input id="modal-courses" type="text" name="courses" maxlength="160" required placeholder="Ej.: 5.&ordm; de Primaria &middot; unos 50 alumnos"></label>
+                    <label class="lead-field request-dialog-field-full"><span>&iquest;Qu&eacute; formato te interesa?</span><select id="modal-interest" name="interest"><option value="Necesito orientaci&oacute;n">Necesito orientaci&oacute;n</option><option value="Taller inicial" selected>Talleres</option><option value="Programa completo">Cursos completos</option></select></label>
+                    <label class="lead-field"><span>Tel&eacute;fono / WhatsApp <small>opcional</small></span><input id="modal-phone" type="tel" name="phone" autocomplete="tel" maxlength="40" placeholder="+34 600 000 000"></label>
+                    <label class="lead-field request-dialog-field-full"><span>&iquest;Hay algo m&aacute;s que debamos saber? <small>opcional</small></span><textarea id="modal-message" name="message" rows="3" maxlength="1200" placeholder="Cu&eacute;ntanos brevemente qu&eacute; est&aacute;is buscando o cualquier contexto que pueda ayudarnos."></textarea></label>
+                </div>
+
+                <label class="lead-consent request-dialog-consent"><input id="modal-data-consent" type="checkbox" name="dataConsent" value="yes" required><span>Acepto que ADAMIS trate mis datos para responder a esta solicitud. <a href="/politica-privacidad/" target="_blank" rel="noopener">Pol&iacute;tica de privacidad</a>.</span></label>
+                <div class="lead-form-submit request-dialog-submit">
+                    <button type="submit" class="btn-primary workshops-button workshops-button-primary" data-form-submit data-cta="enviar-solicitud-modal" data-section="modal"><span data-request-submit-label>Solicitar taller</span> <span aria-hidden="true">&rarr;</span></button>
+                    <p class="form-status" id="requestDialogStatus" data-form-status role="status" aria-live="polite"></p>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
     <script src="/script.js"></script>
+    <script src="/talleres.js"></script>
 </body>
 </html>

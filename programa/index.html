@@ -11,78 +11,289 @@
     <link rel="manifest" href="/site.webmanifest">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-    <link rel="stylesheet" href="/public.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public.css">
+    <link rel="stylesheet" href="/detail.css">
+    <link rel="stylesheet" href="/programa.css">
 </head>
-<body class="public-site public-brief public-program-brief public-nav-coherent">
+<body class="public-site detail-page program-page public-nav-coherent">
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
     <header class="commercial-header public-header" data-site-header>
         <nav class="site-nav public-nav" aria-label="Navegaci&oacute;n principal">
-            <a href="/" class="site-brand" aria-label="Ir al inicio de ADAMIS"><img src="/assets/logo.png" alt="" class="site-brand-logo" width="562" height="510"><span class="site-brand-copy"><span class="site-brand-name">ADAMIS</span><span class="site-brand-subtitle">Educaci&oacute;n financiera</span></span></a>
-            <button class="site-menu-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" data-menu-toggle><span class="visually-hidden">Abrir men&uacute;</span></button>
+            <a href="/" class="site-brand" aria-label="Ir al inicio de ADAMIS">
+                <img src="/assets/logo.png" alt="" class="site-brand-logo" width="1485" height="1342" decoding="async">
+                <span class="site-brand-copy"><span class="site-brand-name">ADAMIS</span><span class="site-brand-subtitle">Educaci&oacute;n financiera</span></span>
+            </a>
+
+            <button class="site-menu-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" data-menu-toggle>
+                <span class="site-menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span class="visually-hidden">Abrir men&uacute;</span>
+            </button>
+
             <div class="site-menu public-menu" id="primaryMenu" data-main-menu>
-                <a href="/#experiencia">C&oacute;mo funciona</a>
-                <a href="/#dinamicas">Din&aacute;micas</a>
+                <a href="/producto/">C&oacute;mo funciona</a>
                 <a href="/talleres/" class="nav-group-start">Talleres</a>
                 <a href="/programa/" aria-current="page">Cursos</a>
-                <a href="/#impacto" class="nav-group-start">Impacto</a>
-                <span class="public-menu-actions"><a href="/splash.html" class="nav-access">Acceso plataforma</a><a href="/#contacto" class="nav-primary" data-cta="llevar-adamis" data-section="programa-header">Llevar ADAMIS a mi centro</a></span>
+                <a href="/impacto/" class="nav-group-start">Impacto</a>
+                <span class="public-menu-actions">
+                    <a href="/financial-education/courses/" class="nav-language" hreflang="en" lang="en" data-language-choice="en" aria-label="View this page in English">EN</a>
+                    <a href="/splash.html" class="nav-access">Acceso plataforma</a>
+                    <a href="/#contacto" class="nav-primary" data-cta="llevar-adamis" data-section="programa-header">Llevar ADAMIS a mi centro</a>
+                </span>
             </div>
         </nav>
     </header>
 
     <main id="contenido">
-        <section class="brief-hero program-brief-hero" aria-labelledby="programTitle">
-            <div class="container brief-hero-inner scroll-reveal">
-                <p class="public-eyebrow"><span></span>Programa ADAMIS</p>
-                <h1 id="programTitle">Educaci&oacute;n financiera que <em>crece con el alumnado.</em></h1>
-                <p>Un recorrido para 4&ordm;, 5&ordm; y 6&ordm; de Primaria que une progresi&oacute;n, pr&aacute;ctica y seguimiento.</p>
-                <a href="#programa-en-tres" class="brief-scroll-cue">Descubrirlo en tres ideas <span aria-hidden="true">&darr;</span></a>
+        <section class="program-hero" aria-labelledby="programTitle">
+            <div class="container program-hero-inner">
+                <div class="program-hero-copy scroll-reveal">
+                    <p class="program-eyebrow">Cursos ADAMIS</p>
+                    <h1 id="programTitle">Educaci&oacute;n financiera que <em>progresa con el alumnado.</em></h1>
+                    <p class="program-hero-intro">ADAMIS propone recorridos estructurados para 4.&ordm;, 5.&ordm; y 6.&ordm; de Primaria, adaptando los contenidos y su profundidad al momento educativo del alumnado.</p>
+                    <ul class="program-hero-badges" aria-label="Cursos disponibles en Primaria">
+                        <li>4.&ordm;</li>
+                        <li>5.&ordm;</li>
+                        <li>6.&ordm;</li>
+                        <li>Primaria</li>
+                    </ul>
+                </div>
+
+                <div class="program-hero-visual scroll-reveal delay-100" aria-label="Progresi&oacute;n de los cursos ADAMIS de 4.&ordm; a 6.&ordm; de Primaria">
+                    <div class="program-hero-visual-head">
+                        <span>Recorrido curricular</span>
+                        <small>4.&ordm; &middot; 5.&ordm; &middot; 6.&ordm;</small>
+                    </div>
+                    <ol class="program-hero-stages">
+                        <li>
+                            <span>4.&ordm;</span>
+                            <strong>Elegir<br>y cuidar</strong>
+                            <i aria-hidden="true"></i>
+                        </li>
+                        <li>
+                            <span>5.&ordm;</span>
+                            <strong>Comparar<br>y planificar</strong>
+                            <i aria-hidden="true"></i>
+                        </li>
+                        <li>
+                            <span>6.&ordm;</span>
+                            <strong>Decidir<br>y proteger</strong>
+                            <i aria-hidden="true"></i>
+                        </li>
+                    </ol>
+                    <div class="program-hero-legend" aria-hidden="true"><span>Contenidos</span><span>Decisiones</span><span>Profundidad</span></div>
+                </div>
+            </div>
+            <a class="program-scroll-cue" href="#progresion">Ver el recorrido <span aria-hidden="true">&darr;</span></a>
+        </section>
+
+        <section id="progresion" class="program-progression program-section" aria-labelledby="progressionTitle">
+            <div class="container">
+                <header class="program-section-heading scroll-reveal">
+                    <div>
+                        <p class="program-eyebrow">Un recorrido progresivo</p>
+                        <h2 id="progressionTitle">Tres cursos, una progresi&oacute;n adaptada a cada etapa.</h2>
+                    </div>
+                    <p>Cada curso adapta los contenidos y la profundidad al momento educativo del alumnado.</p>
+                </header>
+
+                <div class="program-progression-map scroll-reveal" aria-label="Progresi&oacute;n curricular de 4.&ordm;, 5.&ordm; y 6.&ordm; de Primaria">
+                    <span class="program-progression-axis" aria-hidden="true"></span>
+                    <article class="program-progression-stage">
+                        <span class="program-stage-number">4.&ordm;</span>
+                        <div><small>Primaria</small><h3>Elegir y cuidar</h3></div>
+                        <i aria-hidden="true"></i>
+                    </article>
+                    <article class="program-progression-stage">
+                        <span class="program-stage-number">5.&ordm;</span>
+                        <div><small>Primaria</small><h3>Comparar y planificar</h3></div>
+                        <i aria-hidden="true"></i>
+                    </article>
+                    <article class="program-progression-stage">
+                        <span class="program-stage-number">6.&ordm;</span>
+                        <div><small>Primaria</small><h3>Decidir y proteger</h3></div>
+                        <i aria-hidden="true"></i>
+                    </article>
+                </div>
             </div>
         </section>
 
-        <section id="programa-en-tres" class="program-impact-section" aria-labelledby="impactTitle">
-            <h2 id="impactTitle" class="visually-hidden">El programa ADAMIS en tres ideas</h2>
-            <div class="container program-impact-grid">
-                <article class="program-impact-card program-impact-growth scroll-reveal">
-                    <div class="program-impact-visual" aria-hidden="true"><span>4&ordm;</span><span>5&ordm;</span><span>6&ordm;</span></div>
-                    <div class="program-impact-copy"><p>Progresi&oacute;n</p><h3>Crece con ellos.</h3><span>El recorrido aumenta su profundidad de 4&ordm; a 6&ordm; de Primaria.</span></div>
-                </article>
-                <article class="program-impact-card program-impact-practice scroll-reveal delay-100">
-                    <div class="program-choice-visual" aria-hidden="true"><span>&iquest;Qu&eacute; har&iacute;as?</span><i></i><i></i><i></i></div>
-                    <div class="program-impact-copy"><p>Pr&aacute;ctica</p><h3>Se aprende decidiendo.</h3><span>Los conceptos se ponen a prueba en actividades y situaciones cercanas.</span></div>
-                </article>
-                <article class="program-impact-card program-impact-visible scroll-reveal delay-200">
-                    <div class="program-progress-visual" aria-hidden="true"><span></span><span></span><span></span><i></i></div>
-                    <div class="program-impact-copy"><p>Visibilidad</p><h3>El centro ve el recorrido.</h3><span>La evaluaci&oacute;n y el seguimiento permiten acompa&ntilde;ar el progreso.</span></div>
-                </article>
+        <div class="program-grades" aria-label="Cursos ADAMIS por etapa">
+            <section id="curso-4" class="program-grade program-grade-four" aria-labelledby="grade4Title">
+                <div class="container program-grade-layout">
+                    <header class="program-grade-title scroll-reveal">
+                        <p class="program-grade-kicker">4.&ordm; de Primaria</p>
+                        <span class="program-grade-numeral" aria-hidden="true">4</span>
+                        <h2 id="grade4Title">Elegir y <em>cuidar.</em></h2>
+                    </header>
+                    <div class="program-grade-content scroll-reveal delay-100">
+                        <p class="program-grade-intro">El recorrido sit&uacute;a el foco en elegir y cuidar, con contenidos adaptados al momento educativo de 4.&ordm; de Primaria.</p>
+                        <p class="program-examples-label">Tres ejemplos del curso</p>
+                        <ol class="program-examples">
+                            <li><span>01</span><strong>Necesidades y deseos</strong></li>
+                            <li><span>02</span><strong>Primera meta de ahorro</strong></li>
+                            <li><span>03</span><strong>Anuncios y decisiones</strong></li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <section id="curso-5" class="program-grade program-grade-five" aria-labelledby="grade5Title">
+                <div class="container program-grade-layout program-grade-layout-reverse">
+                    <header class="program-grade-title scroll-reveal">
+                        <p class="program-grade-kicker">5.&ordm; de Primaria</p>
+                        <span class="program-grade-numeral" aria-hidden="true">5</span>
+                        <h2 id="grade5Title">Comparar y <em>planificar.</em></h2>
+                    </header>
+                    <div class="program-grade-content scroll-reveal delay-100">
+                        <p class="program-grade-intro">El recorrido sit&uacute;a el foco en comparar y planificar, con contenidos adaptados al momento educativo de 5.&ordm; de Primaria.</p>
+                        <p class="program-examples-label">Tres ejemplos del curso</p>
+                        <ol class="program-examples">
+                            <li><span>01</span><strong>Precio, calidad y duraci&oacute;n</strong></li>
+                            <li><span>02</span><strong>Presupuesto semanal</strong></li>
+                            <li><span>03</span><strong>Crear valor con una idea</strong></li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <section id="curso-6" class="program-grade program-grade-six" aria-labelledby="grade6Title">
+                <div class="container program-grade-layout">
+                    <header class="program-grade-title scroll-reveal">
+                        <p class="program-grade-kicker">6.&ordm; de Primaria</p>
+                        <span class="program-grade-numeral" aria-hidden="true">6</span>
+                        <h2 id="grade6Title">Decidir y <em>proteger.</em></h2>
+                    </header>
+                    <div class="program-grade-content scroll-reveal delay-100">
+                        <p class="program-grade-intro">El recorrido sit&uacute;a el foco en decidir y proteger, con contenidos adaptados al momento educativo de 6.&ordm; de Primaria.</p>
+                        <p class="program-examples-label">Tres ejemplos del curso</p>
+                        <ol class="program-examples">
+                            <li><span>01</span><strong>Deuda e inter&eacute;s</strong></li>
+                            <li><span>02</span><strong>Inversi&oacute;n y riesgo</strong></li>
+                            <li><span>03</span><strong>Estafas y protecci&oacute;n de datos</strong></li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section id="anatomia" class="program-anatomy program-section" aria-labelledby="anatomyTitle">
+            <div class="container">
+                <header class="program-section-heading program-section-heading-on-dark scroll-reveal">
+                    <div>
+                        <p class="program-eyebrow">Dentro de un curso ADAMIS</p>
+                        <h2 id="anatomyTitle">La experiencia digital y el aula forman parte del mismo recorrido.</h2>
+                    </div>
+                    <p>La plataforma y las din&aacute;micas de aula se combinan con momentos de aplicaci&oacute;n y reflexi&oacute;n.</p>
+                </header>
+
+                <div class="program-anatomy-layout">
+                    <div class="program-anatomy-visual scroll-reveal" aria-label="Plataforma, din&aacute;micas y aplicaci&oacute;n o reflexi&oacute;n se integran en un curso ADAMIS">
+                        <div class="program-anatomy-track program-anatomy-platform"><span>01</span><strong>Plataforma</strong><i aria-hidden="true"></i></div>
+                        <div class="program-anatomy-track program-anatomy-dynamics"><span>02</span><strong>Din&aacute;micas</strong><i aria-hidden="true"></i></div>
+                        <div class="program-anatomy-track program-anatomy-reflection"><span>03</span><strong>Aplicaci&oacute;n<br>/ reflexi&oacute;n</strong><i aria-hidden="true"></i></div>
+                        <div class="program-anatomy-core"><small>Un mismo</small><strong>Curso<br>ADAMIS</strong></div>
+                    </div>
+
+                    <div class="program-anatomy-copy">
+                        <article class="scroll-reveal">
+                            <span>01 &middot; Plataforma</span>
+                            <h3>Conceptos, decisiones y recorrido guiado.</h3>
+                            <a href="/producto/">Conocer el producto <span aria-hidden="true">&rarr;</span></a>
+                        </article>
+                        <article class="scroll-reveal delay-100">
+                            <span>02 &middot; Din&aacute;micas</span>
+                            <h3>Roles, materiales, retos y trabajo en equipo.</h3>
+                            <a href="/producto/#dinamicas">Ver c&oacute;mo funcionan las din&aacute;micas <span aria-hidden="true">&rarr;</span></a>
+                        </article>
+                        <article class="scroll-reveal delay-200">
+                            <span>03 &middot; Aplicaci&oacute;n / reflexi&oacute;n</span>
+                            <h3>El alumnado aplica lo trabajado, toma decisiones y reflexiona sobre lo ocurrido.</h3>
+                        </article>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="brief-conversion program-brief-conversion" aria-labelledby="programCtaTitle">
-            <div class="container brief-conversion-inner scroll-reveal">
-                <p class="public-eyebrow public-eyebrow-light"><span></span>Siguiente paso</p>
-                <h2 id="programCtaTitle">Conoce el programa en el contexto de tu centro.</h2>
-                <p>Cu&eacute;ntanos los cursos y grupos. Te orientaremos sobre el alcance adecuado, sin compromiso.</p>
-                <div class="brief-conversion-actions"><a href="/?interest=Programa%20completo#contacto" class="btn-primary" data-cta="solicitar-programa" data-section="programa-cierre">Solicitar informaci&oacute;n del programa <span aria-hidden="true">&rarr;</span></a><a href="/#experiencia" class="brief-text-link">Ver la metodolog&iacute;a ADAMIS</a></div>
+        <section id="acompanamiento" class="program-support program-section" aria-labelledby="supportTitle">
+            <div class="container">
+                <header class="program-section-heading scroll-reveal">
+                    <div>
+                        <p class="program-eyebrow">Acompa&ntilde;amiento al centro</p>
+                        <h2 id="supportTitle">Una implantaci&oacute;n acompa&ntilde;ada.</h2>
+                    </div>
+                    <p>Adem&aacute;s del recorrido del alumnado, el centro cuenta con herramientas para conocer los contenidos, seguir el progreso y apoyar la implantaci&oacute;n.</p>
+                </header>
+
+                <div class="program-support-band scroll-reveal">
+                    <article>
+                        <span>01</span>
+                        <div><h3>Gu&iacute;as docentes</h3><p>Para conocer y acompa&ntilde;ar los contenidos.</p></div>
+                    </article>
+                    <article>
+                        <span>02</span>
+                        <div><h3>Panel docente digital</h3><p>Para seguir el recorrido y el progreso.</p></div>
+                    </article>
+                    <article>
+                        <span>03</span>
+                        <div><h3>Personalizaci&oacute;n del aprendizaje</h3><p>Para adaptar el aprendizaje al alumnado.</p></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="program-final-cta" aria-labelledby="finalCtaTitle">
+            <div class="container program-final-cta-inner scroll-reveal">
+                <div>
+                    <p class="program-eyebrow">Llevar ADAMIS al centro</p>
+                    <h2 id="finalCtaTitle">Un recorrido de educaci&oacute;n financiera adaptado a cada etapa.</h2>
+                </div>
+                <div class="program-final-cta-copy">
+                    <p>Cu&eacute;ntanos qu&eacute; cursos y grupos tiene tu centro.</p>
+                    <div class="program-final-cta-actions">
+                        <a href="/#contacto" class="program-button program-button-primary" data-cta="llevar-adamis" data-section="programa-cierre">Llevar ADAMIS a mi centro <span aria-hidden="true">&rarr;</span></a>
+                        <a href="/talleres/" class="program-button program-button-secondary">Conocer los talleres</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="commercial-footer public-footer public-footer-brief">
+    <footer class="commercial-footer public-footer detail-footer">
         <div class="container footer-grid footer-grid-compact">
-            <div class="footer-brand"><a href="/" class="site-brand footer-site-brand"><img src="/assets/logo.png" alt="ADAMIS" class="site-brand-logo" width="562" height="510" loading="lazy"><span class="site-brand-copy"><span class="site-brand-name">ADAMIS</span><span class="site-brand-subtitle">Educaci&oacute;n financiera</span></span></a><p>Educaci&oacute;n financiera pr&aacute;ctica para colegios de Primaria.</p></div>
-            <nav aria-label="ADAMIS"><h2>ADAMIS</h2><a href="/#experiencia">C&oacute;mo funciona</a><a href="/#dinamicas">Din&aacute;micas</a><a href="/talleres/">Talleres</a><a href="/programa/" aria-current="page">Cursos</a><a href="/#impacto">Impacto</a></nav>
-            <nav aria-label="Legal"><h2>Legal</h2><a href="/aviso-legal/">Aviso legal</a><a href="/politica-privacidad/">Privacidad</a><a href="/politica-cookies/">Cookies</a></nav>
-            <div class="footer-contact"><h2>Contacto</h2><a href="mailto:contacto@adamis.es">contacto@adamis.es</a><a href="https://wa.me/34644576186" target="_blank" rel="noopener">+34 644 57 61 86</a></div>
+            <div class="footer-brand">
+                <a href="/" class="site-brand footer-site-brand" aria-label="Volver al inicio de ADAMIS">
+                    <img src="/assets/logo.png" alt="" class="site-brand-logo" width="1485" height="1342" loading="lazy" decoding="async">
+                    <span class="site-brand-copy"><span class="site-brand-name">ADAMIS</span><span class="site-brand-subtitle">Educaci&oacute;n financiera</span></span>
+                </a>
+                <p>Educaci&oacute;n financiera pr&aacute;ctica para colegios de Primaria.</p>
+            </div>
+            <nav aria-label="Enlaces de ADAMIS">
+                <h2>ADAMIS</h2>
+                <a href="/producto/">C&oacute;mo funciona</a>
+                <a href="/talleres/">Talleres</a>
+                <a href="/programa/" aria-current="page">Cursos</a>
+                <a href="/impacto/">Impacto</a>
+            </nav>
+            <nav aria-label="Legal">
+                <h2>Legal</h2>
+                <a href="/aviso-legal/">Aviso legal</a>
+                <a href="/politica-privacidad/">Pol&iacute;tica de privacidad</a>
+                <a href="/politica-cookies/">Pol&iacute;tica de cookies</a>
+            </nav>
+            <div class="footer-contact">
+                <h2>Contacto</h2>
+                <a href="mailto:contacto@adamis.es">contacto@adamis.es</a>
+                <a href="https://wa.me/34644576186" target="_blank" rel="noopener">+34 644 57 61 86</a>
+                <a href="https://www.linkedin.com/company/adamis-finance" target="_blank" rel="noopener">LinkedIn</a>
+            </div>
         </div>
         <div class="container footer-bottom"><p>&copy; 2026 ADAMIS. Todos los derechos reservados.</p></div>
     </footer>
 
-    <nav class="mobile-cta-bar is-hidden" aria-label="Acci&oacute;n principal"><a href="/?interest=Programa%20completo#contacto" class="btn-primary" data-cta="solicitar-programa" data-section="programa-mobile">Solicitar informaci&oacute;n <span aria-hidden="true">&rarr;</span></a></nav>
     <script src="/script.js"></script>
 </body>
 </html>

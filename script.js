@@ -27,10 +27,30 @@
         return 'en';
     };
 
-    const browserLang = getQueryLang() || getBrowserLang();
+    const languageStorageKey = 'adamis-language';
+    const getStoredLang = () => {
+        try {
+            return normalizeLang(window.localStorage.getItem(languageStorageKey));
+        } catch {
+            return '';
+        }
+    };
+    const rememberLang = (value) => {
+        const selectedLang = normalizeLang(value);
+        if (!selectedLang) return;
+        try {
+            window.localStorage.setItem(languageStorageKey, selectedLang);
+        } catch {
+            // Language selection still works when storage is unavailable.
+        }
+    };
+
+    const requestedLang = getQueryLang();
+    if (requestedLang) rememberLang(requestedLang);
+
+    const browserLang = requestedLang || getStoredLang() || getBrowserLang();
     const pageLang = normalizeLang(document.documentElement.lang) || 'es';
     const normalizedPath = `${window.location.pathname.replace(/\/+$/, '')}/`.replace(/^\/$/, '/');
-    const requestedLang = getQueryLang();
 
     if (requestedLang === 'en' && normalizedPath === '/') {
         window.location.replace('/financial-education/');
@@ -38,13 +58,25 @@
     }
 
     if (requestedLang === 'es' && normalizedPath === '/financial-education/') {
-        window.location.replace('/?lang=es');
+        window.location.replace('/');
         return;
     }
 
     if (!requestedLang && normalizedPath === '/' && browserLang === 'en' && !window.location.hash) {
         window.location.replace('/financial-education/');
         return;
+    }
+
+    const bindLanguageChoices = () => {
+        document.querySelectorAll('[data-language-choice]').forEach((link) => {
+            link.addEventListener('click', () => rememberLang(link.dataset.languageChoice));
+        });
+    };
+
+    if (document.body) {
+        bindLanguageChoices();
+    } else {
+        document.addEventListener('DOMContentLoaded', bindLanguageChoices, { once: true });
     }
 
     const lang = pageLang;
@@ -356,6 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorialPlayButton = document.querySelector('[data-tutorial-play]');
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const mobileProductQuery = window.matchMedia('(max-width: 720px)');
+    const mobileMenuQuery = window.matchMedia('(max-width: 1180px)');
     const header = document.querySelector('.commercial-header');
     const siteHeader = document.querySelector('[data-site-header]');
     const menuToggle = document.querySelector('[data-menu-toggle]');
@@ -369,7 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const whatsappLinks = document.querySelectorAll('[data-whatsapp-link]');
     const ctaElements = document.querySelectorAll('[data-cta]');
     const mobileCtaBar = document.querySelector('.mobile-cta-bar');
-    const contactSection = document.getElementById('contacto');
+    const contactSection = document.querySelector('[data-contact-section]') || document.getElementById('contacto');
     const openingSection = document.querySelector('.lead-hero, .detail-hero, .brief-hero, .methodology-hero, .workshop-watch-heading');
     const footer = document.querySelector('.commercial-footer');
     const landingBackgrounds = document.querySelectorAll('[data-landing-bg]');
@@ -384,6 +417,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let productMeasureFrame = 0;
     const productTriggerAnimations = new Map();
     const landingAssetCache = new Map();
+    let menuScrollPosition = 0;
+    let menuBodyInlineStyles = null;
 
     const getAnchorTargetPosition = (target) => {
         if (!target || target.id === 'inicio') return 0;
@@ -405,24 +440,85 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.max(0, absoluteTop - headerHeight - breathingRoom);
     };
 
-    const setMenuState = (isOpen) => {
+    const getMenuFocusableItems = () => {
+        if (!menuToggle || !mainMenu) return [];
+        return [
+            menuToggle,
+            ...Array.from(mainMenu.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+        ].filter((item) => !item.hasAttribute('hidden'));
+    };
+
+    const syncMenuAccessibility = () => {
+        if (!mainMenu || !siteHeader) return;
+        if (!mobileMenuQuery.matches) {
+            mainMenu.removeAttribute('aria-hidden');
+            return;
+        }
+        mainMenu.setAttribute('aria-hidden', String(!siteHeader.classList.contains('is-menu-open')));
+    };
+
+    const setMenuState = (isOpen, { moveFocus = true } = {}) => {
         if (!siteHeader || !menuToggle || !mainMenu) return;
-        siteHeader.classList.toggle('is-menu-open', isOpen);
-        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        const shouldOpen = Boolean(isOpen && mobileMenuQuery.matches);
+        const wasOpen = siteHeader.classList.contains('is-menu-open');
+
+        if (shouldOpen && !wasOpen) {
+            menuScrollPosition = window.scrollY;
+            menuBodyInlineStyles = {
+                position: document.body.style.position,
+                top: document.body.style.top,
+                width: document.body.style.width,
+                paddingRight: document.body.style.paddingRight
+            };
+            const scrollbarGap = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${menuScrollPosition}px`;
+            document.body.style.width = '100%';
+            if (scrollbarGap) document.body.style.paddingRight = `${scrollbarGap}px`;
+        }
+
+        siteHeader.classList.toggle('is-menu-open', shouldOpen);
+        document.documentElement.classList.toggle('mobile-menu-open', shouldOpen);
+        document.body.classList.toggle('mobile-menu-open', shouldOpen);
+        menuToggle.setAttribute('aria-expanded', String(shouldOpen));
+        mainMenu.setAttribute('aria-hidden', String(!shouldOpen));
         if (menuToggleLabel) {
-            menuToggleLabel.textContent = isOpen ? 'Cerrar men\u00fa' : 'Abrir men\u00fa';
+            const openLabel = menuToggle.dataset.menuOpenLabel || 'Abrir men\u00fa';
+            const closeLabel = menuToggle.dataset.menuCloseLabel || 'Cerrar men\u00fa';
+            menuToggleLabel.textContent = shouldOpen ? closeLabel : openLabel;
+        }
+        if (shouldOpen && moveFocus) {
+            window.requestAnimationFrame(() => {
+                const firstMenuLink = mainMenu.querySelector('a[href]');
+                firstMenuLink?.focus({ preventScroll: true });
+            });
+        }
+
+        if (!shouldOpen && wasOpen && menuBodyInlineStyles) {
+            const restoreScrollPosition = menuScrollPosition;
+            document.body.style.position = menuBodyInlineStyles.position;
+            document.body.style.top = menuBodyInlineStyles.top;
+            document.body.style.width = menuBodyInlineStyles.width;
+            document.body.style.paddingRight = menuBodyInlineStyles.paddingRight;
+            menuBodyInlineStyles = null;
+            window.requestAnimationFrame(() => {
+                const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+                document.documentElement.style.scrollBehavior = 'auto';
+                window.scrollTo(0, restoreScrollPosition);
+                document.documentElement.style.scrollBehavior = previousScrollBehavior;
+            });
         }
     };
 
     const closeMobileMenu = ({ restoreFocus = false } = {}) => {
         if (!siteHeader || !menuToggle || !mainMenu) return;
         setMenuState(false);
-        if (restoreFocus) menuToggle.focus();
+        if (restoreFocus) menuToggle.focus({ preventScroll: true });
     };
 
     menuToggle?.addEventListener('click', () => {
         if (!siteHeader || !mainMenu) return;
-        setMenuState(!siteHeader.classList.contains('is-menu-open'));
+        setMenuState(!siteHeader.classList.contains('is-menu-open'), { moveFocus: false });
     });
 
     document.addEventListener('click', (event) => {
@@ -434,11 +530,37 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && siteHeader?.classList.contains('is-menu-open')) {
             closeMobileMenu({ restoreFocus: true });
+            return;
+        }
+
+        if (event.key === 'Tab' && siteHeader?.classList.contains('is-menu-open') && mobileMenuQuery.matches) {
+            const focusableItems = getMenuFocusableItems();
+            if (!focusableItems.length) return;
+            const firstItem = focusableItems[0];
+            const lastItem = focusableItems[focusableItems.length - 1];
+
+            if (event.shiftKey && document.activeElement === firstItem) {
+                event.preventDefault();
+                lastItem.focus();
+            } else if (!event.shiftKey && document.activeElement === lastItem) {
+                event.preventDefault();
+                firstItem.focus();
+            }
         }
     });
 
     mainMenu?.addEventListener('click', (event) => {
-        if (event.target.closest('a')) closeMobileMenu();
+        if (event.target.closest('a')) {
+            closeMobileMenu();
+            return;
+        }
+        if (event.target === mainMenu) closeMobileMenu({ restoreFocus: true });
+    });
+
+    syncMenuAccessibility();
+    mobileMenuQuery.addEventListener?.('change', () => {
+        if (!mobileMenuQuery.matches) setMenuState(false, { moveFocus: false });
+        syncMenuAccessibility();
     });
 
     if (siteHeader) {
@@ -581,21 +703,40 @@ document.addEventListener('DOMContentLoaded', () => {
         trigger.addEventListener('click', () => selectLeadInterest(trigger.dataset.leadInterest || ''));
     });
 
+    const syncInfoFormSource = (form) => {
+        const sourceField = form?.querySelector('[name="source"]');
+        if (!sourceField) return '';
+
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const sourceParts = [`${window.location.pathname}${window.location.hash || ''}`];
+            const sourceContext = form.dataset.sourceContext || '';
+            if (sourceContext) sourceParts.push(sourceContext);
+            ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach((key) => {
+                const value = params.get(key);
+                if (value) sourceParts.push(`${key}=${value}`);
+            });
+            sourceField.value = sourceParts.join(' | ').slice(0, 500);
+        } catch {
+            // Keep the authored source value if URL parsing is unavailable.
+        }
+
+        return sourceField.value;
+    };
+
+    window.AdamisInfoForms = Object.assign(window.AdamisInfoForms || {}, {
+        syncSource: syncInfoFormSource
+    });
+
     try {
         const params = new URLSearchParams(window.location.search);
         selectLeadInterest(params.get('interest') || '');
         selectLeadCourse(params.get('courses') || '');
-        const sourceParts = [`${window.location.pathname}${window.location.hash || ''}`];
-        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach((key) => {
-            const value = params.get(key);
-            if (value) sourceParts.push(`${key}=${value}`);
-        });
-        document.querySelectorAll('[data-info-form] [name="source"]').forEach((field) => {
-            field.value = sourceParts.join(' | ').slice(0, 500);
-        });
     } catch {
-        // Keep the authored source value if URL parsing is unavailable.
+        // Keep the authored field values if URL parsing is unavailable.
     }
+
+    infoRequestForms.forEach(syncInfoFormSource);
 
     const probeLandingAsset = (src) => new Promise((resolve) => {
         if (!src) {
@@ -1432,12 +1573,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formStatus = form.querySelector('[data-form-status]');
             const formSubmit = form.querySelector('[data-form-submit]');
+            const formMessage = (key, fallback) => form.getAttribute(`data-form-${key}`) || landingI18n.t(fallback);
 
             if (!formStatus || !formSubmit) return;
 
             if (!form.checkValidity()) {
                 formStatus.className = 'form-status is-error';
-                formStatus.textContent = landingI18n.t('Revisa los campos obligatorios y acepta el tratamiento de datos.');
+                formStatus.textContent = formMessage('validation', 'Revisa los campos obligatorios y acepta el tratamiento de datos.');
                 form.reportValidity();
                 return;
             }
@@ -1449,7 +1591,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             formSubmit.disabled = true;
             formStatus.className = 'form-status';
-            formStatus.textContent = landingI18n.t('Enviando solicitud...');
+            formStatus.textContent = formMessage('sending', 'Enviando solicitud...');
 
             const controller = typeof AbortController === 'function' ? new AbortController() : null;
             const timeoutId = controller ? window.setTimeout(() => controller.abort(), 15000) : 0;
@@ -1465,11 +1607,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json().catch(() => ({}));
 
                 if (!response.ok || !data.ok) {
-                    throw new Error(data.error || landingI18n.t('No se pudo enviar la solicitud.'));
+                    const responseError = landingI18n.isEnglish ? '' : data.error;
+                    throw new Error(responseError || formMessage('error', 'No se pudo enviar la solicitud.'));
                 }
 
                 formStatus.className = 'form-status is-success';
-                formStatus.textContent = landingI18n.t('Gracias. Hemos recibido tu solicitud y te responderemos en breve.');
+                formStatus.textContent = formMessage('success', 'Gracias. Hemos recibido tu solicitud y te responderemos en breve.');
                 trackCta(formSubmit, 'submit_form_propuesta');
                 form.reset();
 
@@ -1479,14 +1622,16 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 formStatus.className = 'form-status is-error';
                 const errorMessage = error?.name === 'AbortError'
-                    ? landingI18n.t('La solicitud est\u00e1 tardando demasiado. Int\u00e9ntalo de nuevo o escr\u00edbenos por WhatsApp.')
-                    : landingI18n.t(error.message || 'Ha ocurrido un error al enviar la solicitud.');
+                    ? formMessage('timeout', 'La solicitud est\u00e1 tardando demasiado. Int\u00e9ntalo de nuevo o escr\u00edbenos por WhatsApp.')
+                    : landingI18n.isEnglish
+                        ? formMessage('error', 'Ha ocurrido un error al enviar la solicitud.')
+                        : landingI18n.t(error.message || 'Ha ocurrido un error al enviar la solicitud.');
                 formStatus.textContent = `${errorMessage} `;
                 const fallbackLink = document.createElement('a');
                 fallbackLink.href = 'https://wa.me/34644576186?text=Hola%2C%20he%20intentado%20enviar%20una%20solicitud%20desde%20la%20web%20de%20ADAMIS.';
                 fallbackLink.target = '_blank';
                 fallbackLink.rel = 'noopener';
-                fallbackLink.textContent = landingI18n.t('Abrir WhatsApp');
+                fallbackLink.textContent = formMessage('fallback', 'Abrir WhatsApp');
                 formStatus.appendChild(fallbackLink);
             } finally {
                 if (timeoutId) window.clearTimeout(timeoutId);

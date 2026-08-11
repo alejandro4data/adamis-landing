@@ -40,94 +40,89 @@
             menuToggle.click();
         });
 
-        const platformStory = document.querySelector('[data-platform-story]');
-
-        if (platformStory) {
-            const storyScroll = platformStory.querySelector('[data-platform-story-scroll]');
-            const storySticky = platformStory.querySelector('.landing-story-sticky');
-            const storyMap = platformStory.querySelector('[data-platform-map-layer]');
-            const storySteps = platformStory.querySelector('[data-platform-steps]');
-            const storyStepItems = Array.from(storySteps?.querySelectorAll('li') || []);
-            const storyVideoLayer = platformStory.querySelector('[data-platform-video-layer]');
-            const storyTutorialCopy = platformStory.querySelector('[data-platform-tutorial-copy]');
-            const storyVideo = platformStory.querySelector('[data-tutorial-video]');
-            const storyPlayButton = platformStory.querySelector('[data-tutorial-play]');
-            let storyFrameRequested = false;
-            let currentStoryStep = -1;
-            let currentStoryPhase = '';
-
-            const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
-            const smoothstep = (start, end, value) => {
-                const progress = clamp((value - start) / (end - start));
-                return progress * progress * (3 - (2 * progress));
-            };
-
-            const setStoryProgress = (progress) => {
-                const safeProgress = clamp(progress);
-                const morph = smoothstep(0.48, 0.82, safeProgress);
-                const mapOpacity = 1 - smoothstep(0.48, 0.68, safeProgress);
-                const stepsOpacity = 1 - smoothstep(0.43, 0.61, safeProgress);
-                const transitionOpacity = smoothstep(0.45, 0.59, safeProgress) * (1 - smoothstep(0.69, 0.84, safeProgress));
-                const videoOpacity = smoothstep(0.64, 0.82, safeProgress);
-                const tutorialOpacity = smoothstep(0.71, 0.88, safeProgress);
-                const nextPhase = safeProgress < 0.52 ? 'map' : safeProgress < 0.79 ? 'transform' : 'tutorial';
-                const stepProgress = clamp(safeProgress / 0.44, 0, 0.999);
-                const nextStep = Math.min(storyStepItems.length - 1, Math.floor(stepProgress * storyStepItems.length));
-
-                platformStory.style.setProperty('--landing-story-progress', safeProgress.toFixed(4));
-                platformStory.style.setProperty('--landing-story-morph', morph.toFixed(4));
-                platformStory.style.setProperty('--landing-map-opacity', mapOpacity.toFixed(4));
-                platformStory.style.setProperty('--landing-steps-opacity', stepsOpacity.toFixed(4));
-                platformStory.style.setProperty('--landing-transition-opacity', transitionOpacity.toFixed(4));
-                platformStory.style.setProperty('--landing-video-opacity', videoOpacity.toFixed(4));
-                platformStory.style.setProperty('--landing-tutorial-opacity', tutorialOpacity.toFixed(4));
-
-                if (nextStep !== currentStoryStep) {
-                    storyStepItems.forEach((item, index) => item.classList.toggle('is-current', index === nextStep));
-                    currentStoryStep = nextStep;
-                }
-
-                if (nextPhase !== currentStoryPhase) {
-                    platformStory.dataset.storyPhase = nextPhase;
-                    const tutorialIsInteractive = nextPhase === 'tutorial';
-
-                    storyMap?.setAttribute('aria-hidden', tutorialIsInteractive ? 'true' : 'false');
-                    storySteps?.setAttribute('aria-hidden', tutorialIsInteractive ? 'true' : 'false');
-                    storyVideoLayer?.setAttribute('aria-hidden', tutorialIsInteractive ? 'false' : 'true');
-                    storyTutorialCopy?.setAttribute('aria-hidden', tutorialIsInteractive ? 'false' : 'true');
-
-                    if (storyVideo) storyVideo.tabIndex = tutorialIsInteractive ? 0 : -1;
-                    if (storyPlayButton) storyPlayButton.tabIndex = tutorialIsInteractive ? 0 : -1;
-                    if (!tutorialIsInteractive && storyVideo && !storyVideo.paused) storyVideo.pause();
-
-                    currentStoryPhase = nextPhase;
-                }
-            };
-
-            const updateStory = () => {
-                storyFrameRequested = false;
-                if (!storyScroll || !storySticky) return;
-
-                const storyBounds = storyScroll.getBoundingClientRect();
-                const stickyTop = Number.parseFloat(window.getComputedStyle(storySticky).top) || 0;
-                const travel = Math.max(1, storyScroll.offsetHeight - storySticky.offsetHeight);
-                setStoryProgress((stickyTop - storyBounds.top) / travel);
-            };
-
-            const requestStoryUpdate = () => {
-                if (storyFrameRequested) return;
-                storyFrameRequested = true;
-                window.requestAnimationFrame(updateStory);
-            };
-
-            if (reducedMotion.matches) {
-                setStoryProgress(1);
-            } else {
-                updateStory();
-                window.addEventListener('scroll', requestStoryUpdate, { passive: true });
-                window.addEventListener('resize', requestStoryUpdate, { passive: true });
+        const requestDialogPanel = document.querySelector('[data-request-dialog-panel]');
+        const requestDialog = requestDialogPanel?.closest('dialog');
+        const requestForm = requestDialog?.querySelector('[data-request-form]');
+        const requestTitle = requestDialog?.querySelector('#requestDialogTitle');
+        const requestIntro = requestDialog?.querySelector('#requestDialogIntro');
+        const requestInterest = requestForm?.querySelector('[name="interest"]');
+        const requestAudience = requestForm?.querySelector('[name="audience"]');
+        const requestSubmit = requestForm?.querySelector('[data-form-submit]');
+        const requestSubmitLabel = requestSubmit?.querySelector('[data-request-submit-label]');
+        const requestStatus = requestForm?.querySelector('[data-form-status]');
+        const requestClose = requestDialog?.querySelector('[data-request-dialog-close]');
+        const requestTriggers = Array.from(document.querySelectorAll('[data-request-modal][data-request-type]'));
+        const requestOptions = {
+            taller: {
+                title: requestDialog?.dataset.requestWorkshopTitle || 'Solicitar taller',
+                intro: requestDialog?.dataset.requestWorkshopIntro || 'Cuéntanos vuestro contexto y os ayudaremos a preparar un taller que encaje con el centro.',
+                interest: 'Taller inicial',
+                source: 'modal-taller'
+            },
+            programa: {
+                title: requestDialog?.dataset.requestProgrammeTitle || 'Solicitar programa',
+                intro: requestDialog?.dataset.requestProgrammeIntro || 'Cuéntanos vuestro contexto y os ayudaremos a valorar cómo puede encajar un recorrido ADAMIS en el centro.',
+                interest: 'Programa completo',
+                source: 'modal-programa'
             }
-        }
+        };
+        let requestOpener = null;
+
+        const unlockRequestDialog = () => {
+            document.body.classList.remove('request-dialog-open');
+            root.style.removeProperty('--request-scrollbar-gap');
+        };
+
+        const closeRequestDialog = () => {
+            if (requestDialog?.open) requestDialog.close();
+        };
+
+        const openRequestDialog = (trigger) => {
+            const requestOption = requestOptions[trigger?.dataset.requestType];
+            if (!requestDialog || !requestForm || !requestOption || typeof requestDialog.showModal !== 'function') return;
+
+            requestOpener = trigger;
+            requestForm.reset();
+            if (requestDialogPanel) requestDialogPanel.scrollTop = 0;
+            requestForm.dataset.sourceContext = requestOption.source;
+            if (requestAudience) requestAudience.value = 'Centro escolar';
+            if (requestInterest) requestInterest.value = requestOption.interest;
+            if (requestTitle) requestTitle.textContent = requestOption.title;
+            if (requestIntro) requestIntro.textContent = requestOption.intro;
+            if (requestSubmitLabel) requestSubmitLabel.textContent = requestOption.title;
+            if (requestSubmit) requestSubmit.disabled = false;
+            if (requestStatus) {
+                requestStatus.className = 'form-status';
+                requestStatus.textContent = '';
+            }
+            window.AdamisInfoForms?.syncSource?.(requestForm);
+
+            const siteHeader = document.querySelector('[data-site-header]');
+            if (siteHeader?.classList.contains('is-menu-open')) menuToggle?.click();
+            menuToggle?.setAttribute('aria-expanded', 'false');
+            const menuToggleLabel = menuToggle?.querySelector('.visually-hidden');
+            if (menuToggleLabel) menuToggleLabel.textContent = menuToggle?.dataset.menuOpenLabel || 'Abrir menú';
+
+            const scrollbarGap = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+            root.style.setProperty('--request-scrollbar-gap', `${scrollbarGap}px`);
+            document.body.classList.add('request-dialog-open');
+            requestDialog.showModal();
+            window.requestAnimationFrame(() => requestTitle?.focus({ preventScroll: true }));
+        };
+
+        requestTriggers.forEach((trigger) => {
+            trigger.addEventListener('click', () => openRequestDialog(trigger));
+        });
+
+        requestClose?.addEventListener('click', closeRequestDialog);
+        requestDialog?.addEventListener('click', (event) => {
+            if (event.target === requestDialog) closeRequestDialog();
+        });
+        requestDialog?.addEventListener('close', () => {
+            unlockRequestDialog();
+            if (requestOpener?.isConnected) requestOpener.focus({ preventScroll: true });
+            requestOpener = null;
+        });
 
         if (!heroVisual || reducedMotion.matches) return;
 
