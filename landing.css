@@ -1071,6 +1071,34 @@
     object-position: center 48%;
 }
 
+.public-site.landing-page .landing-product-preview-universe-copy {
+    position: absolute;
+    top: clamp(30px, 4.4vw, 58px);
+    left: clamp(26px, 4.2vw, 54px);
+    z-index: 2;
+    display: grid;
+    justify-items: start;
+    gap: clamp(16px, 2vw, 24px);
+    width: min(37%, 260px);
+}
+
+.public-site.landing-page .landing-product-preview-universe-copy h3 {
+    margin: 0;
+    color: var(--landing-ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(1.85rem, 3vw, 3.1rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-wrap: balance;
+}
+
+.public-site.landing-page .landing-product-preview-universe-cta {
+    min-height: 48px;
+    padding: 12px 19px;
+    font-size: 0.8rem;
+}
+
 .public-site.landing-page .landing-product-preview-app img {
     object-position: center;
 }
@@ -1346,6 +1374,27 @@
         aspect-ratio: 3 / 2;
     }
 
+    .public-site.landing-page .landing-product-preview-map img {
+        object-position: center;
+    }
+
+    .public-site.landing-page .landing-product-preview-universe-copy {
+        top: clamp(20px, 6vw, 38px);
+        left: clamp(18px, 5vw, 32px);
+        gap: clamp(12px, 3vw, 18px);
+        width: min(39%, 250px);
+    }
+
+    .public-site.landing-page .landing-product-preview-universe-copy h3 {
+        font-size: clamp(1.45rem, 6.8vw, 2.45rem);
+    }
+
+    .public-site.landing-page .landing-product-preview-universe-cta {
+        min-height: 42px;
+        padding: 10px 15px;
+        font-size: 0.72rem;
+    }
+
     .public-site.landing-page .landing-product-preview-app {
         aspect-ratio: 16 / 9;
     }
@@ -1402,6 +1451,23 @@
         left: 10px;
         padding: 7px 9px;
         font-size: 0.55rem;
+    }
+
+    .public-site.landing-page .landing-product-preview-universe-copy {
+        top: 16px;
+        left: 15px;
+        gap: 10px;
+        width: 41%;
+    }
+
+    .public-site.landing-page .landing-product-preview-universe-copy h3 {
+        font-size: clamp(1.2rem, 6.5vw, 1.55rem);
+    }
+
+    .public-site.landing-page .landing-product-preview-universe-cta {
+        min-height: 38px;
+        padding: 8px 12px;
+        font-size: 0.65rem;
     }
 }
 
