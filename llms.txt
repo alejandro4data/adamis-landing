@@ -8,6 +8,7 @@ Canonical site: https://adamis.es/
 
 - Home: https://adamis.es/
 - Producto / Cómo funciona: https://adamis.es/producto/
+- Universo ADAMIS: https://adamis.es/universo-adamis/
 - Metodología: https://adamis.es/metodologia/
 - Impacto: https://adamis.es/impacto/
 - Talleres: https://adamis.es/talleres/
