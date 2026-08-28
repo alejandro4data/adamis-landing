@@ -4,7 +4,7 @@
    - Cada nodo enlaza a clase.html?nivel=X
    ===================================================== */
 
-const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
+const CLASS_NODE_BY_ID = { demo: 1, ahorro: 10, deuda: 11, emprendimiento: 13 };
 
 (() => {
   'use strict';
@@ -16,10 +16,8 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const INSTRUCCIONES_URL = '/app/assets/instrucciones.avif';
   const IS_LOCAL_STATIC = window.location.protocol === 'file:';
-  const DEFAULT_CURRENT_LEVEL = 10;
-  const FIRST_OPEN_LEVEL = 10;
-  const LAST_OPEN_LEVEL = 10;
-  const OPEN_LEVELS = new Set([10]);
+  const DEFAULT_CURRENT_LEVEL = 1;
+  const OPEN_LEVELS = new Set([1]);
   let instructionsPreloaded = false;
 
   const tr = (text) => {
@@ -213,9 +211,7 @@ const CLASS_NODE_BY_ID = { ahorro: 10, deuda: 11, emprendimiento: 13 };
   }
 
   function getNodeState(level, currentLevel) {
-    if (level < FIRST_OPEN_LEVEL) return 'state--done';
-    if (OPEN_LEVELS.has(level)) return 'state--current';
-    if (level > LAST_OPEN_LEVEL) return 'state--upcoming';
+    if (level === currentLevel && OPEN_LEVELS.has(level)) return 'state--current';
     return 'state--locked';
   }
 

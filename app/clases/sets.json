@@ -1,8 +1,10 @@
 {
+  "demo": "Demo",
   "ahorro": "Ahorro",
   "deuda": "Deuda",
   "emprendimiento": "Emprendimiento",
-  "bool_ahorro": true,
+  "bool_demo": true,
+  "bool_ahorro": false,
   "bool_deuda": false,
   "bool_emprendimiento": false
 }
