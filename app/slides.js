@@ -116,7 +116,8 @@ function SlideCuadroReflexion({
   autoFocus = true,
   onEvaluate, onResult,
   apiEvaluate,
-  id, value, evalText, skipText
+  id, value, evalText, skipText,
+  mode, required = false, submitText
 } = {}) {
   return {
     tipo: 'cuadro-reflexion',
@@ -129,7 +130,8 @@ function SlideCuadroReflexion({
     autoFocus: !!autoFocus,
     onEvaluate, onResult,
     apiEvaluate, id, value,
-    evalText, skipText
+    evalText, skipText,
+    mode, required: !!required, submitText
   };
 }
 

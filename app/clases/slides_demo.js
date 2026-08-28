@@ -73,6 +73,29 @@ pushDemoScenes([
   }
 ]);
 
+// ==================== Control inicial · escena 7 ====================
+pushDemoScenes([
+  {
+    scene: 7,
+    speaker: 'adamis',
+    text: '“Pero antes quiero saber qué harías tú.”',
+    alt: 'Adamis invita a compartir una idea.'
+  }
+]);
+
+window.slides.push(
+  SlideCuadroReflexion({
+    id: 'CONTROL_INICIAL',
+    pregunta: '¿Qué harías para conseguir algo que te importa si todavía no tienes suficiente dinero?',
+    placeholder: 'Escribe aquí tu respuesta…',
+    mode: 'capture',
+    required: true,
+    submitText: 'Guardar respuesta',
+    autoFocus: true,
+    advanceOnSubmit: true
+  })
+);
+
 // ==================== Qué significa ahorrar · escenas 8–14 ====================
 pushDemoScenes([
   {

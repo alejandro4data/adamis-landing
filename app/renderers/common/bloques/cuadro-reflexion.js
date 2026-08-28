@@ -61,6 +61,8 @@
   SlideRendererRegistry.register('cuadro-reflexion', function(s, root /*, ctx */){
     ensureDraftPolicy();
     root.classList.add('tpl--cuadro-reflexion');
+    const captureMode = s.mode === 'capture';
+    if (captureMode) root.dataset.reflexionMode = 'capture';
 
     const wrap = document.createElement('div');
     wrap.className = 'reflexion-wrap center-box';
@@ -117,7 +119,9 @@
       if (progBar){
         progBar.style.width = Math.round(p * 100) + '%';
         progBar.classList.remove('is-low','is-warn','is-ok');
-        if (len < 15){
+        if (captureMode){
+          progLabel.textContent = '';
+        } else if (len < 15){
           progBar.classList.add('is-low');
           progLabel.textContent = 'Respuesta muy corta';
         } else if (len < 40){
@@ -145,7 +149,7 @@
     const btnEval = document.createElement('button');
     btnEval.type = 'button';
     btnEval.className = 'btn btn--primary';
-    btnEval.textContent = s.evalText || 'Evaluar';
+    btnEval.textContent = captureMode ? (s.submitText || 'Guardar respuesta') : (s.evalText || 'Evaluar');
 
     const btnsRight = document.createElement('div');
     btnsRight.className = 'reflexion-actions__right';
@@ -178,6 +182,30 @@
         const answer = ta.value.trim();
 
         status.classList.remove('is-error');
+
+        if (captureMode){
+          if (s.required && answer.length === 0){
+            status.textContent = 'Escribe una respuesta antes de continuar.';
+            status.classList.add('is-error');
+            return;
+          }
+
+          const payload = { question: qText, answer, meta: { slideId: s.id ?? null } };
+          window.SLIDE_LAST_REFLEXION = payload;
+
+          try {
+            window.dispatchEvent(new CustomEvent('reflexion:submit', {
+              detail: {
+                id: s.id || null,
+                respuesta: answer
+              }
+            }));
+          } catch(_e){}
+
+          if (s.advanceOnSubmit !== false && typeof onAdvance === 'function') onAdvance();
+          return;
+        }
+
         setBusy(true);
 
         const payload = { question: qText, answer, meta: { slideId: s.id ?? null } };

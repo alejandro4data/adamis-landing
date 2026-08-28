@@ -1715,6 +1715,29 @@ html[data-page="clase"] .slide.tpl--cuadro-reflexion{
 .reflexion-status.is-error{ color: #b91c1c; }
 .reflexion-actions.is-busy .btn{ opacity: .7; cursor: wait; }
 
+/* El CTA de captura necesita ancho de texto; los botones legacy conservan su layout. */
+.tpl--cuadro-reflexion[data-reflexion-mode="capture"] .reflexion-actions{
+  flex-wrap: wrap;
+}
+.tpl--cuadro-reflexion[data-reflexion-mode="capture"] .reflexion-status{
+  flex: 1 1 160px;
+  min-width: 0;
+}
+.tpl--cuadro-reflexion[data-reflexion-mode="capture"] .reflexion-actions__right{
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  margin-left: auto;
+}
+.tpl--cuadro-reflexion[data-reflexion-mode="capture"] .reflexion-actions__right .btn{
+  width: auto;
+  height: auto;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 12px clamp(16px, 2.5vw, 22px);
+  white-space: nowrap;
+}
+
 /* Botón ghost coherente */
 .btn--ghost{
   background: #fff;
