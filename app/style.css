@@ -854,9 +854,9 @@ html[data-page="clase"] .comic-bubble{
   margin: 0;
   border: var(--stroke-w) solid var(--stroke-col) !important; /* vence cualquier resto */
   border-radius: var(--radius);
-  background: white;
-  box-shadow: inset 0 0 20px #cafffb57,
-              inset 0 0 30px #90faf557;
+  background: var(--bubble-bg, white);
+  box-shadow: inset 0 0 20px var(--bubble-glow-1, #cafffb57),
+              inset 0 0 30px var(--bubble-glow-2, #90faf557);
   /* deja hueco arriba para que la píldora “se apoye” en el borde */
   padding: calc(var(--pad-y) + var(--pill-h)/2 + var(--pill-gap)) var(--pad-x) var(--pad-y);
 
@@ -917,7 +917,7 @@ html[data-page="clase"] .narrator-pill__in{
   display: inline-flex; align-items: center; gap: 8px;
 
   background: var(--hex-bg);
-  color: #111;
+  color: var(--speaker-ink, #111);
   font-weight: 800;
   font-size: clamp(12px, 1.3vw, 20px);
   line-height: 1;
@@ -1031,9 +1031,10 @@ html[data-page="clase"] .cont-hint .label{
   font-size: clamp(11px, 1.2vw, 13px);
   line-height: 1;
   color: #1f2937cb;
+  background: var(--speaker-soft, transparent);
   padding: 6px 10px;
   border-radius: 9px;
-  border: 1px solid rgb(0 0 0 / 10%);
+  border: 1px solid var(--speaker-accent, rgb(0 0 0 / 10%));
 }
 
 /* Flechitas animadas (»»») */
@@ -1059,7 +1060,7 @@ html[data-page="clase"] .comic-bubble{
   outline: none;
 }
 html[data-page="clase"] .comic-bubble:focus-visible{
-  box-shadow: 0 0 0 3px rgb(22 161 180 / 25%);
+  box-shadow: 0 0 0 3px var(--focus-ring, rgb(22 161 180 / 25%));
 }
 
 html[data-page="clase"] .slide { cursor: pointer; }
@@ -2935,22 +2936,26 @@ html[data-page="clase"] .slide.act-ahorro .act-left .goal-target__icon{
   display: grid;
   place-items: stretch;
   padding: clamp(16px, 2.6vw, 24px);
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* Grid 60/40 */
 .ti-grid{
   position: relative;
   display: grid;
-  grid-template-columns: 3fr 2fr;   /* 60% / 40% */
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);   /* 60% / 40% */
   gap: clamp(14px, 2.2vw, 20px);
   height: 100%;
+  min-width: 0;
+  min-height: 0;
 }
 
 /* Columna izquierda: 70% imagen / 30% diálogo */
 .ti-left{
   display: grid;
-  grid-template-rows: 7fr 3fr;
+  grid-template-rows: minmax(0, 7fr) minmax(0, 3fr);
   gap: clamp(10px, 1.6vw, 14px);
   min-width: 0; min-height: 0;
   padding-left: clamp(16px, 2.6vw, 28px);
@@ -2969,7 +2974,8 @@ html[data-page="clase"] .slide.act-ahorro .act-left .goal-target__icon{
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  aspect-ratio: 16 / 9;
+  min-width: 0;
+  min-height: 0;
 }
 
 /* La imagen SIEMPRE entra completa (sin recortes) */
@@ -2984,16 +2990,22 @@ html[data-page="clase"] .slide.act-ahorro .act-left .goal-target__icon{
 .ti-dialog{
   display: grid; place-items: center; min-width: 0; min-height: 0;
 }
-.ti-dialog .comic-bubble{ width: 100%; max-width: 1000px; }
+.ti-dialog .comic-bubble{
+  width: 100%;
+  height: 100%;
+  max-width: 1000px;
+  min-height: 0;
+}
 
 /* Columna derecha */
-.ti-right{ display: grid; place-items: center; }
+.ti-right{ display: grid; place-items: center; min-width: 0; min-height: 0; }
 
 /* Card tipo vidrio */
 .term-card{
   position: relative;
   width: min(92%, 520px);
-  height: min(70vh, 520px);
+  height: min(70dvh, 520px);
+  max-height: 100%;
   border-radius: 22px;
   background: rgba(255,255,255,0.55);
   border: 1px solid rgba(255,255,255,0.65);
@@ -3160,9 +3172,35 @@ html[data-page="clase"] .slide.act-ahorro .act-left .goal-target__icon{
 .ti-continue{ display: none; }
 
 /* Responsive */
-@media (max-width: 980px){
-  .ti-grid{ grid-template-columns: 1fr; grid-auto-rows: auto auto; }
-  .term-card{ width: 100%; height: 56vh; }
+@media (max-width: 700px){
+  .slide.tpl--termino-intro{ padding: clamp(8px, 2vw, 14px); }
+  .ti-grid{
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 3fr) minmax(0, 2fr);
+    gap: clamp(8px, 1.8vh, 12px);
+  }
+  .ti-left{
+    grid-template-rows: minmax(0, 3fr) minmax(0, 2fr);
+    gap: clamp(6px, 1.2vh, 10px);
+    padding: 0;
+  }
+  .ti-dialog .comic-bubble{
+    --pad-x: clamp(12px, 3vw, 18px);
+    --pad-y: clamp(8px, 1.5vh, 14px);
+    --pill-h: 24px;
+    --pill-gap: 4px;
+  }
+  .term-card{
+    width: min(92%, 480px);
+    height: 100%;
+  }
+  .term-card__face{ padding: clamp(12px, 3vw, 18px); }
+  .term-card__back{ padding: 12px 14px 14px; }
+  .term-card.tease{ animation-name: cardPulseCompact; }
+  @keyframes cardPulseCompact{
+    0%, 100% { transform: scale(1); box-shadow: 0 14px 30px rgb(0 0 0 / 10%); }
+    50% { transform: scale(1.025); box-shadow: 0 18px 36px rgb(0 0 0 / 16%); }
+  }
 }
 
 /* ====== SLIDE: Sabías Que ====== */

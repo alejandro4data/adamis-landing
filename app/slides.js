@@ -13,6 +13,9 @@ function Slide(opts = {}){
     typeSpeed,
     narrator,
     narratorColor,
+    speakerKey,
+    personajeKey,
+    speaker,
     recompensa, reward, premio
   } = opts;
 
@@ -21,6 +24,7 @@ function Slide(opts = {}){
   if (img){
     slide.img = (typeof img === 'string') ? img : { src: img?.src || '', alt: img?.alt || alt || '' };
   }
+  if (alt) slide.alt = alt;
   if (imageFraction != null) slide.imageFraction = imageFraction;
   if (textFraction  != null) slide.textFraction  = textFraction;
   if (typewriter !== undefined) slide.typewriter = typewriter;
@@ -28,6 +32,9 @@ function Slide(opts = {}){
 
   if (narrator) slide.narrator = narrator;
   if (narratorColor) slide.narratorColor = narratorColor;
+
+  const resolvedSpeakerKey = speakerKey ?? personajeKey ?? speaker;
+  if (resolvedSpeakerKey) slide.speakerKey = resolvedSpeakerKey;
 
   if (recompensa ?? reward ?? premio) slide.recompensa = recompensa ?? reward ?? premio;
 
@@ -420,6 +427,7 @@ function SlideTerminoIntro({
   text = '',
   img = '', alt = '',
   narrator, narratorColor,
+  speakerKey, personajeKey, speaker,
   typewriter, typeSpeed,
   term = '', termino,     // alias
   meaning = '', definicion, definition, // alias
@@ -429,6 +437,7 @@ function SlideTerminoIntro({
     tipo: 'termino-intro',
     text, img: img || '', alt,
     narrator, narratorColor,
+    speakerKey: speakerKey ?? personajeKey ?? speaker,
     typewriter, typeSpeed,
     term: term || termino || '',
     meaning: meaning || definicion || definition || '',

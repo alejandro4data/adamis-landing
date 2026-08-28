@@ -29,9 +29,16 @@
   // Render de slide "termino-intro"
   SlideRendererRegistry.register('termino-intro', function (s, root, ctx) {
     const { setVar, typeIn, registerTyper } = ctx;
+    const speakerTheme = window.RendererUtils?.getSpeakerTheme?.(s) || null;
 
     // Fondo y layout base
     root.classList.add('tpl--termino-intro');
+    if (speakerTheme) {
+      root.classList.add(`speaker--${speakerTheme.key}`);
+      root.dataset.speaker = speakerTheme.key;
+      setVar(root, '--speaker-accent', speakerTheme.accent);
+      setVar(root, '--speaker-soft', speakerTheme.pill);
+    }
 
     // === GRID 60% / 40% ===
     const grid = document.createElement('div');
@@ -65,6 +72,14 @@
     bubble.className = 'comic-bubble'; // misma clase/estilo que ya tienes
     bubble.setAttribute('role','button');
     bubble.setAttribute('tabindex','0');
+    if (speakerTheme) {
+      setVar(bubble, '--accent', speakerTheme.accent);
+      setVar(bubble, '--stroke-col', speakerTheme.border);
+      setVar(bubble, '--bubble-bg', speakerTheme.surface);
+      setVar(bubble, '--bubble-glow-1', speakerTheme.glow1);
+      setVar(bubble, '--bubble-glow-2', speakerTheme.glow2);
+      setVar(bubble, '--focus-ring', speakerTheme.focus);
+    }
 
     // PÃ­ldora con nombre del narrador (misma estÃ©tica)
     if (s.narrator) {
@@ -74,7 +89,12 @@
       pillIn.className = 'narrator-pill__in';
       pillIn.textContent = String(s.narrator);
       pill.appendChild(pillIn);
-      if (s.narratorColor) {
+      if (speakerTheme) {
+        setVar(pill, '--hex-border', speakerTheme.border);
+        setVar(pillIn, '--hex-bg', speakerTheme.pill);
+        setVar(pillIn, '--speaker-ink', speakerTheme.ink);
+        setVar(pill, '--hex-stroke', '3px');
+      } else if (s.narratorColor) {
         setVar(pill, '--hex-border', s.narratorColor);
         setVar(pillIn, '--hex-bg', '#fff');
         setVar(bubble, '--stroke-col', s.narratorColor);

@@ -3,6 +3,7 @@
 
   SlideRendererRegistry.register('explicacion-bocadillo', function(s, root, ctx){
     const { setVar, pct, imagePosFromTextPos, makeHint, makeRewardBox, typeIn, registerTyper, CONT_LABEL } = ctx;
+    const speakerTheme = window.RendererUtils?.getSpeakerTheme?.(s) || null;
 
     const textPos = (s.textPosition || 'right').toLowerCase();
     const imgPos  = imagePosFromTextPos(textPos);
@@ -21,7 +22,10 @@
     if (s.img?.src || s.img){
       const img = document.createElement('img');
       img.className = 'slide__media';
-      if (typeof s.img === 'string') img.src = s.img;
+      if (typeof s.img === 'string') {
+        img.src = s.img;
+        img.alt = s.alt || '';
+      }
       else { img.src = s.img.src || ''; img.alt = s.img.alt || ''; }
       root.appendChild(img);
     }
@@ -34,7 +38,19 @@
     wrap.setAttribute('role', 'button');
     wrap.setAttribute('tabindex', '0');
     wrap.setAttribute('aria-label', CONT_LABEL);
-    if (s.narratorColor){
+    if (speakerTheme){
+      root.classList.add(`speaker--${speakerTheme.key}`);
+      root.dataset.speaker = speakerTheme.key;
+      setVar(root, '--speaker-accent', speakerTheme.accent);
+      setVar(root, '--speaker-soft', speakerTheme.pill);
+      setVar(root, '--aurora-accent', speakerTheme.accent);
+      setVar(wrap, '--accent', speakerTheme.accent);
+      setVar(wrap, '--stroke-col', speakerTheme.border);
+      setVar(wrap, '--bubble-bg', speakerTheme.surface);
+      setVar(wrap, '--bubble-glow-1', speakerTheme.glow1);
+      setVar(wrap, '--bubble-glow-2', speakerTheme.glow2);
+      setVar(wrap, '--focus-ring', speakerTheme.focus);
+    } else if (s.narratorColor){
       setVar(wrap, '--accent',     s.narratorColor);
       setVar(wrap, '--stroke-col', s.narratorColor); // borde del bocadillo
     }
@@ -46,7 +62,12 @@
       inner.className = 'narrator-pill__in';
       inner.textContent = String(s.narrator);
       pill.appendChild(inner);
-      if (s.narratorColor){
+      if (speakerTheme){
+        setVar(pill, '--hex-border', speakerTheme.border);
+        setVar(inner, '--hex-bg', speakerTheme.pill);
+        setVar(inner, '--speaker-ink', speakerTheme.ink);
+        setVar(pill, '--hex-stroke', '3px');
+      } else if (s.narratorColor){
         setVar(pill,  '--hex-border', s.narratorColor); // color del borde de la píldora
         setVar(inner, '--hex-bg',     '#fff'); // color de relleno de la píldora
         setVar(pill, '--hex-stroke', '3px'); // grosor del anillo
