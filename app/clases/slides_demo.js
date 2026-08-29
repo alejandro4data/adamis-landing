@@ -354,7 +354,71 @@ window.slides.push(
     wellbeingGoal: 70,
     defaultSaving: 4,
     image: demoActivityPath('alex-paga'),
-    alt: 'Álex recibe su paga semanal de diez monedas.'
+    alt: 'Álex recibe su paga semanal de diez monedas.',
+    weeks: [
+      {
+        week: 1,
+        id: 'recreativos',
+        title: 'Un plan con amigos',
+
+        reveal: [
+          {
+            scene: 35,
+            speaker: 'chispa',
+            image: demoScenePath(35),
+            alt: 'Chispa anuncia el primer plan de la semana.',
+            text: '“¡Ya tenemos el primer plan!”'
+          },
+          {
+            scene: 36,
+            speaker: 'brote',
+            image: demoScenePath(36),
+            alt: 'Brote explica el coste y el bienestar del plan.',
+            text: '“Cuesta ocho monedas y puede darnos más bienestar.”'
+          }
+        ],
+
+        decision: {
+          prompt: '¿Qué quieres hacer?',
+          image: demoActivityPath('recreativos'),
+          alt: 'Plan de una tarde en los recreativos.',
+
+          options: [
+            {
+              id: 'accept',
+              label: 'ACEPTAR',
+              cost: 8,
+              wellbeingDelta: 10
+            },
+            {
+              id: 'reject',
+              label: 'RECHAZAR',
+              cost: 0,
+              wellbeingDelta: -7
+            }
+          ],
+
+          guidedChoice: 'reject'
+        },
+
+        feedback: [
+          {
+            scene: 37,
+            speaker: 'adamis',
+            image: demoScenePath(37),
+            alt: 'Adamis explica la consecuencia de renunciar al plan.',
+            text: '“Has renunciado a un plan que le apetecía a Álex, pero conservas tus monedas.”'
+          },
+          {
+            scene: 38,
+            speaker: 'chispa',
+            image: demoScenePath(38),
+            alt: 'Chispa recuerda la meta de ahorro.',
+            text: '“Esta vez hemos decidido pensar en nuestra meta.”'
+          }
+        ]
+      }
+    ]
   })
 );
 

@@ -28,14 +28,14 @@
   const SPEAKER_THEMES = Object.freeze({
     adamis: Object.freeze({
       key: 'adamis',
-      accent: '#d7a51e',
-      border: '#9a6500',
-      surface: '#fffaf0',
-      pill: '#ffedaa',
-      ink: '#4d3400',
-      glow1: 'rgb(255 214 79 / 28%)',
-      glow2: 'rgb(215 165 30 / 20%)',
-      focus: 'rgb(215 165 30 / 32%)'
+      accent: '#f2cc38',
+      border: '#b68200',
+      surface: '#fffce8',
+      pill: '#ffef9a',
+      ink: '#4c3b00',
+      glow1: 'rgb(255 232 105 / 34%)',
+      glow2: 'rgb(242 204 56 / 22%)',
+      focus: 'rgb(242 204 56 / 36%)'
     }),
     chispa: Object.freeze({
       key: 'chispa',

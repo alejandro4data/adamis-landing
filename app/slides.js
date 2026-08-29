@@ -207,7 +207,8 @@ function SlideMisionMeta({
   wellbeingGoal,
   defaultSaving,
   image,
-  alt
+  alt,
+  weeks
 } = {}){
   return {
     tipo: 'mision-meta',
@@ -219,7 +220,8 @@ function SlideMisionMeta({
     wellbeingGoal,
     defaultSaving,
     image,
-    alt
+    alt,
+    weeks
   };
 }
 
