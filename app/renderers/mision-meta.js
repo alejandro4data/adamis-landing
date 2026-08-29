@@ -436,17 +436,20 @@
       .mission-meta__header{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px 24px}.mission-meta__eyebrow{margin:0 0 4px;color:var(--teal-dark);font-size:clamp(11px,1.1vw,14px);font-weight:800;letter-spacing:.12em;text-transform:uppercase}.mission-meta__title{margin:0;font-size:clamp(28px,3.2vw,50px);line-height:1;letter-spacing:-.035em}.mission-meta__week-line{margin-top:8px;display:flex;align-items:center;gap:12px}.mission-meta__week-label{flex:none;color:var(--muted);font-size:clamp(13px,1.25vw,16px);font-weight:750}.mission-meta__progress{width:min(270px,52vw);display:grid;grid-template-columns:repeat(var(--weeks),minmax(18px,1fr));gap:7px}.mission-meta__progress-step{height:8px;border-radius:999px;background:#dbe8e6}.mission-meta__progress-step.is-active{background:var(--teal)}
       .mission-meta__goals{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}.mission-meta__goal{padding:8px 12px;border:1px solid var(--border);border-radius:999px;background:#ffffffc7;color:var(--muted);font-size:clamp(11px,1vw,13px);font-weight:750;white-space:nowrap}.mission-meta__goal strong{color:var(--ink)}.mission-meta__stage{min-width:0;min-height:0;position:relative}.mission-meta__content{min-width:0;min-height:0;height:100%;display:grid;grid-template-columns:minmax(230px,.9fr) minmax(0,1.1fr);gap:clamp(16px,2.5vw,34px)}
       .mission-meta__visual{position:relative;min-width:0;min-height:0;margin:0;overflow:hidden;display:grid;place-items:center;padding:clamp(10px,1.7vw,24px);border:1px solid #cee5e0e6;border-radius:clamp(20px,2.8vw,32px);background:linear-gradient(155deg,#fffffff0,#e6f7f2db);box-shadow:0 18px 55px #1e544b1a}.mission-meta__image{display:block;width:100%;height:100%;min-width:0;min-height:0;max-width:100%;max-height:100%;object-fit:contain;object-position:center;filter:drop-shadow(0 16px 22px #16413e1f)}
-      .mission-meta__panel{min-width:0;min-height:0;display:grid;align-content:center;gap:clamp(9px,1.2vh,14px)}.mission-meta__balances{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.mission-meta__balance{position:relative;min-width:0;padding:clamp(10px,1.35vw,17px);border:1px solid var(--border)!important;border-radius:18px;background:#fffffff0;box-shadow:0 8px 24px #1c494412}.mission-meta__balance--piggy{border-color:#efd99e!important;background:linear-gradient(145deg,#fffdf5,#fff8df)}.mission-meta__balance--wallet{border-color:#bfe1dc!important;background:linear-gradient(145deg,#fbfffe,#edf9f6)}.mission-meta__balance-heading{display:flex;align-items:center;gap:7px;margin-bottom:4px}.mission-meta__balance-label{display:block;color:var(--muted);font-size:clamp(10px,.9vw,12px);font-weight:850;letter-spacing:.08em}.mission-meta__state-icon{width:clamp(21px,1.8vw,27px);height:clamp(21px,1.8vw,27px);flex:none}.mission-meta__balance--piggy .mission-meta__state-icon{color:#a97708}.mission-meta__balance--wallet .mission-meta__state-icon{color:var(--teal-dark)}.mission-meta__balance-value{min-width:0;display:flex;align-items:center;gap:6px;font-size:clamp(20px,2.35vw,33px);font-weight:850;line-height:1}.mission-meta__coin{width:clamp(18px,1.8vw,25px);height:clamp(18px,1.8vw,25px);object-fit:contain}.mission-meta__wellbeing-value{font-size:clamp(17px,1.95vw,27px);white-space:nowrap}.mission-meta__wellbeing-track{height:6px;margin-top:8px;overflow:hidden;border-radius:999px;background:#e3eceb}.mission-meta__wellbeing-fill{width:var(--wellbeing);height:100%;border-radius:inherit;background:linear-gradient(90deg,#f4c24f,#68bf6c)}
-      .mission-meta__balance.is-changing{animation:mission-meta-balance-pulse .72s ease-out}.mission-meta__delta{position:absolute;z-index:2;top:-11px;right:10px;padding:4px 8px;border:1px solid currentColor!important;border-radius:999px;background:#fff;box-shadow:0 7px 18px #17324d24;font-size:clamp(10px,.95vw,13px);font-weight:900;line-height:1;white-space:nowrap;pointer-events:none;animation:mission-meta-delta 1.35s ease-out forwards}.mission-meta__delta--positive{color:#197747}.mission-meta__delta--negative{color:#a84b3f}@keyframes mission-meta-balance-pulse{0%{transform:scale(1);box-shadow:0 8px 24px #1c494412}32%{transform:scale(1.025);box-shadow:0 0 0 4px #f2cc3838,0 13px 30px #1c49441f}100%{transform:scale(1);box-shadow:0 8px 24px #1c494412}}@keyframes mission-meta-delta{0%{opacity:0;transform:translateY(7px) scale(.96)}16%,68%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-7px) scale(.98)}}
+      .mission-meta__panel{min-width:0;min-height:0;display:grid;align-content:center;gap:clamp(9px,1.2vh,14px)}
+      .mission-meta__balances{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(7px,.8vw,11px)}.mission-meta__balance{position:relative;min-width:0;min-height:112px;padding:clamp(10px,1.15vw,16px);border:1px solid var(--border)!important;border-radius:20px;background:#fffffff2;box-shadow:0 9px 25px #1c494414}.mission-meta__balance--piggy,.mission-meta__balance--wallet{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:clamp(9px,1vw,14px)}.mission-meta__balance--piggy{border-color:#ead496!important;background:linear-gradient(145deg,#fffef8,#fff4d7)}.mission-meta__balance--wallet{border-color:#aedbd5!important;background:linear-gradient(145deg,#fbfffe,#e7f7f4)}.mission-meta__balance-heading{min-width:0}.mission-meta__balance--piggy .mission-meta__balance-heading,.mission-meta__balance--wallet .mission-meta__balance-heading{display:grid;place-items:center;width:clamp(48px,4.5vw,66px);height:clamp(48px,4.5vw,66px);margin:0;border:1px solid currentColor!important;border-radius:18px}.mission-meta__balance--piggy .mission-meta__balance-heading{color:#9b700b;background:#fff8de}.mission-meta__balance--wallet .mission-meta__balance-heading{color:#08766f;background:#eaf9f6}.mission-meta__balance-copy{min-width:0;display:grid;gap:5px;align-content:center}.mission-meta__balance-label{display:block;color:var(--muted);font-size:clamp(10px,.9vw,12px);font-weight:900;letter-spacing:.1em}.mission-meta__state-icon{display:block;width:clamp(42px,3.65vw,58px);height:clamp(42px,3.65vw,58px);flex:none}.mission-meta__balance--piggy .mission-meta__state-icon{color:#a97708}.mission-meta__balance--wallet .mission-meta__state-icon{color:var(--teal-dark)}.mission-meta__balance-value{min-width:0;display:flex;align-items:center;gap:6px;font-size:clamp(21px,2.15vw,31px);font-weight:900;line-height:1}.mission-meta__balance-unit{display:block;color:var(--muted);font-size:clamp(10px,.85vw,12px);font-weight:750}.mission-meta__coin{width:clamp(18px,1.8vw,25px);height:clamp(18px,1.8vw,25px);object-fit:contain}
+      .mission-meta__balance--wellbeing{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr;column-gap:8px;align-items:center;border-color:#cbdcbf!important;background:linear-gradient(145deg,#fffefa,#eff8eb)}.mission-meta__balance--wellbeing .mission-meta__balance-heading{align-self:start}.mission-meta__wellbeing-value{align-self:end;font-size:clamp(19px,1.8vw,27px);white-space:nowrap}.mission-meta__thermometer{grid-column:2;grid-row:1/-1;position:relative;width:clamp(56px,5.2vw,72px);height:86px;padding-right:24px}.mission-meta__thermometer-tube{position:absolute;left:9px;top:2px;width:18px;height:66px;overflow:hidden;border:3px solid #d8e2de!important;border-bottom:0!important;border-radius:12px 12px 5px 5px;background:#fff;box-shadow:inset 0 0 0 2px #ffffffb5}.mission-meta__thermometer-gradient{position:absolute;inset:0;background:linear-gradient(to top,#ee8173 0%,#f2c556 48%,#66b97a 100%)}.mission-meta__thermometer-fill-mask{position:absolute;z-index:1;inset:0 0 auto;background:#f7faf8}.mission-meta__thermometer-fill-mask.is-animating{transition:height .72s cubic-bezier(.22,.76,.3,1)}.mission-meta__thermometer-bulb{position:absolute;left:2px;bottom:0;width:32px;height:32px;border:3px solid #d8e2de!important;border-radius:50%;background:#ee8173;box-shadow:inset 0 0 0 5px #f9a198,0 4px 10px #73534e20}.mission-meta__thermometer-goal{position:absolute;z-index:2;left:0;right:0;height:2px;background:#41665f}.mission-meta__thermometer-goal-label{position:absolute;left:30px;top:50%;padding:2px 4px;border-radius:5px;background:#f5faf7;color:#41665f;font-size:7px;font-weight:950;line-height:1;letter-spacing:.03em;white-space:nowrap;transform:translateY(-50%)}.mission-meta__thermometer-max,.mission-meta__thermometer-min{position:absolute;right:0;color:#667c72;font-size:8px;font-weight:850}.mission-meta__thermometer-max{top:-1px}.mission-meta__thermometer-min{bottom:1px}
+      .mission-meta__balance.is-changing{animation:mission-meta-balance-pulse .72s ease-out}.mission-meta__delta{position:absolute;z-index:3;top:-12px;right:9px;padding:5px 9px;border:1px solid currentColor!important;border-radius:999px;background:#fff;box-shadow:0 8px 20px #17324d2b;font-size:clamp(11px,1vw,14px);font-weight:950;line-height:1;white-space:nowrap;pointer-events:none;animation:mission-meta-delta 1.5s ease-out forwards}.mission-meta__delta--positive{color:#197747}.mission-meta__delta--negative{color:#a84b3f}@keyframes mission-meta-balance-pulse{0%{transform:scale(1);box-shadow:0 9px 25px #1c494414}32%{transform:scale(1.025);box-shadow:0 0 0 4px #f2cc3838,0 14px 32px #1c494420}100%{transform:scale(1);box-shadow:0 9px 25px #1c494414}}@keyframes mission-meta-delta{0%{opacity:0;transform:translateY(8px) scale(.96)}16%,70%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-8px) scale(.98)}}
       .mission-meta__allowance{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 15px;border:1px solid #f1d48b;border-radius:17px;background:#fff4d8}.mission-meta__allowance span{color:#765a1f;font-size:clamp(11px,1vw,13px);font-weight:850;letter-spacing:.08em}.mission-meta__allowance strong{display:flex;align-items:center;gap:7px;color:#684b0d;font-size:clamp(17px,1.8vw,23px);font-weight:900;white-space:nowrap}
       .mission-meta__box,.mission-meta__dialogue,.mission-meta__complete{padding:clamp(14px,1.8vw,22px);border:1px solid var(--border);border-radius:22px;background:#fffffff5;box-shadow:0 13px 36px #1c494414}.mission-meta__question{display:block;margin-bottom:5px;font-size:clamp(16px,1.55vw,21px);font-weight:820}.mission-meta__selection{margin-bottom:8px;color:var(--teal-dark);font-size:clamp(23px,2.7vw,35px);font-weight:900}.mission-meta__range{display:block;width:100%;height:28px;margin:0;padding:0;border:0;background:transparent;accent-color:var(--teal);cursor:pointer;touch-action:pan-y}.mission-meta__range:disabled{cursor:default;opacity:.62}.mission-meta__range-limits{display:flex;justify-content:space-between;margin-top:-2px;color:var(--muted);font-size:12px;font-weight:700}.mission-meta__preview{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.mission-meta__preview div{padding:9px 11px;border-radius:14px;background:#f1f8f6;color:var(--muted);font-size:clamp(11px,1vw,13px)}.mission-meta__preview strong{display:block;margin-top:2px;color:var(--ink);font-size:clamp(16px,1.45vw,20px)}.mission-meta__actions{display:grid;gap:8px}
       .mission-meta__button{min-height:46px;padding:11px 17px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#fff;font:inherit;font-size:clamp(13px,1.15vw,16px);font-weight:850;box-shadow:0 8px 18px #08766f33;cursor:pointer}.mission-meta__button:hover:not(:disabled){filter:brightness(1.04)}.mission-meta__button:disabled{background:#dfece9;color:#3d716b;box-shadow:none;cursor:default}.mission-meta__button--secondary{border:1px solid var(--border);background:#fff;color:var(--teal-dark);box-shadow:none}.mission-meta__button:focus-visible,.mission-meta__choice:focus-visible,.mission-meta__range:focus-visible{outline:3px solid #199b9157;outline-offset:3px}
-      .mission-meta__narrative,.mission-meta__decision{grid-template-columns:minmax(280px,1.05fr) minmax(330px,.95fr)}.mission-meta__dialogue{align-self:stretch;display:grid;align-content:center;gap:14px;border:1px solid var(--speaker-border,var(--border))!important;background:var(--speaker-surface,#fff)}.mission-meta__speaker{width:max-content;max-width:100%;padding:6px 11px;border:2px solid var(--speaker-border,var(--teal-dark))!important;border-radius:999px;background:var(--speaker-pill,#e5f7f3);color:var(--speaker-ink,var(--ink));font-size:13px;font-weight:900}.mission-meta__dialogue-text{margin:0;color:var(--speaker-ink,var(--ink));font-size:clamp(20px,2.15vw,31px);font-weight:750;line-height:1.28}.mission-meta__week-title{margin:0;color:var(--teal-dark);font-size:clamp(12px,1vw,14px);font-weight:850;letter-spacing:.08em;text-transform:uppercase}.mission-meta__choice-title{margin:0;font-size:clamp(22px,2.2vw,32px)}.mission-meta__choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.mission-meta__choice{min-width:0;min-height:132px;padding:15px;display:grid;align-content:space-between;gap:12px;border:2px solid #b9d9d4;border-radius:18px;background:linear-gradient(155deg,#fff,#f1faf8);color:var(--ink);font:inherit;text-align:left;cursor:pointer}.mission-meta__choice:hover{border-color:var(--teal);transform:translateY(-1px)}.mission-meta__choice-label{font-size:clamp(18px,1.7vw,23px);font-weight:900}.mission-meta__effects{display:grid;gap:4px;color:var(--muted);font-size:13px;font-weight:750}.mission-meta__effects strong{color:var(--ink)}
-      .mission-meta__overlay{position:absolute;z-index:5;inset:0;display:grid;place-items:center;padding:16px;border-radius:24px;background:#132d398a;backdrop-filter:blur(5px)}.mission-meta__modal{width:min(620px,100%);max-height:100%;overflow-y:auto;padding:clamp(18px,2.5vw,30px);border-radius:23px;background:#fff;box-shadow:0 24px 70px #08242f47}.mission-meta__modal h2{margin:0 0 12px;font-size:clamp(22px,2.2vw,30px)}.mission-meta__payment{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.mission-meta__payment div{padding:11px;border-radius:14px;background:#f1f8f6}.mission-meta__payment span{display:block;color:var(--muted);font-size:10px;font-weight:850;letter-spacing:.06em}.mission-meta__payment strong{display:block;margin-top:3px;font-size:clamp(16px,1.7vw,21px)}.mission-meta__modal-actions{display:grid;gap:8px}.mission-meta__complete-wrap{height:100%;display:grid;place-items:center}.mission-meta__complete{width:min(720px,100%);text-align:center}.mission-meta__complete h2{margin:0 0 8px;font-size:clamp(28px,3.4vw,46px)}.mission-meta__complete p{margin:14px 0 0;color:var(--muted)}.mission-meta__complete .mission-meta__balances{margin-top:20px;text-align:left}.mission-meta__complete .mission-meta__button{width:100%;margin-top:14px}
-      @media(max-width:840px){.mission-meta__shell{display:block;padding:16px 13px 26px}.mission-meta__header{grid-template-columns:1fr;align-items:start}.mission-meta__goals{justify-content:flex-start;margin-top:9px}.mission-meta__stage{margin-top:15px}.mission-meta__content{grid-template-columns:1fr;height:auto}.mission-meta__visual{height:clamp(210px,30vh,300px)}.mission-meta__panel{margin-top:13px}.mission-meta__complete-wrap{min-height:480px}}
-      @media(max-width:520px){.mission-meta__title{font-size:29px}.mission-meta__week-line{align-items:flex-start;flex-direction:column;gap:6px}.mission-meta__progress{width:100%}.mission-meta__goal{padding:6px 9px}.mission-meta__balances{grid-template-columns:1fr 1fr}.mission-meta__balance--wellbeing{grid-column:1/-1}.mission-meta__preview,.mission-meta__choices,.mission-meta__payment{grid-template-columns:1fr}.mission-meta__visual{height:clamp(190px,31vh,235px)}.mission-meta__choice{min-height:108px}.mission-meta__overlay{position:fixed;border-radius:0}}
-      @media(max-height:780px) and (min-width:841px){.mission-meta__shell{padding-block:12px 18px;gap:9px}.mission-meta__panel{gap:7px}.mission-meta__balance{padding:8px 11px}.mission-meta__box,.mission-meta__dialogue{padding:12px 15px}.mission-meta__choice{min-height:112px;padding:12px}}
-      @media(prefers-reduced-motion:reduce){.mission-meta__balance.is-changing,.mission-meta__delta{animation-duration:.01ms;animation-iteration-count:1}}
+      .mission-meta__narrative,.mission-meta__decision{grid-template-columns:minmax(280px,1.05fr) minmax(330px,.95fr)}.mission-meta__dialogue{align-self:stretch;display:grid;align-content:center;gap:14px;border:1px solid var(--speaker-border,var(--border))!important;background:var(--speaker-surface,#fff)}.mission-meta__speaker{width:max-content;max-width:100%;padding:6px 11px;border:2px solid var(--speaker-border,var(--teal-dark))!important;border-radius:999px;background:var(--speaker-pill,#e5f7f3);color:var(--speaker-ink,var(--ink));font-size:13px;font-weight:900}.mission-meta__dialogue-text{margin:0;color:var(--speaker-ink,var(--ink));font-size:clamp(20px,2.15vw,31px);font-weight:750;line-height:1.28}.mission-meta__week-title{margin:0;color:var(--teal-dark);font-size:clamp(12px,1vw,14px);font-weight:850;letter-spacing:.08em;text-transform:uppercase}.mission-meta__choice-title{margin:0;font-size:clamp(22px,2.2vw,32px);line-height:1.12}.mission-meta__choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,1vw,14px)}.mission-meta__choice{--choice-accent:#cf8b23;--choice-border:#e9c985;--choice-surface:#fff8e8;min-width:0;min-height:170px;padding:clamp(14px,1.35vw,19px);display:grid;grid-template-rows:1fr auto auto;align-content:space-between;gap:clamp(11px,1.2vw,16px);overflow:hidden;border:2px solid var(--choice-border)!important;border-radius:22px;background:linear-gradient(150deg,#fff,var(--choice-surface));color:var(--ink);font:inherit;text-align:left;box-shadow:0 9px 22px #263f4712,inset 0 4px 0 var(--choice-accent);cursor:pointer;touch-action:manipulation;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.mission-meta__choice:nth-child(2){--choice-accent:#178f9b;--choice-border:#a9d8dc;--choice-surface:#eaf8f9}.mission-meta__choice:hover{border-color:var(--choice-accent)!important;box-shadow:0 15px 30px #263f4722,inset 0 4px 0 var(--choice-accent);transform:translateY(-3px)}.mission-meta__choice:active{transform:translateY(0) scale(.98)}.mission-meta__choice-label{align-self:center;font-size:clamp(18px,1.65vw,24px);font-weight:950;line-height:1.12;text-align:center;overflow-wrap:anywhere}.mission-meta__effects{display:grid;grid-template-columns:1fr 1fr;gap:7px}.mission-meta__effect{min-width:0;padding:8px 9px;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:6px;border:1px solid #ffffffc9!important;border-radius:12px;background:#ffffffb8;color:var(--muted);font-size:clamp(9px,.78vw,11px);font-weight:850;line-height:1.05}.mission-meta__effect-copy{min-width:0;display:grid;gap:2px}.mission-meta__effect-label{font-size:9px;font-weight:900;letter-spacing:.07em}.mission-meta__effect strong{color:var(--ink);font-size:clamp(11px,1vw,14px);white-space:nowrap}.mission-meta__effect .mission-meta__coin{width:22px;height:22px}.mission-meta__choice-thermometer{position:relative;width:12px;height:25px;border:2px solid var(--choice-accent)!important;border-radius:7px;background:#fff}.mission-meta__choice-thermometer::before{content:'';position:absolute;left:2px;right:2px;bottom:2px;height:55%;border-radius:4px;background:var(--choice-accent)}.mission-meta__choice-thermometer::after{content:'';position:absolute;left:50%;bottom:-4px;width:10px;height:10px;border-radius:50%;background:var(--choice-accent);transform:translateX(-50%)}.mission-meta__choice-cta{display:flex;align-items:center;justify-content:center;gap:7px;color:var(--choice-accent);font-size:clamp(10px,.85vw,12px);font-weight:950;letter-spacing:.075em;text-align:center}.mission-meta__choice-cta::after{content:'›';font-size:20px;line-height:.7}
+      .mission-meta__overlay{position:absolute;z-index:5;inset:0;display:grid;place-items:center;padding:16px;border-radius:24px;background:#132d398a;backdrop-filter:blur(5px)}.mission-meta__modal{width:min(620px,100%);max-height:100%;overflow-y:auto;padding:clamp(18px,2.5vw,30px);border-radius:23px;background:#fff;box-shadow:0 24px 70px #08242f47}.mission-meta__modal h2{margin:0 0 12px;font-size:clamp(22px,2.2vw,30px)}.mission-meta__payment{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.mission-meta__payment div{padding:11px;border-radius:14px;background:#f1f8f6}.mission-meta__payment span{display:block;color:var(--muted);font-size:10px;font-weight:850;letter-spacing:.06em}.mission-meta__payment strong{display:block;margin-top:3px;font-size:clamp(16px,1.7vw,21px)}.mission-meta__modal-actions{display:grid;gap:8px}.mission-meta__complete-wrap{height:100%;display:grid;place-items:center}.mission-meta__complete{width:min(780px,100%);text-align:center}.mission-meta__complete h2{margin:0 0 8px;font-size:clamp(28px,3.4vw,46px)}.mission-meta__complete p{margin:14px 0 0;color:var(--muted)}.mission-meta__complete .mission-meta__balances{margin-top:20px;text-align:left}.mission-meta__complete .mission-meta__button{width:100%;margin-top:14px}
+      @media(max-width:1024px){.mission-meta__state-icon{width:clamp(38px,4.7vw,50px);height:clamp(38px,4.7vw,50px)}.mission-meta__balance--piggy .mission-meta__balance-heading,.mission-meta__balance--wallet .mission-meta__balance-heading{width:clamp(44px,5.7vw,58px);height:clamp(44px,5.7vw,58px)}}
+      @media(max-width:840px){.mission-meta__shell{display:block;padding:16px 13px 26px}.mission-meta__header{grid-template-columns:1fr;align-items:start}.mission-meta__goals{justify-content:flex-start;margin-top:9px}.mission-meta__stage{margin-top:15px}.mission-meta__content{grid-template-columns:1fr;height:auto}.mission-meta__visual{height:clamp(210px,30vh,300px)}.mission-meta__panel{margin-top:13px}.mission-meta__thermometer-goal-label{left:auto;right:28px}.mission-meta__complete-wrap{min-height:480px}}
+      @media(max-width:520px){.mission-meta__title{font-size:29px}.mission-meta__week-line{align-items:flex-start;flex-direction:column;gap:6px}.mission-meta__progress{width:100%}.mission-meta__goal{padding:6px 9px}.mission-meta__balances{grid-template-columns:1fr 1fr}.mission-meta__balance{min-height:94px;padding:9px}.mission-meta__balance--piggy,.mission-meta__balance--wallet{gap:7px}.mission-meta__balance--wellbeing{grid-column:1/-1;min-height:100px}.mission-meta__state-icon{width:clamp(34px,10vw,44px);height:clamp(34px,10vw,44px)}.mission-meta__balance--piggy .mission-meta__balance-heading,.mission-meta__balance--wallet .mission-meta__balance-heading{width:clamp(40px,12vw,50px);height:clamp(40px,12vw,50px);border-radius:14px}.mission-meta__balance-value{font-size:clamp(19px,6vw,26px)}.mission-meta__preview,.mission-meta__choices,.mission-meta__payment{grid-template-columns:1fr}.mission-meta__visual{height:clamp(190px,31vh,235px)}.mission-meta__choice{min-height:150px}.mission-meta__choice-label{overflow-wrap:normal}.mission-meta__overlay{position:fixed;border-radius:0}}
+      @media(max-height:780px) and (min-width:841px){.mission-meta__shell{padding-block:12px 18px;gap:9px}.mission-meta__panel{gap:7px}.mission-meta__balance{min-height:96px;padding:8px 10px}.mission-meta__balance--piggy .mission-meta__balance-heading,.mission-meta__balance--wallet .mission-meta__balance-heading{width:48px;height:48px}.mission-meta__state-icon{width:42px;height:42px}.mission-meta__thermometer{height:76px}.mission-meta__thermometer-tube{height:57px}.mission-meta__thermometer-bulb{width:29px;height:29px}.mission-meta__box,.mission-meta__dialogue{padding:12px 15px}.mission-meta__choice{min-height:142px;padding:12px;gap:9px}}
+      @media(prefers-reduced-motion:reduce){.mission-meta__balance.is-changing,.mission-meta__delta{animation-duration:.01ms;animation-iteration-count:1}.mission-meta__thermometer-fill-mask.is-animating,.mission-meta__choice{transition:none}.mission-meta__choice:hover,.mission-meta__choice:active{transform:none}}
     `;
     document.head.appendChild(style);
   }
@@ -506,26 +509,71 @@
         if (changes?.[key]) card.classList.add('is-changing');
         const heading = document.createElement('div');
         heading.className = 'mission-meta__balance-heading';
-        if (key === 'piggy' || key === 'wallet') heading.appendChild(stateIcon(key));
         const labelNode = document.createElement('span');
         labelNode.className = 'mission-meta__balance-label';
         labelNode.textContent = label;
-        heading.appendChild(labelNode);
         const valueNode = document.createElement('div');
         valueNode.className = 'mission-meta__balance-value';
         if (key === 'wellbeing') {
+          heading.appendChild(labelNode);
           valueNode.classList.add('mission-meta__wellbeing-value');
           valueNode.textContent = `${value} / 100`;
-          const track = document.createElement('div');
-          track.className = 'mission-meta__wellbeing-track';
-          const fill = document.createElement('div');
-          fill.className = 'mission-meta__wellbeing-fill';
-          fill.style.setProperty('--wellbeing', `${value}%`);
-          track.appendChild(fill);
-          card.append(heading, valueNode, track);
+          const thermometer = document.createElement('div');
+          thermometer.className = 'mission-meta__thermometer';
+          thermometer.setAttribute('role', 'meter');
+          thermometer.setAttribute('aria-valuemin', '0');
+          thermometer.setAttribute('aria-valuemax', '100');
+          thermometer.setAttribute('aria-valuenow', String(value));
+          thermometer.setAttribute('aria-label', `Bienestar: ${value} de 100. Objetivo: ${state.wellbeingGoal}`);
+          const tube = document.createElement('div');
+          tube.className = 'mission-meta__thermometer-tube';
+          tube.setAttribute('aria-hidden', 'true');
+          const gradient = document.createElement('div');
+          gradient.className = 'mission-meta__thermometer-gradient';
+          const mask = document.createElement('div');
+          mask.className = 'mission-meta__thermometer-fill-mask';
+          const previousValue = changes?.wellbeing
+            ? clamp(value - changes.wellbeing, 0, 100)
+            : value;
+          mask.style.height = `${100 - previousValue}%`;
+          if (changes?.wellbeing) {
+            mask.classList.add('is-animating');
+            window.requestAnimationFrame(() => {
+              window.requestAnimationFrame(() => { mask.style.height = `${100 - value}%`; });
+            });
+          }
+          tube.append(gradient, mask);
+          const bulb = document.createElement('div');
+          bulb.className = 'mission-meta__thermometer-bulb';
+          bulb.setAttribute('aria-hidden', 'true');
+          const goal = document.createElement('div');
+          goal.className = 'mission-meta__thermometer-goal';
+          goal.style.bottom = `calc(${state.wellbeingGoal}% - 1px)`;
+          goal.setAttribute('aria-hidden', 'true');
+          const goalLabel = document.createElement('span');
+          goalLabel.className = 'mission-meta__thermometer-goal-label';
+          goalLabel.textContent = `OBJETIVO ${state.wellbeingGoal}`;
+          goal.appendChild(goalLabel);
+          const maximum = document.createElement('span');
+          maximum.className = 'mission-meta__thermometer-max';
+          maximum.textContent = '100';
+          maximum.setAttribute('aria-hidden', 'true');
+          const minimum = document.createElement('span');
+          minimum.className = 'mission-meta__thermometer-min';
+          minimum.textContent = '0';
+          minimum.setAttribute('aria-hidden', 'true');
+          thermometer.append(tube, bulb, goal, maximum, minimum);
+          card.append(heading, valueNode, thermometer);
         } else {
+          heading.appendChild(stateIcon(key));
+          const copy = document.createElement('div');
+          copy.className = 'mission-meta__balance-copy';
           valueNode.append(String(value), coinIcon());
-          card.append(heading, valueNode);
+          const unit = document.createElement('span');
+          unit.className = 'mission-meta__balance-unit';
+          unit.textContent = value === 1 ? 'moneda' : 'monedas';
+          copy.append(labelNode, valueNode, unit);
+          card.append(heading, copy);
         }
         if (changes?.[key]) {
           const delta = changes[key];
@@ -551,6 +599,7 @@
     labels[2].textContent = 'Bienestar final';
     values[0].replaceChildren(`${state.piggyBank} ${state.piggyBank === 1 ? 'moneda' : 'monedas'}`);
     values[1].replaceChildren(`${state.wallet} ${state.wallet === 1 ? 'moneda' : 'monedas'}`);
+    balances.querySelectorAll('.mission-meta__balance-unit').forEach((unit) => unit.remove());
     return balances;
   }
 
@@ -775,8 +824,37 @@
         label.textContent = option.label;
         const effects = document.createElement('span');
         effects.className = 'mission-meta__effects';
-        effects.innerHTML = `<span>Coste: <strong>${option.cost ? `−${option.cost}` : '0'} monedas</strong></span><span>Bienestar: <strong>${option.wellbeingDelta >= 0 ? '+' : ''}${option.wellbeingDelta}</strong></span>`;
-        choice.append(label, effects);
+        const cost = document.createElement('span');
+        cost.className = 'mission-meta__effect mission-meta__effect--cost';
+        cost.appendChild(coinIcon());
+        const costCopy = document.createElement('span');
+        costCopy.className = 'mission-meta__effect-copy';
+        const costLabel = document.createElement('span');
+        costLabel.className = 'mission-meta__effect-label';
+        costLabel.textContent = 'COSTE';
+        const costValue = document.createElement('strong');
+        costValue.textContent = `${option.cost ? `−${option.cost}` : '0'} monedas`;
+        costCopy.append(costLabel, costValue);
+        cost.appendChild(costCopy);
+        const wellbeing = document.createElement('span');
+        wellbeing.className = 'mission-meta__effect mission-meta__effect--wellbeing';
+        const miniThermometer = document.createElement('span');
+        miniThermometer.className = 'mission-meta__choice-thermometer';
+        miniThermometer.setAttribute('aria-hidden', 'true');
+        const wellbeingCopy = document.createElement('span');
+        wellbeingCopy.className = 'mission-meta__effect-copy';
+        const wellbeingLabel = document.createElement('span');
+        wellbeingLabel.className = 'mission-meta__effect-label';
+        wellbeingLabel.textContent = 'BIENESTAR';
+        const wellbeingValue = document.createElement('strong');
+        wellbeingValue.textContent = `${option.wellbeingDelta >= 0 ? '+' : ''}${option.wellbeingDelta}`;
+        wellbeingCopy.append(wellbeingLabel, wellbeingValue);
+        wellbeing.append(miniThermometer, wellbeingCopy);
+        effects.append(cost, wellbeing);
+        const affordance = document.createElement('span');
+        affordance.className = 'mission-meta__choice-cta';
+        affordance.textContent = 'ELEGIR ESTA OPCIÓN';
+        choice.append(label, effects, affordance);
         choice.addEventListener('click', () => {
           const before = balanceSnapshot(state);
           const result = resolveChoice(state, weekConfig, option.id);
