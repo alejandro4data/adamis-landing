@@ -496,6 +496,12 @@
           margin:-6px 0;
         }
       }
+      .match-card.match-card--left.has-no-media{
+        grid-template-columns:minmax(0, 1fr) 22px;
+      }
+      .match-card.match-card--right.has-no-media{
+        grid-template-columns:20px minmax(0, 1fr);
+      }
     `;
     document.head.appendChild(css);
   }
@@ -638,6 +644,7 @@
     const tutorialCaptionText = tr(String(tutorial.caption || 'Mantén pulsada una caja de la izquierda y arrastra hasta su pareja de la derecha.'));
     const autoAdvanceMs = Math.max(500, Number(s?.autoAdvanceMs ?? 1600));
     const shuffleRight = s?.shuffleRight !== false;
+    const hideEmptyMedia = s?.hideEmptyMedia === true;
 
     const leftItems = pairs.map((pair, idx) => ({
       pairId: pair.pairId,
@@ -665,7 +672,7 @@
 
     const instructions = document.createElement('p');
     instructions.className = 'match-instructions';
-    instructions.textContent = tr('Arrastra desde un elemento de la izquierda hasta su pareja correcta de la derecha.');
+    instructions.textContent = tr(String(s?.instructions || 'Arrastra desde un elemento de la izquierda hasta su pareja correcta de la derecha.'));
 
     const stage = document.createElement('div');
     stage.className = 'match-stage';
@@ -674,7 +681,7 @@
     leftCol.className = 'match-column match-column--left';
     const leftTitle = document.createElement('div');
     leftTitle.className = 'match-column__title';
-    leftTitle.textContent = tr('Concepto');
+    leftTitle.textContent = tr(String(s?.leftTitle || 'Concepto'));
     leftCol.appendChild(leftTitle);
 
     const lane = document.createElement('div');
@@ -686,7 +693,7 @@
     rightCol.className = 'match-column match-column--right';
     const rightTitle = document.createElement('div');
     rightTitle.className = 'match-column__title';
-    rightTitle.textContent = tr('Concepto');
+    rightTitle.textContent = tr(String(s?.rightTitle || 'Concepto'));
     rightCol.appendChild(rightTitle);
 
     stage.appendChild(leftCol);
@@ -1011,12 +1018,16 @@
       btn.type = 'button';
       btn.className = 'match-card ' + (item.side === 'right' ? 'match-card--right' : 'match-card--left');
 
-      const media = makeMedia(item.content, item.side);
+      const hasNoMedia = hideEmptyMedia && !item.content.image;
+      if (hasNoMedia) btn.classList.add('has-no-media');
+      const media = hasNoMedia ? null : makeMedia(item.content, item.side);
       const copy = document.createElement('div');
       copy.className = 'match-copy';
       const eyebrow = document.createElement('div');
       eyebrow.className = 'match-copy__eyebrow';
-      eyebrow.textContent = tr(item.side === 'left' ? 'Concepto' : 'Concepto');
+      eyebrow.textContent = tr(String(item.side === 'left'
+        ? (s?.leftEyebrow || 'Concepto')
+        : (s?.rightEyebrow || 'Concepto')));
       const text = document.createElement('div');
       text.className = 'match-copy__text';
       text.textContent = item.content.text || tr('Concepto');
@@ -1027,13 +1038,13 @@
       dot.className = 'match-dot';
 
       if (item.side === 'left') {
-        btn.appendChild(media);
+        if (media) btn.appendChild(media);
         btn.appendChild(copy);
         btn.appendChild(dot);
       } else {
         btn.appendChild(dot);
         btn.appendChild(copy);
-        btn.appendChild(media);
+        if (media) btn.appendChild(media);
       }
 
       if (item.side === 'left') {

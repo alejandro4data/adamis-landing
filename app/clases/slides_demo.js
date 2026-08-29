@@ -168,6 +168,48 @@ pushDemoScenes([
   }
 ]);
 
+window.slides.push(
+  SlideMiniactividadUnirConceptos({
+    title: 'Une cada pregunta con su respuesta',
+    introTitle: 'Mini actividad',
+    introText: 'Une cada pregunta con su respuesta correcta.',
+    introButtonText: 'Empezar',
+
+    leftTitle: 'Preguntas',
+    rightTitle: 'Respuestas',
+    leftEyebrow: 'Pregunta',
+    rightEyebrow: 'Respuesta',
+
+    instructions: 'Une cada pregunta con su respuesta correcta.',
+    hideEmptyMedia: true,
+
+    showTutorial: false,
+    shuffleRight: true,
+
+    pairs: [
+      {
+        id: 'meta-que',
+        left: { text: '¿Qué queremos?' },
+        right: {
+          text: 'Robot',
+          image: demoScenePath(2),
+          alt: 'Adamis junto al robot de la meta.'
+        }
+      },
+      {
+        id: 'meta-cuanto',
+        left: { text: '¿Cuánto cuesta?' },
+        right: { text: '20 monedas' }
+      },
+      {
+        id: 'meta-cuando',
+        left: { text: '¿Cuándo lo queremos?' },
+        right: { text: '5 semanas' }
+      }
+    ]
+  })
+);
+
 // ==================== Guardar primero · escenas 17–22 ====================
 pushDemoScenes([
   {
