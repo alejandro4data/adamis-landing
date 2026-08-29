@@ -1,6 +1,7 @@
 window.CURRENT_CLASS = 'demo';
 
 const DEMO_SCENES_DIR = '../assets/demo/ahorrar-meta/escenas';
+const DEMO_ACTIVITY_DIR = '../assets/demo/ahorrar-meta/actividad';
 const DEMO_SPEAKERS = Object.freeze({
   adamis: Object.freeze({ name: 'Adamis' }),
   chispa: Object.freeze({ name: 'Chispa' }),
@@ -9,6 +10,10 @@ const DEMO_SPEAKERS = Object.freeze({
 
 function demoScenePath(scene) {
   return `${DEMO_SCENES_DIR}/escena-${String(scene).padStart(2, '0')}.avif`;
+}
+
+function demoActivityPath(name) {
+  return `${DEMO_ACTIVITY_DIR}/${name}.avif`;
 }
 
 function pushDemoScenes(scenes) {
@@ -338,6 +343,20 @@ pushDemoScenes([
     alt: 'Adamis invita a comenzar la misión.'
   }
 ]);
+
+window.slides.push(
+  SlideMisionMeta({
+    title: 'Misión Meta',
+    totalWeeks: 5,
+    weeklyIncome: 10,
+    initialWellbeing: 60,
+    savingsGoal: 20,
+    wellbeingGoal: 70,
+    defaultSaving: 4,
+    image: demoActivityPath('alex-paga'),
+    alt: 'Álex recibe su paga semanal de diez monedas.'
+  })
+);
 
 window.slides.push(
   SlideTituloClase({ titulo: 'Contenido de la demo en preparación' })

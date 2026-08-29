@@ -198,6 +198,31 @@ function SlideActividadAhorro14({
   };
 }
 
+function SlideMisionMeta({
+  title,
+  totalWeeks,
+  weeklyIncome,
+  initialWellbeing,
+  savingsGoal,
+  wellbeingGoal,
+  defaultSaving,
+  image,
+  alt
+} = {}){
+  return {
+    tipo: 'mision-meta',
+    title,
+    totalWeeks,
+    weeklyIncome,
+    initialWellbeing,
+    savingsGoal,
+    wellbeingGoal,
+    defaultSaving,
+    image,
+    alt
+  };
+}
+
 function SlideActividadDeuda11({ text, image, alt, event } = {}){
   return { tipo: 'actividad-deuda-1-1', text, image, alt, event };
 }
