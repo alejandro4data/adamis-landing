@@ -17,7 +17,7 @@ function demoActivityPath(name) {
 }
 
 function pushDemoScenes(scenes) {
-  scenes.forEach(({ scene, speaker, text, alt }) => {
+  scenes.forEach(({ scene, speaker, narrator, text, alt }) => {
     const character = DEMO_SPEAKERS[speaker];
     window.slides.push(
       Slide({
@@ -27,7 +27,7 @@ function pushDemoScenes(scenes) {
         textPosition: 'bottom',
         imageFraction: '72%',
         typeSpeed: 44,
-        narrator: character.name,
+        narrator: narrator || character.name,
         speakerKey: speaker
       })
     );
@@ -43,7 +43,7 @@ pushDemoScenes([
   {
     scene: 1,
     speaker: 'adamis',
-    text: '“¡Hoooola, [Nombre]! Soy Adamis. Hoy tenemos una misión especial.”',
+    text: '“¡Hoooola! Soy Adamis. Hoy tenemos una misión especial.”',
     alt: 'Adamis presenta una misión especial.'
   },
   {
@@ -677,6 +677,92 @@ window.slides.push(
   })
 );
 
+// ==================== Resultado y conclusión · escenas 56–59 ====================
+pushDemoScenes([
+  {
+    scene: 56,
+    speaker: 'adamis',
+    text: '“¡Lo hemos conseguido! Hemos ahorrado suficiente para el kit del robot de Álex manteniendo nuestro bienestar.”',
+    alt: 'Álex abre feliz el kit del robot.'
+  },
+  {
+    scene: 57,
+    speaker: 'chispa',
+    text: '“Hemos podido disfrutar de planes a la vez que ahorrábamos para la meta.”',
+    alt: 'Chispa recuerda los planes disfrutados y el ahorro realizado.'
+  },
+  {
+    scene: 58,
+    speaker: 'brote',
+    text: '“Y ahorrar nos ha dado opciones para proteger la meta y afrontar algo importante.”',
+    alt: 'Brote sostiene un escudo que representa el ahorro.'
+  },
+  {
+    scene: 59,
+    speaker: 'adamis',
+    text: '“Esa es la gran ventaja de ahorrar: no sabemos qué ocurrirá, pero estaremos más preparados.”',
+    alt: 'Adamis se siente preparado ante distintos caminos posibles.'
+  }
+]);
+
+// ==================== Discusión · escenas 60–62 ====================
+pushDemoScenes([
+  {
+    scene: 60,
+    speaker: 'chispa',
+    text: '“Pensaba que ahorrar significaba renunciar a los planes. Ahora sé que puedo elegir cuáles merecen la pena.”',
+    alt: 'Chispa reflexiona antes de elegir entre dos caminos.'
+  },
+  {
+    scene: 61,
+    speaker: 'brote',
+    text: '“Y yo pensaba que había que proteger siempre la hucha. Ahora sé que también sirve para cosas importantes.”',
+    alt: 'Brote recuerda el gasto importante de material escolar.'
+  },
+  {
+    scene: 62,
+    speaker: 'adamis',
+    text: '“Exacto. Ahorrar bien es cuidar el futuro sin olvidarnos del presente.”',
+    alt: 'Adamis equilibra presente y futuro.'
+  }
+]);
+
+// ==================== Control final · escena 63 ====================
+pushDemoScenes([
+  {
+    scene: 63,
+    speaker: 'adamis',
+    text: '“Ahora vuelve a pensar en la pregunta inicial.”',
+    alt: 'Adamis compara las ideas de antes y después.'
+  }
+]);
+
 window.slides.push(
-  SlideTituloClase({ titulo: 'Contenido de la demo en preparación' })
+  SlideCuadroReflexion({
+    id: 'CONTROL_FINAL',
+    pregunta: '¿Qué harías para conseguir algo que te importa si todavía no tienes suficiente dinero?',
+    placeholder: 'Escribe aquí tu respuesta…',
+    mode: 'capture',
+    required: true,
+    submitText: 'Guardar respuesta',
+    autoFocus: true,
+    advanceOnSubmit: true
+  })
 );
+
+// ==================== Cierre · escenas 64–65 ====================
+pushDemoScenes([
+  {
+    scene: 64,
+    speaker: 'adamis',
+    text: '“Quizá ahora tengas alguna idea nueva. Eso también es aprender.”',
+    alt: 'Adamis celebra una nueva idea aprendida.'
+  },
+  {
+    scene: 65,
+    speaker: 'adamis',
+    narrator: 'Todos',
+    text: '“¡Hasta la próxima!”',
+    alt: 'Adamis, Chispa y Brote se despiden juntos.'
+  }
+]);

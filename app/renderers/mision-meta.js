@@ -541,6 +541,19 @@
     return balances;
   }
 
+  function resultBalancesView(state) {
+    const balances = balancesView(state);
+    balances.setAttribute('aria-label', 'Resultado final');
+    const labels = balances.querySelectorAll('.mission-meta__balance-label');
+    const values = balances.querySelectorAll('.mission-meta__balance-value');
+    labels[0].textContent = 'Hucha final';
+    labels[1].textContent = 'Monedero final';
+    labels[2].textContent = 'Bienestar final';
+    values[0].replaceChildren(`${state.piggyBank} ${state.piggyBank === 1 ? 'moneda' : 'monedas'}`);
+    values[1].replaceChildren(`${state.wallet} ${state.wallet === 1 ? 'moneda' : 'monedas'}`);
+    return balances;
+  }
+
   function imageView(src, alt) {
     const figure = document.createElement('figure');
     figure.className = 'mission-meta__visual';
@@ -597,6 +610,8 @@
     const allowanceCredited = creditWeeklyAllowance(state);
     let pendingBalanceChanges = allowanceCredited ? balanceChanges(beforeInitialAllowance, state) : null;
     let renderBalanceChanges = null;
+    let advanceFromResult = null;
+    let hasAdvanced = false;
     const queueBalanceChanges = (before) => {
       pendingBalanceChanges = balanceChanges(before, state);
     };
@@ -838,15 +853,11 @@
       const card = document.createElement('section');
       card.className = 'mission-meta__complete';
       const heading = document.createElement('h2');
-      heading.textContent = `Semana ${state.week} completada`;
-      const note = document.createElement('p');
       const nextWeek = state.week + 1;
       const canAdvance = state.week < state.totalWeeks && Boolean(getWeekConfig(config, nextWeek));
-      note.textContent = canAdvance
-        ? ''
-        : 'La misión ha terminado. El resultado se integrará en el siguiente bloque.';
-      card.append(heading, balancesView(state, renderBalanceChanges));
       if (canAdvance) {
+        heading.textContent = `Semana ${state.week} completada`;
+        card.append(heading, balancesView(state, renderBalanceChanges));
         const advance = buttonView(`Continuar a la semana ${nextWeek}`);
         advance.addEventListener('click', () => {
           const before = balanceSnapshot(state);
@@ -857,7 +868,16 @@
         });
         card.appendChild(advance);
       } else {
-        card.appendChild(note);
+        heading.textContent = 'Resultado — Misión Meta';
+        const conclusion = buttonView('Ver conclusión');
+        conclusion.addEventListener('click', () => {
+          if (state.week !== 5 || state.phase !== 'week-complete' || hasAdvanced
+            || typeof advanceFromResult !== 'function') return;
+          hasAdvanced = true;
+          conclusion.disabled = true;
+          advanceFromResult();
+        });
+        card.append(heading, resultBalancesView(state), conclusion);
       }
       wrap.appendChild(card);
       return wrap;
@@ -887,6 +907,12 @@
     }
 
     render();
-    return { noLock: true, suppressRootClick: true, bindControls(onAdvance) { void onAdvance; } };
+    return {
+      noLock: true,
+      suppressRootClick: true,
+      bindControls(onAdvance) {
+        advanceFromResult = typeof onAdvance === 'function' ? onAdvance : null;
+      }
+    };
   });
 })();
