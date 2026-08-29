@@ -404,6 +404,28 @@
     return true;
   }
 
+  function advanceWeek(state, config) {
+    const entry = getHistoryEntry(state);
+    const nextWeek = state.week + 1;
+    if (state.phase !== 'week-complete' || entry?.decisionResolved !== true
+      || state.week >= state.totalWeeks || !getWeekConfig(config, nextWeek)) return false;
+
+    Object.assign(state, {
+      week: nextWeek,
+      phase: 'saving',
+      savingDraft: config.defaultSaving,
+      revealStep: 0,
+      feedbackStep: 0,
+      visualChoice: null,
+      appliedChoice: null,
+      pendingPayment: null,
+      paymentError: null
+    });
+    creditWeeklyAllowance(state);
+    persistState(state);
+    return true;
+  }
+
   function ensureStyles() {
     if (document.getElementById(STYLE_ID)) return;
     const style = document.createElement('style');
@@ -420,7 +442,7 @@
       .mission-meta__box,.mission-meta__dialogue,.mission-meta__complete{padding:clamp(14px,1.8vw,22px);border:1px solid var(--border);border-radius:22px;background:#fffffff5;box-shadow:0 13px 36px #1c494414}.mission-meta__question{display:block;margin-bottom:5px;font-size:clamp(16px,1.55vw,21px);font-weight:820}.mission-meta__selection{margin-bottom:8px;color:var(--teal-dark);font-size:clamp(23px,2.7vw,35px);font-weight:900}.mission-meta__range{display:block;width:100%;height:28px;margin:0;padding:0;border:0;background:transparent;accent-color:var(--teal);cursor:pointer;touch-action:pan-y}.mission-meta__range:disabled{cursor:default;opacity:.62}.mission-meta__range-limits{display:flex;justify-content:space-between;margin-top:-2px;color:var(--muted);font-size:12px;font-weight:700}.mission-meta__preview{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.mission-meta__preview div{padding:9px 11px;border-radius:14px;background:#f1f8f6;color:var(--muted);font-size:clamp(11px,1vw,13px)}.mission-meta__preview strong{display:block;margin-top:2px;color:var(--ink);font-size:clamp(16px,1.45vw,20px)}.mission-meta__actions{display:grid;gap:8px}
       .mission-meta__button{min-height:46px;padding:11px 17px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#fff;font:inherit;font-size:clamp(13px,1.15vw,16px);font-weight:850;box-shadow:0 8px 18px #08766f33;cursor:pointer}.mission-meta__button:hover:not(:disabled){filter:brightness(1.04)}.mission-meta__button:disabled{background:#dfece9;color:#3d716b;box-shadow:none;cursor:default}.mission-meta__button--secondary{border:1px solid var(--border);background:#fff;color:var(--teal-dark);box-shadow:none}.mission-meta__button:focus-visible,.mission-meta__choice:focus-visible,.mission-meta__range:focus-visible{outline:3px solid #199b9157;outline-offset:3px}
       .mission-meta__narrative,.mission-meta__decision{grid-template-columns:minmax(280px,1.05fr) minmax(330px,.95fr)}.mission-meta__dialogue{align-self:stretch;display:grid;align-content:center;gap:14px;border:1px solid var(--speaker-border,var(--border))!important;background:var(--speaker-surface,#fff)}.mission-meta__speaker{width:max-content;max-width:100%;padding:6px 11px;border:2px solid var(--speaker-border,var(--teal-dark))!important;border-radius:999px;background:var(--speaker-pill,#e5f7f3);color:var(--speaker-ink,var(--ink));font-size:13px;font-weight:900}.mission-meta__dialogue-text{margin:0;color:var(--speaker-ink,var(--ink));font-size:clamp(20px,2.15vw,31px);font-weight:750;line-height:1.28}.mission-meta__week-title{margin:0;color:var(--teal-dark);font-size:clamp(12px,1vw,14px);font-weight:850;letter-spacing:.08em;text-transform:uppercase}.mission-meta__choice-title{margin:0;font-size:clamp(22px,2.2vw,32px)}.mission-meta__choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.mission-meta__choice{min-width:0;min-height:132px;padding:15px;display:grid;align-content:space-between;gap:12px;border:2px solid #b9d9d4;border-radius:18px;background:linear-gradient(155deg,#fff,#f1faf8);color:var(--ink);font:inherit;text-align:left;cursor:pointer}.mission-meta__choice:hover{border-color:var(--teal);transform:translateY(-1px)}.mission-meta__choice-label{font-size:clamp(18px,1.7vw,23px);font-weight:900}.mission-meta__effects{display:grid;gap:4px;color:var(--muted);font-size:13px;font-weight:750}.mission-meta__effects strong{color:var(--ink)}
-      .mission-meta__overlay{position:absolute;z-index:5;inset:0;display:grid;place-items:center;padding:16px;border-radius:24px;background:#132d398a;backdrop-filter:blur(5px)}.mission-meta__modal{width:min(620px,100%);max-height:100%;overflow-y:auto;padding:clamp(18px,2.5vw,30px);border-radius:23px;background:#fff;box-shadow:0 24px 70px #08242f47}.mission-meta__modal h2{margin:0 0 12px;font-size:clamp(22px,2.2vw,30px)}.mission-meta__payment{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.mission-meta__payment div{padding:11px;border-radius:14px;background:#f1f8f6}.mission-meta__payment span{display:block;color:var(--muted);font-size:10px;font-weight:850;letter-spacing:.06em}.mission-meta__payment strong{display:block;margin-top:3px;font-size:clamp(16px,1.7vw,21px)}.mission-meta__modal-actions{display:grid;gap:8px}.mission-meta__complete-wrap{height:100%;display:grid;place-items:center}.mission-meta__complete{width:min(720px,100%);text-align:center}.mission-meta__complete h2{margin:0 0 8px;font-size:clamp(28px,3.4vw,46px)}.mission-meta__complete p{margin:14px 0 0;color:var(--muted)}.mission-meta__complete .mission-meta__balances{margin-top:20px;text-align:left}
+      .mission-meta__overlay{position:absolute;z-index:5;inset:0;display:grid;place-items:center;padding:16px;border-radius:24px;background:#132d398a;backdrop-filter:blur(5px)}.mission-meta__modal{width:min(620px,100%);max-height:100%;overflow-y:auto;padding:clamp(18px,2.5vw,30px);border-radius:23px;background:#fff;box-shadow:0 24px 70px #08242f47}.mission-meta__modal h2{margin:0 0 12px;font-size:clamp(22px,2.2vw,30px)}.mission-meta__payment{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.mission-meta__payment div{padding:11px;border-radius:14px;background:#f1f8f6}.mission-meta__payment span{display:block;color:var(--muted);font-size:10px;font-weight:850;letter-spacing:.06em}.mission-meta__payment strong{display:block;margin-top:3px;font-size:clamp(16px,1.7vw,21px)}.mission-meta__modal-actions{display:grid;gap:8px}.mission-meta__complete-wrap{height:100%;display:grid;place-items:center}.mission-meta__complete{width:min(720px,100%);text-align:center}.mission-meta__complete h2{margin:0 0 8px;font-size:clamp(28px,3.4vw,46px)}.mission-meta__complete p{margin:14px 0 0;color:var(--muted)}.mission-meta__complete .mission-meta__balances{margin-top:20px;text-align:left}.mission-meta__complete .mission-meta__button{width:100%;margin-top:14px}
       @media(max-width:840px){.mission-meta__shell{display:block;padding:16px 13px 26px}.mission-meta__header{grid-template-columns:1fr;align-items:start}.mission-meta__goals{justify-content:flex-start;margin-top:9px}.mission-meta__stage{margin-top:15px}.mission-meta__content{grid-template-columns:1fr;height:auto}.mission-meta__visual{height:clamp(210px,30vh,300px)}.mission-meta__panel{margin-top:13px}.mission-meta__complete-wrap{min-height:480px}}
       @media(max-width:520px){.mission-meta__title{font-size:29px}.mission-meta__week-line{align-items:flex-start;flex-direction:column;gap:6px}.mission-meta__progress{width:100%}.mission-meta__goal{padding:6px 9px}.mission-meta__balances{grid-template-columns:1fr 1fr}.mission-meta__balance--wellbeing{grid-column:1/-1}.mission-meta__preview,.mission-meta__choices,.mission-meta__payment{grid-template-columns:1fr}.mission-meta__visual{height:clamp(190px,31vh,235px)}.mission-meta__choice{min-height:108px}.mission-meta__overlay{position:fixed;border-radius:0}}
       @media(max-height:780px) and (min-width:841px){.mission-meta__shell{padding-block:12px 18px;gap:9px}.mission-meta__panel{gap:7px}.mission-meta__balance{padding:8px 11px}.mission-meta__box,.mission-meta__dialogue{padding:12px 15px}.mission-meta__choice{min-height:112px;padding:12px}}
@@ -571,8 +593,9 @@
     ensureStyles();
     const config = normalizeConfig(slide);
     const state = loadState(config);
-    creditWeeklyAllowance(state);
-    let pendingBalanceChanges = null;
+    const beforeInitialAllowance = balanceSnapshot(state);
+    const allowanceCredited = creditWeeklyAllowance(state);
+    let pendingBalanceChanges = allowanceCredited ? balanceChanges(beforeInitialAllowance, state) : null;
     let renderBalanceChanges = null;
     const queueBalanceChanges = (before) => {
       pendingBalanceChanges = balanceChanges(before, state);
@@ -817,13 +840,39 @@
       const heading = document.createElement('h2');
       heading.textContent = `Semana ${state.week} completada`;
       const note = document.createElement('p');
-      note.textContent = 'La siguiente semana se integrará en el próximo bloque.';
-      card.append(heading, balancesView(state, renderBalanceChanges), note);
+      const nextWeek = state.week + 1;
+      const canAdvance = state.week < state.totalWeeks && Boolean(getWeekConfig(config, nextWeek));
+      note.textContent = canAdvance
+        ? ''
+        : 'La misión ha terminado. El resultado se integrará en el siguiente bloque.';
+      card.append(heading, balancesView(state, renderBalanceChanges));
+      if (canAdvance) {
+        const advance = buttonView(`Continuar a la semana ${nextWeek}`);
+        advance.addEventListener('click', () => {
+          const before = balanceSnapshot(state);
+          if (advanceWeek(state, config)) {
+            queueBalanceChanges(before);
+            render();
+          }
+        });
+        card.appendChild(advance);
+      } else {
+        card.appendChild(note);
+      }
       wrap.appendChild(card);
       return wrap;
     }
 
+    function syncWeekHeader() {
+      weekLabel.textContent = `Semana ${state.week} de ${state.totalWeeks}`;
+      progress.setAttribute('aria-label', `Progreso: semana ${state.week} de ${state.totalWeeks}`);
+      Array.from(progress.children).forEach((step, index) => {
+        step.classList.toggle('is-active', index + 1 === state.week);
+      });
+    }
+
     function render() {
+      syncWeekHeader();
       root.dataset.phase = state.phase;
       renderBalanceChanges = pendingBalanceChanges;
       pendingBalanceChanges = null;

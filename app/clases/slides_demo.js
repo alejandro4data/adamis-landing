@@ -417,6 +417,261 @@ window.slides.push(
             text: '“Esta vez hemos decidido pensar en nuestra meta.”'
           }
         ]
+      },
+      {
+        week: 2,
+        id: 'botella',
+        title: 'Una compra impulsiva',
+
+        reveal: [
+          {
+            scene: 39,
+            speaker: 'chispa',
+            image: demoScenePath(39),
+            alt: 'Chispa descubre una botella luminosa.',
+            text: '“¡Mira esta botella luminosa!”'
+          },
+          {
+            scene: 40,
+            speaker: 'brote',
+            image: demoScenePath(40),
+            alt: 'Brote compara la botella actual con la nueva.',
+            text: '“Pero la otra botella sigue funcionando…”'
+          }
+        ],
+
+        decision: {
+          prompt: '¿Qué quieres hacer?',
+          image: demoActivityPath('botella'),
+          alt: 'Decisión sobre comprar una botella luminosa.',
+
+          options: [
+            {
+              id: 'accept',
+              label: 'ACEPTAR',
+              cost: 7,
+              wellbeingDelta: 2
+            },
+            {
+              id: 'reject',
+              label: 'RECHAZAR',
+              cost: 0,
+              wellbeingDelta: -1
+            }
+          ],
+
+          guidedChoice: 'reject'
+        },
+
+        feedback: [
+          {
+            scene: 41,
+            speaker: 'adamis',
+            image: demoScenePath(41),
+            alt: 'Adamis explica la decisión de no comprar la botella.',
+            text: '“Esta vez has renunciado a algo que te gustaba, pero que no necesitabas.”'
+          },
+          {
+            scene: 42,
+            speaker: 'chispa',
+            image: demoScenePath(42),
+            alt: 'Chispa guarda monedas para una meta más importante.',
+            text: '“Prefiero guardar esas monedas para algo que me importe más.”'
+          },
+          {
+            scene: 43,
+            speaker: 'adamis',
+            image: demoScenePath(43),
+            alt: 'Adamis explica la importancia de priorizar.',
+            text: '“¡Exacto! Estamos aprendiendo a priorizar.”'
+          }
+        ]
+      },
+      {
+        week: 3,
+        id: 'cohetes',
+        title: 'Otro plan especial',
+
+        reveal: [
+          {
+            scene: 44,
+            speaker: 'chispa',
+            image: demoScenePath(44),
+            alt: 'Chispa presenta un taller de cohetes de papel.',
+            text: '“Han organizado un taller de cohetes de papel. ¡A Álex le encanta!”'
+          }
+        ],
+
+        decision: {
+          prompt: '¿Qué quieres hacer?',
+          image: demoActivityPath('cohete'),
+          alt: 'Decisión sobre asistir al taller de cohetes.',
+
+          options: [
+            {
+              id: 'accept',
+              label: 'ACEPTAR',
+              cost: 5,
+              wellbeingDelta: 15
+            },
+            {
+              id: 'reject',
+              label: 'RECHAZAR',
+              cost: 0,
+              wellbeingDelta: -9
+            }
+          ],
+
+          guidedChoice: 'accept'
+        },
+
+        feedback: [
+          {
+            scene: 45,
+            speaker: 'adamis',
+            image: demoScenePath(45),
+            alt: 'Adamis acompaña a Álex en el taller de cohetes.',
+            text: '“Esta vez has decidido gastar cinco monedas en un plan que te hacía mucha ilusión.”'
+          }
+        ]
+      },
+      {
+        week: 4,
+        id: 'baloncesto',
+        title: 'Dos formas de disfrutar',
+
+        reveal: [
+          {
+            scene: 46,
+            speaker: 'chispa',
+            image: demoScenePath(46),
+            alt: 'Chispa presenta dos planes de baloncesto.',
+            text: '“¡Esta semana tenemos dos planes de baloncesto!”'
+          },
+          {
+            scene: 47,
+            speaker: 'chispa',
+            image: demoScenePath(47),
+            alt: 'Álex y Chispa esperan para entrar al estadio de baloncesto.',
+            text: '“Ir al estadio a ver al equipo favorito de Álex…”'
+          },
+          {
+            scene: 48,
+            speaker: 'chispa',
+            image: demoScenePath(48),
+            alt: 'Álex y sus amigos juegan al baloncesto en una cancha.',
+            text: '“O jugar con sus amigos en la cancha de baloncesto”'
+          }
+        ],
+
+        decision: {
+          prompt: '¿Qué quieres hacer?',
+          image: demoActivityPath('baloncesto'),
+          alt: 'Comparación entre ir al estadio y jugar con amigos.',
+
+          options: [
+            {
+              id: 'stadium',
+              label: 'IR AL PARTIDO EN EL ESTADIO',
+              cost: 15,
+              wellbeingDelta: 15
+            },
+            {
+              id: 'court',
+              label: 'JUGAR EN LA CANCHA CON AMIGOS',
+              cost: 0,
+              wellbeingDelta: 10
+            }
+          ],
+
+          guidedChoice: 'court'
+        },
+
+        feedback: [
+          {
+            scene: 49,
+            speaker: 'chispa',
+            image: demoScenePath(49),
+            alt: 'Chispa celebra una canasta con Álex y sus amigos.',
+            text: '“¡Nos lo hemos pasado genial y no hemos gastado ninguna moneda!”'
+          },
+          {
+            scene: 50,
+            speaker: 'brote',
+            image: demoScenePath(50),
+            alt: 'Brote descansa junto a la hucha después de jugar al baloncesto.',
+            text: '“Y esas monedas siguen disponibles para nuestra meta o para algo importante que aparezca después.”'
+          }
+        ]
+      },
+      {
+        week: 5,
+        id: 'materiales',
+        title: 'El imprevisto',
+
+        reveal: [
+          {
+            scene: 51,
+            speaker: 'chispa',
+            image: demoScenePath(51),
+            alt: 'Chispa observa que la meta del robot está cerca.',
+            text: '“¡Ya casi llegamos al final!”'
+          },
+          {
+            scene: 52,
+            speaker: 'adamis',
+            image: demoScenePath(52),
+            alt: 'Adamis presenta un imprevisto de material escolar.',
+            text: '“Pero esta semana no aparece un plan. Aparece un imprevisto.”'
+          },
+          {
+            scene: 53,
+            speaker: 'brote',
+            image: demoScenePath(53),
+            alt: 'Brote muestra el material escolar obligatorio.',
+            text: '“Es un gasto muuuy importante.”'
+          }
+        ],
+
+        decision: {
+          prompt: '¿Qué quieres hacer?',
+          image: demoActivityPath('materiales'),
+          alt: 'Decisión sobre pagar material obligatorio del colegio.',
+
+          options: [
+            {
+              id: 'pay',
+              label: 'PAGAR',
+              cost: 10,
+              wellbeingDelta: 5
+            },
+            {
+              id: 'no-pay',
+              label: 'NO PAGAR',
+              cost: 0,
+              wellbeingDelta: -40
+            }
+          ],
+
+          guidedChoice: 'pay'
+        },
+
+        feedback: [
+          {
+            scene: 54,
+            speaker: 'brote',
+            image: demoScenePath(54),
+            alt: 'Brote aparece junto a los materiales escolares comprados.',
+            text: '“Este gasto era importante. Por eso había que atenderlo.”'
+          },
+          {
+            scene: 55,
+            speaker: 'chispa',
+            image: demoScenePath(55),
+            alt: 'Chispa muestra cómo el monedero y la hucha permiten pagar el gasto.',
+            text: '“Y gracias al dinero que habíamos guardado, tenemos cómo pagarlo.”'
+          }
+        ]
       }
     ]
   })
