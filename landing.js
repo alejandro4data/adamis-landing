@@ -4,6 +4,133 @@
 
     const initLanding = () => {
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const initProblemStack = () => {
+            const problemSection = document.querySelector('#problema');
+            if (!problemSection) return;
+
+            const problemCards = Array.from(problemSection.querySelectorAll('.landing-problem-card'));
+            if (problemCards.length < 2 || !('IntersectionObserver' in window)) return;
+
+            const compactViewport = window.matchMedia('(max-width: 720px) and (max-height: 760px)');
+            let isNearSection = false;
+            let isListening = false;
+            let animationFrame = 0;
+            let stateKey = '';
+            let lastProgress = -1;
+
+            const resetStates = () => {
+                stateKey = '';
+                lastProgress = -1;
+                problemSection.style.removeProperty('--problem-cover-progress');
+                problemCards.forEach((card) => {
+                    card.classList.remove('is-active', 'is-covering', 'is-covered', 'is-future');
+                });
+            };
+
+            const updateStack = () => {
+                animationFrame = 0;
+                if (!isListening) return;
+
+                const stickyTop = Number.parseFloat(window.getComputedStyle(problemCards[0]).top) || 110;
+                const coverDistance = Math.min(210, Math.max(120, window.innerHeight * 0.22));
+                const cardTops = problemCards.map((card) => card.getBoundingClientRect().top);
+                let activeIndex = 0;
+                let coveringIndex = -1;
+                let coverProgress = 0;
+
+                for (let index = 1; index < problemCards.length; index += 1) {
+                    if (cardTops[index] > stickyTop + coverDistance) break;
+                    activeIndex = index;
+                    if (cardTops[index] > stickyTop + 1) {
+                        coveringIndex = index - 1;
+                        coverProgress = (stickyTop + coverDistance - cardTops[index]) / coverDistance;
+                    }
+                }
+
+                coverProgress = Math.min(1, Math.max(0, coverProgress));
+                const nextStateKey = `${activeIndex}:${coveringIndex}`;
+
+                if (nextStateKey !== stateKey) {
+                    stateKey = nextStateKey;
+                    problemCards.forEach((card, index) => {
+                        card.classList.toggle('is-active', index === activeIndex);
+                        card.classList.toggle('is-covering', index === coveringIndex);
+                        card.classList.toggle('is-covered', index < activeIndex && index !== coveringIndex);
+                        card.classList.toggle('is-future', index > activeIndex);
+                    });
+                }
+
+                if (Math.abs(coverProgress - lastProgress) >= 0.004) {
+                    lastProgress = coverProgress;
+                    problemSection.style.setProperty('--problem-cover-progress', coverProgress.toFixed(3));
+                }
+            };
+
+            const requestStackUpdate = () => {
+                if (!isListening || animationFrame) return;
+                animationFrame = window.requestAnimationFrame(updateStack);
+            };
+
+            const startListening = () => {
+                if (isListening) return;
+                isListening = true;
+                problemSection.classList.add('is-stack-live');
+                window.addEventListener('scroll', requestStackUpdate, { passive: true });
+                window.addEventListener('resize', requestStackUpdate, { passive: true });
+                requestStackUpdate();
+            };
+
+            const stopListening = () => {
+                if (!isListening) return;
+                isListening = false;
+                problemSection.classList.remove('is-stack-live');
+                window.removeEventListener('scroll', requestStackUpdate);
+                window.removeEventListener('resize', requestStackUpdate);
+                if (animationFrame) window.cancelAnimationFrame(animationFrame);
+                animationFrame = 0;
+            };
+
+            const syncMode = () => {
+                const useFallback = reducedMotion.matches || compactViewport.matches;
+                problemSection.classList.toggle('is-stack-enhanced', !useFallback);
+
+                if (useFallback) {
+                    stopListening();
+                    resetStates();
+                    return;
+                }
+
+                if (!stateKey) {
+                    problemCards.forEach((card, index) => {
+                        card.classList.toggle('is-active', index === 0);
+                        card.classList.toggle('is-future', index > 0);
+                    });
+                }
+
+                if (isNearSection) startListening();
+            };
+
+            const proximityObserver = new IntersectionObserver((entries) => {
+                const sectionEntry = entries[0];
+                isNearSection = Boolean(sectionEntry?.isIntersecting);
+
+                if (isNearSection && !reducedMotion.matches && !compactViewport.matches) {
+                    startListening();
+                } else {
+                    stopListening();
+                }
+            }, {
+                rootMargin: '60% 0px 60% 0px',
+                threshold: 0
+            });
+
+            proximityObserver.observe(problemSection);
+            reducedMotion.addEventListener?.('change', syncMode);
+            compactViewport.addEventListener?.('change', syncMode);
+            syncMode();
+        };
+
+        initProblemStack();
         const revealItems = Array.from(document.querySelectorAll('[data-landing-reveal]'));
 
         if (reducedMotion.matches || !('IntersectionObserver' in window)) {
