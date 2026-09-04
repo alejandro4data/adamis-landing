@@ -739,11 +739,12 @@
 
 .public-site.landing-page .landing-problem {
     --problem-header-height: 74px;
-    --problem-sticky-gap: clamp(24px, 4svh, 38px);
+    --problem-sticky-gap: clamp(18px, 2.8svh, 26px);
     --problem-sticky-top: calc(var(--problem-header-height) + var(--problem-sticky-gap));
+    --problem-stack-step: clamp(11px, 1.4svh, 14px);
     --problem-cover-progress: 0;
     isolation: isolate;
-    padding-block: clamp(76px, 6.5vw, 96px);
+    padding-block: clamp(68px, 5.5vw, 84px);
     border-top: 1px solid var(--landing-line);
     background: var(--landing-paper-deep);
 }
@@ -753,32 +754,46 @@
     isolation: isolate;
     display: flex;
     flex-direction: column;
-    gap: clamp(32px, 4.6svh, 42px);
+    gap: clamp(20px, 3svh, 28px);
     width: 100%;
 }
 
-.public-site.landing-page .landing-problem-card {
-    position: sticky;
-    top: var(--problem-sticky-top);
-    display: grid;
-    align-items: center;
-    min-height: clamp(370px, 27vw, 400px);
-    padding: clamp(48px, 4.5vw, 66px) clamp(36px, 5vw, 72px);
-    border: 1px solid var(--landing-line);
-    border-radius: 24px;
-    background: var(--landing-paper);
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-    transform-origin: 50% 12%;
-    backface-visibility: hidden;
-    transition: opacity 140ms linear, transform 140ms linear;
+.public-site.landing-page .landing-problem-eyebrow {
+    margin-bottom: clamp(28px, 3vw, 40px);
 }
 
-.public-site.landing-page .landing-problem-card:nth-child(1) { z-index: 1; }
-.public-site.landing-page .landing-problem-card:nth-child(2) { z-index: 2; }
-.public-site.landing-page .landing-problem-card:nth-child(3) { z-index: 3; }
-.public-site.landing-page .landing-problem-card:nth-child(4) { z-index: 4; }
-.public-site.landing-page .landing-problem-card:nth-child(5) { z-index: 5; }
+.public-site.landing-page .landing-problem-card {
+    --problem-stack-index: 0;
+    --problem-card-color: var(--landing-paper);
+    --problem-copy: var(--landing-ink);
+    --problem-media-border: var(--landing-line);
+    position: sticky;
+    top: calc(var(--problem-sticky-top) + (var(--problem-stack-index) * var(--problem-stack-step)));
+    z-index: calc(var(--problem-stack-index) + 1);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: clamp(34px, 4.2vw, 60px);
+    width: 100%;
+    min-height: clamp(420px, 30vw, 460px);
+    padding: clamp(34px, 2.65vw, 38px) clamp(32px, 4.4vw, 64px);
+    overflow: hidden;
+    border: 1px solid var(--problem-card-border, var(--landing-line));
+    border-radius: clamp(26px, 2.4vw, 34px);
+    background: var(--problem-card-color);
+    box-shadow: 0 22px 52px rgba(18, 43, 42, 0.1);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    transform-origin: 50% 0;
+    backface-visibility: hidden;
+    transition: opacity 160ms linear, transform 160ms linear;
+}
+
+.public-site.landing-page .landing-problem-card--1 { --problem-stack-index: 0; }
+.public-site.landing-page .landing-problem-card--2 { --problem-stack-index: 1; }
+.public-site.landing-page .landing-problem-card--3 { --problem-stack-index: 2; }
+.public-site.landing-page .landing-problem-card--4 { --problem-stack-index: 3; }
+.public-site.landing-page .landing-problem-card--5 { --problem-stack-index: 4; }
 
 .public-site.landing-page .landing-problem.is-stack-live .landing-problem-card.is-active,
 .public-site.landing-page .landing-problem.is-stack-live .landing-problem-card.is-covering {
@@ -786,14 +801,14 @@
 }
 
 .public-site.landing-page .landing-problem-card.is-covered {
-    opacity: 0.18;
-    transform: translate3d(0, -6px, 0) scale(0.974);
+    opacity: 0.9;
+    transform: translate3d(0, -2px, 0) scale(0.992);
 }
 
 .public-site.landing-page .landing-problem-card.is-covering {
-    opacity: calc(1 - (var(--problem-cover-progress) * 0.82));
-    transform: translate3d(0, calc(var(--problem-cover-progress) * -6px), 0)
-        scale(calc(1 - (var(--problem-cover-progress) * 0.026)));
+    opacity: calc(1 - (var(--problem-cover-progress) * 0.1));
+    transform: translate3d(0, calc(var(--problem-cover-progress) * -2px), 0)
+        scale(calc(1 - (var(--problem-cover-progress) * 0.008)));
 }
 
 .public-site.landing-page .landing-problem-card.is-active {
@@ -801,23 +816,12 @@
     transform: translate3d(0, 0, 0) scale(1);
 }
 
-.public-site.landing-page .landing-problem-step {
-    position: absolute;
-    top: clamp(24px, 2.4vw, 34px);
-    right: clamp(26px, 3vw, 42px);
-    color: var(--landing-ink-soft);
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.11em;
-    line-height: 1;
-    opacity: 0.56;
-}
-
-.public-site.landing-page .landing-problem-copy,
-.public-site.landing-page .landing-problem-intro {
+.public-site.landing-page .landing-problem-copy {
     display: grid;
     justify-items: start;
-    gap: clamp(18px, 2.1vw, 28px);
+    align-content: center;
+    gap: clamp(20px, 2.4vw, 32px);
+    min-width: 0;
 }
 
 .public-site.landing-page .landing-problem-card p {
@@ -825,176 +829,66 @@
     text-wrap: balance;
 }
 
-.public-site.landing-page .landing-problem-card-has-visual {
-    grid-template-columns: minmax(0, 1fr) clamp(132px, 16vw, 204px);
-    column-gap: clamp(32px, 5vw, 70px);
-}
-
-.public-site.landing-page .landing-problem-visual {
-    width: 100%;
-    max-width: 204px;
-    justify-self: end;
-    color: var(--problem-visual-primary);
-    opacity: 0.82;
-}
-
-.public-site.landing-page .landing-problem-visual svg {
-    display: block;
-    width: 100%;
-    height: auto;
-    overflow: visible;
-}
-
-.public-site.landing-page .landing-problem-visual-field {
-    fill: var(--problem-visual-soft);
-    opacity: 0.62;
-}
-
-.public-site.landing-page .landing-problem-visual-line,
-.public-site.landing-page .landing-problem-visual-accent-line {
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 2.4;
-    vector-effect: non-scaling-stroke;
-}
-
-.public-site.landing-page .landing-problem-visual-line {
-    stroke: var(--problem-visual-primary);
-}
-
-.public-site.landing-page .landing-problem-visual-line-soft {
-    opacity: 0.48;
-}
-
-.public-site.landing-page .landing-problem-visual-accent-line {
-    stroke: var(--problem-visual-accent);
-    stroke-width: 3.2;
-}
-
-.public-site.landing-page .landing-problem-visual-primary-fill {
-    fill: var(--problem-visual-primary);
-}
-
-.public-site.landing-page .landing-problem-visual-accent-fill {
-    fill: var(--problem-visual-accent);
-}
-
-.public-site.landing-page .landing-problem-card-intro {
-    --problem-visual-primary: var(--landing-teal);
-    --problem-visual-accent: var(--landing-gold);
-    --problem-visual-soft: var(--landing-teal-light);
-    width: 92%;
-    min-height: clamp(390px, 29vw, 420px);
-    background: var(--landing-paper);
-}
-
-.public-site.landing-page .landing-problem-intro {
-    gap: clamp(20px, 2.4vw, 34px);
-}
-
-.public-site.landing-page .landing-problem-card-intro .landing-eyebrow {
-    opacity: 0.72;
-}
-
-.public-site.landing-page .landing-problem-intro h2 {
-    max-width: 37ch;
+.public-site.landing-page .landing-problem-headline {
+    max-width: 13.5ch;
     margin: 0;
-    font-size: clamp(1.12rem, 1.7vw, 1.5rem);
-    font-weight: 700;
-    letter-spacing: -0.018em;
-    line-height: 1.38;
-}
-
-.public-site.landing-page .landing-problem-subordinate {
-    max-width: 17ch;
-    color: var(--landing-ink);
+    color: var(--problem-copy);
     font-family: 'Fraunces', Georgia, serif;
-    font-size: clamp(3.15rem, 5.8vw, 5.9rem);
+    font-size: clamp(2.8rem, 4.15vw, 4.45rem);
     font-weight: 600;
-    letter-spacing: -0.06em;
+    letter-spacing: -0.055em;
     line-height: 0.96;
+    text-wrap: balance;
 }
 
-.public-site.landing-page .landing-problem-card-learning {
-    --problem-visual-primary: var(--landing-white);
-    --problem-visual-accent: var(--landing-red);
-    --problem-visual-soft: var(--landing-night);
-    width: 88%;
-    align-self: flex-end;
-    border-color: var(--landing-line-light);
-    background: var(--landing-night-deep);
+.public-site.landing-page .landing-problem-headline strong {
+    font-weight: 750;
 }
 
-.public-site.landing-page .landing-problem-card-learning .landing-problem-step,
-.public-site.landing-page .landing-problem-card-learning .landing-problem-detail {
-    color: var(--landing-white);
+.public-site.landing-page .landing-problem-setup,
+.public-site.landing-page .landing-problem-punch {
+    display: block;
 }
 
-.public-site.landing-page .landing-problem-lead {
-    max-width: 43ch;
-    color: var(--landing-ink-soft);
-    font-size: clamp(1.2rem, 1.8vw, 1.55rem);
-    font-weight: 700;
-    line-height: 1.36;
+.public-site.landing-page .landing-problem-headline-intro .landing-problem-setup,
+.public-site.landing-page .landing-problem-headline-learning .landing-problem-setup {
+    margin-bottom: 0.34em;
+    font-size: 0.66em;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
 }
 
-.public-site.landing-page .landing-problem-emphasis {
-    max-width: 17ch;
-    color: var(--landing-white);
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: clamp(3.2rem, 5.8vw, 6rem);
-    font-weight: 600;
-    letter-spacing: -0.06em;
-    line-height: 0.96;
+.public-site.landing-page .landing-problem-headline-intro {
+    max-width: 13.2ch;
 }
 
-.public-site.landing-page .landing-problem-detail {
-    max-width: 63ch;
-    color: var(--landing-ink-soft);
-    font-size: clamp(1.08rem, 1.45vw, 1.3rem);
-    font-weight: 700;
-    line-height: 1.45;
+.public-site.landing-page .landing-problem-headline-learning {
+    max-width: 12.5ch;
 }
 
-.public-site.landing-page .landing-problem-card-generation {
-    grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.82fr);
-    gap: clamp(34px, 5vw, 66px);
+.public-site.landing-page .landing-problem-headline-learning .landing-problem-punch {
+    font-size: 1.12em;
+    line-height: 0.92;
+}
+
+.public-site.landing-page .landing-problem-headline-decision strong {
+    display: block;
+    margin-top: 0.14em;
+    font-size: 1.08em;
+    line-height: 0.92;
+}
+
+.public-site.landing-page .landing-problem-card-media {
     width: 100%;
-    min-height: clamp(420px, 31vw, 450px);
-    overflow: hidden;
-    border-radius: 24px 64px 24px 24px;
-    background: var(--landing-teal-light);
-}
-
-.public-site.landing-page .landing-problem-generation-main {
-    max-width: 17ch;
-    color: var(--landing-ink);
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: clamp(2.55rem, 4.2vw, 4.55rem);
-    font-weight: 600;
-    letter-spacing: -0.05em;
-    line-height: 1;
-}
-
-.public-site.landing-page .landing-problem-generation-second {
-    color: var(--landing-ink-soft);
-    font-size: clamp(1.15rem, 1.7vw, 1.5rem);
-    font-weight: 800;
-    line-height: 1.35;
-}
-
-.public-site.landing-page .landing-problem-photo {
-    width: 100%;
+    min-width: 0;
     margin: 0;
     overflow: hidden;
     aspect-ratio: 3 / 2;
-    border: 1px solid var(--landing-line);
-    border-radius: 24px;
-    background: var(--landing-paper);
+    border: 1px solid var(--problem-media-border);
+    border-radius: clamp(20px, 1.8vw, 28px);
 }
 
-.public-site.landing-page .landing-problem-photo img {
+.public-site.landing-page .landing-problem-card-media img {
     display: block;
     width: 100%;
     height: 100%;
@@ -1002,55 +896,50 @@
     object-position: center;
 }
 
+.public-site.landing-page .landing-problem-card-media--contain img {
+    object-fit: contain;
+}
+
+.public-site.landing-page .landing-problem-card--reverse .landing-problem-copy {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.public-site.landing-page .landing-problem-card--reverse .landing-problem-card-media {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.public-site.landing-page .landing-problem-card-intro {
+    --problem-card-color: var(--landing-paper);
+}
+
+.public-site.landing-page .landing-problem-card-learning {
+    --problem-copy: var(--landing-white);
+    --problem-card-color: var(--landing-night-deep);
+    --problem-card-border: var(--landing-line-light);
+    --problem-media-border: var(--landing-line-light);
+}
+
+.public-site.landing-page .landing-problem-card-generation {
+    --problem-card-color: var(--landing-teal-light);
+}
+
 .public-site.landing-page .landing-problem-card-decision {
-    --problem-visual-primary: var(--landing-ink);
-    --problem-visual-accent: var(--landing-gold-deep);
-    --problem-visual-soft: var(--landing-gold-light);
-    width: 91%;
-    min-height: clamp(380px, 28vw, 410px);
-    border-color: var(--landing-gold-deep);
-    background: var(--landing-gold);
-}
-
-.public-site.landing-page .landing-problem-card-decision .landing-problem-step,
-.public-site.landing-page .landing-problem-card-decision .landing-problem-lead {
-    color: var(--landing-ink);
-}
-
-.public-site.landing-page .landing-problem-decision-main {
-    max-width: 13ch;
-    color: var(--landing-ink);
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: clamp(3.7rem, 7.3vw, 7.5rem);
-    font-weight: 600;
-    letter-spacing: -0.065em;
-    line-height: 0.9;
+    --problem-card-color: var(--landing-gold);
+    --problem-card-border: var(--landing-gold-deep);
+    --problem-media-border: var(--landing-gold-deep);
 }
 
 .public-site.landing-page .landing-problem-card-outcome {
-    --problem-visual-primary: var(--landing-teal-light);
-    --problem-visual-accent: var(--landing-gold);
-    --problem-visual-soft: var(--landing-night);
-    width: 96%;
-    min-height: clamp(420px, 31vw, 460px);
-    align-self: flex-end;
-    border-color: var(--landing-line-light);
-    background: var(--landing-teal);
+    --problem-copy: var(--landing-white);
+    --problem-card-color: var(--landing-teal);
+    --problem-card-border: var(--landing-line-light);
+    --problem-media-border: var(--landing-line-light);
 }
 
-.public-site.landing-page .landing-problem-card-outcome .landing-problem-step,
-.public-site.landing-page .landing-problem-card-outcome .landing-problem-lead {
-    color: var(--landing-teal-light);
-}
-
-.public-site.landing-page .landing-problem-outcome-main {
-    max-width: 18ch;
-    color: var(--landing-white);
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: clamp(3.35rem, 6.2vw, 6.35rem);
-    font-weight: 600;
-    letter-spacing: -0.06em;
-    line-height: 0.94;
+.public-site.landing-page .landing-problem-card-outcome .landing-problem-headline {
+    max-width: 13ch;
 }
 
 .public-site.landing-page .landing-problem-card-outcome .landing-problem-link {
@@ -1084,162 +973,74 @@
 @media (max-width: 1180px) {
     .public-site.landing-page .landing-problem {
         --problem-header-height: 68px;
-        --problem-sticky-gap: clamp(18px, 3svh, 28px);
-    }
-}
-
-@media (max-width: 1060px) {
-    .public-site.landing-page .landing-problem-card-intro {
-        width: 95%;
-    }
-
-    .public-site.landing-page .landing-problem-card-learning {
-        width: 92%;
-    }
-
-    .public-site.landing-page .landing-problem-card-decision,
-    .public-site.landing-page .landing-problem-card-outcome {
-        width: 95%;
+        --problem-sticky-gap: clamp(16px, 2.5svh, 22px);
     }
 }
 
 @media (max-width: 920px) {
     .public-site.landing-page .landing-problem-card {
-        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(26px, 3.6vw, 34px);
+        padding-inline: clamp(28px, 4vw, 38px);
     }
 
-    .public-site.landing-page .landing-problem-card-generation {
-        grid-template-columns: minmax(0, 1fr) minmax(260px, 0.72fr);
-        gap: 36px;
-    }
-
-    .public-site.landing-page .landing-problem-generation-main {
-        font-size: clamp(2.45rem, 5.1vw, 3.5rem);
+    .public-site.landing-page .landing-problem-headline {
+        font-size: clamp(2.65rem, 5.5vw, 3.2rem);
     }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 640px) {
     .public-site.landing-page .landing-problem {
-        --problem-sticky-gap: clamp(14px, 2.4svh, 22px);
-        padding-block: 64px;
+        --problem-stack-step: clamp(8px, 1.2svh, 10px);
+        --problem-sticky-gap: clamp(12px, 1.8svh, 16px);
+        padding-block: 54px;
     }
 
     .public-site.landing-page .landing-problem-story {
-        gap: clamp(18px, 2.4svh, 22px);
+        gap: clamp(15px, 2svh, 18px);
     }
 
     .public-site.landing-page .landing-problem-card {
-        min-height: min(510px, calc(100svh - 210px));
-        padding: 48px clamp(24px, 7vw, 38px) 32px;
-        border-radius: 20px;
-    }
-
-    .public-site.landing-page .landing-problem-card-has-visual {
         grid-template-columns: 1fr;
         align-content: center;
-        row-gap: clamp(16px, 2.4svh, 22px);
+        gap: clamp(20px, 3svh, 26px);
+        min-height: min(520px, calc(100svh - 160px));
+        padding: 30px clamp(22px, 6vw, 30px) 24px;
+        border-radius: 24px;
     }
 
-    .public-site.landing-page .landing-problem-visual {
-        width: clamp(88px, 24vw, 110px);
+    .public-site.landing-page .landing-problem-card--reverse .landing-problem-copy,
+    .public-site.landing-page .landing-problem-card--reverse .landing-problem-card-media {
+        grid-column: 1;
+        grid-row: auto;
     }
 
-    .public-site.landing-page .landing-problem-step {
-        top: 22px;
-        right: 24px;
-        font-size: 0.62rem;
+    .public-site.landing-page .landing-problem-headline {
+        max-width: 15ch;
+        font-size: clamp(2.2rem, 9vw, 2.7rem);
+        line-height: 0.97;
     }
 
-    .public-site.landing-page .landing-problem-card-intro {
-        padding-top: 52px;
-        padding-bottom: 38px;
+    .public-site.landing-page .landing-problem-headline-intro,
+    .public-site.landing-page .landing-problem-headline-learning,
+    .public-site.landing-page .landing-problem-card-outcome .landing-problem-headline {
+        max-width: 14ch;
     }
 
-    .public-site.landing-page .landing-problem-intro {
-        gap: 18px;
-    }
-
-    .public-site.landing-page .landing-problem-intro h2 {
-        font-size: clamp(1.05rem, 4.7vw, 1.25rem);
-        line-height: 1.38;
-    }
-
-    .public-site.landing-page .landing-problem-subordinate {
-        font-size: clamp(2.65rem, 12vw, 4.2rem);
-    }
-
-    .public-site.landing-page .landing-problem-card-learning,
-    .public-site.landing-page .landing-problem-card-decision,
-    .public-site.landing-page .landing-problem-card-outcome {
-        padding-block: 48px 34px;
-    }
-
-    .public-site.landing-page .landing-problem-lead {
-        font-size: clamp(1.05rem, 4.7vw, 1.25rem);
-    }
-
-    .public-site.landing-page .landing-problem-emphasis {
-        font-size: clamp(2.65rem, 11.2vw, 4rem);
-    }
-
-    .public-site.landing-page .landing-problem-card-generation {
-        grid-template-columns: 1fr;
-        gap: 22px;
-        padding-bottom: 20px;
-        border-radius: 20px 46px 20px 20px;
-    }
-
-    .public-site.landing-page .landing-problem-generation-main {
-        font-size: clamp(2.2rem, 9.4vw, 3.2rem);
-    }
-
-    .public-site.landing-page .landing-problem-generation-second {
-        font-size: 1.08rem;
-    }
-
-    .public-site.landing-page .landing-problem-photo {
-        max-width: 520px;
-        justify-self: end;
-        border-radius: 18px;
-    }
-
-    .public-site.landing-page .landing-problem-decision-main {
-        font-size: clamp(3.15rem, 13.4vw, 4.8rem);
-    }
-
-    .public-site.landing-page .landing-problem-outcome-main {
-        font-size: clamp(2.25rem, 9.8vw, 3.4rem);
-        line-height: 0.98;
+    .public-site.landing-page .landing-problem-card-media {
+        aspect-ratio: 16 / 9;
+        border-radius: 19px;
     }
 }
 
 @media (max-width: 380px) {
     .public-site.landing-page .landing-problem-card {
-        padding-inline: 22px;
+        min-height: 500px;
+        padding-inline: 20px;
     }
 
-    .public-site.landing-page .landing-problem-intro h2 {
-        font-size: 1rem;
-    }
-
-    .public-site.landing-page .landing-problem-subordinate {
-        font-size: clamp(2.45rem, 11.5vw, 2.75rem);
-    }
-
-    .public-site.landing-page .landing-problem-emphasis {
-        font-size: clamp(2.45rem, 11.4vw, 2.8rem);
-    }
-
-    .public-site.landing-page .landing-problem-generation-main {
-        font-size: clamp(2.02rem, 9.7vw, 2.35rem);
-    }
-
-    .public-site.landing-page .landing-problem-decision-main {
-        font-size: clamp(2.85rem, 13.5vw, 3.2rem);
-    }
-
-    .public-site.landing-page .landing-problem-outcome-main {
-        font-size: clamp(2.12rem, 9.8vw, 2.45rem);
+    .public-site.landing-page .landing-problem-headline {
+        font-size: clamp(2.08rem, 10.2vw, 2.42rem);
     }
 }
 
@@ -1253,25 +1054,9 @@
     }
 
     .public-site.landing-page .landing-problem-card {
-        padding-block: 36px 24px;
-    }
-
-    .public-site.landing-page .landing-problem-card-intro {
-        padding-block: 40px 26px;
-    }
-
-    .public-site.landing-page .landing-problem-card-generation {
-        gap: 16px;
-        padding-top: 40px;
-        padding-bottom: 16px;
-    }
-
-    .public-site.landing-page .landing-problem-card-has-visual {
-        row-gap: 10px;
-    }
-
-    .public-site.landing-page .landing-problem-visual {
-        width: 72px;
+        gap: 14px;
+        min-height: 0;
+        padding: 24px 20px 20px;
     }
 
     .public-site.landing-page .landing-problem-card,
@@ -1286,6 +1071,15 @@
         transform: none;
         transition: none;
         will-change: auto;
+    }
+
+    .public-site.landing-page .landing-problem-headline {
+        font-size: clamp(1.95rem, 8.6vw, 2.2rem);
+    }
+
+    .public-site.landing-page .landing-problem-card-media {
+        aspect-ratio: 2 / 1;
+        border-radius: 16px;
     }
 }
 
@@ -1309,6 +1103,158 @@
         transform: none;
         transition: none;
         will-change: auto;
+    }
+}
+
+/* Framework bridge */
+
+.public-site.landing-page .landing-framework-bridge {
+    position: relative;
+    border-block: 1px solid var(--landing-line);
+    background: var(--landing-paper);
+}
+
+.public-site.landing-page .landing-framework-bridge-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.82fr) minmax(380px, 1.18fr);
+    grid-template-areas:
+        "heading copy"
+        "transition transition";
+    align-items: start;
+    column-gap: clamp(56px, 8vw, 120px);
+    row-gap: clamp(38px, 4vw, 54px);
+    width: min(100%, 1180px);
+    margin-inline: auto;
+    padding-block: clamp(68px, 6vw, 86px);
+}
+
+.public-site.landing-page .landing-framework-bridge-heading {
+    grid-area: heading;
+    min-width: 0;
+}
+
+.public-site.landing-page .landing-framework-bridge-heading h2 {
+    max-width: 12ch;
+    margin-top: 18px;
+    font-size: clamp(2.75rem, 4.1vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 0.98;
+}
+
+.public-site.landing-page .landing-framework-bridge-copy {
+    grid-area: copy;
+    align-self: end;
+    display: grid;
+    gap: 24px;
+    min-width: 0;
+    padding-top: 3px;
+}
+
+.public-site.landing-page .landing-framework-bridge-context,
+.public-site.landing-page .landing-framework-bridge-adamis {
+    max-width: 49ch;
+    margin: 0;
+}
+
+.public-site.landing-page .landing-framework-bridge-context {
+    color: var(--landing-ink-soft);
+    font-size: clamp(0.96rem, 1.08vw, 1.06rem);
+    line-height: 1.7;
+}
+
+.public-site.landing-page .landing-framework-bridge-adamis {
+    padding-top: 22px;
+    border-top: 1px solid var(--landing-line);
+    color: var(--landing-ink);
+    font-size: clamp(1.05rem, 1.22vw, 1.18rem);
+    font-weight: 750;
+    line-height: 1.58;
+}
+
+.public-site.landing-page .landing-framework-bridge-transition {
+    grid-area: transition;
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    color: var(--landing-teal);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+}
+
+.public-site.landing-page .landing-framework-bridge-transition span {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--landing-line);
+    border-radius: 50%;
+    color: var(--landing-gold-deep);
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+@media (max-width: 920px) {
+    .public-site.landing-page .landing-framework-bridge-layout {
+        grid-template-columns: minmax(250px, 0.78fr) minmax(340px, 1.22fr);
+        column-gap: clamp(38px, 5.4vw, 56px);
+    }
+
+    .public-site.landing-page .landing-framework-bridge-heading h2 {
+        font-size: clamp(2.55rem, 5.2vw, 3.25rem);
+    }
+}
+
+@media (max-width: 720px) {
+    .public-site.landing-page .landing-framework-bridge-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "heading"
+            "copy"
+            "transition";
+        gap: 0;
+        padding-block: 58px 62px;
+    }
+
+    .public-site.landing-page .landing-framework-bridge-heading h2 {
+        max-width: 11ch;
+        font-size: clamp(2.4rem, 8vw, 3.15rem);
+    }
+
+    .public-site.landing-page .landing-framework-bridge-copy {
+        gap: 20px;
+        margin-top: 30px;
+        padding-top: 0;
+    }
+
+    .public-site.landing-page .landing-framework-bridge-adamis {
+        padding-top: 20px;
+    }
+
+    .public-site.landing-page .landing-framework-bridge-transition {
+        margin-top: 32px;
+    }
+}
+
+@media (max-width: 430px) {
+    .public-site.landing-page .landing-framework-bridge-layout {
+        padding-block: 52px 56px;
+    }
+
+    .public-site.landing-page .landing-framework-bridge-heading h2 {
+        font-size: clamp(2.2rem, 10.4vw, 2.7rem);
+    }
+
+    .public-site.landing-page .landing-framework-bridge-context {
+        font-size: 0.94rem;
+    }
+
+    .public-site.landing-page .landing-framework-bridge-adamis {
+        font-size: 1.03rem;
     }
 }
 
