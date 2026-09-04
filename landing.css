@@ -1053,6 +1053,34 @@
     line-height: 0.94;
 }
 
+.public-site.landing-page .landing-problem-card-outcome .landing-problem-link {
+    min-height: 44px;
+    color: rgba(255, 255, 255, 0.78);
+    text-decoration-color: rgba(216, 238, 232, 0.42);
+}
+
+.public-site.landing-page .landing-problem-card-outcome .landing-problem-link:hover,
+.public-site.landing-page .landing-problem-card-outcome .landing-problem-link:focus-visible {
+    color: var(--landing-white);
+    text-decoration-color: var(--landing-gold-light);
+}
+
+.public-site.landing-page .landing-problem-card-outcome .landing-problem-link:focus-visible {
+    border-radius: 4px;
+    outline-color: var(--landing-gold-light);
+}
+
+.public-site.landing-page .landing-problem-card-outcome .landing-problem-link span {
+    color: var(--landing-gold-light);
+    transition: transform 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .public-site.landing-page .landing-problem-card-outcome .landing-problem-link:hover span {
+        transform: translateX(4px);
+    }
+}
+
 @media (max-width: 1180px) {
     .public-site.landing-page .landing-problem {
         --problem-header-height: 68px;
@@ -1262,6 +1290,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .public-site.landing-page .landing-problem-card-outcome .landing-problem-link span {
+        transition: none;
+    }
+
     .public-site.landing-page .landing-problem-story {
         gap: clamp(20px, 2.6vw, 38px);
     }
