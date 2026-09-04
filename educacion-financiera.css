@@ -1,0 +1,1372 @@
+/* Compact editorial layout for /educacion-financiera/. */
+
+.public-site.financial-education-page {
+    --ef-paper: #fbf7ef;
+    --ef-paper-deep: #f1e8d8;
+    --ef-ink: #122b2a;
+    --ef-copy: #435854;
+    --ef-muted: #667570;
+    --ef-night: #102d2c;
+    --ef-teal: #1d6662;
+    --ef-teal-soft: #dcebe7;
+    --ef-gold: #f5b92f;
+    --ef-gold-light: #ffdb72;
+    --ef-line: rgba(18, 43, 42, 0.14);
+    --ef-line-strong: rgba(18, 43, 42, 0.24);
+    background: var(--ef-paper);
+    color: var(--ef-copy);
+}
+
+.public-site.financial-education-page main {
+    overflow: hidden;
+}
+
+.public-site.financial-education-page .ef-section {
+    position: relative;
+    padding-block: clamp(82px, 7.5vw, 116px);
+}
+
+.public-site.financial-education-page .ef-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ef-teal);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+
+.public-site.financial-education-page .ef-eyebrow::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 28px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--ef-gold);
+}
+
+.public-site.financial-education-page .ef-heading {
+    display: grid;
+    gap: 16px;
+    max-width: 920px;
+    margin-bottom: clamp(36px, 4vw, 54px);
+}
+
+.public-site.financial-education-page .ef-heading h2,
+.public-site.financial-education-page .ef-next h2 {
+    max-width: 14ch;
+    color: var(--ef-ink);
+    font-size: clamp(2.8rem, 4.25vw, 4.8rem);
+    font-weight: 800;
+    letter-spacing: -0.061em;
+    line-height: 0.98;
+    text-wrap: balance;
+}
+
+.public-site.financial-education-page .ef-heading > p:not(.ef-eyebrow),
+.public-site.financial-education-page .ef-heading-split > p {
+    max-width: 59ch;
+    color: var(--ef-muted);
+    font-size: clamp(0.98rem, 1.15vw, 1.1rem);
+    line-height: 1.68;
+}
+
+.public-site.financial-education-page .ef-heading-split {
+    grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.64fr);
+    align-items: end;
+    gap: clamp(34px, 6vw, 80px);
+    max-width: none;
+}
+
+.public-site.financial-education-page .ef-heading-split > div {
+    display: grid;
+    gap: 16px;
+}
+
+.public-site.financial-education-page .ef-heading-on-dark h2 {
+    color: #fff;
+}
+
+.public-site.financial-education-page .ef-heading-on-dark > p:not(.ef-eyebrow) {
+    color: rgba(255, 255, 255, 0.66);
+}
+
+.public-site.financial-education-page .ef-heading-on-dark .ef-eyebrow {
+    color: var(--ef-gold-light);
+}
+
+.public-site.financial-education-page .ef-source-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+    color: var(--ef-muted);
+    font-size: 0.71rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.public-site.financial-education-page .ef-source-label::before {
+    content: "";
+    width: 18px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+}
+
+.public-site.financial-education-page .ef-source-label-light {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+/* Hero */
+
+.public-site.financial-education-page .ef-hero {
+    position: relative;
+    isolation: isolate;
+    min-height: clamp(620px, calc(100svh - 82px), 760px);
+    border-bottom: 1px solid var(--ef-line);
+    background:
+        radial-gradient(circle at 78% 22%, rgba(245, 185, 47, 0.16), transparent 28%),
+        radial-gradient(circle at 12% 82%, rgba(29, 102, 98, 0.08), transparent 28%),
+        var(--ef-paper);
+}
+
+.public-site.financial-education-page .ef-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.18;
+    background-image: radial-gradient(rgba(18, 43, 42, 0.26) 0.75px, transparent 0.75px);
+    background-size: 22px 22px;
+    mask-image: linear-gradient(90deg, #000, transparent 52%, #000);
+}
+
+.public-site.financial-education-page .ef-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(330px, 0.55fr);
+    align-items: center;
+    gap: clamp(40px, 7vw, 110px);
+    min-height: clamp(620px, calc(100svh - 82px), 760px);
+    padding-block: clamp(66px, 7vw, 96px);
+}
+
+.public-site.financial-education-page .ef-hero-copy {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: start;
+    max-width: 880px;
+}
+
+.public-site.financial-education-page .ef-hero h1 {
+    max-width: 10.5ch;
+    margin-top: 20px;
+    color: var(--ef-ink);
+    font-size: clamp(3.9rem, 6vw, 6.75rem);
+    font-weight: 800;
+    letter-spacing: -0.076em;
+    line-height: 0.91;
+    text-wrap: balance;
+}
+
+.public-site.financial-education-page .ef-hero-lead {
+    max-width: 64ch;
+    margin-top: 26px;
+    color: #4c625d;
+    font-size: clamp(1rem, 1.2vw, 1.14rem);
+    line-height: 1.68;
+}
+
+.public-site.financial-education-page .ef-hero-closing {
+    margin-top: 18px;
+    color: var(--ef-ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(1.25rem, 1.8vw, 1.7rem);
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.public-site.financial-education-page .ef-hero-mark {
+    position: relative;
+    width: min(100%, 430px);
+    aspect-ratio: 1;
+    justify-self: end;
+}
+
+.public-site.financial-education-page .ef-hero-ring,
+.public-site.financial-education-page .ef-hero-point {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+}
+
+.public-site.financial-education-page .ef-hero-ring-one {
+    inset: 7%;
+    border: 1px solid rgba(18, 43, 42, 0.24);
+    box-shadow: 0 0 0 38px rgba(245, 185, 47, 0.07), 0 0 0 76px rgba(29, 102, 98, 0.035);
+}
+
+.public-site.financial-education-page .ef-hero-ring-two {
+    inset: 32%;
+    border: 2px solid var(--ef-gold);
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 22px 64px rgba(18, 43, 42, 0.12);
+}
+
+.public-site.financial-education-page .ef-hero-point {
+    width: 15px;
+    aspect-ratio: 1;
+    background: var(--ef-teal);
+    box-shadow: 0 0 0 8px var(--ef-paper);
+}
+
+.public-site.financial-education-page .ef-hero-point-one { top: 10%; left: 49%; }
+.public-site.financial-education-page .ef-hero-point-two { right: 7%; bottom: 30%; background: var(--ef-gold); }
+.public-site.financial-education-page .ef-hero-point-three { bottom: 12%; left: 20%; width: 10px; }
+
+/* Financial decisions */
+
+.public-site.financial-education-page .ef-decisions {
+    background: #fffdf8;
+}
+
+.public-site.financial-education-page .ef-experience-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.public-site.financial-education-page .ef-experience {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.36fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(26px, 3vw, 44px);
+    min-height: 300px;
+    padding: clamp(28px, 3.4vw, 48px);
+    overflow: hidden;
+    border: 1px solid var(--ef-line);
+    border-radius: 28px;
+    background: var(--ef-paper);
+}
+
+.public-site.financial-education-page .ef-experience-online {
+    background: var(--ef-teal-soft);
+}
+
+.public-site.financial-education-page .ef-donut {
+    width: min(100%, 156px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: conic-gradient(var(--ef-gold) 0 78%, rgba(18, 43, 42, 0.1) 78% 100%);
+    box-shadow: inset 0 0 0 28px var(--ef-paper);
+}
+
+.public-site.financial-education-page .ef-online-visual {
+    display: grid;
+    align-items: center;
+    min-height: 132px;
+}
+
+.public-site.financial-education-page .ef-online-track {
+    position: relative;
+    display: block;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: rgba(18, 43, 42, 0.12);
+}
+
+.public-site.financial-education-page .ef-online-track span {
+    display: block;
+    width: 85%;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--ef-teal);
+}
+
+.public-site.financial-education-page .ef-experience-copy {
+    display: grid;
+    align-content: center;
+    gap: 12px;
+}
+
+.public-site.financial-education-page .ef-stat-value {
+    color: var(--ef-ink);
+    font-size: clamp(3.7rem, 5.3vw, 5.75rem);
+    font-weight: 800;
+    letter-spacing: -0.07em;
+    line-height: 0.9;
+}
+
+.public-site.financial-education-page .ef-experience h3 {
+    max-width: 24ch;
+    color: var(--ef-ink);
+    font-size: clamp(1.15rem, 1.55vw, 1.42rem);
+    line-height: 1.3;
+}
+
+.public-site.financial-education-page .ef-context {
+    color: var(--ef-muted);
+    font-size: 0.86rem;
+    line-height: 1.5;
+}
+
+/* PISA editorial panel */
+
+.public-site.financial-education-page .ef-pisa {
+    background: var(--ef-paper-deep);
+}
+
+.public-site.financial-education-page .ef-pisa-panel {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.public-site.financial-education-page .ef-pisa-card {
+    display: grid;
+    align-content: start;
+    gap: 20px;
+    min-height: 300px;
+    padding: clamp(28px, 3.2vw, 46px);
+    border: 1px solid var(--ef-line);
+    border-radius: 28px;
+    background: #fffdf8;
+}
+
+.public-site.financial-education-page .ef-score-panel,
+.public-site.financial-education-page .ef-gap-panel {
+    grid-column: span 7;
+}
+
+.public-site.financial-education-page .ef-basic-panel,
+.public-site.financial-education-page .ef-top-panel {
+    grid-column: span 5;
+}
+
+.public-site.financial-education-page .ef-gap-panel {
+    background: var(--ef-teal-soft);
+}
+
+.public-site.financial-education-page .ef-basic-panel {
+    background: var(--ef-night);
+}
+
+.public-site.financial-education-page .ef-chart-heading {
+    display: grid;
+    gap: 8px;
+}
+
+.public-site.financial-education-page .ef-chart-kicker {
+    color: var(--ef-teal);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    line-height: 1.35;
+    text-transform: uppercase;
+}
+
+.public-site.financial-education-page .ef-chart-heading h3,
+.public-site.financial-education-page .ef-pisa-card > h3 {
+    max-width: 31ch;
+    color: var(--ef-ink);
+    font-size: clamp(1.15rem, 1.45vw, 1.4rem);
+    line-height: 1.34;
+}
+
+.public-site.financial-education-page .ef-bars {
+    display: grid;
+    gap: 22px;
+    margin-top: auto;
+}
+
+.public-site.financial-education-page .ef-chart-note {
+    margin-top: -3px;
+    color: var(--ef-muted);
+    font-size: 0.68rem;
+    line-height: 1.45;
+}
+
+.public-site.financial-education-page .ef-bar-row {
+    display: grid;
+    gap: 9px;
+}
+
+.public-site.financial-education-page .ef-bar-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 18px;
+    color: var(--ef-copy);
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.public-site.financial-education-page .ef-bar-label strong {
+    color: var(--ef-ink);
+    font-size: 1.75rem;
+    letter-spacing: -0.04em;
+}
+
+.public-site.financial-education-page .ef-bar-track {
+    display: block;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: rgba(18, 43, 42, 0.1);
+}
+
+.public-site.financial-education-page .ef-bar {
+    display: block;
+    width: var(--bar-size);
+    height: 100%;
+    border-radius: inherit;
+    background: var(--ef-teal);
+}
+
+.public-site.financial-education-page .ef-bar-oecd {
+    background: var(--ef-gold);
+}
+
+.public-site.financial-education-page .ef-panel-value {
+    margin-top: auto;
+    color: var(--ef-ink);
+    font-size: clamp(4rem, 6vw, 6rem);
+    font-weight: 800;
+    letter-spacing: -0.075em;
+    line-height: 0.86;
+}
+
+.public-site.financial-education-page .ef-panel-value span {
+    font-size: 0.28em;
+    letter-spacing: -0.02em;
+}
+
+.public-site.financial-education-page .ef-basic-panel .ef-chart-kicker,
+.public-site.financial-education-page .ef-basic-panel .ef-panel-value,
+.public-site.financial-education-page .ef-basic-panel > h3 {
+    color: #fff;
+}
+
+.public-site.financial-education-page .ef-basic-panel .ef-chart-kicker {
+    color: var(--ef-gold-light);
+}
+
+.public-site.financial-education-page .ef-adamis-thought {
+    align-self: end;
+    margin-top: auto;
+    padding-top: 17px;
+    border-top: 1px solid rgba(18, 43, 42, 0.13);
+    color: var(--ef-copy);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 0.98rem;
+    line-height: 1.5;
+}
+
+.public-site.financial-education-page .ef-adamis-thought strong {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--ef-teal);
+    font-family: 'Manrope', Arial, sans-serif;
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* Adults */
+
+.public-site.financial-education-page .ef-adults {
+    color: #fff;
+    background:
+        radial-gradient(circle at 85% 20%, rgba(245, 185, 47, 0.08), transparent 28%),
+        var(--ef-night);
+}
+
+.public-site.financial-education-page .ef-adult-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(330px, 0.85fr);
+    gap: 20px;
+}
+
+.public-site.financial-education-page .ef-adult-main,
+.public-site.financial-education-page .ef-adult-training {
+    min-height: 390px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 28px;
+}
+
+.public-site.financial-education-page .ef-adult-main {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(28px, 4vw, 58px);
+    padding: clamp(30px, 4vw, 56px);
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.public-site.financial-education-page .ef-adult-number {
+    display: flex;
+    align-items: flex-start;
+    color: var(--ef-gold-light);
+}
+
+.public-site.financial-education-page .ef-adult-number strong {
+    font-size: clamp(6.2rem, 9vw, 9.4rem);
+    font-weight: 800;
+    letter-spacing: -0.09em;
+    line-height: 0.78;
+}
+
+.public-site.financial-education-page .ef-adult-number span {
+    margin: 8px 0 0 8px;
+    font-size: 1.55rem;
+    font-weight: 800;
+}
+
+.public-site.financial-education-page .ef-adult-copy {
+    display: grid;
+    gap: 17px;
+}
+
+.public-site.financial-education-page .ef-adult-copy h3,
+.public-site.financial-education-page .ef-adult-training h3 {
+    max-width: 35ch;
+    color: #fff;
+    font-size: clamp(1.22rem, 1.65vw, 1.58rem);
+    line-height: 1.34;
+}
+
+.public-site.financial-education-page .ef-adult-copy > p {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.88rem;
+}
+
+.public-site.financial-education-page .ef-three-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.public-site.financial-education-page .ef-three-topics span {
+    padding: 7px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.67);
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.public-site.financial-education-page .ef-adult-training {
+    display: grid;
+    align-content: center;
+    gap: 18px;
+    padding: clamp(30px, 4vw, 56px);
+    background: rgba(29, 102, 98, 0.34);
+}
+
+.public-site.financial-education-page .ef-adult-training .ef-stat-value {
+    color: #fff;
+}
+
+.public-site.financial-education-page .ef-training-meter {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.13);
+}
+
+.public-site.financial-education-page .ef-training-meter span {
+    display: block;
+    width: 40%;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--ef-gold);
+}
+
+/* Learning, institutional framework and ADAMIS */
+
+.public-site.financial-education-page .ef-learning {
+    color: #fff;
+    background: #174441;
+}
+
+.public-site.financial-education-page .ef-learning::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 34%;
+    opacity: 0.18;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.42) 0.75px, transparent 0.75px);
+    background-size: 20px 20px;
+    mask-image: linear-gradient(225deg, #000, transparent 68%);
+    pointer-events: none;
+}
+
+.public-site.financial-education-page .ef-progression {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0 0 42px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 24px;
+    list-style: none;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.public-site.financial-education-page .ef-progression li {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    min-height: 220px;
+    padding: clamp(25px, 3vw, 39px);
+    background: rgba(8, 39, 37, 0.78);
+}
+
+.public-site.financial-education-page .ef-progression li > span {
+    color: var(--ef-gold-light);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.public-site.financial-education-page .ef-progression h3 {
+    color: #fff;
+    font-size: clamp(1.15rem, 1.45vw, 1.4rem);
+    line-height: 1.3;
+}
+
+.public-site.financial-education-page .ef-progression p {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.9rem;
+    line-height: 1.62;
+}
+
+.public-site.financial-education-page .ef-framework-card {
+    padding: clamp(30px, 4.5vw, 64px);
+    border-radius: 30px;
+    background: var(--ef-paper);
+    color: var(--ef-copy);
+}
+
+.public-site.financial-education-page .ef-framework-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.62fr);
+    align-items: end;
+    gap: 38px;
+    margin-bottom: 32px;
+}
+
+.public-site.financial-education-page .ef-framework-heading > div {
+    display: grid;
+    gap: 12px;
+}
+
+.public-site.financial-education-page .ef-framework-heading h3 {
+    max-width: 15ch;
+    color: var(--ef-ink);
+    font-size: clamp(2.15rem, 3.2vw, 3.55rem);
+    letter-spacing: -0.052em;
+    line-height: 1;
+    text-wrap: balance;
+}
+
+.public-site.financial-education-page .ef-framework-heading > p {
+    max-width: 46ch;
+    color: var(--ef-muted);
+    font-size: 0.96rem;
+    line-height: 1.65;
+}
+
+.public-site.financial-education-page .ef-age-groups {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: hidden;
+    border: 1px solid var(--ef-line);
+    border-radius: 18px;
+}
+
+.public-site.financial-education-page .ef-age-groups span {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 7px;
+    min-height: 76px;
+    padding: 20px 14px;
+    color: var(--ef-muted);
+    font-size: 0.78rem;
+}
+
+.public-site.financial-education-page .ef-age-groups span + span {
+    border-left: 1px solid var(--ef-line);
+}
+
+.public-site.financial-education-page .ef-age-groups strong {
+    color: var(--ef-ink);
+    font-size: 1.42rem;
+}
+
+.public-site.financial-education-page .ef-areas {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.public-site.financial-education-page .ef-areas li {
+    display: flex;
+    align-items: center;
+    min-height: 92px;
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--ef-teal-soft);
+    color: var(--ef-ink);
+    font-size: 0.86rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.public-site.financial-education-page .ef-framework-card .ef-source-label {
+    margin-top: 18px;
+}
+
+.public-site.financial-education-page .ef-learning-notes {
+    display: grid;
+    grid-template-columns: minmax(0, 1.18fr) minmax(310px, 0.82fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.public-site.financial-education-page .ef-adamis-reference,
+.public-site.financial-education-page .ef-plan-note {
+    display: grid;
+    align-content: start;
+    gap: 14px;
+    min-height: 270px;
+    padding: clamp(27px, 3.5vw, 46px);
+    border-radius: 26px;
+}
+
+.public-site.financial-education-page .ef-adamis-reference {
+    background: var(--ef-gold);
+    color: var(--ef-ink);
+}
+
+.public-site.financial-education-page .ef-adamis-label {
+    color: #573b00;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+}
+
+.public-site.financial-education-page .ef-adamis-reference h3 {
+    max-width: 42ch;
+    color: var(--ef-ink);
+    font-size: clamp(1.35rem, 2vw, 1.85rem);
+    letter-spacing: -0.025em;
+    line-height: 1.3;
+}
+
+.public-site.financial-education-page .ef-adamis-reference > p:last-child {
+    max-width: 64ch;
+    color: #5d4a20;
+    font-size: 0.91rem;
+    line-height: 1.62;
+}
+
+.public-site.financial-education-page .ef-plan-note {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(8, 39, 37, 0.75);
+}
+
+.public-site.financial-education-page .ef-plan-note .ef-eyebrow {
+    color: var(--ef-gold-light);
+}
+
+.public-site.financial-education-page .ef-plan-note > p:not(.ef-eyebrow, .ef-source-label) {
+    color: rgba(255, 255, 255, 0.64);
+    font-size: 0.9rem;
+    line-height: 1.58;
+}
+
+.public-site.financial-education-page .ef-plan-note > p strong {
+    color: #fff;
+    font-size: 1.04rem;
+}
+
+.public-site.financial-education-page .ef-plan-note .ef-source-label {
+    margin-top: auto;
+    color: rgba(255, 255, 255, 0.52);
+}
+
+/* From the person to society */
+
+.public-site.financial-education-page .ef-social {
+    background: #fffdf8;
+}
+
+.public-site.financial-education-page .ef-social-path {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.public-site.financial-education-page .ef-social-path li {
+    position: relative;
+    min-height: 250px;
+    padding: clamp(28px, 3vw, 42px);
+    border: 1px solid var(--ef-line);
+    border-radius: 24px;
+    background: var(--ef-paper);
+}
+
+.public-site.financial-education-page .ef-social-path li::after {
+    content: "\2192";
+    position: absolute;
+    top: 29px;
+    right: -17px;
+    z-index: 1;
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--ef-gold);
+    color: var(--ef-ink);
+    font-weight: 800;
+}
+
+.public-site.financial-education-page .ef-social-path li:last-child::after {
+    display: none;
+}
+
+.public-site.financial-education-page .ef-social-path h3 {
+    margin-bottom: 18px;
+    color: var(--ef-ink);
+    font-size: clamp(1.45rem, 2vw, 1.9rem);
+    letter-spacing: -0.035em;
+}
+
+.public-site.financial-education-page .ef-social-path p {
+    color: var(--ef-copy);
+    font-size: 0.92rem;
+    line-height: 1.65;
+}
+
+/* CTA */
+
+.public-site.financial-education-page .ef-next {
+    color: #fff;
+    background: var(--ef-night);
+}
+
+.public-site.financial-education-page .ef-next::after {
+    content: "";
+    position: absolute;
+    right: -90px;
+    bottom: -210px;
+    width: 430px;
+    aspect-ratio: 1;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 50%;
+    box-shadow: 0 0 0 55px rgba(255, 255, 255, 0.025);
+    pointer-events: none;
+}
+
+.public-site.financial-education-page .ef-next-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) auto;
+    align-items: end;
+    gap: clamp(40px, 7vw, 100px);
+}
+
+.public-site.financial-education-page .ef-next-inner > div:first-child {
+    display: grid;
+    gap: 17px;
+}
+
+.public-site.financial-education-page .ef-next .ef-eyebrow {
+    color: var(--ef-gold-light);
+}
+
+.public-site.financial-education-page .ef-next h2 {
+    color: #fff;
+}
+
+.public-site.financial-education-page .ef-next-inner > div:first-child > p:last-child {
+    max-width: 62ch;
+    color: rgba(255, 255, 255, 0.66);
+    line-height: 1.65;
+}
+
+.public-site.financial-education-page .ef-next-actions {
+    display: grid;
+    justify-items: stretch;
+    gap: 11px;
+    width: 350px;
+}
+
+.public-site.financial-education-page .ef-next .detail-button {
+    justify-content: center;
+    min-width: 0;
+    text-align: center;
+}
+
+/* Sources */
+
+.public-site.financial-education-page .ef-sources {
+    padding-bottom: calc(clamp(82px, 7.5vw, 116px) + 8px);
+    background: var(--ef-paper);
+}
+
+.public-site.financial-education-page .ef-source-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.public-site.financial-education-page .ef-source-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+    min-height: 108px;
+    padding: 20px 22px;
+    border: 1px solid var(--ef-line);
+    border-radius: 16px;
+    color: var(--ef-ink);
+    text-decoration: none;
+    transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.public-site.financial-education-page .ef-source-card:hover,
+.public-site.financial-education-page .ef-source-card:focus-visible {
+    border-color: var(--ef-line-strong);
+    background: #fffdf8;
+    transform: translateY(-2px);
+}
+
+.public-site.financial-education-page .ef-source-card:focus-visible {
+    outline: 3px solid rgba(245, 185, 47, 0.55);
+    outline-offset: 3px;
+}
+
+.public-site.financial-education-page .ef-source-card-copy {
+    display: grid;
+    gap: 6px;
+}
+
+.public-site.financial-education-page .ef-source-card-copy strong {
+    font-size: 0.91rem;
+    line-height: 1.4;
+}
+
+.public-site.financial-education-page .ef-source-card-copy small {
+    color: var(--ef-muted);
+    font-size: 0.69rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.public-site.financial-education-page .ef-source-out {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--ef-teal-soft);
+    color: var(--ef-teal);
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+/* Responsive */
+
+@media (max-width: 1060px) {
+    .public-site.financial-education-page .ef-hero-inner {
+        grid-template-columns: minmax(0, 1fr) 290px;
+        gap: 36px;
+    }
+
+    .public-site.financial-education-page .ef-experience {
+        grid-template-columns: 112px minmax(0, 1fr);
+        gap: 26px;
+    }
+
+    .public-site.financial-education-page .ef-adult-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 0.75fr);
+    }
+
+    .public-site.financial-education-page .ef-adult-main {
+        grid-template-columns: 1fr;
+        align-content: center;
+    }
+
+    .public-site.financial-education-page .ef-areas {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 920px) {
+    .public-site.financial-education-page .ef-hero,
+    .public-site.financial-education-page .ef-hero-inner {
+        min-height: auto;
+    }
+
+    .public-site.financial-education-page .ef-hero-inner {
+        grid-template-columns: 1fr;
+        padding-block: 76px 88px;
+    }
+
+    .public-site.financial-education-page .ef-hero-copy {
+        max-width: 760px;
+    }
+
+    .public-site.financial-education-page .ef-hero h1 {
+        font-size: clamp(3.8rem, 10vw, 5.75rem);
+    }
+
+    .public-site.financial-education-page .ef-hero-mark {
+        position: absolute;
+        right: -140px;
+        bottom: -145px;
+        z-index: -1;
+        width: 370px;
+        opacity: 0.43;
+    }
+
+    .public-site.financial-education-page .ef-heading-split,
+    .public-site.financial-education-page .ef-framework-heading,
+    .public-site.financial-education-page .ef-adult-grid,
+    .public-site.financial-education-page .ef-learning-notes,
+    .public-site.financial-education-page .ef-next-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.financial-education-page .ef-heading-split,
+    .public-site.financial-education-page .ef-framework-heading {
+        align-items: start;
+        gap: 20px;
+    }
+
+    .public-site.financial-education-page .ef-experience {
+        grid-template-columns: 1fr;
+        align-content: start;
+    }
+
+    .public-site.financial-education-page .ef-donut {
+        width: 126px;
+    }
+
+    .public-site.financial-education-page .ef-pisa-card {
+        grid-column: span 6;
+        min-height: 310px;
+    }
+
+    .public-site.financial-education-page .ef-adult-main,
+    .public-site.financial-education-page .ef-adult-training {
+        min-height: 330px;
+    }
+
+    .public-site.financial-education-page .ef-adult-main {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .public-site.financial-education-page .ef-learning-notes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .public-site.financial-education-page .ef-next-inner {
+        align-items: start;
+    }
+
+    .public-site.financial-education-page .ef-next-actions {
+        width: min(100%, 380px);
+    }
+}
+
+@media (max-width: 720px) {
+    .public-site.financial-education-page .ef-section {
+        padding-block: 76px;
+    }
+
+    .public-site.financial-education-page .ef-heading {
+        margin-bottom: 36px;
+    }
+
+    .public-site.financial-education-page .ef-heading h2,
+    .public-site.financial-education-page .ef-next h2 {
+        font-size: clamp(2.55rem, 11vw, 3.9rem);
+    }
+
+    .public-site.financial-education-page .ef-hero-inner {
+        padding-block: 64px 76px;
+    }
+
+    .public-site.financial-education-page .ef-hero h1 {
+        font-size: clamp(3.25rem, 13vw, 4.8rem);
+    }
+
+    .public-site.financial-education-page .ef-hero-mark {
+        right: -185px;
+        bottom: -190px;
+        opacity: 0.3;
+    }
+
+    .public-site.financial-education-page .ef-hero-point {
+        display: none;
+    }
+
+    .public-site.financial-education-page .ef-experience-grid,
+    .public-site.financial-education-page .ef-progression,
+    .public-site.financial-education-page .ef-learning-notes,
+    .public-site.financial-education-page .ef-social-path,
+    .public-site.financial-education-page .ef-source-list {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.financial-education-page .ef-experience {
+        grid-template-columns: minmax(115px, 0.34fr) minmax(0, 1fr);
+        min-height: 275px;
+    }
+
+    .public-site.financial-education-page .ef-pisa-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.financial-education-page .ef-pisa-card {
+        grid-column: auto;
+        min-height: 270px;
+    }
+
+    .public-site.financial-education-page .ef-adult-main {
+        grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    .public-site.financial-education-page .ef-progression {
+        gap: 1px;
+    }
+
+    .public-site.financial-education-page .ef-progression li {
+        min-height: 0;
+    }
+
+    .public-site.financial-education-page .ef-areas {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.financial-education-page .ef-areas li {
+        min-height: 72px;
+    }
+
+    .public-site.financial-education-page .ef-adamis-reference,
+    .public-site.financial-education-page .ef-plan-note {
+        min-height: 0;
+    }
+
+    .public-site.financial-education-page .ef-social-path li {
+        min-height: 0;
+    }
+
+    .public-site.financial-education-page .ef-social-path li::after {
+        top: auto;
+        right: auto;
+        bottom: -23px;
+        left: calc(50% - 16px);
+        transform: rotate(90deg);
+    }
+}
+
+@media (max-width: 430px) {
+    .public-site.financial-education-page .ef-section {
+        padding-block: 68px;
+    }
+
+    .public-site.financial-education-page .ef-eyebrow {
+        font-size: 0.64rem;
+    }
+
+    .public-site.financial-education-page .ef-hero h1 {
+        max-width: 11.5ch;
+        font-size: clamp(2.95rem, 14vw, 3.75rem);
+    }
+
+    .public-site.financial-education-page .ef-hero-lead {
+        font-size: 0.96rem;
+    }
+
+    .public-site.financial-education-page .ef-heading h2,
+    .public-site.financial-education-page .ef-next h2 {
+        font-size: clamp(2.35rem, 11.5vw, 3.15rem);
+    }
+
+    .public-site.financial-education-page .ef-experience {
+        grid-template-columns: 1fr;
+        min-height: 0;
+        padding: 26px 22px;
+        border-radius: 22px;
+    }
+
+    .public-site.financial-education-page .ef-donut {
+        width: 116px;
+        box-shadow: inset 0 0 0 22px var(--ef-paper);
+    }
+
+    .public-site.financial-education-page .ef-online-visual {
+        min-height: 52px;
+    }
+
+    .public-site.financial-education-page .ef-pisa-card,
+    .public-site.financial-education-page .ef-adult-main,
+    .public-site.financial-education-page .ef-adult-training,
+    .public-site.financial-education-page .ef-framework-card,
+    .public-site.financial-education-page .ef-adamis-reference,
+    .public-site.financial-education-page .ef-plan-note,
+    .public-site.financial-education-page .ef-social-path li {
+        padding: 26px 22px;
+        border-radius: 22px;
+    }
+
+    .public-site.financial-education-page .ef-panel-value {
+        font-size: 4.45rem;
+    }
+
+    .public-site.financial-education-page .ef-adult-number strong {
+        font-size: 6.7rem;
+    }
+
+    .public-site.financial-education-page .ef-three-topics {
+        display: grid;
+    }
+
+    .public-site.financial-education-page .ef-progression {
+        border-radius: 20px;
+    }
+
+    .public-site.financial-education-page .ef-framework-heading h3 {
+        font-size: clamp(2rem, 10vw, 2.65rem);
+    }
+
+    .public-site.financial-education-page .ef-age-groups {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.financial-education-page .ef-age-groups span {
+        min-height: 62px;
+    }
+
+    .public-site.financial-education-page .ef-age-groups span + span {
+        border-top: 1px solid var(--ef-line);
+        border-left: 0;
+    }
+
+    .public-site.financial-education-page .ef-next-actions,
+    .public-site.financial-education-page .ef-next .detail-button {
+        width: 100%;
+    }
+
+    .public-site.financial-education-page .ef-source-card {
+        min-height: 100px;
+        padding: 18px;
+    }
+}
+
+@media (max-width: 380px) {
+    .public-site.financial-education-page .ef-hero h1 {
+        font-size: clamp(2.72rem, 13.8vw, 3.2rem);
+    }
+
+    .public-site.financial-education-page .ef-heading h2,
+    .public-site.financial-education-page .ef-next h2 {
+        font-size: clamp(2.22rem, 11.2vw, 2.75rem);
+    }
+
+    .public-site.financial-education-page .ef-stat-value {
+        font-size: 3.55rem;
+    }
+
+    .public-site.financial-education-page .ef-pisa-card,
+    .public-site.financial-education-page .ef-adult-main,
+    .public-site.financial-education-page .ef-adult-training,
+    .public-site.financial-education-page .ef-framework-card,
+    .public-site.financial-education-page .ef-adamis-reference,
+    .public-site.financial-education-page .ef-plan-note {
+        padding: 24px 19px;
+    }
+
+    .public-site.financial-education-page .ef-bar-label {
+        font-size: 0.77rem;
+    }
+
+    .public-site.financial-education-page .ef-bar-label strong {
+        font-size: 1.4rem;
+    }
+
+    .public-site.financial-education-page .ef-adult-number strong {
+        font-size: 6.2rem;
+    }
+
+    .public-site.financial-education-page .ef-source-card-copy strong {
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (max-width: 340px) {
+    .public-site.financial-education-page .ef-hero h1 {
+        font-size: 2.6rem;
+    }
+
+    .public-site.financial-education-page .ef-heading h2,
+    .public-site.financial-education-page .ef-next h2 {
+        font-size: 2.12rem;
+    }
+
+    .public-site.financial-education-page .ef-eyebrow {
+        font-size: 0.59rem;
+        letter-spacing: 0.09em;
+    }
+
+    .public-site.financial-education-page .ef-eyebrow::before {
+        width: 20px;
+    }
+
+    .public-site.financial-education-page .ef-source-card {
+        grid-template-columns: 1fr;
+    }
+
+    .public-site.financial-education-page .ef-source-out {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .public-site.financial-education-page *,
+    .public-site.financial-education-page *::before,
+    .public-site.financial-education-page *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+    }
+}
