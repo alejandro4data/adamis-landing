@@ -574,6 +574,92 @@
     line-height: 1.35;
 }
 
+/* Reference framework */
+
+.public-site.program-page .program-framework {
+    border-bottom: 1px solid var(--program-line);
+    background: #fffdf8;
+}
+
+.public-site.program-page .program-framework-areas {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: clamp(58px, 7vw, 92px) 0 0;
+    padding: 0;
+    border-block: 1px solid var(--program-line);
+    list-style: none;
+}
+
+.public-site.program-page .program-framework-areas li {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    gap: clamp(25px, 3vw, 42px);
+    min-height: 190px;
+    padding: clamp(25px, 3vw, 39px);
+    border-left: 1px solid var(--program-line);
+}
+
+.public-site.program-page .program-framework-areas li:first-child {
+    padding-left: 0;
+    border-left: 0;
+}
+
+.public-site.program-page .program-framework-areas li:last-child {
+    padding-right: 0;
+}
+
+.public-site.program-page .program-framework-areas span {
+    color: var(--program-gold-deep);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.34rem;
+    font-weight: 600;
+}
+
+.public-site.program-page .program-framework-areas h3 {
+    max-width: 18ch;
+    color: var(--program-ink);
+    font-size: clamp(1.05rem, 1.55vw, 1.32rem);
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.public-site.program-page .program-framework-footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) auto;
+    align-items: end;
+    gap: clamp(35px, 7vw, 100px);
+    padding-top: clamp(31px, 4vw, 52px);
+}
+
+.public-site.program-page .program-framework-footer p {
+    max-width: 65ch;
+    color: var(--program-ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(1.14rem, 1.7vw, 1.48rem);
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.public-site.program-page .program-framework-footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #687772;
+    font-size: 0.72rem;
+    font-weight: 750;
+    line-height: 1.45;
+    text-decoration: underline;
+    text-decoration-color: rgba(156, 98, 0, 0.38);
+    text-underline-offset: 4px;
+    transition: color 180ms ease;
+}
+
+.public-site.program-page .program-framework-footer a:hover,
+.public-site.program-page .program-framework-footer a:focus-visible {
+    color: var(--program-gold-deep);
+}
+
 /* Course anatomy */
 
 .public-site.program-page .program-anatomy {
@@ -969,6 +1055,23 @@
         width: min(100%, 720px);
         margin-inline: auto;
     }
+
+    .public-site.program-page .program-framework-areas {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .public-site.program-page .program-framework-areas li:nth-child(odd) {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .public-site.program-page .program-framework-areas li:nth-child(even) {
+        padding-right: 0;
+    }
+
+    .public-site.program-page .program-framework-areas li:nth-child(-n + 2) {
+        border-bottom: 1px solid var(--program-line);
+    }
 }
 
 @media (max-width: 820px) {
@@ -981,6 +1084,12 @@
 
     .public-site.program-page .program-section-heading > p {
         max-width: 62ch;
+    }
+
+    .public-site.program-page .program-framework-footer {
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: 24px;
     }
 
     .public-site.program-page .program-progression-map {
@@ -1211,6 +1320,34 @@
     .public-site.program-page .program-examples li {
         grid-template-columns: 38px minmax(0, 1fr);
         gap: 13px;
+    }
+
+    .public-site.program-page .program-framework-areas {
+        grid-template-columns: 1fr;
+        margin-top: 50px;
+    }
+
+    .public-site.program-page .program-framework-areas li,
+    .public-site.program-page .program-framework-areas li:first-child,
+    .public-site.program-page .program-framework-areas li:last-child,
+    .public-site.program-page .program-framework-areas li:nth-child(odd),
+    .public-site.program-page .program-framework-areas li:nth-child(even) {
+        grid-template-columns: 42px minmax(0, 1fr);
+        grid-template-rows: none;
+        align-items: start;
+        gap: 16px;
+        min-height: 0;
+        padding: 24px 0;
+        border-bottom: 1px solid var(--program-line);
+        border-left: 0;
+    }
+
+    .public-site.program-page .program-framework-areas li:last-child {
+        border-bottom: 0;
+    }
+
+    .public-site.program-page .program-framework-areas h3 {
+        max-width: none;
     }
 
     .public-site.program-page .program-anatomy-layout {
