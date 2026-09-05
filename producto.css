@@ -3909,3 +3909,90 @@ html.product-js .product-page .product-enter.is-visible {
         padding-block: 52px;
     }
 }
+
+/* Dynamics demo: native video integrated into the existing editorial opening. */
+
+.public-site.product-page .product-dynamics-opening {
+    grid-template-areas:
+        "intro demo"
+        "definition demo";
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
+    align-items: start;
+    column-gap: clamp(42px, 7vw, 110px);
+    row-gap: clamp(32px, 4vw, 52px);
+}
+
+.public-site.product-page .product-dynamics-intro {
+    grid-area: intro;
+}
+
+.public-site.product-page .product-dynamics-definition {
+    grid-area: definition;
+    width: min(100%, 620px);
+}
+
+.public-site.product-page .product-dynamics-demo {
+    --product-dynamics-delay: 120ms;
+    grid-area: demo;
+    width: min(100%, 390px);
+    margin: 0;
+    justify-self: end;
+}
+
+.public-site.product-page .product-dynamics-demo figcaption {
+    margin-bottom: 14px;
+    color: var(--product-gold-light);
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.public-site.product-page .product-dynamics-demo-video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 40px 16px 40px 16px;
+    background: #071817;
+    box-shadow: 0 32px 76px rgba(0, 0, 0, 0.28);
+    object-fit: cover;
+}
+
+.public-site.product-page .product-dynamics-demo-video:focus-visible {
+    outline: 3px solid var(--product-gold-light);
+    outline-offset: 4px;
+}
+
+@media (max-width: 1060px) {
+    .public-site.product-page .product-dynamics-opening {
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 35vw);
+        column-gap: 42px;
+    }
+}
+
+@media (max-width: 840px) {
+    .public-site.product-page .product-dynamics-opening {
+        grid-template-areas:
+            "intro"
+            "definition"
+            "demo";
+        grid-template-columns: minmax(0, 1fr);
+        gap: 36px;
+    }
+
+    .public-site.product-page .product-dynamics-demo {
+        width: min(100%, 350px);
+        justify-self: center;
+    }
+}
+
+@media (max-width: 430px) {
+    .public-site.product-page .product-dynamics-demo {
+        width: min(100%, 320px);
+    }
+
+    .public-site.product-page .product-dynamics-demo-video {
+        border-radius: 32px 13px 32px 13px;
+    }
+}
