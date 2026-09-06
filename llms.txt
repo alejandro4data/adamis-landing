@@ -7,22 +7,25 @@ Canonical site: https://adamis.es/
 ## Spanish
 
 - Home: https://adamis.es/
-- Producto / Cómo funciona: https://adamis.es/producto/
+- Educación financiera: https://adamis.es/educacion-financiera/
+- Producto: https://adamis.es/producto/
 - Universo ADAMIS: https://adamis.es/universo-adamis/
 - Metodología: https://adamis.es/metodologia/
 - Impacto: https://adamis.es/impacto/
 - Talleres: https://adamis.es/talleres/
-- Cursos: https://adamis.es/programa/
+- Programa: https://adamis.es/programa/
 - Contacto: https://adamis.es/#contacto
 
 ## English
 
 - Home: https://adamis.es/financial-education/
-- Product / How it works: https://adamis.es/financial-education/product/
+- Why it matters: https://adamis.es/financial-education/why-it-matters/
+- Product: https://adamis.es/financial-education/product/
 - Methodology: https://adamis.es/financial-education/methodology/
 - Impact: https://adamis.es/financial-education/impact/
 - Workshops: https://adamis.es/financial-education/workshops/
-- Courses: https://adamis.es/financial-education/courses/
+- Programme: https://adamis.es/financial-education/courses/
+- ADAMIS World: https://adamis.es/financial-education/adamis-world/
 - Contact: https://adamis.es/financial-education/#contact
 
 ## Product
@@ -35,7 +38,7 @@ La metodología ADAMIS conecta tres capas: plataforma digital para comprender, a
 
 The ADAMIS methodology connects three layers: a digital platform to understand, classroom activities to experience and AI with educational supervision to guide.
 
-## Courses
+## Programme
 
 The current course progression covers three years of Primary Education:
 
