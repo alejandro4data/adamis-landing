@@ -1,4 +1,4 @@
-# Sharing the project safely
+# Sharing adamis-landing safely
 
 Before sharing a ZIP or another copy of the project, exclude development and private material.
 
@@ -11,4 +11,5 @@ Do not include:
 - `.git/`
 - `*.zip`
 
-Use `.env.example` to communicate required variable names. Never copy real values into shared packages or documentation.
+Share `.env.example` separately to communicate the contact form variable names;
+`CONTACT_TO_EMAIL` is optional. Never copy real values into shared packages or documentation.

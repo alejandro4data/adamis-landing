@@ -325,10 +325,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactSection = document.querySelector('[data-contact-section]') || document.getElementById('contacto');
     const openingSection = document.querySelector('.lead-hero, .detail-hero, .brief-hero, .methodology-hero, .workshop-watch-heading');
     const footer = document.querySelector('.commercial-footer');
-    const landingBackgrounds = document.querySelectorAll('[data-landing-bg]');
-    const landingImageSlots = document.querySelectorAll('[data-landing-image]');
-    const LANDING_PHOTO_EXTENSIONS = ['avif', 'webp', 'jpg', 'jpeg', 'png'];
-    const LANDING_LOGO_EXTENSIONS = ['svg', 'webp', 'png', 'avif', 'jpg', 'jpeg'];
 
     let panelRevealAnimation = null;
     let activeProduct = productTabs.find((tab) => tab.classList.contains('is-active'))?.dataset.productTab || productTabs[0]?.dataset.productTab || '';
@@ -336,7 +332,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let productTransitionFrame = 0;
     let productMeasureFrame = 0;
     const productTriggerAnimations = new Map();
-    const landingAssetCache = new Map();
     let menuScrollPosition = 0;
     let menuBodyInlineStyles = null;
 
@@ -657,79 +652,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     infoRequestForms.forEach(syncInfoFormSource);
-
-    const probeLandingAsset = (src) => new Promise((resolve) => {
-        if (!src) {
-            resolve('');
-            return;
-        }
-
-        const probe = new Image();
-        probe.onload = () => resolve(src);
-        probe.onerror = () => resolve('');
-        probe.src = src;
-    });
-
-    const getLandingAssetCandidates = (basePath, extensions) => {
-        if (!basePath) return [];
-        if (/\.(avif|webp|jpe?g|png|svg)$/i.test(basePath)) return [basePath];
-
-        return extensions.map((extension) => `${basePath}.${extension}`);
-    };
-
-    const resolveLandingAsset = async (basePath, extensions) => {
-        const cacheKey = `${basePath || ''}|${extensions.join(',')}`;
-        if (landingAssetCache.has(cacheKey)) {
-            return landingAssetCache.get(cacheKey);
-        }
-
-        const resolveRequest = (async () => {
-            const candidates = getLandingAssetCandidates(basePath, extensions);
-
-            for (const candidate of candidates) {
-                const loadedAsset = await probeLandingAsset(candidate);
-                if (loadedAsset) return loadedAsset;
-            }
-
-            return '';
-        })();
-
-        landingAssetCache.set(cacheKey, resolveRequest);
-        return resolveRequest;
-    };
-
-    const setLandingBackgrounds = () => {
-        landingBackgrounds.forEach(async (element) => {
-            const resolvedAsset = await resolveLandingAsset(element.dataset.landingBg, LANDING_PHOTO_EXTENSIONS);
-            if (!resolvedAsset) return;
-
-            element.style.setProperty('--pilot-photo', `url("${resolvedAsset.replace(/"/g, '\\"')}")`);
-            element.classList.add('has-landing-image');
-        });
-    };
-
-    const setLandingImages = () => {
-        landingImageSlots.forEach(async (slot) => {
-            const image = slot.querySelector('img');
-            if (!image) return;
-
-            const extensions = slot.dataset.landingImageKind === 'logo'
-                ? LANDING_LOGO_EXTENSIONS
-                : LANDING_PHOTO_EXTENSIONS;
-            const resolvedAsset = await resolveLandingAsset(slot.dataset.landingImage, extensions);
-            if (!resolvedAsset) return;
-
-            image.src = resolvedAsset;
-            image.hidden = false;
-            slot.querySelectorAll('small').forEach((fallbackItem) => {
-                fallbackItem.hidden = true;
-            });
-            slot.classList.add('has-landing-image');
-        });
-    };
-
-    setLandingBackgrounds();
-    setLandingImages();
 
     const trackCta = (element, eventName = '') => {
         const cta = element?.dataset?.cta || eventName;
