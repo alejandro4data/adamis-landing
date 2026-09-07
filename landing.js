@@ -12,11 +12,38 @@
             if (problemCards.length < 2 || !('IntersectionObserver' in window)) return;
 
             const compactViewport = window.matchMedia('(max-width: 720px) and (max-height: 760px)');
+            const mobileViewport = window.matchMedia('(max-width: 640px)');
+            const header = document.querySelector('[data-site-header]');
+            const mobileCta = document.querySelector('.mobile-cta-bar');
             let isNearSection = false;
             let isListening = false;
             let animationFrame = 0;
             let stateKey = '';
             let lastProgress = -1;
+
+            const syncMobileGeometry = () => {
+                if (!mobileViewport.matches || reducedMotion.matches) {
+                    problemSection.classList.remove('is-mobile-stack', 'is-mobile-stack-fallback');
+                    return;
+                }
+
+                const styles = window.getComputedStyle(problemSection);
+                const step = Number.parseFloat(styles.getPropertyValue('--problem-stack-step'));
+                const clearance = Number.parseFloat(styles.getPropertyValue('--problem-mobile-clearance'));
+                const headerHeight = header?.getBoundingClientRect().height || 0;
+                const ctaHeight = mobileCta?.getBoundingClientRect().height || 0;
+                const heights = problemCards.map((card) => card.getBoundingClientRect().height);
+                const deckHeight = Math.max(...heights.map((height, index) => height + index * step));
+                const lastCardBottom = heights[heights.length - 1] + (heights.length - 1) * step;
+                const fits = deckHeight + headerHeight + ctaHeight + clearance * 2 <= window.innerHeight;
+
+                problemSection.style.setProperty('--problem-mobile-header', `${headerHeight}px`);
+                problemSection.style.setProperty('--problem-mobile-cta', `${ctaHeight}px`);
+                problemSection.style.setProperty('--problem-mobile-deck', `${deckHeight}px`);
+                problemSection.style.setProperty('--problem-mobile-tail', `${64 + deckHeight - lastCardBottom}px`);
+                problemSection.classList.toggle('is-mobile-stack', fits);
+                problemSection.classList.toggle('is-mobile-stack-fallback', !fits);
+            };
 
             const resetStates = () => {
                 stateKey = '';
@@ -91,6 +118,15 @@
             };
 
             const syncMode = () => {
+                if (mobileViewport.matches) {
+                    stopListening();
+                    resetStates();
+                    problemSection.classList.remove('is-stack-enhanced');
+                    syncMobileGeometry();
+                    return;
+                }
+
+                syncMobileGeometry();
                 const useFallback = reducedMotion.matches || compactViewport.matches;
                 problemSection.classList.toggle('is-stack-enhanced', !useFallback);
 
@@ -114,7 +150,7 @@
                 const sectionEntry = entries[0];
                 isNearSection = Boolean(sectionEntry?.isIntersecting);
 
-                if (isNearSection && !reducedMotion.matches && !compactViewport.matches) {
+                if (isNearSection && !mobileViewport.matches && !reducedMotion.matches && !compactViewport.matches) {
                     startListening();
                 } else {
                     stopListening();
@@ -127,6 +163,16 @@
             proximityObserver.observe(problemSection);
             reducedMotion.addEventListener?.('change', syncMode);
             compactViewport.addEventListener?.('change', syncMode);
+            mobileViewport.addEventListener?.('change', syncMode);
+            // Content, fonts, header and safe-area changes can alter the usable
+            // space. Native sticky handles scrolling without a mobile listener.
+            if ('ResizeObserver' in window) {
+                const geometryObserver = new ResizeObserver(syncMobileGeometry);
+                [...problemCards, header, mobileCta].filter(Boolean).forEach((element) => {
+                    geometryObserver.observe(element);
+                });
+            }
+            window.addEventListener('resize', syncMobileGeometry, { passive: true });
             syncMode();
         };
 

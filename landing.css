@@ -1069,6 +1069,44 @@
     }
 }
 
+/* Mobile geometry is measured on resize, never on scroll. Keep the compact
+   card design above, but only fall back to a list when the whole deck cannot fit. */
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+    .public-site.landing-page .landing-problem {
+        --problem-stack-step: 6px;
+        --problem-mobile-clearance: 16px;
+        --problem-mobile-rest: max(
+            calc(var(--problem-mobile-header) + var(--problem-mobile-clearance)),
+            calc((100dvh + var(--problem-mobile-header) - var(--problem-mobile-cta) - var(--problem-mobile-deck)) / 2)
+        );
+    }
+
+    .public-site.landing-page .landing-problem.is-mobile-stack .landing-problem-story::after {
+        /* A short final hold lets the last card settle before the section exits. */
+        content: '';
+        flex: 0 0 var(--problem-mobile-tail);
+    }
+
+    .public-site.landing-page .landing-problem.is-mobile-stack .landing-problem-card {
+        position: sticky;
+        top: calc(var(--problem-mobile-rest) + var(--problem-stack-index) * var(--problem-stack-step));
+        z-index: calc(var(--problem-stack-index) + 1);
+    }
+
+    .public-site.landing-page .landing-problem .landing-problem-card {
+        opacity: 1;
+        transform: none;
+        transition: none;
+        will-change: auto;
+    }
+
+    .public-site.landing-page .landing-problem.is-mobile-stack-fallback .landing-problem-card {
+        position: relative;
+        top: auto;
+        z-index: auto;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .public-site.landing-page .landing-problem-card-outcome .landing-problem-link span {
         transition: none;
