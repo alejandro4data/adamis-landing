@@ -1,25 +1,17 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /app/
-Disallow: /profesor/
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /api/
-Disallow: /app/
-Disallow: /profesor/
 
 User-agent: GPTBot
 Allow: /
 Disallow: /api/
-Disallow: /app/
-Disallow: /profesor/
 
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /api/
-Disallow: /app/
-Disallow: /profesor/
 
 Sitemap: https://adamis.es/sitemap.xml

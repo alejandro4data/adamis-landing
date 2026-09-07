@@ -1,5 +1,13 @@
 {
   "redirects": [
+    { "source": "/splash.html", "destination": "https://adamis-demo.vercel.app/", "permanent": false },
+    { "source": "/app/:path*", "destination": "https://adamis-demo.vercel.app/app/:path*", "permanent": false },
+    { "source": "/app/", "destination": "https://adamis-demo.vercel.app/app/", "permanent": false },
+    { "source": "/app/:path*/", "destination": "https://adamis-demo.vercel.app/app/:path*/", "permanent": false },
+    { "source": "/profesor", "destination": "https://adamis-demo.vercel.app/", "permanent": false },
+    { "source": "/profesor/", "destination": "https://adamis-demo.vercel.app/", "permanent": false },
+    { "source": "/profesor/:path*", "destination": "https://adamis-demo.vercel.app/profesor/:path*", "permanent": false },
+    { "source": "/profesor/:path*/", "destination": "https://adamis-demo.vercel.app/profesor/:path*/", "permanent": false },
     { "source": "/educacion-financiera-primaria/:path*", "destination": "/", "permanent": true },
     { "source": "/colegios/:path*", "destination": "/", "permanent": true },
     { "source": "/packs-tematicos/:path*", "destination": "/programa/", "permanent": true },
@@ -11,12 +19,6 @@
     { "source": "/animación/:path*", "destination": "/", "permanent": true }
   ],
   "headers": [
-    {
-      "source": "/app/assets/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
-    },
     {
       "source": "/assets/(.*)",
       "headers": [
