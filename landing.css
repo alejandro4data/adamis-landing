@@ -739,8 +739,9 @@
 
 .public-site.landing-page .landing-problem {
     --problem-header-height: 74px;
+    --problem-eyebrow-height: 40px;
     --problem-sticky-gap: clamp(18px, 2.8svh, 26px);
-    --problem-sticky-top: calc(var(--problem-header-height) + var(--problem-sticky-gap));
+    --problem-sticky-top: calc(var(--problem-header-height) + var(--problem-eyebrow-height) + var(--problem-sticky-gap));
     --problem-stack-step: clamp(11px, 1.4svh, 14px);
     --problem-cover-progress: 0;
     isolation: isolate;
@@ -759,7 +760,12 @@
 }
 
 .public-site.landing-page .landing-problem-eyebrow {
+    position: sticky;
+    top: var(--problem-header-height);
+    z-index: 2;
     margin-bottom: clamp(28px, 3vw, 40px);
+    padding-block: 12px;
+    background: var(--landing-paper-deep);
 }
 
 .public-site.landing-page .landing-problem-card {

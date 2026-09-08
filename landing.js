@@ -14,6 +14,7 @@
             const compactViewport = window.matchMedia('(max-width: 720px) and (max-height: 760px)');
             const mobileViewport = window.matchMedia('(max-width: 640px)');
             const header = document.querySelector('[data-site-header]');
+            const problemEyebrow = problemSection.querySelector('.landing-problem-eyebrow');
             const mobileCta = document.querySelector('.mobile-cta-bar');
             let isNearSection = false;
             let isListening = false;
@@ -22,6 +23,11 @@
             let lastProgress = -1;
 
             const syncMobileGeometry = () => {
+                const headerHeight = header?.getBoundingClientRect().height || 0;
+                const eyebrowHeight = problemEyebrow?.getBoundingClientRect().height || 0;
+                problemSection.style.setProperty('--problem-header-height', `${headerHeight}px`);
+                problemSection.style.setProperty('--problem-eyebrow-height', `${eyebrowHeight}px`);
+
                 if (!mobileViewport.matches || reducedMotion.matches) {
                     problemSection.classList.remove('is-mobile-stack', 'is-mobile-stack-fallback');
                     return;
@@ -30,14 +36,14 @@
                 const styles = window.getComputedStyle(problemSection);
                 const step = Number.parseFloat(styles.getPropertyValue('--problem-stack-step'));
                 const clearance = Number.parseFloat(styles.getPropertyValue('--problem-mobile-clearance'));
-                const headerHeight = header?.getBoundingClientRect().height || 0;
+                const reservedTop = headerHeight + eyebrowHeight;
                 const ctaHeight = mobileCta?.getBoundingClientRect().height || 0;
                 const heights = problemCards.map((card) => card.getBoundingClientRect().height);
                 const deckHeight = Math.max(...heights.map((height, index) => height + index * step));
                 const lastCardBottom = heights[heights.length - 1] + (heights.length - 1) * step;
-                const fits = deckHeight + headerHeight + ctaHeight + clearance * 2 <= window.innerHeight;
+                const fits = deckHeight + reservedTop + ctaHeight + clearance * 2 <= window.innerHeight;
 
-                problemSection.style.setProperty('--problem-mobile-header', `${headerHeight}px`);
+                problemSection.style.setProperty('--problem-mobile-header', `${reservedTop}px`);
                 problemSection.style.setProperty('--problem-mobile-cta', `${ctaHeight}px`);
                 problemSection.style.setProperty('--problem-mobile-deck', `${deckHeight}px`);
                 problemSection.style.setProperty('--problem-mobile-tail', `${64 + deckHeight - lastCardBottom}px`);
@@ -168,7 +174,7 @@
             // space. Native sticky handles scrolling without a mobile listener.
             if ('ResizeObserver' in window) {
                 const geometryObserver = new ResizeObserver(syncMobileGeometry);
-                [...problemCards, header, mobileCta].filter(Boolean).forEach((element) => {
+                [...problemCards, header, problemEyebrow, mobileCta].filter(Boolean).forEach((element) => {
                     geometryObserver.observe(element);
                 });
             }
