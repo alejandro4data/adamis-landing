@@ -759,6 +759,11 @@
     width: 100%;
 }
 
+.public-site.landing-page .landing-problem-label-slot,
+.public-site.landing-page .landing-problem-card-slot {
+    display: contents;
+}
+
 .public-site.landing-page .landing-problem-eyebrow {
     position: sticky;
     top: var(--problem-header-height);
@@ -988,6 +993,11 @@
         padding-block: 54px;
     }
 
+    .public-site.landing-page .landing-problem-eyebrow {
+        position: relative;
+        top: auto;
+    }
+
     .public-site.landing-page .landing-problem-story {
         gap: clamp(15px, 2svh, 18px);
     }
@@ -1081,22 +1091,54 @@
     .public-site.landing-page .landing-problem {
         --problem-stack-step: 6px;
         --problem-mobile-clearance: 16px;
+        --problem-mobile-label-gap: 28px;
         --problem-mobile-rest: max(
             calc(var(--problem-mobile-header) + var(--problem-mobile-clearance)),
             calc((100dvh + var(--problem-mobile-header) - var(--problem-mobile-cta) - var(--problem-mobile-deck)) / 2)
         );
     }
 
+    .public-site.landing-page .landing-problem.is-mobile-stack > .container {
+        display: grid;
+    }
+
+    .public-site.landing-page .landing-problem.is-mobile-stack .landing-problem-label-slot {
+        display: block;
+        grid-area: 1 / 1;
+        align-self: start;
+        position: sticky;
+        top: calc(var(--problem-mobile-rest) - var(--problem-eyebrow-height) - var(--problem-mobile-label-gap));
+        height: calc(var(--problem-eyebrow-height) + var(--problem-mobile-label-gap) + var(--problem-mobile-deck));
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .public-site.landing-page .landing-problem.is-mobile-stack .landing-problem-eyebrow {
+        margin-bottom: 0;
+    }
+
+    .public-site.landing-page .landing-problem.is-mobile-stack .landing-problem-story {
+        grid-area: 1 / 1;
+        padding-top: calc(var(--problem-eyebrow-height) + var(--problem-mobile-label-gap));
+    }
+
     .public-site.landing-page .landing-problem.is-mobile-stack .landing-problem-story::after {
         /* A short final hold lets the last card settle before the section exits. */
         content: '';
-        flex: 0 0 var(--problem-mobile-tail);
+        flex: 0 0 64px;
+    }
+
+    .public-site.landing-page .landing-problem.is-mobile-stack .landing-problem-card-slot {
+        display: block;
+        position: sticky;
+        top: calc(var(--problem-mobile-rest) + var(--problem-stack-index) * var(--problem-stack-step));
+        flex: 0 0 calc(var(--problem-mobile-deck) - var(--problem-stack-index) * var(--problem-stack-step));
+        z-index: calc(var(--problem-stack-index) + 1);
     }
 
     .public-site.landing-page .landing-problem.is-mobile-stack .landing-problem-card {
-        position: sticky;
-        top: calc(var(--problem-mobile-rest) + var(--problem-stack-index) * var(--problem-stack-step));
-        z-index: calc(var(--problem-stack-index) + 1);
+        position: relative;
+        top: auto;
     }
 
     .public-site.landing-page .landing-problem .landing-problem-card {
