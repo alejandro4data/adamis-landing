@@ -17,17 +17,17 @@
             const problemEyebrow = problemSection.querySelector('.landing-problem-eyebrow');
             const mobileCta = document.querySelector('.mobile-cta-bar');
             // Reserve the same bottom edge for the label and every card, so
-            // native sticky releases the whole mobile stack together.
-            const wrapForMobileStack = (element, className) => {
+            // native sticky releases the whole stack together.
+            const wrapForStack = (element, className) => {
                 const wrapper = document.createElement('div');
                 wrapper.className = className;
                 element.before(wrapper);
                 wrapper.append(element);
                 return wrapper;
             };
-            if (problemEyebrow) wrapForMobileStack(problemEyebrow, 'landing-problem-label-slot');
+            if (problemEyebrow) wrapForStack(problemEyebrow, 'landing-problem-label-slot');
             problemCards.forEach((card, index) => {
-                const slot = wrapForMobileStack(card, 'landing-problem-card-slot');
+                const slot = wrapForStack(card, 'landing-problem-card-slot');
                 slot.style.setProperty('--problem-stack-index', index);
             });
             let isNearSection = false;
@@ -35,8 +35,9 @@
             let animationFrame = 0;
             let stateKey = '';
             let lastProgress = -1;
+            let desktopStickyTops = [];
 
-            const syncMobileGeometry = () => {
+            const syncStackGeometry = () => {
                 const headerHeight = header?.getBoundingClientRect().height || 0;
                 const eyebrowHeight = problemEyebrow?.getBoundingClientRect().height || 0;
                 problemSection.style.setProperty('--problem-header-height', `${headerHeight}px`);
@@ -44,6 +45,14 @@
 
                 if (!mobileViewport.matches || reducedMotion.matches) {
                     problemSection.classList.remove('is-mobile-stack', 'is-mobile-stack-fallback');
+                    if (problemSection.classList.contains('is-stack-enhanced')) {
+                        desktopStickyTops = problemCards.map((card) =>
+                            Number.parseFloat(window.getComputedStyle(card.parentElement).top));
+                        const step = desktopStickyTops[1] - desktopStickyTops[0];
+                        // Measure layout heights, unaffected by the cover animation.
+                        const deckHeight = Math.max(...problemCards.map((card, index) => card.offsetHeight + index * step));
+                        problemSection.style.setProperty('--problem-desktop-deck', `${deckHeight}px`);
+                    }
                     return;
                 }
 
@@ -77,19 +86,19 @@
                 animationFrame = 0;
                 if (!isListening) return;
 
-                const stickyTop = Number.parseFloat(window.getComputedStyle(problemCards[0]).top) || 110;
                 const coverDistance = Math.min(210, Math.max(120, window.innerHeight * 0.22));
-                const cardTops = problemCards.map((card) => card.getBoundingClientRect().top);
+                const cardDistances = problemCards.map((card, index) =>
+                    card.parentElement.getBoundingClientRect().top - desktopStickyTops[index]);
                 let activeIndex = 0;
                 let coveringIndex = -1;
                 let coverProgress = 0;
 
                 for (let index = 1; index < problemCards.length; index += 1) {
-                    if (cardTops[index] > stickyTop + coverDistance) break;
+                    if (cardDistances[index] > coverDistance) break;
                     activeIndex = index;
-                    if (cardTops[index] > stickyTop + 1) {
+                    if (cardDistances[index] > 1) {
                         coveringIndex = index - 1;
-                        coverProgress = (stickyTop + coverDistance - cardTops[index]) / coverDistance;
+                        coverProgress = (coverDistance - cardDistances[index]) / coverDistance;
                     }
                 }
 
@@ -141,13 +150,13 @@
                     stopListening();
                     resetStates();
                     problemSection.classList.remove('is-stack-enhanced');
-                    syncMobileGeometry();
+                    syncStackGeometry();
                     return;
                 }
 
-                syncMobileGeometry();
                 const useFallback = reducedMotion.matches || compactViewport.matches;
                 problemSection.classList.toggle('is-stack-enhanced', !useFallback);
+                syncStackGeometry();
 
                 if (useFallback) {
                     stopListening();
@@ -186,12 +195,12 @@
             // Content, fonts, header and safe-area changes can alter the usable
             // space. Native sticky handles scrolling without a mobile listener.
             if ('ResizeObserver' in window) {
-                const geometryObserver = new ResizeObserver(syncMobileGeometry);
+                const geometryObserver = new ResizeObserver(syncStackGeometry);
                 [...problemCards, header, problemEyebrow, mobileCta].filter(Boolean).forEach((element) => {
                     geometryObserver.observe(element);
                 });
             }
-            window.addEventListener('resize', syncMobileGeometry, { passive: true });
+            window.addEventListener('resize', syncStackGeometry, { passive: true });
             syncMode();
         };
 
