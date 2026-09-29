@@ -1,0 +1,578 @@
+/*
+ * #NadaEsGratis: static campaign, mobile first.
+ * public.css supplies the reset, Manrope, brand lockup and primary CTA.
+ * These palette values match landing.css without loading the home-only styles.
+ * Every component is scoped so existing routes keep their current appearance.
+ */
+body.public-site.gratis-page {
+    --gratis-paper: #fbf7ef;
+    --gratis-ink: #122b2a;
+    --gratis-ink-soft: #37504d;
+    --gratis-night: #102d2c;
+    --gratis-teal: #1d6662;
+    --gratis-teal-light: #d8eee8;
+    --gratis-gold: #f5b92f;
+    --gratis-gold-light: #ffdb72;
+    --gratis-gold-deep: #9c6200;
+    --gratis-line: rgba(18, 43, 42, 0.14);
+    background: var(--gratis-paper);
+    color: var(--gratis-ink-soft);
+    -webkit-font-smoothing: antialiased;
+}
+
+.gratis-page .gratis-container {
+    width: min(100%, 1200px);
+    margin-inline: auto;
+    padding-inline: max(24px, env(safe-area-inset-left)) max(24px, env(safe-area-inset-right));
+}
+
+.gratis-page .gratis-opening {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    /* svh keeps the entire message above the mobile browser's expanded bars.
+       min-height lets enlarged text and unusually short screens grow safely. */
+    min-height: 100vh;
+    min-height: 100svh;
+    color: var(--gratis-paper);
+    background: var(--gratis-night);
+}
+
+.gratis-page .gratis-header {
+    padding-top: max(12px, env(safe-area-inset-top));
+    padding-bottom: 8px;
+}
+
+.gratis-page .gratis-header .site-brand {
+    gap: 8px;
+    min-height: 44px;
+}
+
+.gratis-page .gratis-header .site-brand-logo {
+    width: 30px;
+    height: 30px;
+}
+
+.gratis-page .gratis-header .site-brand-name {
+    color: var(--gratis-paper);
+    font-size: 0.88rem;
+    letter-spacing: 0.1em;
+}
+
+.gratis-page .gratis-header .site-brand-subtitle {
+    color: var(--gratis-teal-light);
+    font-size: 0.6rem;
+}
+
+.gratis-page .gratis-hero {
+    flex: 1;
+    display: grid;
+    grid-template-rows: 1fr auto auto;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+
+.gratis-page .gratis-hero-message {
+    display: grid;
+    align-content: center;
+    gap: clamp(22px, 4svh, 36px);
+    padding-block: clamp(20px, 4svh, 40px);
+}
+
+.public-site.gratis-page h1 {
+    max-width: 14ch;
+    color: var(--gratis-paper);
+    /* One display face, only for the campaign headline. */
+    font-family: 'Anton', Impact, 'Arial Narrow', sans-serif;
+    font-size: clamp(2.75rem, 15vw, 5.4rem);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+}
+
+.gratis-page .gratis-title-line {
+    display: block;
+}
+
+.gratis-page .gratis-title-money {
+    color: var(--gratis-gold-light);
+}
+
+.public-site.gratis-page h1 em {
+    display: table;
+    margin-top: 0.14em;
+    padding: 0.07em 0.15em 0.12em;
+    color: var(--gratis-night);
+    background: var(--gratis-gold);
+    font-family: inherit;
+    font-size: 1.07em;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: inherit;
+    line-height: 1;
+    transform: rotate(-1deg);
+    transform-origin: left center;
+}
+
+.gratis-page .gratis-hero-copy {
+    max-width: 36ch;
+    color: var(--gratis-teal-light);
+    font-size: 1rem;
+    line-height: 1.55;
+    text-wrap: pretty;
+}
+
+.gratis-page .gratis-hero-copy strong {
+    display: block;
+    margin-top: 0.35em;
+    color: var(--gratis-paper);
+    font-weight: 600;
+}
+
+.gratis-page .gratis-signature {
+    display: grid;
+    gap: 6px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(216, 238, 232, 0.2);
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.gratis-page .gratis-hashtag {
+    color: var(--gratis-gold);
+    font-size: 1.25rem;
+    letter-spacing: -0.025em;
+}
+
+.gratis-page .gratis-scroll {
+    display: grid;
+    place-items: center;
+    justify-self: center;
+    width: 44px;
+    height: 44px;
+    margin-top: 4px;
+    color: var(--gratis-teal-light);
+    border-radius: 50%;
+}
+
+.gratis-page .gratis-scroll svg {
+    animation: gratis-nudge 4s ease-in-out infinite;
+}
+
+@keyframes gratis-nudge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+}
+
+.gratis-page .gratis-opening :focus-visible {
+    outline-color: var(--gratis-gold-light);
+}
+
+.gratis-page .gratis-lesson {
+    display: grid;
+    gap: 28px;
+    padding-block: 64px;
+    scroll-margin-top: 24px;
+}
+
+.gratis-page .gratis-lesson-heading {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+}
+
+.gratis-page .gratis-number,
+.gratis-page .gratis-eyebrow {
+    color: var(--gratis-teal);
+    font-size: 0.69rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.gratis-page .gratis-lesson h2 {
+    color: var(--gratis-ink);
+    font-size: clamp(2.75rem, 12vw, 4.75rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.06em;
+}
+
+.gratis-page .gratis-lesson h2 br {
+    display: none;
+}
+
+.gratis-page .gratis-lesson-body {
+    display: grid;
+    gap: 20px;
+    max-width: 570px;
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+.gratis-page .gratis-takeaway {
+    max-width: 23ch;
+    color: var(--gratis-ink);
+    font-size: clamp(1.6rem, 6.8vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+}
+
+.gratis-page .gratis-takeaway em {
+    color: var(--gratis-gold-deep);
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.gratis-page .gratis-exchanges {
+    display: grid;
+    padding: 0;
+    list-style: none;
+}
+
+.gratis-page .gratis-exchanges li {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 10px;
+    padding-block: 16px;
+    border-top: 1px solid var(--gratis-line);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.gratis-page .gratis-exchanges strong {
+    color: var(--gratis-ink);
+}
+
+.gratis-page .gratis-principle {
+    padding-left: 16px;
+    border-left: 3px solid var(--gratis-gold);
+    font-size: 0.95rem;
+}
+
+.gratis-page .gratis-principle strong {
+    color: var(--gratis-ink);
+}
+
+.gratis-page .gratis-lesson-risk {
+    position: relative;
+    padding-top: 48px;
+}
+
+.gratis-page .gratis-lesson-risk::before {
+    position: absolute;
+    top: 0;
+    right: 24px;
+    left: 24px;
+    height: 1px;
+    background: var(--gratis-line);
+    content: '';
+}
+
+.gratis-page .gratis-questions-intro {
+    font-weight: 700;
+}
+
+.gratis-page .gratis-questions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.gratis-page .gratis-questions li {
+    padding-block: 16px;
+    border-top: 1px solid var(--gratis-line);
+    color: var(--gratis-ink);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.gratis-page .gratis-purpose {
+    padding-block: 64px;
+    background: var(--gratis-teal-light);
+}
+
+.gratis-page .gratis-purpose-layout {
+    display: grid;
+    gap: 30px;
+}
+
+.gratis-page .gratis-purpose-intro {
+    position: relative;
+    padding-right: 88px;
+}
+
+.gratis-page .gratis-purpose h2 {
+    margin-top: 16px;
+    color: var(--gratis-ink);
+    font-size: clamp(2.5rem, 10.5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.055em;
+}
+
+.gratis-page .gratis-purpose h2 em {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.gratis-page .gratis-character {
+    position: absolute;
+    right: -8px;
+    bottom: -8px;
+    width: 100px;
+    height: 150px;
+    object-fit: contain;
+}
+
+.gratis-page .gratis-purpose-copy {
+    display: grid;
+    justify-items: start;
+    gap: 20px;
+    max-width: 570px;
+}
+
+.gratis-page .gratis-purpose-copy strong {
+    color: var(--gratis-ink);
+}
+
+.gratis-page .gratis-vision {
+    display: grid;
+    gap: 12px;
+    margin-block: 8px;
+    padding-top: 24px;
+    border-top: 1px solid var(--gratis-line);
+    font-size: 1.12rem;
+    line-height: 1.55;
+}
+
+/* Same gold pill and interaction as the home page's primary CTA. */
+.gratis-page .btn-primary.gratis-cta {
+    gap: 24px;
+    min-height: 58px;
+    margin-top: 8px;
+    padding: 15px 26px;
+    border-radius: 999px;
+    background: var(--gratis-gold);
+    color: var(--gratis-ink);
+    box-shadow: 0 16px 34px rgba(156, 98, 0, 0.2);
+}
+
+.gratis-page .btn-primary.gratis-cta:hover,
+.gratis-page .btn-primary.gratis-cta:focus-visible {
+    background: var(--gratis-gold-light);
+    box-shadow: 0 21px 40px rgba(156, 98, 0, 0.27);
+}
+
+.gratis-page .gratis-domain {
+    margin-top: -8px;
+    padding-left: 26px;
+    font-size: 0.75rem;
+}
+
+.gratis-page .gratis-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    padding-block: 24px;
+    font-size: 0.7rem;
+}
+
+/* Short portrait viewports, including mobile browser chrome, retain all copy. */
+@media (max-width: 767px) and (max-height: 700px) {
+    .gratis-page .gratis-hero-message {
+        gap: 18px;
+        padding-block: 18px;
+    }
+
+    .public-site.gratis-page h1 {
+        font-size: clamp(2.5rem, 14vw, 4rem);
+    }
+
+    .gratis-page .gratis-hero-copy {
+        font-size: 0.9375rem;
+        line-height: 1.5;
+    }
+
+    .gratis-page .gratis-signature {
+        gap: 4px;
+        padding-top: 12px;
+    }
+}
+
+@media (max-width: 767px) and (max-height: 620px) {
+    .gratis-page .gratis-header {
+        padding-top: max(6px, env(safe-area-inset-top));
+        padding-bottom: 0;
+    }
+
+    .gratis-page .gratis-hero-message {
+        gap: 14px;
+        padding-block: 12px;
+    }
+
+    .public-site.gratis-page h1 {
+        max-width: 14ch;
+        font-size: clamp(2.375rem, 12.4vw, 3.5rem);
+        line-height: 1.02;
+    }
+
+    .gratis-page .gratis-hero-copy {
+        line-height: 1.4;
+    }
+}
+
+@media (min-width: 768px) {
+    .gratis-page .gratis-container {
+        padding-inline: 48px;
+    }
+
+    .gratis-page .gratis-header {
+        padding-top: 24px;
+    }
+
+    .gratis-page .gratis-hero-message {
+        gap: 36px;
+        padding-block: 48px;
+    }
+
+    .public-site.gratis-page h1 {
+        max-width: 14ch;
+        font-size: clamp(4rem, 8.8vw, 6rem);
+    }
+
+    .gratis-page .gratis-hero-copy {
+        max-width: 46ch;
+        font-size: 1.125rem;
+    }
+
+    .gratis-page .gratis-signature {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding-top: 24px;
+        font-size: 1.125rem;
+    }
+
+    .gratis-page .gratis-hashtag {
+        font-size: 1.375rem;
+    }
+
+    .gratis-page .gratis-lesson {
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 48px;
+        padding-block: 96px;
+    }
+
+    .gratis-page .gratis-lesson h2 br {
+        display: initial;
+    }
+
+    .gratis-page .gratis-lesson-risk::before {
+        right: 48px;
+        left: 48px;
+    }
+
+    .gratis-page .gratis-purpose {
+        padding-block: 96px;
+    }
+
+    .gratis-page .gratis-purpose-layout {
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 48px;
+    }
+
+    .gratis-page .gratis-purpose-intro {
+        padding: 0;
+    }
+
+    .gratis-page .gratis-purpose h2 {
+        font-size: clamp(2.75rem, 5.4vw, 4.5rem);
+    }
+
+    .gratis-page .gratis-character {
+        position: static;
+        width: 160px;
+        height: 240px;
+        margin-top: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .gratis-page .gratis-hero-message {
+        grid-template-columns: 1.2fr 0.8fr;
+        align-items: center;
+        gap: clamp(48px, 6vw, 88px);
+        padding-block: 64px;
+    }
+
+    .public-site.gratis-page h1 {
+        font-size: clamp(4rem, 6.6vw, 6rem);
+    }
+
+    .gratis-page .gratis-hero-copy {
+        max-width: 32ch;
+        font-size: 1.125rem;
+        line-height: 1.7;
+    }
+}
+
+/* Landscape uses the available width instead of shrinking body text. */
+@media (min-width: 600px) and (max-height: 500px) {
+    .gratis-page .gratis-header {
+        padding-top: 8px;
+    }
+
+    .gratis-page .gratis-hero-message {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: center;
+        padding-block: 18px;
+    }
+
+    .public-site.gratis-page h1 {
+        font-size: 2rem;
+    }
+
+    .gratis-page .gratis-hero-copy {
+        font-size: 0.9375rem;
+        line-height: 1.4;
+    }
+
+    .gratis-page .gratis-signature {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding-top: 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:has(.gratis-page) {
+        scroll-behavior: auto;
+    }
+
+    .gratis-page *,
+    .gratis-page *::before,
+    .gratis-page *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .gratis-page .btn-primary:hover,
+    .gratis-page .btn-primary:focus-visible,
+    .gratis-page .btn-primary:hover span {
+        transform: none;
+    }
+}

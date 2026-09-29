@@ -18,6 +18,9 @@
     { "source": "/programa-educacion-financiera-6-primaria/:path*", "destination": "/programa/", "permanent": true },
     { "source": "/animación/:path*", "destination": "/", "permanent": true }
   ],
+  "rewrites": [
+    { "source": "/gratis", "destination": "/gratis/index.html" }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
