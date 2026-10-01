@@ -33,35 +33,53 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Fraunces:opsz,wght@9..144,600&amp;family=Manrope:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/public.css">
     <link rel="stylesheet" href="/gratis.css">
+    <script>
+        // Hide the intro before the first paint, with a fallback if its script fails.
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.hash
+            && performance.getEntriesByType('navigation')[0]?.type !== 'back_forward') {
+            document.documentElement.classList.add('gratis-intro-pending');
+            window.gratisIntroFallback = setTimeout(() => {
+                document.documentElement.classList.remove('gratis-intro-pending');
+            }, 3000);
+        }
+    </script>
+    <link rel="stylesheet" href="/site-header.css">
+    <script src="/site-header.js" defer></script>
+    <script src="/gratis.js" defer></script>
 </head>
-<body class="public-site gratis-page">
+<body class="public-site gratis-page has-adamis-header">
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <header class="adamis-header gratis-header is-on-dark" id="adamisHeader" data-site-header>
+        <nav class="adamis-header-bar" aria-label="Navegaci&#243;n principal">
+            <a href="/" class="adamis-header-brand" aria-label="Ir al inicio de ADAMIS">
+                <img src="/assets/logo.png" alt="" class="adamis-header-logo" width="1485" height="1342" decoding="async">
+                <span class="adamis-header-copy">
+                    <span class="adamis-header-name">ADAMIS</span>
+                    <span class="adamis-header-subtitle">Educaci&#243;n financiera</span>
+                </span>
+            </a>
+        </nav>
+    </header>
 
     <main>
         <div class="gratis-opening">
-            <header class="gratis-header gratis-container">
-                <a href="/" class="site-brand" aria-label="Ir al inicio de ADAMIS">
-                    <img src="/assets/logo.png" alt="" class="site-brand-logo" width="1485" height="1342" decoding="async">
-                    <span class="site-brand-copy">
-                        <span class="site-brand-name">ADAMIS</span>
-                        <span class="site-brand-subtitle">Educación financiera</span>
-                    </span>
-                </a>
-            </header>
-
             <section class="gratis-hero gratis-container" aria-labelledby="gratis-title">
                 <div class="gratis-hero-message" id="contenido" tabindex="-1">
-                    <h1 id="gratis-title"><span class="gratis-title-line">Si alguien</span> <span class="gratis-title-line">te ofrece</span> <span class="gratis-title-line gratis-title-money">dinero fácil,</span> <em>desconfía.</em></h1>
+                    <h1 id="gratis-title"><span class="gratis-title-line"><span class="gratis-title-word">Si</span> <span class="gratis-title-word">alguien</span></span> <span class="gratis-title-line"><span class="gratis-title-word">te</span> <span class="gratis-title-word">ofrece</span></span> <span class="gratis-title-line gratis-title-money"><span class="gratis-title-word">dinero</span> <span class="gratis-title-word">fácil,</span></span> <em>desconfía.</em></h1>
                     <p class="gratis-hero-copy">La curiosidad te trae hasta aquí. <strong>La Educación Financiera empieza cuando te haces preguntas.</strong></p>
                 </div>
                 <div class="gratis-signature">
                     <p><strong>ADAMIS por la Educación Financiera.</strong></p>
                     <p class="gratis-hashtag"><strong>#NadaEsGratis</strong></p>
                 </div>
-                <a class="gratis-scroll" href="#preguntas" aria-label="Descubre las preguntas que conviene hacerse">
-                    <svg width="20" height="24" viewBox="0 0 20 24" fill="none" aria-hidden="true" focusable="false">
-                        <path d="M10 3v17m-6-6 6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <a class="gratis-scroll" href="#preguntas" aria-label="Desliza y descubre las preguntas que conviene hacerse">
+                    <span class="gratis-scroll-label">Desliza y descubre</span>
+                    <span class="gratis-scroll-icon" aria-hidden="true">
+                        <svg width="32" height="38" viewBox="0 0 20 24" fill="none" focusable="false">
+                            <path d="M10 3v17m-6-6 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
                 </a>
             </section>
         </div>

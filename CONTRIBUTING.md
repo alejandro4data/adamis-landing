@@ -9,6 +9,11 @@ su repositorio.
 
 - HTML estático en `index.html` y los directorios de páginas; CSS y JavaScript
   en la raíz, recursos en `assets/`.
+- El header de todas las páginas se comparte mediante `site-header.css` y
+  `site-header.js`. Las páginas incluyen ambos archivos y el contenedor
+  `#adamisHeader[data-site-header]`, con la clase `has-adamis-header` en el body.
+  El script genera el menú según el idioma y los enlaces `hreflang`; los cambios
+  de tamaño, contraste y navegación se hacen allí, sin variantes por ruta.
 - Para revisar las páginas localmente desde la raíz: `python -m http.server 8000 --bind 127.0.0.1`.
   Abrir `http://127.0.0.1:8000/`. Este servidor no ejecuta la API ni los redirects.
 - `api/request-info.js` es la única API: recibe solicitudes comerciales por POST

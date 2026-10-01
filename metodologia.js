@@ -73,7 +73,8 @@
 
         const flowRect = flow.getBoundingClientRect();
         const flowTop = (window.scrollY || window.pageYOffset) + flowRect.top;
-        const headerHeight = header?.getBoundingClientRect().height || (window.innerWidth <= 920 ? 68 : 82);
+        const headerHeight = header?.getBoundingClientRect().bottom || (window.innerWidth <= 920 ? 68 : 82);
+        flow.style.setProperty('--method-header-height', `${headerHeight}px`);
         const stageHeight = stage.getBoundingClientRect().height;
 
         metrics = {
@@ -127,6 +128,7 @@
         measure();
     }, { passive: true });
     window.addEventListener('pageshow', measure, { passive: true });
+    if (header && 'ResizeObserver' in window) new ResizeObserver(measure).observe(header);
     reducedMotion.addEventListener?.('change', setMode);
 
     setMode();

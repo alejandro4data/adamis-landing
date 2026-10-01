@@ -38,7 +38,7 @@
             let desktopStickyTops = [];
 
             const syncStackGeometry = () => {
-                const headerHeight = header?.getBoundingClientRect().height || 0;
+                const headerHeight = header?.getBoundingClientRect().bottom || 0;
                 const eyebrowHeight = problemEyebrow?.getBoundingClientRect().height || 0;
                 problemSection.style.setProperty('--problem-header-height', `${headerHeight}px`);
                 problemSection.style.setProperty('--problem-eyebrow-height', `${eyebrowHeight}px`);

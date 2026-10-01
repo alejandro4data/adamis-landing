@@ -308,12 +308,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorialPlayButton = document.querySelector('[data-tutorial-play]');
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const mobileProductQuery = window.matchMedia('(max-width: 720px)');
-    const mobileMenuQuery = window.matchMedia('(max-width: 1180px)');
-    const header = document.querySelector('.commercial-header');
+    const header = document.querySelector('[data-site-header]');
     const siteHeader = document.querySelector('[data-site-header]');
     const menuToggle = document.querySelector('[data-menu-toggle]');
     const mainMenu = document.querySelector('[data-main-menu]');
-    const menuToggleLabel = menuToggle?.querySelector('.visually-hidden');
     const sectionNavLinks = Array.from(mainMenu?.querySelectorAll('[data-nav-section]') || []);
     const leadInterestTriggers = document.querySelectorAll('[data-lead-interest]');
     const leadInterestFields = document.querySelectorAll('[data-lead-interest-field]');
@@ -332,8 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let productTransitionFrame = 0;
     let productMeasureFrame = 0;
     const productTriggerAnimations = new Map();
-    let menuScrollPosition = 0;
-    let menuBodyInlineStyles = null;
 
     const getAnchorTargetPosition = (target) => {
         if (!target || target.id === 'inicio') return 0;
@@ -344,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const contentAnchor = leadFormAnchor || target.querySelector(
             '.section-heading, .hero-copy, .trust-copy, .problem-copy, .how-grid, .schools-copy, .contact-copy, .section-intro, .impact-intro, .pilot-shell, .learning-shell, .products-intro, .closing-shell'
         ) || target;
-        const headerHeight = header?.getBoundingClientRect().height || 0;
+        const headerHeight = header?.getBoundingClientRect().bottom || 0;
         const breathingRoom = target.matches?.('[data-method-story]')
             ? 0
             : window.innerWidth <= 920
@@ -355,141 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.max(0, absoluteTop - headerHeight - breathingRoom);
     };
 
-    const getMenuFocusableItems = () => {
-        if (!menuToggle || !mainMenu) return [];
-        return [
-            menuToggle,
-            ...Array.from(mainMenu.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'))
-        ].filter((item) => !item.hasAttribute('hidden'));
-    };
-
-    const syncMenuAccessibility = () => {
-        if (!mainMenu || !siteHeader) return;
-        if (!mobileMenuQuery.matches) {
-            mainMenu.removeAttribute('aria-hidden');
-            return;
-        }
-        mainMenu.setAttribute('aria-hidden', String(!siteHeader.classList.contains('is-menu-open')));
-    };
-
-    const setMenuState = (isOpen, { moveFocus = true } = {}) => {
-        if (!siteHeader || !menuToggle || !mainMenu) return;
-        const shouldOpen = Boolean(isOpen && mobileMenuQuery.matches);
-        const wasOpen = siteHeader.classList.contains('is-menu-open');
-
-        if (shouldOpen && !wasOpen) {
-            menuScrollPosition = window.scrollY;
-            menuBodyInlineStyles = {
-                position: document.body.style.position,
-                top: document.body.style.top,
-                width: document.body.style.width,
-                paddingRight: document.body.style.paddingRight
-            };
-            const scrollbarGap = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${menuScrollPosition}px`;
-            document.body.style.width = '100%';
-            if (scrollbarGap) document.body.style.paddingRight = `${scrollbarGap}px`;
-        }
-
-        siteHeader.classList.toggle('is-menu-open', shouldOpen);
-        document.documentElement.classList.toggle('mobile-menu-open', shouldOpen);
-        document.body.classList.toggle('mobile-menu-open', shouldOpen);
-        menuToggle.setAttribute('aria-expanded', String(shouldOpen));
-        mainMenu.setAttribute('aria-hidden', String(!shouldOpen));
-        if (menuToggleLabel) {
-            const openLabel = menuToggle.dataset.menuOpenLabel || 'Abrir men\u00fa';
-            const closeLabel = menuToggle.dataset.menuCloseLabel || 'Cerrar men\u00fa';
-            menuToggleLabel.textContent = shouldOpen ? closeLabel : openLabel;
-        }
-        if (shouldOpen && moveFocus) {
-            window.requestAnimationFrame(() => {
-                const firstMenuLink = mainMenu.querySelector('a[href]');
-                firstMenuLink?.focus({ preventScroll: true });
-            });
-        }
-
-        if (!shouldOpen && wasOpen && menuBodyInlineStyles) {
-            const restoreScrollPosition = menuScrollPosition;
-            document.body.style.position = menuBodyInlineStyles.position;
-            document.body.style.top = menuBodyInlineStyles.top;
-            document.body.style.width = menuBodyInlineStyles.width;
-            document.body.style.paddingRight = menuBodyInlineStyles.paddingRight;
-            menuBodyInlineStyles = null;
-            window.requestAnimationFrame(() => {
-                const previousScrollBehavior = document.documentElement.style.scrollBehavior;
-                document.documentElement.style.scrollBehavior = 'auto';
-                window.scrollTo(0, restoreScrollPosition);
-                document.documentElement.style.scrollBehavior = previousScrollBehavior;
-            });
-        }
-    };
-
-    const closeMobileMenu = ({ restoreFocus = false } = {}) => {
-        if (!siteHeader || !menuToggle || !mainMenu) return;
-        setMenuState(false);
-        if (restoreFocus) menuToggle.focus({ preventScroll: true });
-    };
-
-    menuToggle?.addEventListener('click', () => {
-        if (!siteHeader || !mainMenu) return;
-        setMenuState(!siteHeader.classList.contains('is-menu-open'), { moveFocus: false });
-    });
-
-    document.addEventListener('click', (event) => {
-        if (!siteHeader || !siteHeader.classList.contains('is-menu-open')) return;
-        if (siteHeader.contains(event.target)) return;
-        closeMobileMenu();
-    });
-
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && siteHeader?.classList.contains('is-menu-open')) {
-            closeMobileMenu({ restoreFocus: true });
-            return;
-        }
-
-        if (event.key === 'Tab' && siteHeader?.classList.contains('is-menu-open') && mobileMenuQuery.matches) {
-            const focusableItems = getMenuFocusableItems();
-            if (!focusableItems.length) return;
-            const firstItem = focusableItems[0];
-            const lastItem = focusableItems[focusableItems.length - 1];
-
-            if (event.shiftKey && document.activeElement === firstItem) {
-                event.preventDefault();
-                lastItem.focus();
-            } else if (!event.shiftKey && document.activeElement === lastItem) {
-                event.preventDefault();
-                firstItem.focus();
-            }
-        }
-    });
-
-    mainMenu?.addEventListener('click', (event) => {
-        if (event.target.closest('a')) {
-            closeMobileMenu();
-            return;
-        }
-        if (event.target === mainMenu) closeMobileMenu({ restoreFocus: true });
-    });
-
-    syncMenuAccessibility();
-    mobileMenuQuery.addEventListener?.('change', () => {
-        if (!mobileMenuQuery.matches) setMenuState(false, { moveFocus: false });
-        syncMenuAccessibility();
-    });
-
-    if (siteHeader) {
-        let headerFrame = 0;
-        const syncHeaderState = () => {
-            headerFrame = 0;
-            siteHeader.classList.toggle('is-scrolled', window.scrollY > 12);
-        };
-        syncHeaderState();
-        window.addEventListener('scroll', () => {
-            if (headerFrame) return;
-            headerFrame = window.requestAnimationFrame(syncHeaderState);
-        }, { passive: true });
-    }
+    const closeMobileMenu = (options = {}) => window.AdamisHeader?.close(options);
 
     if (document.body.classList.contains('landing-page') && sectionNavLinks.length && 'IntersectionObserver' in window) {
         const observedSections = sectionNavLinks
@@ -1377,7 +1239,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 measureMethodPills();
                 const flowRect = methodFlow.getBoundingClientRect();
                 const flowTop = (window.scrollY || window.pageYOffset) + flowRect.top;
-                const headerHeight = siteHeader?.getBoundingClientRect().height || (window.innerWidth <= 920 ? 68 : 76);
+                const headerHeight = siteHeader?.getBoundingClientRect().bottom || (window.innerWidth <= 920 ? 68 : 76);
+                methodFlow.style.setProperty('--method-header-height', `${headerHeight}px`);
                 const stageHeight = methodStage.getBoundingClientRect().height;
 
                 methodMetrics = {
@@ -1403,6 +1266,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             measureMethodFlow();
+            if (siteHeader && 'ResizeObserver' in window) new ResizeObserver(measureMethodFlow).observe(siteHeader);
             window.addEventListener('scroll', requestMethodRender, { passive: true });
             window.addEventListener('resize', handleMethodResize, { passive: true });
             window.addEventListener('pageshow', measureMethodFlow, { passive: true });
