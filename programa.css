@@ -999,6 +999,252 @@
     background: rgba(255, 255, 255, 0.4);
 }
 
+/* Spanish course catalogue: Primary and Secondary. */
+
+html[lang="es"] .program-page .program-stage-overview {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 30px;
+    margin: 0;
+    padding: 32px 0;
+    list-style: none;
+}
+
+html[lang="es"] .program-page .program-stage-overview li + li {
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+html[lang="es"] .program-page .program-stage-overview-label {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--program-gold-light);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+html[lang="es"] .program-page .program-stage-overview-label small {
+    font-size: inherit;
+}
+
+html[lang="es"] .program-page .program-stage-overview strong {
+    display: block;
+    margin-top: 15px;
+    color: #fff;
+    font-size: clamp(1.6rem, 2.4vw, 2.35rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1.15;
+}
+
+html[lang="es"] .program-page .program-stage-overview p {
+    max-width: 38ch;
+    margin-top: 12px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.86rem;
+    line-height: 1.6;
+}
+
+html[lang="es"] .program-page .program-catalog {
+    border-bottom: 1px solid var(--program-line);
+    background: #fffdf8;
+}
+
+html[lang="es"] .program-page .program-stage-catalog {
+    margin-top: clamp(42px, 5vw, 68px);
+}
+
+html[lang="es"] .program-page .program-stage-panel {
+    padding-top: 32px;
+}
+
+html[lang="es"] .program-page .program-stage-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px 24px;
+    margin-bottom: 26px;
+}
+
+html[lang="es"] .program-page .program-stage-heading h3 {
+    color: var(--program-ink);
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+html[lang="es"] .program-page .program-stage-heading p {
+    color: var(--program-ink-soft);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+html[lang="es"] .program-page .program-course-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: clamp(20px, 3vw, 38px);
+}
+
+html[lang="es"] .program-page .program-course-card {
+    min-width: 0;
+    padding: clamp(25px, 3.5vw, 44px);
+    border: 1px solid var(--program-line);
+    border-top: 4px solid var(--program-gold);
+    border-radius: 0 0 24px 24px;
+    background: var(--program-paper);
+}
+
+html[lang="es"] .program-page #secundaria .program-course-card {
+    border-top-color: var(--program-teal);
+    background: #f1f6f2;
+}
+
+html[lang="es"] .program-page .program-course-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--program-teal);
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+html[lang="es"] .program-page .program-course-meta span:last-child {
+    padding: 7px 11px;
+    border: 1px solid var(--program-line);
+    border-radius: 999px;
+    color: var(--program-ink);
+}
+
+html[lang="es"] .program-page .program-course-card h4 {
+    margin-top: 30px;
+    color: var(--program-ink);
+    font-size: clamp(1.85rem, 2.5vw, 2.7rem);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 1.08;
+}
+
+html[lang="es"] .program-page .program-course-card h4 em {
+    color: var(--program-gold-deep);
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: normal;
+    font-weight: 600;
+}
+
+html[lang="es"] .program-page #secundaria .program-course-card h4 em {
+    color: var(--program-teal);
+}
+
+html[lang="es"] .program-page .program-course-card > p {
+    margin-top: 23px;
+    color: var(--program-ink-soft);
+    font-size: 0.94rem;
+    line-height: 1.75;
+}
+
+html[lang="es"] .program-page .program-course-details {
+    margin-top: 30px;
+    border-top: 1px solid var(--program-line);
+}
+
+html[lang="es"] .program-page .program-course-details summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    min-height: 64px;
+    padding-top: 14px;
+    color: var(--program-ink);
+    font-size: 0.85rem;
+    font-weight: 800;
+    list-style: none;
+    cursor: pointer;
+}
+
+html[lang="es"] .program-page .program-course-details summary::-webkit-details-marker {
+    display: none;
+}
+
+html[lang="es"] .program-page .program-course-details summary:focus-visible {
+    outline: 2px solid var(--program-teal);
+    outline-offset: 5px;
+    border-radius: 3px;
+}
+
+html[lang="es"] .program-page .program-course-details summary > span {
+    font-size: 1.65rem;
+    font-weight: 500;
+}
+
+html[lang="es"] .program-page .program-course-details[open] summary > span {
+    transform: rotate(45deg);
+}
+
+html[lang="es"] .program-page .program-session-list {
+    margin: 18px 0 0;
+    padding-left: 25px;
+}
+
+html[lang="es"] .program-page .program-session-list li {
+    padding: 14px 0 14px 7px;
+    border-top: 1px solid var(--program-line);
+    color: var(--program-ink-soft);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+html[lang="es"] .program-page .program-session-list li::marker {
+    color: var(--program-teal);
+    font-weight: 800;
+}
+
+html[lang="es"] .program-page .program-session-list strong {
+    color: var(--program-ink);
+    font-weight: 700;
+}
+
+html[lang="es"] .program-page .program-session-list small {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.75rem;
+}
+
+html[lang="es"] .program-page .program-catalog-action {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    margin-top: 34px;
+    padding-top: 30px;
+    border-top: 1px solid var(--program-line);
+}
+
+html[lang="es"] .program-page .program-catalog-action p {
+    color: var(--program-ink-soft);
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 820px) {
+    html[lang="es"] .program-page .program-course-grid {
+        grid-template-columns: 1fr;
+    }
+
+    html[lang="es"] .program-page .program-course-card h4 {
+        font-size: clamp(1.85rem, 5vw, 2.7rem);
+    }
+}
+
 /* Responsive */
 
 @media (max-width: 1120px) {

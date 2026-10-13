@@ -78,6 +78,30 @@
     filter: drop-shadow(0 8px 14px rgba(139, 107, 32, 0.16));
 }
 
+/* The wordmark includes its lettering. Crop only the PNG's transparent padding. */
+.commercial-header .site-brand-wordmark {
+    display: block;
+    flex: 0 0 auto;
+    width: 140px;
+    height: 58px;
+    object-fit: cover;
+    object-position: center;
+}
+
+@media (min-width: 1181px) and (max-width: 1320px) {
+    .commercial-header .site-brand-wordmark {
+        width: 132px;
+        height: 55px;
+    }
+}
+
+@media (max-width: 1180px) {
+    .commercial-header .site-brand-wordmark {
+        width: 120px;
+        height: 50px;
+    }
+}
+
 .site-brand-copy {
     display: grid;
     gap: 1px;

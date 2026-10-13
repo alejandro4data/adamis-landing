@@ -2,6 +2,7 @@
     'use strict';
 
     const root = document.documentElement;
+    const isSpanish = root.lang.toLowerCase().startsWith('es');
     const requestDialogPanel = document.querySelector('[data-request-dialog-panel]');
     const requestDialog = requestDialogPanel?.closest('dialog');
     const requestForm = requestDialog?.querySelector('[data-request-form]');
@@ -16,7 +17,9 @@
     const requestTriggers = Array.from(document.querySelectorAll('[data-request-modal][data-request-type="taller"]'));
     const requestCopy = {
         title: requestDialog?.dataset.requestTitle || 'Solicitar taller',
-        intro: requestDialog?.dataset.requestIntro || 'Cuéntanos vuestro contexto y os ayudaremos a preparar un taller que encaje con el centro.',
+        intro: requestDialog?.dataset.requestIntro || (isSpanish
+            ? 'Cuéntanos qué curso de Primaria os interesa y cuánto alumnado participaría para organizar vuestra sesión.'
+            : 'Cuéntanos vuestro contexto y os ayudaremos a preparar un taller que encaje con el centro.'),
         interest: 'Taller inicial',
         source: 'modal-taller'
     };
