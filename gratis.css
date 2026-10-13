@@ -1,6 +1,6 @@
 /*
  * #NadaEsGratis: static campaign, mobile first.
- * public.css supplies the reset, Manrope and primary CTA; site-header owns navigation.
+ * public.css supplies the reset, Manrope, primary CTA and navigation styles.
  * These palette values match landing.css without loading the home-only styles.
  * Every component is scoped so existing routes keep their current appearance.
  */
@@ -15,7 +15,7 @@ body.public-site.gratis-page {
     --gratis-gold-light: #ffdb72;
     --gratis-gold-deep: #9c6200;
     --gratis-line: rgba(18, 43, 42, 0.14);
-    --gratis-header-space: var(--adamis-header-space);
+    --gratis-header-space: 74px;
     --gratis-peek: 84px;
     background: var(--gratis-paper);
     color: var(--gratis-ink-soft);
@@ -106,7 +106,8 @@ html.gratis-intro-pending .gratis-page :is(#adamisHeader, h1, .gratis-hero-copy,
 }
 
 .gratis-page #adamisHeader {
-    transition: opacity 600ms ease, filter 600ms ease, var(--header-transition);
+    position: fixed;
+    transition: opacity 600ms ease, filter 600ms ease, border-color 190ms ease, background-color 190ms ease, box-shadow 190ms ease;
 }
 
 .gratis-page.is-intro-running:not(.is-interface-revealed) :is(#adamisHeader, .gratis-hero-copy, .gratis-signature) {

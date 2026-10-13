@@ -1,7 +1,7 @@
 {
   "name": "ADAMIS",
   "short_name": "ADAMIS",
-  "description": "Programa de educacion financiera para colegios de Primaria.",
+  "description": "Educación financiera para Primaria y Secundaria en centros educativos.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

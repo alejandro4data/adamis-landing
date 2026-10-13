@@ -64,7 +64,6 @@
         window.removeEventListener('pagehide', finish);
         document.removeEventListener('visibilitychange', onVisibilityChange);
         reducedMotion.removeEventListener('change', finish);
-        window.AdamisHeader?.refresh();
     };
 
     const onKeyDown = (event) => {
@@ -109,7 +108,7 @@
         const openingBottom = opening.getBoundingClientRect().bottom + window.scrollY;
         const peek = parseFloat(getComputedStyle(page).getPropertyValue('--gratis-peek')) || 84;
         const titleTop = title.getBoundingClientRect().top + window.scrollY;
-        const headerBottom = header.querySelector('.adamis-header-brand').getBoundingClientRect().bottom;
+        const headerBottom = header.querySelector('.site-brand').getBoundingClientRect().bottom;
         // Short screens get a smaller glimpse so the island never covers the headline.
         return Math.max(0, Math.min(openingBottom - window.innerHeight + peek, titleTop - headerBottom - 18));
     };

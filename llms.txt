@@ -1,6 +1,6 @@
 # ADAMIS Finance
 
-ADAMIS is a financial education initiative for Primary Education developed by PROSPERE. It combines a digital platform with classroom activities and offers workshops and structured courses for schools.
+ADAMIS es una propuesta de educación financiera para centros educativos de Primaria y Secundaria desarrollada por PROSPERE. Ofrece talleres para 4.º, 5.º y 6.º de Primaria y cursos de 6–7 sesiones para 5.º y 6.º de Primaria y 1.º y 2.º de ESO.
 
 Canonical site: https://adamis.es/
 
@@ -13,7 +13,7 @@ Canonical site: https://adamis.es/
 - Metodología: https://adamis.es/metodologia/
 - Impacto: https://adamis.es/impacto/
 - Talleres: https://adamis.es/talleres/
-- Programa: https://adamis.es/programa/
+- Cursos ADAMIS: https://adamis.es/programa/
 - Contacto: https://adamis.es/#contacto
 
 ## English
@@ -28,28 +28,37 @@ Canonical site: https://adamis.es/
 - ADAMIS World: https://adamis.es/financial-education/adamis-world/
 - Contact: https://adamis.es/financial-education/#contact
 
-## Product
+## Producto
 
-ADAMIS combines a guided digital platform with practical classroom activities. Students learn through decisions and experiences, with teacher support throughout the learning journey.
+Los cursos combinan sesiones en plataforma y dinámicas participativas con acompañamiento de un monitor. Los contenidos se adaptan a cada nivel. Las demostraciones públicas actuales de la plataforma y el Universo ADAMIS corresponden a Primaria.
 
-## Methodology
+## Metodología
 
-La metodología ADAMIS conecta tres capas: plataforma digital para comprender, actividades de aula para experimentar e IA con supervisión educativa para orientar.
+La metodología ADAMIS conecta la comprensión de conceptos, la experimentación en el aula y el acompañamiento educativo para reflexionar sobre las decisiones.
 
-The ADAMIS methodology connects three layers: a digital platform to understand, classroom activities to experience and AI with educational supervision to guide.
+## Cursos
 
-## Programme
+Los cursos pueden contratarse para estos niveles:
 
-The current course progression covers three years of Primary Education:
+- 5.º de Primaria — 6 sesiones: hábitos, intercambio, ahorro y planificación.
+- 6.º de Primaria — 6 sesiones: precios, presupuesto y uso responsable de la deuda.
+- 1.º de ESO — 6 sesiones: autonomía financiera, derechos y responsabilidades, riesgo e inversión.
+- 2.º de ESO — 7 sesiones: empresa, inversión, emprendimiento y consumo consciente y seguro.
 
-- 4.º / 4th year — Elegir y cuidar / Choose and care.
-- 5.º / 5th year — Comparar y planificar / Compare and plan.
-- 6.º / 6th year — Decidir y proteger / Decide and protect.
+## Talleres
 
-## Impact
+Talleres digitales de 45–60 minutos para Primaria:
 
-The published impact figures are 400 students, 4 schools, 16 workshops or sessions, 16 hours delivered and 16 teachers. More than 95% of participating students say they want to keep learning or repeat the experience.
+- 4.º — Ahorrar con una meta.
+- 5.º — Cada moneda tiene una misión.
+- 6.º — Reajustar un presupuesto.
 
-## Contact
+La oferta actual de Secundaria se articula a través de los cursos de 1.º y 2.º de ESO.
+
+## Impacto
+
+Las cifras publicadas de ADAMIS son 400 alumnos, 4 centros, 16 talleres o sesiones, 16 horas impartidas y 16 docentes. Más del 95 % del alumnado participante expresa interés en seguir aprendiendo o repetir la experiencia.
+
+## Contacto
 
 - Email: contacto@adamis.es
