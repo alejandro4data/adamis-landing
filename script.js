@@ -300,6 +300,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeInfoModalBtn = document.getElementById('closeInfoModal');
     const infoRequestForm = document.getElementById('infoRequestForm');
     const infoRequestForms = document.querySelectorAll('[data-info-form]');
+    const infoRequestEndpoint = ['adamis.es', 'www.adamis.es'].includes(window.location.hostname)
+        ? 'https://adamis-nine.vercel.app/api/request-info'
+        : null;
     const infoFormStatus = document.getElementById('infoFormStatus');
     const audienceField = infoRequestForm?.querySelector('[name="audience"]');
     const interestField = infoRequestForm?.querySelector('[name="interest"]');
@@ -1441,7 +1444,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const timeoutId = controller ? window.setTimeout(() => controller.abort(), 15000) : 0;
 
             try {
-                const response = await fetch(form.action || '/api/request-info', {
+                const response = await fetch(infoRequestEndpoint || form.action || '/api/request-info', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
