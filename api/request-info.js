@@ -12,6 +12,8 @@ const CONTACT_RECIPIENTS = (process.env.CONTACT_TO_EMAIL || 'contacto@adamis.es'
   .map((email) => email.trim())
   .filter(Boolean);
 
+const ALLOWED_ORIGINS = new Set(['https://adamis.es', 'https://www.adamis.es']);
+
 function readField(body, key, maxLength = 500) {
   return String(body?.[key] || '').trim().slice(0, maxLength);
 }
@@ -22,6 +24,23 @@ function isValidEmail(value = '') {
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Vary', 'Origin');
+
+  const origin = req.headers?.origin;
+  const allowedOrigin = ALLOWED_ORIGINS.has(origin);
+
+  if (allowedOrigin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  }
+
+  if (req.method === 'OPTIONS') {
+    if (!allowedOrigin) {
+      return res.status(403).json({ ok: false, error: 'Origen no permitido' });
+    }
+    return res.status(204).end();
+  }
 
   if (req.method !== 'POST') {
     return res.status(405).json({ ok: false, error: 'Metodo no permitido' });

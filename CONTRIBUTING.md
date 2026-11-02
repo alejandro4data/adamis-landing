@@ -19,6 +19,9 @@ su repositorio.
   y envía el correo mediante Resend. Para probar la integración local en Vercel,
   usar `vercel dev`; para QA de formularios, interceptar las solicitudes y no
   enviar leads reales.
+- La web pública sigue en GitHub Pages. Sus formularios usan la API de
+  `https://adamis-nine.vercel.app/api/request-info`, con CORS para `adamis.es`
+  y `www.adamis.es`. Los cambios de esta API deben desplegarse también en Vercel.
 - `.env.example` enumera las variables: `RESEND_API_KEY` y `CONTACT_FROM_EMAIL`
   son necesarias para enviar correo; `CONTACT_TO_EMAIL` es opcional y por defecto
   usa `contacto@adamis.es`. No compartir valores privados.
