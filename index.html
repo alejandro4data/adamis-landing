@@ -112,13 +112,11 @@
 
     <main id="contenido">
         <section id="inicio" class="lead-hero landing-hero" aria-labelledby="heroTitle">
-            <div class="landing-orbit landing-orbit-one" aria-hidden="true"></div>
-            <div class="landing-orbit landing-orbit-two" aria-hidden="true"></div>
             <div class="container landing-hero-grid">
                 <div class="landing-hero-copy landing-enter" data-landing-reveal>
                     <p class="landing-eyebrow"><span aria-hidden="true"></span>ADAMIS en centros educativos</p>
                     <h1 id="heroTitle">Educaci&oacute;n financiera <em>para Primaria y Secundaria.</em></h1>
-                    <p class="landing-hero-lead">ADAMIS ayuda al alumnado a comprender el dinero y tomar decisiones con criterio, mediante experiencias pr&aacute;cticas y contenidos adaptados a cada etapa educativa.</p>
+                    <p class="landing-hero-lead">Desde talleres de una sola sesi&oacute;n hasta cursos de 28 sesiones.</p>
                     <div class="landing-actions">
                         <a href="#contacto" class="btn-primary landing-button landing-button-primary" data-cta="llevar-adamis" data-section="hero">Llevar ADAMIS a mi centro <span aria-hidden="true">&rarr;</span></a>
                         <a href="#experiencia" class="landing-button landing-button-secondary" data-cta="descubrir-experiencia" data-section="hero">Descubrir c&oacute;mo funciona</a>
@@ -194,6 +192,22 @@
                             <img src="/assets/landing/problem-card-5.png" alt="" width="1448" height="1086" decoding="async">
                         </div>
                     </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="talleres-video" class="landing-film" aria-labelledby="workshopFilmTitle" data-landing-film>
+            <h2 id="workshopFilmTitle" class="visually-hidden">As&iacute; son los talleres ADAMIS</h2>
+            <div class="landing-film-stage" data-film-stage>
+                <div class="landing-film-frame">
+                    <video controls muted playsinline preload="none" width="720" height="1280" poster="/assets/landing/talleres-adamis-promo-poster-v1.jpg" aria-label="V&iacute;deo de presentaci&oacute;n de los talleres ADAMIS" data-film-video>
+                        <source src="/assets/landing/talleres-adamis-promo-v1.mp4" type="video/mp4">
+                        Tu navegador no puede reproducir este v&iacute;deo. <a href="/assets/landing/talleres-adamis-promo-v1.mp4">Abrir el v&iacute;deo de los talleres ADAMIS</a>.
+                    </video>
+                    <button class="landing-film-sound" type="button" aria-label="Ver el v&iacute;deo desde el inicio con sonido" data-film-sound hidden>
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></svg>
+                        Ver con sonido
+                    </button>
                 </div>
             </div>
         </section>
@@ -454,5 +468,6 @@
 
     <script src="/script.js"></script>
     <script src="/landing.js"></script>
+    <script src="/landing-video.js"></script>
 </body>
 </html>
