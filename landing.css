@@ -183,77 +183,12 @@
     min-height: auto;
     padding-block: clamp(58px, 6vw, 94px) 34px;
     overflow: hidden;
-    background:
-        radial-gradient(circle at 82% 30%, rgba(245, 185, 47, 0.22), transparent 27%),
-        radial-gradient(circle at 8% 12%, rgba(29, 102, 98, 0.09), transparent 31%),
-        var(--landing-paper);
+    background: var(--landing-paper);
 }
 
-.public-site.landing-page .landing-hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    opacity: 0.34;
-    background-image: radial-gradient(rgba(18, 43, 42, 0.17) 0.8px, transparent 0.8px);
-    background-size: 20px 20px;
-    mask-image: linear-gradient(90deg, #000 0%, transparent 49%, #000 100%);
-}
-
+.public-site.landing-page .landing-hero::before,
 .public-site.landing-page .landing-hero::after {
-    content: "";
-    position: absolute;
-    top: 12%;
-    right: -10%;
-    z-index: -1;
-    width: min(55vw, 790px);
-    aspect-ratio: 1;
-    border: 1px solid rgba(156, 98, 0, 0.17);
-    border-radius: 50%;
-    box-shadow: inset 0 0 0 78px rgba(245, 185, 47, 0.035), inset 0 0 0 154px rgba(245, 185, 47, 0.028);
-}
-
-.public-site.landing-page .landing-orbit {
-    position: absolute;
-    z-index: -1;
-    border: 1px solid rgba(29, 102, 98, 0.16);
-    border-radius: 50%;
-    pointer-events: none;
-}
-
-.public-site.landing-page .landing-orbit::after {
-    content: "";
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border: 3px solid var(--landing-paper);
-    border-radius: 50%;
-    background: var(--landing-red);
-    box-shadow: 0 0 0 1px rgba(18, 43, 42, 0.15);
-}
-
-.public-site.landing-page .landing-orbit-one {
-    top: 19%;
-    left: -9%;
-    width: 280px;
-    height: 280px;
-}
-
-.public-site.landing-page .landing-orbit-one::after {
-    top: 20%;
-    right: 4%;
-}
-
-.public-site.landing-page .landing-orbit-two {
-    right: 6%;
-    bottom: 2%;
-    width: 180px;
-    height: 180px;
-}
-
-.public-site.landing-page .landing-orbit-two::after {
-    bottom: 13%;
-    left: 10%;
+    content: none;
 }
 
 .public-site.landing-page .landing-hero-grid {
@@ -1234,6 +1169,143 @@
         transform: none;
         transition: none;
         will-change: auto;
+    }
+}
+
+/* The final problem card gives way to the workshop film. */
+
+.public-site.landing-page .landing-film {
+    --film-header: 82px;
+    --film-bottom: 0px;
+    --film-inset: clamp(12px, 2.4svh, 24px);
+    --film-height: max(180px, calc(100svh - var(--film-header) - var(--film-bottom)));
+    --film-progress: 1;
+    position: relative;
+    isolation: isolate;
+    background: var(--landing-night-deep);
+    scroll-margin-top: var(--film-header);
+}
+
+.public-site.landing-page .landing-film::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--landing-paper-deep);
+    opacity: calc(1 - var(--film-progress));
+    pointer-events: none;
+}
+
+.public-site.landing-page .landing-film-stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: var(--film-height);
+    padding: var(--film-inset) max(12px, env(safe-area-inset-right)) var(--film-inset) max(12px, env(safe-area-inset-left));
+}
+
+.public-site.landing-page .landing-film.is-scroll-scene {
+    min-height: calc(var(--film-height) + 32svh);
+}
+
+.public-site.landing-page .is-scroll-scene .landing-film-stage {
+    position: sticky;
+    top: var(--film-header);
+}
+
+.public-site.landing-page .landing-film-frame {
+    position: relative;
+    width: min(100%, calc((var(--film-height) - var(--film-inset) * 2) * 9 / 16));
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    border-radius: calc(26px * (1 - var(--film-progress)));
+    background: #000;
+    opacity: calc(0.55 + var(--film-progress) * 0.45);
+    transform: scale(calc(0.9 + var(--film-progress) * 0.1));
+    transform-origin: center;
+}
+
+.public-site.landing-page .landing-film-frame video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 9 / 16;
+    object-fit: contain;
+}
+
+.public-site.landing-page .landing-film-frame:focus-within {
+    opacity: 1;
+    transform: none;
+}
+
+.public-site.landing-page .landing-film-sound {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    background: rgba(9, 31, 31, 0.9);
+    color: #fff;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.public-site.landing-page .landing-film-sound svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.public-site.landing-page .landing-film-sound[hidden] {
+    display: none;
+}
+
+.public-site.landing-page .landing-film-sound:hover {
+    background: var(--landing-teal);
+}
+
+.public-site.landing-page .landing-film-sound:focus-visible,
+.public-site.landing-page .landing-film-frame video:focus-visible {
+    outline: 3px solid var(--landing-gold);
+    outline-offset: -3px;
+}
+
+@media (max-width: 768px) {
+    .public-site.landing-page .landing-film {
+        --film-header: 74px;
+        --film-bottom: var(--landing-mobile-cta-space);
+    }
+
+    .public-site.landing-page .landing-film.is-scroll-scene {
+        min-height: calc(var(--film-height) + 20svh);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .public-site.landing-page .landing-film.is-scroll-scene {
+        min-height: 0;
+    }
+
+    .public-site.landing-page .landing-film-stage {
+        position: relative;
+        top: auto;
+    }
+
+    .public-site.landing-page .landing-film-frame {
+        border-radius: 0;
+        opacity: 1;
+        transform: none;
+    }
+
+    .public-site.landing-page .landing-film::before {
+        display: none;
     }
 }
 
