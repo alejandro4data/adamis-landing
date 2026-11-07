@@ -1471,14 +1471,16 @@
         --film-edge: 8px;
         --film-top-inset: max(var(--film-edge), env(safe-area-inset-top));
         --film-cue-space: calc(36px + env(safe-area-inset-bottom));
-        --film-bleed: calc((var(--landing-container-gutter) - var(--film-edge)) * var(--film-progress));
-        --film-height: calc(var(--film-card-height) + (100dvh - var(--film-top-inset) - var(--film-cue-space) - var(--film-card-height)) * var(--film-progress));
+        --film-expand-inline: calc(var(--landing-container-gutter) - var(--film-edge));
+        --film-max-height: calc(100dvh - var(--film-top-inset) - var(--film-cue-space));
+        --film-bleed: calc(var(--film-expand-inline) * var(--film-progress));
+        --film-height: calc(var(--film-card-height) + (var(--film-max-height) - var(--film-card-height)) * var(--film-progress));
         --film-shift: calc((var(--film-top-inset) - var(--film-top)) * var(--film-progress));
         position: sticky;
         top: var(--film-top);
     }
 
-    .public-site.landing-page .is-scroll-scene .landing-problem-card--film {
+    .public-site.landing-page .is-scroll-scene:not(.is-transform-scene) .landing-problem-card--film {
         --film-inset: calc(12px * (1 - var(--film-progress)));
         position: relative;
         top: auto;
@@ -1491,7 +1493,7 @@
         transform: translateY(var(--film-shift));
     }
 
-    .public-site.landing-page .is-scroll-scene .landing-film-frame {
+    .public-site.landing-page .is-scroll-scene:not(.is-transform-scene) .landing-film-frame {
         border-radius: calc(19px - 8px * var(--film-progress));
     }
 
@@ -1510,6 +1512,45 @@
         font-weight: 700;
         opacity: clamp(0, (var(--film-progress) - 0.8) * 5, 1);
         pointer-events: none;
+    }
+
+    /* Scale the card background independently so the portrait player keeps its proportions. */
+    .public-site.landing-page .is-transform-scene .landing-problem-card--film {
+        position: relative;
+        top: auto;
+        overflow: visible;
+        border-color: transparent;
+        box-shadow: none;
+        transform: translate3d(0, calc(var(--film-shift) + (var(--film-height) - var(--film-card-height)) / 2), 0);
+    }
+
+    .public-site.landing-page .is-transform-scene .landing-problem-card--film::before {
+        --film-scale-x: calc(var(--film-shell-x, 1) + (1 - var(--film-shell-x, 1)) * var(--film-progress));
+        --film-scale-y: calc(var(--film-shell-y, 1) + (1 - var(--film-shell-y, 1)) * var(--film-progress));
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: 50%;
+        left: 50%;
+        width: calc(100% + 2 * var(--film-expand-inline) + 2px);
+        height: var(--film-max-height);
+        border: 1px solid var(--problem-card-border);
+        border-radius: 24px;
+        background: var(--problem-card-color);
+        box-shadow: 0 22px 52px rgba(18, 43, 42, 0.1);
+        opacity: var(--film-shell-ready, 0);
+        transform: translate3d(-50%, -50%, 0) scale3d(var(--film-scale-x), var(--film-scale-y), 1);
+        pointer-events: none;
+    }
+
+    .public-site.landing-page .is-transform-scene .landing-film-frame {
+        --film-frame-scale: calc(1 + (var(--film-media-scale, 1) - 1) * var(--film-progress));
+        transform: scale3d(var(--film-frame-scale), var(--film-frame-scale), 1);
+    }
+
+    .public-site.landing-page .is-transform-scene .landing-film-cue {
+        inset-block-start: 0;
+        transform: translate3d(0, calc(var(--film-height) + var(--film-shift)), 0);
     }
 
     .public-site.landing-page .landing-header:not(.is-menu-open):not(:focus-within) {
