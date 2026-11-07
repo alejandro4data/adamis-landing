@@ -7,6 +7,7 @@
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const mobileScene = window.matchMedia('(max-width: 640px) and (orientation: portrait)');
+    const fixedCardTrial = new URLSearchParams(window.location.search).get('prueba-video') === 'fijo';
     const header = document.querySelector('[data-site-header]');
     const mobileCta = document.querySelector('.mobile-cta-bar');
     const animatedElements = [film, header, mobileCta].filter(Boolean);
@@ -67,7 +68,8 @@
     };
 
     const syncListening = () => {
-        const shouldListen = nearScene && film.classList.contains('is-scroll-scene');
+        // Keep the same sticky track in the trial while skipping its scroll animation.
+        const shouldListen = !fixedCardTrial && nearScene && film.classList.contains('is-scroll-scene');
         if (shouldListen === listening) return;
         listening = shouldListen;
         if (listening) {
