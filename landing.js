@@ -26,10 +26,14 @@
                 return wrapper;
             };
             if (problemEyebrow) wrapForStack(problemEyebrow, 'landing-problem-label-slot');
-            problemCards.forEach((card, index) => {
-                const slot = wrapForStack(card, 'landing-problem-card-slot');
+            const cardSlots = problemCards.map((card, index) => {
+                const slot = card.closest('.landing-problem-card-slot') || wrapForStack(card, 'landing-problem-card-slot');
                 slot.style.setProperty('--problem-stack-index', index);
+                return slot;
             });
+            const film = problemSection.querySelector('[data-landing-film]');
+            const previousCard = film?.previousElementSibling?.querySelector('.landing-problem-card');
+            const cardBoxes = problemCards.map((card) => card.closest('[data-film-stage]') || card);
             let isNearSection = false;
             let isListening = false;
             let animationFrame = 0;
@@ -38,19 +42,22 @@
             let desktopStickyTops = [];
 
             const syncStackGeometry = () => {
-                const headerHeight = header?.getBoundingClientRect().bottom || 0;
+                const headerHeight = header?.offsetHeight || 0;
                 const eyebrowHeight = problemEyebrow?.getBoundingClientRect().height || 0;
                 problemSection.style.setProperty('--problem-header-height', `${headerHeight}px`);
                 problemSection.style.setProperty('--problem-eyebrow-height', `${eyebrowHeight}px`);
+                if (previousCard) {
+                    film.style.setProperty('--film-rest-height', `${previousCard.offsetHeight}px`);
+                }
 
                 if (!mobileViewport.matches || reducedMotion.matches) {
                     problemSection.classList.remove('is-mobile-stack', 'is-mobile-stack-fallback');
                     if (problemSection.classList.contains('is-stack-enhanced')) {
-                        desktopStickyTops = problemCards.map((card) =>
-                            Number.parseFloat(window.getComputedStyle(card.parentElement).top));
+                        desktopStickyTops = cardSlots.map((slot) =>
+                            Number.parseFloat(window.getComputedStyle(slot).top));
                         const step = desktopStickyTops[1] - desktopStickyTops[0];
                         // Measure layout heights, unaffected by the cover animation.
-                        const deckHeight = Math.max(...problemCards.map((card, index) => card.offsetHeight + index * step));
+                        const deckHeight = Math.max(...cardBoxes.map((box, index) => box.offsetHeight + index * step));
                         problemSection.style.setProperty('--problem-desktop-deck', `${deckHeight}px`);
                     }
                     return;
@@ -62,7 +69,7 @@
                 const labelGap = Number.parseFloat(styles.getPropertyValue('--problem-mobile-label-gap'));
                 const reservedTop = headerHeight + eyebrowHeight + labelGap;
                 const ctaHeight = mobileCta?.getBoundingClientRect().height || 0;
-                const heights = problemCards.map((card) => card.getBoundingClientRect().height);
+                const heights = cardBoxes.map((box) => box.offsetHeight);
                 const deckHeight = Math.max(...heights.map((height, index) => height + index * step));
                 const fits = deckHeight + reservedTop + ctaHeight + clearance * 2 <= window.innerHeight;
 
@@ -87,8 +94,8 @@
                 if (!isListening) return;
 
                 const coverDistance = Math.min(210, Math.max(120, window.innerHeight * 0.22));
-                const cardDistances = problemCards.map((card, index) =>
-                    card.parentElement.getBoundingClientRect().top - desktopStickyTops[index]);
+                const cardDistances = cardSlots.map((slot, index) =>
+                    slot.getBoundingClientRect().top - desktopStickyTops[index]);
                 let activeIndex = 0;
                 let coveringIndex = -1;
                 let coverProgress = 0;
@@ -196,7 +203,7 @@
             // space. Native sticky handles scrolling without a mobile listener.
             if ('ResizeObserver' in window) {
                 const geometryObserver = new ResizeObserver(syncStackGeometry);
-                [...problemCards, header, problemEyebrow, mobileCta].filter(Boolean).forEach((element) => {
+                [...cardBoxes, header, problemEyebrow, mobileCta].filter(Boolean).forEach((element) => {
                     geometryObserver.observe(element);
                 });
             }

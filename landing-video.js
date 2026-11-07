@@ -6,13 +6,15 @@
     if (!film || !stage || !video) return;
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const mobileScene = window.matchMedia('(max-width: 640px) and (orientation: portrait)');
     const header = document.querySelector('[data-site-header]');
     const mobileCta = document.querySelector('.mobile-cta-bar');
-    let headerHeight = 0;
+    const animatedElements = [film, header, mobileCta].filter(Boolean);
     let nearScene = false;
     let visibleRatio = 0;
     let frame = 0;
     let listening = false;
+    let lastProgress = '0.0000';
     let autoplayAttempted = false;
     let prepared = false;
 
@@ -39,40 +41,42 @@
         playVideo();
     };
 
+    const setProgress = (progress) => {
+        const value = progress.toFixed(4);
+        if (value === lastProgress) return;
+        lastProgress = value;
+        animatedElements.forEach((element) => {
+            if (value === '0.0000') element.style.removeProperty('--film-progress');
+            else element.style.setProperty('--film-progress', value);
+        });
+    };
+
     const updateProgress = () => {
         frame = 0;
-        if (reducedMotion.matches) {
-            film.style.setProperty('--film-progress', '1');
-            return;
-        }
-        const entryPoint = window.innerHeight * 0.82;
-        const travel = Math.max(1, entryPoint - headerHeight);
-        const progress = Math.min(1, Math.max(0, (entryPoint - film.getBoundingClientRect().top) / travel));
-        const eased = progress * progress * (3 - 2 * progress);
-        film.style.setProperty('--film-progress', eased.toFixed(4));
+        if (!listening) return;
+        // The stage keeps its original height, so its sticky travel is independent of the resize.
+        const travel = film.offsetHeight - stage.offsetHeight;
+        const distance = stage.getBoundingClientRect().top - film.getBoundingClientRect().top;
+        // Use the first and last 40% to resize, with a short hold at maximum height.
+        const progress = Math.min(1, Math.max(0, Math.min(distance, travel - distance) / (travel * 0.4)));
+        setProgress(progress * progress * (3 - 2 * progress));
     };
 
     const requestUpdate = () => {
-        if (!frame) frame = window.requestAnimationFrame(updateProgress);
+        if (listening && !frame) frame = window.requestAnimationFrame(updateProgress);
     };
 
     const syncListening = () => {
-        const shouldListen = nearScene && !reducedMotion.matches;
-        if (shouldListen !== listening) {
-            listening = shouldListen;
-            if (listening) window.addEventListener('scroll', requestUpdate, { passive: true });
-            else window.removeEventListener('scroll', requestUpdate);
+        const shouldListen = nearScene && film.classList.contains('is-scroll-scene');
+        if (shouldListen === listening) return;
+        listening = shouldListen;
+        if (listening) {
+            window.addEventListener('scroll', requestUpdate, { passive: true });
+            requestUpdate();
+        } else {
+            window.removeEventListener('scroll', requestUpdate);
+            setProgress(0);
         }
-        requestUpdate();
-    };
-
-    const syncGeometry = () => {
-        headerHeight = header?.getBoundingClientRect().height || 0;
-        // Leave the fixed mobile CTA clear of the native playback controls.
-        const bottomSpace = mobileCta?.getBoundingClientRect().height || 0;
-        film.style.setProperty('--film-header', `${headerHeight}px`);
-        film.style.setProperty('--film-bottom', `${bottomSpace}px`);
-        requestUpdate();
     };
 
     const syncSound = () => {
@@ -104,9 +108,8 @@
     if (!('IntersectionObserver' in window)) return;
 
     const syncMotion = () => {
-        film.classList.toggle('is-scroll-scene', !reducedMotion.matches);
+        film.classList.toggle('is-scroll-scene', mobileScene.matches && !reducedMotion.matches);
         if (reducedMotion.matches) video.pause();
-        syncGeometry();
         syncListening();
         tryAutoplay();
     };
@@ -125,11 +128,8 @@
 
     syncMotion();
     proximityObserver.observe(film);
-    playbackObserver.observe(stage);
+    playbackObserver.observe(video);
     reducedMotion.addEventListener?.('change', syncMotion);
-    window.addEventListener('resize', syncGeometry, { passive: true });
-    if ('ResizeObserver' in window) {
-        const geometryObserver = new ResizeObserver(syncGeometry);
-        [header, mobileCta].filter(Boolean).forEach((element) => geometryObserver.observe(element));
-    }
+    mobileScene.addEventListener?.('change', syncMotion);
+    window.addEventListener('resize', requestUpdate, { passive: true });
 })();
