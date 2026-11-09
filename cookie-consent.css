@@ -1,0 +1,68 @@
+.cookie-consent {
+    position: fixed;
+    z-index: 3000;
+    inset-inline: 0;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    width: min(38rem, calc(100% - 1.5rem));
+    max-height: 60vh;
+    max-height: 60dvh;
+    overflow: auto;
+    box-sizing: border-box;
+    margin-inline: auto;
+    padding: 1rem;
+    color: #142e2a;
+    background: #fff;
+    border: 1px solid #cbd9d3;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 2rem rgb(20 46 42 / 20%);
+    font: 400 0.95rem / 1.5 Manrope, system-ui, sans-serif;
+    text-align: start;
+}
+
+.cookie-consent[hidden] {
+    display: none;
+}
+
+body .cookie-consent h2 {
+    margin: 0;
+    color: inherit;
+    font: 800 1.125rem / 1.25 Manrope, system-ui, sans-serif;
+}
+
+body .cookie-consent p {
+    margin: 0.5rem 0 0.75rem;
+}
+
+body .cookie-consent a,
+.legal-shell a[data-cookie-preferences] {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.cookie-consent-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.cookie-consent .cookie-consent-actions button {
+    min-height: 2.75rem;
+    padding: 0.4rem;
+    color: inherit;
+    background: #eef5f1;
+    border: 1px solid #56736a;
+    border-radius: 0.5rem;
+    font: inherit;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.cookie-consent .cookie-consent-actions button:hover {
+    background: #e0ece6;
+}
+
+.cookie-consent :focus-visible {
+    outline: 2px solid #235d50;
+    outline-offset: 2px;
+}

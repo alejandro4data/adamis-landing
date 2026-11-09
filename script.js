@@ -660,22 +660,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const cta = element?.dataset?.cta || eventName;
         if (!cta) return;
 
-        const payload = {
-            event: eventName || `click_${cta.replace(/-/g, '_')}`,
-            cta,
-            section: element.dataset.section || ''
-        };
-
-        if (typeof window.gtag === 'function') {
-            window.gtag('event', payload.event, {
-                cta: payload.cta,
-                section: payload.section
-            });
-            return;
-        }
-
-        if (!Array.isArray(window.dataLayer)) window.dataLayer = [];
-        window.dataLayer.push(payload);
+        // Keep commercial event hooks local until conversion measurement is configured.
+        window.dispatchEvent(new CustomEvent('adamis:commercial-interaction', {
+            detail: {
+                event: eventName || `click_${cta.replace(/-/g, '_')}`,
+                cta,
+                section: element?.dataset?.section || ''
+            }
+        }));
     };
 
     ctaElements.forEach((element) => {
