@@ -3596,6 +3596,12 @@ body.public-site.landing-page.request-dialog-open .mobile-cta-bar {
     background: #071918;
 }
 
+@media (max-width: 1180px) {
+    .public-site.landing-page.public-nav-coherent .nav-access::after {
+        content: none;
+    }
+}
+
 .public-site.landing-page .landing-footer .site-brand-name {
     color: #fff;
 }
