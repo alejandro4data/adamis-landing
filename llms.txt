@@ -8,7 +8,6 @@ Canonical site: https://adamis.es/
 
 - Home: https://adamis.es/
 - Educación financiera: https://adamis.es/educacion-financiera/
-- Producto: https://adamis.es/producto/
 - Universo ADAMIS: https://adamis.es/universo-adamis/
 - Metodología: https://adamis.es/metodologia/
 - Impacto: https://adamis.es/impacto/
@@ -20,7 +19,6 @@ Canonical site: https://adamis.es/
 
 - Home: https://adamis.es/financial-education/
 - Why it matters: https://adamis.es/financial-education/why-it-matters/
-- Product: https://adamis.es/financial-education/product/
 - Methodology: https://adamis.es/financial-education/methodology/
 - Impact: https://adamis.es/financial-education/impact/
 - Workshops: https://adamis.es/financial-education/workshops/
@@ -28,7 +26,7 @@ Canonical site: https://adamis.es/
 - ADAMIS World: https://adamis.es/financial-education/adamis-world/
 - Contact: https://adamis.es/financial-education/#contact
 
-## Producto
+## Plataforma y din?micas
 
 Los cursos combinan sesiones en plataforma y dinámicas participativas con acompañamiento de un monitor. Los contenidos se adaptan a cada nivel. Las demostraciones públicas actuales de la plataforma y el Universo ADAMIS corresponden a Primaria.
 

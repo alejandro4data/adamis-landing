@@ -7,6 +7,12 @@ su repositorio.
 
 ## Desarrollo y despliegue
 
+- `/metodologia/` y `/financial-education/methodology/` contienen la antigua
+  página de Producto, con sus estilos e interacciones de `producto.css` y
+  `producto.js`. Las rutas de producto redirigen a ellas. La metodología
+  anterior se conserva en `/legacy/metodologia/` y
+  `/legacy/financial-education/methodology/`, fuera del sitemap y con `noindex`.
+
 - HTML estático en `index.html` y los directorios de páginas; CSS y JavaScript
   en la raíz, recursos en `assets/`.
 - La navegación se declara en el HTML de cada página, con el logo ADAMIS Finance.

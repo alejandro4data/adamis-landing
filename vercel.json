@@ -1,5 +1,9 @@
 {
   "redirects": [
+    { "source": "/producto", "destination": "/metodologia/", "permanent": true },
+    { "source": "/producto/", "destination": "/metodologia/", "permanent": true },
+    { "source": "/financial-education/product", "destination": "/financial-education/methodology/", "permanent": true },
+    { "source": "/financial-education/product/", "destination": "/financial-education/methodology/", "permanent": true },
     { "source": "/splash.html", "destination": "https://adamis-demo.vercel.app/", "permanent": false },
     { "source": "/app/:path*", "destination": "https://adamis-demo.vercel.app/app/:path*", "permanent": false },
     { "source": "/app/", "destination": "https://adamis-demo.vercel.app/app/", "permanent": false },
