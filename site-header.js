@@ -8,12 +8,12 @@
     const languagePath = alternate ? new URL(alternate.href).pathname : english ? '/' : '/financial-education/';
     const links = english ? [
         ['/financial-education/why-it-matters/', 'Why it matters'],
-        ['/financial-education/product/', 'Product'],
+        ['/financial-education/methodology/', 'Methodology'],
         ['/financial-education/workshops/', 'Workshops'],
         ['/financial-education/courses/', 'Programme'],
         ['/financial-education/impact/', 'Impact']
     ] : [
-        ['/educacion-financiera/', 'Problema'], ['/producto/', 'Producto'],
+        ['/educacion-financiera/', 'Problema'], ['/metodologia/', 'Metodología'],
         ['/talleres/', 'Talleres'], ['/programa/', 'Programa'], ['/impacto/', 'Impacto']
     ];
     const openLabel = english ? 'Open menu' : 'Abrir menú';

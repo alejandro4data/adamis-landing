@@ -453,6 +453,7 @@ html.gratis-intro-pending .gratis-page :is(#adamisHeader, h1, .gratis-hero-copy,
 .gratis-page .gratis-footer {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     gap: 12px 24px;
     padding-block: 24px;
